@@ -1,0 +1,57 @@
+# Comprueba que cada commit de la pull request lleva un trailer
+# Signed-off-by que coincide con el autor (Developer Certificate of Origin 1.1).
+# Complementa, no sustituye, la app oficial de DCO (https://github.com/apps/dco)
+# ni el ajuste del repositorio «Require contributors to sign off on web-based commits».
+name: DCO
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dco-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dco:
+    name: Signed-off-by
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Comprobar Signed-off-by en cada commit
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          missing=0
+          mapfile -t commits < <(git rev-list --no-merges "${BASE}..${HEAD}")
+          if [ "${#commits[@]}" -eq 0 ]; then
+            echo "No hay commits que comprobar."
+            exit 0
+          fi
+          for sha in "${commits[@]}"; do
+            author_name=$(git show -s --format='%an' "$sha")
+            author_email=$(git show -s --format='%ae' "$sha")
+            expected="${author_name} <${author_email}>"
+            trailers=$(git show -s --format='%(trailers:key=Signed-off-by,valueonly,unfold=true)' "$sha" || true)
+            if printf '%s\n' "$trailers" | grep -Fqx "$expected"; then
+              echo "OK $sha ($expected)"
+            else
+              echo "Falta Signed-off-by válido en $sha. Se esperaba exactamente: $expected"
+              git show -s --format=full "$sha"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::Uno o más commits no cumplen el DCO 1.1. Enmienda con: git commit --amend -s --no-edit (si aún no está en el remoto) o git rebase y git commit -s."
+            exit 1
+          fi

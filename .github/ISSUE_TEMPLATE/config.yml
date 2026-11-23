@@ -1,0 +1,9 @@
+# Selector de incidencias. Las plantillas fallo.md y mejora.md ya están
+# en el repositorio (frontmatter name/about). Este fichero no las sustituye.
+# El enlace de avisos privados solo funciona cuando esté activado
+# Private vulnerability reporting (en repos públicos).
+blank_issues_enabled: false
+contact_links:
+  - name: Aviso de seguridad
+    url: https://github.com/emanuelpetrucci/regalalo-frontend/security/advisories/new
+    about: No uses una incidencia pública para informar de una vulnerabilidad. Abre un aviso privado o escribe a ecabralpetrucci@gmail.com (véase SECURITY.md).

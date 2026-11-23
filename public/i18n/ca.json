@@ -1,0 +1,1743 @@
+{
+  "common": {
+    "language": {
+      "es": "Español",
+      "ca": "Català",
+      "en": "English"
+    },
+    "user_avatar": {
+      "default_label": "Avatar d'usuari"
+    }
+  },
+  "landing": {
+    "nav": {
+      "aria_label": "Navegació principal",
+      "login": "Iniciar sessió",
+      "register": "Crear compte",
+      "menu_open": "Obrir menú",
+      "menu_close": "Tancar menú"
+    },
+    "hero": {
+      "pill": "Distribució comunitària · Sense diners de per mig",
+      "headline_1": "El que ja no fas servir,",
+      "headline_em": "algú ho necessita",
+      "lead": "Una plataforma on els objectes troben noves mans. L'accés depèn del teu comportament a la comunitat, no de la teva cartera.",
+      "cta_primary": "Unir-me a la comunitat",
+      "cta_secondary": "Explorar objectes",
+      "note": "Gratis. Només necessites correu i codi postal.",
+      "mock": {
+        "card1_title": "Jaqueta de llana grisa",
+        "card1_meta": "Com a nova · Gràcia, BCN",
+        "card2_title": "Estanteria IKEA Kallax",
+        "card2_meta": "Bo · Eixample, BCN · 2,3 km",
+        "card2_requests": "7 sol·licituds",
+        "card3_title": "Bicicleta plegable",
+        "card3_meta": "Acceptable · Poblenou",
+        "badge_active": "actiu",
+        "badge_reserved": "reservat",
+        "chip_name": "Carlos R.",
+        "chip_reputation": "+92 reputació",
+        "chip_distance": "a 3,8 km"
+      }
+    },
+    "stats": {
+      "objects": "objectes publicats",
+      "cities": "ciutats actives",
+      "radius": "radi de distribució",
+      "cost_label": "cost sempre"
+    },
+    "how": {
+      "label": "Com funciona",
+      "title": "Tres passos. Sense complicacions.",
+      "subtitle": "Un cicle senzill que manté els objectes en moviment i la comunitat en equilibri.",
+      "step1_num": "01",
+      "step1_title": "Publica el que vulguis regalar",
+      "step1_body": "Fotografía i descriu l'objecte que ja no necessites. Queda disponible per a persones a menys de 50 km. Fins a 5 fotos per objecte.",
+      "step2_num": "02",
+      "step2_title": "Sol·licita el que necessitis",
+      "step2_body": "Explora objectes a prop teu. Pots sol·licitar fins a 3 al mes. El donant tria el millor candidat segons la seva reputació i distància.",
+      "step3_num": "03",
+      "step3_title": "Lliura i confirma",
+      "step3_body": "El donant comparteix el seu canal de contacte. Quedeu en persona i es confirma el lliurament. Cada lliurament exitós millora la teva reputació."
+    },
+    "system": {
+      "label": "La comunitat",
+      "title_1": "No és un marketplace.",
+      "title_2": "És equilibri compartit.",
+      "subtitle": "El comportament condiciona les oportunitats. Qui dona, rep més fàcilment. Qui no es presenta, apareix més avall a la llista.",
+      "value1_title": "Gratis. Sempre.",
+      "value1_body": "Cap objecte té preu. Aquí no hi ha transaccions econòmiques. El que dones, ho regales sense excepció.",
+      "value2_title": "El teu lloc a la llista",
+      "value2_body": "El teu historial de lliuraments determina el teu lloc a la llista de candidats. Si participes i et presentes, puges de lloc. Si no et presentes, baixes a la llista.",
+      "value3_title": "Radi de 50 km",
+      "value3_body": "Els objectes circulen localment. Menys empremta, més comunitat real. Només veus objectes que estan prop teu.",
+      "value4_title": "Privadesa des del principi",
+      "value4_body": "Sense xat intern. El canal de contacte només es revela quan el donant confirma el lliurament. Es purga automàticament als 7 dies."
+    },
+    "reputation": {
+      "label": "Reputació",
+      "title_1": "El teu historial parla",
+      "title_em": "per tu",
+      "subtitle": "Ordenem els candidats en temps real. La proximitat, l'historial de lliuraments i el temps d'espera determinen qui arriba primer.",
+      "cta": "Crear el meu perfil",
+      "table_label": "Candidats — Estanteria Kallax",
+      "example_aria": "Exemple de llista de candidats",
+      "list_note": "La llista s'actualitza en temps real · ±2 pts de variació",
+      "example": {
+        "name1": "Carlos R.",
+        "meta1": "2,3 km · 4 lliuraments",
+        "name2": "Marta L.",
+        "meta2": "5,1 km · 1 lliurament",
+        "name3": "Jordi P.",
+        "meta3": "12,8 km · 0 lliuraments",
+        "rank1": "1.º",
+        "rank2": "2.º",
+        "rank3": "3.º"
+      }
+    },
+    "cta_section": {
+      "label": "Comença avui",
+      "title": "Tens alguna cosa que ja no fas servir?",
+      "subtitle": "Publica-ho i troba qui ho necessita. O registra't i explora objectes prop teu. Sense diners. Sense intermediaris.",
+      "publish": "Publicar un objecte",
+      "explore": "Explorar objectes"
+    },
+    "footer": {
+      "tagline": "Comunitat de redistribució d'objectes. Sense diners, sense intermediaris.",
+      "col_platform": "Plataforma",
+      "link_login": "Iniciar sessió",
+      "link_register": "Crear compte",
+      "link_reputation": "Com funciona la reputació",
+      "link_how": "Com funciona",
+      "col_legal": "Legal",
+      "link_legal_notice": "Avís legal",
+      "link_privacy": "Privadesa",
+      "link_cookies": "Política de cookies",
+      "copy": "© 2026 Regálalo. Tots els drets reservats.",
+      "made_in": "Fet a Espanya"
+    },
+    "meta": {
+      "title": "Regálalo — dona una segona vida als teus objectes",
+      "description": "Una plataforma comunitària on els objectes troben noves mans. L'accés depèn del teu comportament a la comunitat, no de la teva cartera."
+    },
+    "seo": {
+      "faq": {
+        "section_label": "FAQ",
+        "section_title": "Preguntes freqüents",
+        "q1": "Què és Regálalo?",
+        "a1": "Regálalo és una comunitat on pots donar objectes que ja no uses i rebre els que altres ofereixen, tot sense diners. Com més participes i contribueixes, més fàcil és que et triïn quan sol·licites alguna cosa. No importa el que tens a la butxaca, sinó el que aportes.",
+        "q2": "Com funciona Regálalo?",
+        "a2": "Publiques el que vulguis regalar, sol·licites objectes a prop teu (fins a 3 al mes) i la persona que dona tria a qui donar-ho — sol prioritzar qui més ha participat a la comunitat i viu més a prop. El lliurament es fa en persona.",
+        "q3": "És gratuït fer servir Regálalo?",
+        "a3": "Sí. No hi ha preus ni transaccions econòmiques. Només necessites correu i codi postal per unir-t'hi.",
+        "q4": "A quines ciutats està disponible Regálalo?",
+        "a4": "Regálalo està disponible a tota Espanya. Els objectes es distribueixen en un radi de 50 km, de manera que qualsevol persona amb codi postal espanyol pot participar.",
+        "q5": "En què es diferencia Regálalo d'altres plataformes de segona mà?",
+        "a5": "A Regálalo no existeix el diner. No pots vendre ni comprar: només regalar i rebre. A diferència d'altres llocs on importa el preu, aquí el que determina qui rep un objecte és quant has contribuït a la comunitat, no el que estàs disposat a pagar.",
+        "q6": "Com funciona la reputació a Regálalo?",
+        "a6": "Cada vegada que lliures alguna cosa o confirmes una recollida, la comunitat et coneix una mica millor. Com més dones, més visible ets i més fàcil és que els donants et triïn quan sol·licites alguna cosa. Si et compromets a recollir alguna cosa i no et presentes, es resten punts: −10 el primer cop, −20 el segon i −30 el tercer. Un lliurament completat reinicia el comptador. Si portes mesos sol·licitant sense donar, la teva candidatura apareix més avall —o deixa de mostrar-se als donants— fins que completis una donació.",
+        "q7": "És segur Regálalo? Com protegeixen la meva privacitat?",
+        "a7": "Sí. Les dades de la persona donant (com contactar-la) només es comparteixen un cop confirmat el lliurament, i s'esborren automàticament als 7 dies. Abans d'aquell moment, ningú veu informació personal de l'altre. No hi ha missatgeria interna: l'acord es tanca en el moment del lliurament.",
+        "q8": "Quants objectes puc sol·licitar al mes?",
+        "a8": "Pots sol·licitar fins a 3 objectes al mes. Per publicar objectes per regalar no hi ha límit mensual."
+      }
+    }
+  },
+  "auth": {
+    "layout": {
+      "tagline": "\"No lo vendo, lo regalo.\"",
+      "copy": "Una comunitat on els objectes troben un nou amo. Sense diners. Només reputació.",
+      "footer": "Espanya · MVP 2025",
+      "note": "L'accés als objectes depèn de la teva reputació a la comunitat."
+    },
+    "login": {
+      "title": "Iniciar sessió",
+      "subtitle": "Accedeix al teu compte per publicar i sol·licitar objectes.",
+      "field": {
+        "email": "Correu electrònic",
+        "email_placeholder": "tu@email.es",
+        "password": "Contrasenya",
+        "password_placeholder": "••••••••"
+      },
+      "submit": "Iniciar sessió",
+      "submitting": "Iniciant sessió…",
+      "forgot_link": "Has oblidat la contrasenya?",
+      "footer": "No tens compte?",
+      "register_link": "Crear compte",
+      "session_expired": "La teva sessió ha expirat. Inicia sessió de nou.",
+      "email_verified_success": "El teu correu ha estat verificat. Ja pots iniciar sessió.",
+      "recaptcha": "Protegit per reCAPTCHA",
+      "recaptcha_privacy": "Privadesa",
+      "recaptcha_terms": "Condicions",
+      "validation": {
+        "email_required": "Introdueix el teu correu electrònic",
+        "email_format": "El format del correu no és vàlid",
+        "password_required": "Introdueix la teva contrasenya"
+      },
+      "error": {
+        "401": "Correu o contrasenya incorrectes.",
+        "422": "No hem pogut verificar que ets humà. Torna-ho a intentar.",
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "generic": "No hem pogut iniciar sessió. Torna-ho a intentar més tard.",
+        "recaptcha_unavailable": "La verificació de seguretat no està disponible. Recarrega la pàgina."
+      }
+    },
+    "common": {
+      "back_to_login": "Tornar a l'inici"
+    },
+    "forgot": {
+      "title": "Recuperar accés",
+      "subtitle": "Introdueix el teu correu i t'enviarem un enllaç per recuperar l'accés.",
+      "field": {
+        "email": "Correu electrònic",
+        "email_placeholder": "tu@email.es"
+      },
+      "submit": "Enviar enllaç",
+      "submitting": "Enviant…",
+      "sent": {
+        "title": "Revisa la teva safata d'entrada",
+        "lead": "Si aquest correu està registrat, rebràs l'enllaç en breu.",
+        "spam_hint": "Comprova també la carpeta de correu brossa."
+      },
+      "recaptcha": "Protegit per reCAPTCHA",
+      "recaptcha_privacy": "Privadesa",
+      "recaptcha_terms": "Condicions",
+      "validation": {
+        "email_required": "Introdueix el teu correu electrònic",
+        "email_format": "El format del correu no és vàlid"
+      },
+      "error": {
+        "validation": "Revisa el correu i torna-ho a intentar.",
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "generic": "No hem pogut enviar l'enllaç. Torna-ho a intentar més tard."
+      }
+    },
+    "reset": {
+      "title": "Nova contrasenya",
+      "subtitle": "Tria una contrasenya segura. Ha de tenir almenys 8 caràcters.",
+      "field": {
+        "new_password": "Nova contrasenya",
+        "confirm_password": "Confirmar contrasenya",
+        "password_placeholder": "••••••••"
+      },
+      "submit": "Desar contrasenya",
+      "submitting": "Desant…",
+      "done": {
+        "title": "Contrasenya desada",
+        "subtitle": "La teva contrasenya s'ha actualitzat correctament. Ja pots accedir amb les noves credencials.",
+        "login_cta": "Iniciar sessió"
+      },
+      "invalid": {
+        "title": "Enllaç no vàlid",
+        "subtitle": "Aquest enllaç ha expirat o ja s'ha utilitzat. Pots sol·licitar-ne un de nou des de l'inici de sessió.",
+        "request_new": "Sol·licitar nou enllaç"
+      },
+      "validation": {
+        "new_password_required": "Introdueix la teva nova contrasenya",
+        "new_password_min": "La contrasenya ha de tenir almenys 8 caràcters",
+        "new_password_whitespace": "La contrasenya no pot estar formada només per espais",
+        "confirm_required": "Confirma la teva contrasenya",
+        "password_mismatch": "Les contrasenyes no coincideixen"
+      },
+      "error": {
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "generic": "No hem pogut desar la contrasenya. Torna-ho a intentar més tard."
+      }
+    },
+    "register": {
+      "title": "Crear compte",
+      "subtitle": "Registra't per publicar i sol·licitar objectes a la teva zona.",
+      "field": {
+        "first_name": "Nom",
+        "first_name_placeholder": "El teu nom",
+        "last_name": "Cognoms",
+        "last_name_placeholder": "Els teus cognoms",
+        "email": "Correu electrònic",
+        "email_placeholder": "tu@email.es",
+        "password": "Contrasenya",
+        "password_placeholder": "••••••••",
+        "postal_code": "Codi postal",
+        "postal_placeholder": "08001",
+        "phone": "Telèfon (opcional)",
+        "phone_placeholder": "+34 600 000 000"
+      },
+      "submit": "Crear compte",
+      "submitting": "Creant compte…",
+      "recaptcha": "Protegit per reCAPTCHA",
+      "recaptcha_privacy": "Privadesa",
+      "recaptcha_terms": "Condicions",
+      "footer": "Ja tens compte?",
+      "login_link": "Iniciar sessió",
+      "inline_login_link": "Iniciar sessió",
+      "validation": {
+        "first_name_required": "Introdueix el teu nom",
+        "first_name_min": "Mínim 2 caràcters",
+        "last_name_required": "Introdueix els teus cognoms",
+        "last_name_min": "Mínim 2 caràcters",
+        "email_required": "Introdueix el teu correu electrònic",
+        "email_format": "El format del correu no és vàlid",
+        "password_required": "Introdueix la teva contrasenya",
+        "password_min": "Mínim 8 caràcters",
+        "postal_required": "Introdueix el teu codi postal",
+        "postal_format": "El codi postal ha de tenir 5 dígits",
+        "postal_helper": "Per mostrar-te objectes a menys de 50 km"
+      },
+      "error": {
+        "409": "No hem pogut crear el compte amb aquest correu. Ja tens compte?",
+        "422": "No hem pogut verificar que ets humà. Torna-ho a intentar.",
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "postal_invalid": "Codi postal no vàlid o no trobat",
+        "form_invalid": "Revisa les dades del formulari.",
+        "generic": "No hem pogut completar el registre. Torna-ho a intentar més tard.",
+        "field_invalid": "Valor no vàlid",
+        "recaptcha_unavailable": "La verificació de seguretat no està disponible. Recarrega la pàgina."
+      }
+    },
+    "verifyEmail": {
+      "loading_title": "Verificant el teu correu…",
+      "loading_lead": "Espera un moment mentre confirmem el teu enllaç.",
+      "error": {
+        "invalid_title": "Enllaç no vàlid",
+        "connection_title": "Error de connexió",
+        "generic_title": "No s'ha pogut verificar",
+        "invalid": "L'enllaç no és vàlid o ha caducat.",
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "generic": "No hem pogut verificar el teu correu. Torna-ho a intentar més tard."
+      },
+      "cta_resend": "Sol·licitar un nou enllaç"
+    },
+    "verificationPending": {
+      "title": "Verifica el teu correu electrònic",
+      "lead": "T'hem enviat un enllaç de verificació. Revisa la teva bústia d'entrada (i la carpeta de correu brossa).",
+      "resend_btn": "Tornar a enviar l'email de verificació",
+      "resend_btn_cooldown": "Tornar a enviar ({{ seconds }}s)",
+      "already_verified_title": "El teu email ja està verificat",
+      "already_verified_lead": "Ja pots iniciar sessió amb el teu compte.",
+      "already_verified_cta": "Anar a iniciar sessió",
+      "error": {
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "generic": "No hem pogut enviar el correu. Torna-ho a intentar més tard."
+      }
+    }
+  },
+  "onboarding": {
+    "chrome": {
+      "progress_aria": "Progrés de l'onboarding",
+      "skip": "Ometre",
+      "prev": "Anterior",
+      "next": "Següent"
+    },
+    "slide0": {
+      "kicker": "No ho venc, ho regalo",
+      "title_line1": "No som un marketplace.",
+      "title_em": "Som alguna cosa diferent.",
+      "body": "Una comunitat de redistribució on els objectes troben un nou amo sense diners, sense subhastes, sense compradors. Només comunitat i reputació."
+    },
+    "slide1": {
+      "kicker": "Com hi participes",
+      "title_line1": "Dues formes de contribuir.",
+      "title_em": "Sense rols fixos.",
+      "donate_title": "Donar",
+      "donate_sub": "Tens un objecte que ja no fas servir. El publiques i tries qui se'l emporta.",
+      "donate_li1": "Publiques amb títol, descripció i fotos",
+      "donate_li2": "Et mostrem els candidats ordenats per reputació",
+      "donate_li3": "Tu decideixes qui se'l emporta",
+      "receive_title": "Rebre",
+      "receive_sub": "Vols alguna cosa que t'interessa. Sol·licites i valorem la teva candidatura.",
+      "receive_li1": "Sol·licites objectes dins de 50 km",
+      "receive_li2": "La teva reputació i proximitat afecten el teu lloc a la llista",
+      "receive_li3": "El donant confirma el lliurament"
+    },
+    "slide2": {
+      "kicker": "Reputació",
+      "title_line1": "El teu historial",
+      "title_em": "compta a la llista.",
+      "body": "El teu lloc a la llista reflecteix com participes. Com més aportes a la comunitat, més possibilitats tens. No hi ha dreceres.",
+      "delta_first_donation": "la teva primera donació completada",
+      "delta_next_donation": "cada donació següent",
+      "delta_receive": "per rebre un objecte",
+      "delta_absent": "si no et presentes a recollir (en següents vegades es resta una mica més, fins que completis un lliurament)",
+      "ring_caption": "punts a l'inici",
+      "ring_note": "Els punts poden quedar per sota de zero, però sempre els pots recuperar donant o rebent amb èxit."
+    },
+    "slide3": {
+      "kicker": "Límits justos",
+      "title_prefix": "Màxim",
+      "title_accent": "3 sol·licituds",
+      "title_suffix": "cada 30 dies.",
+      "body": "Així mantenim l'equilibri entre qui dóna i qui rep. Les sol·licituds es compten en els últims 30 dies.",
+      "check1": "Qui dona amb freqüència apareix més amunt a la llista",
+      "check2": "Si només reps durant molt de temps, els donants et veuran menys en triar",
+      "check3": "L'equilibri es cuida amb límits, no amb regles dures"
+    },
+    "slide4": {
+      "kicker": "Radi geogràfic",
+      "title_line1": "Objectes a menys de",
+      "title_km": "50 km",
+      "body": "Només veuràs objectes a prop del teu codi postal. Així la comunitat segueix sent del teu voltant.",
+      "cta": "Començar a explorar",
+      "note": "El teu codi postal ja s'ha desat al registre."
+    }
+  },
+  "items": {
+    "publish": {
+      "step1_title": "Què regales?",
+      "step2_title": "Afegeix fotos",
+      "step3_title": "Revisa i publica",
+      "step_indicator": "Pas {{current}} de {{total}}",
+      "field_title": "Títol",
+      "field_description": "Descripció",
+      "field_postal_code": "Codi postal de l'objecte",
+      "field_condition": "Condició",
+      "field_category": "Categoria",
+      "field_weight_range": "Pes aproximat",
+      "placeholder_category": "Selecciona una categoria",
+      "placeholder_weight_range": "Selecciona un rang",
+      "placeholder_title": "Ex: Bicicleta de muntanya Scott",
+      "placeholder_description": "Descriu l'estat, la mida, com es recull...",
+      "placeholder_postal": "08001",
+      "condition_new": "A estrenar",
+      "condition_like_new": "Com a nou",
+      "condition_good": "Bon estat",
+      "condition_fair": "Acceptable",
+      "photos_intro": "Afegeix fins a 5 fotos. La primera serà la principal. Les imatges es comprimeixen automàticament.",
+      "review_notice": "Revisa les dades abans de publicar. L'objecte serà visible al tauler immediatament.",
+      "review_photos_label": "Fotos",
+      "photo_one": "foto",
+      "photo_many": "fotos",
+      "success_hint": "Després de publicar pots pausar sol·licituds o cancel·lar l'objecte des de Els meus objectes.",
+      "btn_continue": "Continuar",
+      "btn_back": "Enrere",
+      "btn_publish": "Publicar objecte",
+      "btn_publishing": "Publicant…",
+      "validation": {
+        "title_required": "El títol és obligatori",
+        "title_max": "El títol no pot superar 100 caràcters",
+        "description_required": "La descripció és obligatòria",
+        "description_max": "La descripció no pot superar 1000 caràcters",
+        "postal_required": "Introdueix el codi postal de l'objecte",
+        "postal_format": "El codi postal ha de tenir 5 dígits",
+        "category_required": "Tria una categoria",
+        "weight_range_required": "Tria un rang de pes"
+      },
+      "errors": {
+        "photos_required": "Afegeix almenys una foto.",
+        "generic": "No s'ha pogut publicar. Revisa les dades i torna-ho a intentar.",
+        "connection": "Error de connexió. Torna-ho a intentar.",
+        "field_invalid": "Valor no vàlid",
+        "field_title": "Revisa el títol",
+        "field_description": "Revisa la descripció",
+        "field_condition": "Revisa la condició",
+        "field_category": "Revisa la categoria",
+        "field_weight_range": "Revisa el rang de pes",
+        "field_postal_code": "Codi postal no vàlid o no trobat",
+        "field_images": "Revisa les imatges"
+      },
+      "success": {
+        "title": "Objecte publicat"
+      },
+      "share": {
+        "title": "Objecte publicat!",
+        "subtitle": "Ja és visible al tauler. El comparteixes amb els teus contactes?",
+        "message": "Acabo de publicar alguna cosa per regalar a Regálalo: {{title}}",
+        "whatsapp": "Compartir a WhatsApp",
+        "facebook": "Compartir a Facebook",
+        "twitter": "Compartir a X",
+        "go_my_items": "Anar a els meus objectes"
+      }
+    },
+    "category": {
+      "furniture": "Mobles",
+      "electronics": "Electrònica",
+      "clothing": "Roba i calçat",
+      "books": "Llibres i material educatiu",
+      "toys": "Joguines",
+      "kitchen": "Cuina i llar",
+      "sports": "Esport i oci",
+      "tools": "Eines",
+      "other": "Altre"
+    },
+    "weight_range": {
+      "lt1": "Menys d'1 kg",
+      "1to5": "Entre 1 i 5 kg",
+      "5to20": "Entre 5 i 20 kg",
+      "gt20": "Més de 20 kg"
+    },
+    "explore": {
+      "title": "Tauler",
+      "subtitle": "{{count}} objectes a prop teu · radi 50 km",
+      "subtitle_one": "1 objecte a prop teu · radi 50 km",
+      "search_placeholder": "Cercar objectes…",
+      "search_clear": "Esborrar cerca",
+      "filters_label": "Filtrar per condició",
+      "category_filters_label": "Filtrar per categoria",
+      "filter_all": "Tots",
+      "filter_category_all": "Totes les categories",
+      "empty_filter_body": "No hi ha objectes disponibles amb aquest filtre a prop teu.",
+      "distance_km": "{{km}} km",
+      "degraded_badge": "fa temps aquí",
+      "empty_title": "Encara no hi ha res per aquí",
+      "empty_body": "No hi ha objectes disponibles a prop teu en aquest moment.",
+      "empty_cta": "Publicar un objecte",
+      "load_more": "Carregar més",
+      "loading": "Carregant objectes…",
+      "image_alt": "Foto de {{title}}",
+      "errors": {
+        "load_failed": "No s'han pogut carregar els objectes.",
+        "retry": "Tornar-ho a provar"
+      },
+      "meta": {
+        "title": "Explorar objectes gratuïts · Regálalo",
+        "description": "Explora objectes gratuïts a prop teu. Filtra per categoria i estat, troba el que necessites i sol·licita-ho sense diners. Donació comunitària a la teva zona."
+      },
+      "seo": {
+        "breadcrumb_home": "Inici",
+        "breadcrumb_page": "Explorar"
+      }
+    },
+    "detail": {
+      "back": "Tornar al llistat",
+      "close": "Tancar detall",
+      "section_description": "Descripció",
+      "section_donor_manage": "Gestió de l'objecte",
+      "section_request": "Sol·licitar objecte",
+      "share_object": "Compartir objecte",
+      "request_item": "Sol·licitar objecte",
+      "edit_item": "Editar objecte",
+      "pause_subtitle": "Pausa noves sol·licituds",
+      "stat_requests": "Sol·licituds",
+      "stat_published": "Publicat",
+      "view_candidates": "Veure candidats ({{count}})",
+      "hide_candidates": "Amagar candidats",
+      "candidates_title": "Candidats",
+      "candidates_ranked_hint": "Ordenats per reputació",
+      "candidates_empty": "Encara no hi ha sol·licituds.",
+      "receiver_paused_notice": "Les sol·licituds estan temporalment pausades pel donant.",
+      "donor_anonymous": "Donant anònim",
+      "status_active": "Disponible",
+      "status_reserved": "Reservat",
+      "status_completed": "Completat",
+      "status_cancelled": "Cancel·lat",
+      "status_degraded": "Publicat fa temps",
+      "status_paused": "pausat",
+      "published_days_ago": "publicat fa {{days}} dies",
+      "days_ago": "fa {{days}} dies",
+      "photo_of": "Foto {{current}} de {{total}}",
+      "gallery_prev": "Foto anterior",
+      "gallery_next": "Foto següent",
+      "gallery_thumbs": "Miniatures de fotos",
+      "gallery_thumb": "Foto {{n}}",
+      "donor_label": "Donant",
+      "manage_in_my_items": "Gestionar candidats a Els meus objectes",
+      "reputation_good": "Molta participació",
+      "reputation_fair": "Participació regular",
+      "reputation_low": "Poca participació encara",
+      "degraded_notice": "Aquest objecte fa temps que està publicat. El donant encara pot triar receptor.",
+      "cta_interested": "M'interessa",
+      "cta_paused_title": "Sol·licituds pausades",
+      "cta_paused_body": "El donant ha pausat noves sol·licituds temporalment.",
+      "cta_unavailable": "No disponible per sol·licitar",
+      "donor_manage_hint": "Gestiona aquest objecte des de Els meus objectes.",
+      "not_found_title": "Objecte no trobat",
+      "not_found_body": "Pot ser que s'hagi cancel·lat o ja no estigui disponible.",
+      "loading": "Carregant objecte…",
+      "errors": {
+        "load_failed": "No s'ha pogut carregar l'objecte.",
+        "retry": "Tornar-ho a provar"
+      },
+      "gone": {
+        "title": "Aquest objecte ja no està disponible",
+        "body": "L'objecte que busques va ser retirat permanentment.",
+        "back_link": "Veure objectes disponibles"
+      },
+      "meta": {
+        "title_suffix": "· Regálalo"
+      },
+      "seo": {
+        "breadcrumb_home": "Inici",
+        "breadcrumb_explore": "Explorar"
+      }
+    },
+    "share": {
+      "title": "Compartir",
+      "open": "Compartir",
+      "close": "Tancar",
+      "copy": "Copiar",
+      "copied": "Copiat",
+      "network_whatsapp": "WhatsApp",
+      "network_facebook": "Facebook",
+      "network_twitter": "X / Twitter",
+      "default_text": "Descobreix Regálalo: regala i rep objectes gratis a la teva comunitat.",
+      "item_text": "Regalen això a Regálalo: {{title}}! Ho necessites?"
+    },
+    "request": {
+      "contact_sheet": {
+        "title": "Com pot contactar-te el donant?",
+        "subtitle": "Si et seleccionen, el donant usarà aquesta dada per coordinar-se amb tu.",
+        "cta_submit": "Enviar sol·licitud",
+        "cta_cancel": "Cancel·lar"
+      },
+      "contact_step": {
+        "title": "Deixa el teu contacte",
+        "lead_before": "El donant ",
+        "lead_emphasis": "només ho veurà si et tria",
+        "lead_after": ". No es mostra a ningú més ni apareix al tauler.",
+        "back": "Tornar",
+        "submit": "Enviar sol·licitud"
+      },
+      "contact_channel": {
+        "label": "El teu canal de contacte",
+        "placeholder": "Ex: WhatsApp +34 600 000 000, Telegram @usuari...",
+        "hint": "Pots escriure el que prefereixis: número, usuari, app, etc.",
+        "error": {
+          "required": "Introdueix el teu canal de contacte per continuar"
+        }
+      },
+      "slots_remaining_lead": "Et queden ",
+      "slots_remaining_tail": " aquest mes",
+      "slot_label_one": "torn",
+      "slot_label_other": "torns",
+      "slots_confirm_use": "Faràs servir ",
+      "slots_confirm_of_one": " del teu ",
+      "slots_confirm_of_other": " dels teus ",
+      "slots_confirm_slot_one": "torn restant del mes.",
+      "slots_confirm_slot_other": "torns restants del mes.",
+      "dialog_title": "Confirmar interès",
+      "dialog_body": "Si el donant et tria, veuràs el seu canal de contacte aquí mateix. Valorem la teva reputació, proximitat i antiguitat de la sol·licitud.",
+      "confirm": "Confirmar interès",
+      "confirming": "Enviant…",
+      "dismiss": "Cancel·lar",
+      "pending_title": "Sol·licitud enviada",
+      "pending_body": "Estàs al rànquing. Si el donant et tria, li compartirem el teu canal de contacte.",
+      "pending_contact_label": "El teu canal de contacte",
+      "pending_contact_edit": "Editar",
+      "pending_step_sent": "Sol·licitud enviada",
+      "pending_step_waiting": "Esperant decisió",
+      "pending_step_contact": "Contacte rebut",
+      "limit_title": "Has esgotat els teus torns",
+      "errors": {
+        "own_item": "No pots sol·licitar el teu propi objecte",
+        "duplicate": "Ja tens una sol·licitud activa per a aquest objecte",
+        "limit_reached": "Has arribat al límit de 3 sol·licituds actives. Espera que se'n resolgui alguna.",
+        "paused": "El donant ha pausat temporalment les sol·licituds d'aquest objecte",
+        "generic": "No s'ha pogut enviar la sol·licitud. Torna-ho a provar.",
+        "connection": "Error de connexió. Comprova la xarxa."
+      }
+    },
+    "cancel": {
+      "dialog_title": "Cancel·lar objecte",
+      "dialog_body": "L'objecte deixarà d'aparèixer al tauler. No té conseqüències en la teva reputació.",
+      "dialog_title_with_session": "Cancel·lar objecte i entrega",
+      "dialog_body_with_session": "Es cancel·larà l'entrega en curs i l'objecte deixarà d'aparèixer al tauler. El receptor serà notificat. Aquesta acció no es pot desfer.",
+      "confirm": "Cancel·lar objecte",
+      "confirming": "Cancel·lant…",
+      "dismiss": "Tornar",
+      "trigger": "Cancel·lar objecte",
+      "success": "Objecte cancel·lat correctament",
+      "errors": {
+        "forbidden": "No pots cancel·lar aquest objecte",
+        "not_found": "L'objecte ja no està disponible",
+        "generic": "No s'ha pogut cancel·lar l'objecte. Torna-ho a provar.",
+        "connection": "Error de connexió. Comprova la xarxa."
+      }
+    },
+    "image_picker": {
+      "add": "Afegir",
+      "main": "Principal",
+      "photo_n": "Foto {{n}}",
+      "remove": "Elimina la foto",
+      "processing": "Processant…",
+      "format_invalid": "Format no compatible. Usa JPG, PNG o WebP.",
+      "too_large": "La imatge supera el límit de 2 MB després de comprimir.",
+      "max_reached": "Màxim 5 fotos per objecte.",
+      "hint": "Formats: JPG, PNG, WEBP · Màx. 2 MB per imatge · Es comprimen automàticament"
+    },
+    "my_objects": {
+      "subtitle": "Gestiona tot el que has publicat per regalar.",
+      "publish_cta": "Publicar objecte",
+      "loading": "Carregant els teus objectes…",
+      "tabs_label": "Filtrar per estat",
+      "tabs": {
+        "all": "Tots",
+        "active": "Actius",
+        "reserved": "Reservats",
+        "completed": "Completats",
+        "cancelled": "Cancel·lats"
+      },
+      "status_active": "Actiu",
+      "status_reserved": "Reservat",
+      "status_completed": "Completat",
+      "status_cancelled": "Cancel·lat",
+      "status_degraded": "Publicat fa temps",
+      "status_paused": "Pausat",
+      "photo_count": "{{count}} fotos",
+      "photo_count_one": "1 foto",
+      "empty_title": "Res aquí de moment",
+      "empty_body": "Quan publiquis un objecte per regalar, apareixerà aquí.",
+      "empty_cta": "Publicar objecte",
+      "list_count": "{{count}} objectes",
+      "list_count_one": "1 objecte",
+      "select_hint": "Selecciona un objecte per veure els candidats i gestionar el lliurament",
+      "close_detail": "Tancar detall",
+      "days_today": "avui",
+      "days_yesterday": "ahir",
+      "days_ago": "fa {{days}}d",
+      "no_requests_yet": "Sense sol·licituds encara",
+      "requests_count_one": "1 sol·licitud",
+      "requests_count": "{{count}} sol·licituds",
+      "session_expires": "Expira el {{date}}",
+      "candidates_title": "Candidats",
+      "candidates_loading": "Carregant candidats…",
+      "candidates_empty": "Encara no hi ha sol·licituds. L'objecte és visible al tauler.",
+      "best_candidate": "Millor candidat",
+      "select": "Seleccionar",
+      "select_candidate": "Seleccionar candidat en posició {{rank}}",
+      "select_disabled_paused": "Selecció no disponible: sol·licituds en pausa",
+      "close_modal": "Tancar",
+      "select_modal_title": "Seleccionar receptor",
+      "select_modal_lead": "El receptor veurà el teu canal de contacte en ser seleccionat. Comença el termini de 7 dies.",
+      "select_channel_label": "Canal de contacte",
+      "select_channel_type_whatsapp": "WhatsApp",
+      "select_channel_type_phone": "Telèfon",
+      "select_channel_type_telegram": "Telegram",
+      "select_channel_type_email": "Email",
+      "select_channel_placeholder_whatsapp": "+34 612 345 678",
+      "select_channel_placeholder_phone": "+34 900 000 000",
+      "select_channel_placeholder_telegram": "el_teu_usuari",
+      "select_channel_placeholder_email": "tu@email.com",
+      "select_channel_required": "Introdueix un canal de contacte.",
+      "select_legal_warning": "Si cancel·les la sessió abans del termini, el canal de contacte no quedarà visible per al receptor.",
+      "select_confirm": "Confirmar selecció",
+      "select_confirming": "Confirmant…",
+      "select_cancel": "Cancel·lar",
+      "select_score_points": "punts",
+      "select_success": "Receptor seleccionat. Sessió {{sessionId}} · termini fins al {{date}}.",
+      "select_success_link": "Veure sessió de lliurament",
+      "select_errors": {
+        "validation": "Revisa el canal de contacte i torna-ho a provar.",
+        "forbidden": "No tens permís per seleccionar aquest candidat.",
+        "not_found": "L'objecte o la sol·licitud ja no estan disponibles.",
+        "conflict_pending": "Aquesta sol·licitud ja no està pendent.",
+        "conflict_active": "L'objecte ja no està actiu.",
+        "conflict_generic": "No s'ha pogut completar la selecció per un conflicte.",
+        "generic": "No s'ha pogut seleccionar el receptor. Torna-ho a provar."
+      },
+      "reserved_session_title": "Sessió de lliurament activa",
+      "reserved_session_body": "Termini de 7 dies · expira el {{date}}",
+      "reserved_session_body_lead": "Termini de 7 dies · expira el ",
+      "reserved_receiver_label": "Receptor seleccionat",
+      "reserved_contact_label": "Canal de contacte facilitat al receptor",
+      "confirm_delivery": {
+        "action": "Confirmar lliurament realitzat",
+        "title": "Confirmar lliurament?",
+        "body_lead": "En confirmar, la sessió es tancarà i ambdues reputacions s'actualitzaran. Rebràs ",
+        "body_points": "+10 punts",
+        "body_points_first": "+15 punts",
+        "body_tail": ".",
+        "dismiss": "Cancel·lar",
+        "confirm": "Confirmar lliurament",
+        "confirming": "Confirmant…"
+      },
+      "cancel_session": {
+        "action": "Cancel·lar sessió",
+        "title": "Cancel·lar sessió de lliurament",
+        "body": "L'objecte tornarà a estat actiu i quedarà disponible al tauler per a noves sol·licituds.",
+        "no_show_title": "El receptor no es va presentar",
+        "no_show_body": "Indica que no va venir a recollir l'objecte. Pot afectar el seu lloc en futures llistes.",
+        "no_show_confirm": "Confirmar absència i cancel·lar",
+        "dismiss": "Tornar",
+        "confirm": "Cancel·lar sessió",
+        "confirming": "Cancel·lant…"
+      },
+      "delivery_errors": {
+        "generic": "No s'ha pogut completar l'acció. Torna-ho a provar."
+      },
+      "closed_completed_title": "Lliurament completat",
+      "closed_completed_body": "Gràcies per contribuir a la comunitat! La teva reputació ha augmentat.",
+      "closed_cancelled_title": "Objecte cancel·lat",
+      "closed_cancelled_body": "Aquest objecte es va cancel·lar i ja no és visible al tauler.",
+      "errors": {
+        "load_failed": "No s'han pogut carregar els teus objectes.",
+        "candidates_load_failed": "No s'han pogut carregar les sol·licituds. Torna-ho a provar.",
+        "candidates_forbidden": "No tens permís per veure les sol·licituds d'aquest objecte.",
+        "select_refresh_failed": "Receptor seleccionat, però no s'ha pogut actualitzar la vista. Torna a carregar la pàgina o prova-ho de nou."
+      }
+    },
+    "pause": {
+      "title": "Pausar sol·licituds",
+      "subtitle_active": "Acceptant noves sol·licituds",
+      "subtitle_paused": "No s'admeten noves sol·licituds",
+      "banner_paused": "Les sol·licituds estan pausades. Reactiva-les perquè nous receptors puguin interessar-se.",
+      "list_suffix": "· pausades",
+      "not_available": "La gestió de pausa no està disponible en aquest estat.",
+      "errors": {
+        "forbidden": "No pots canviar la pausa d'aquest objecte",
+        "not_found": "L'objecte ja no està disponible",
+        "not_active": "Només pots pausar objectes actius",
+        "generic": "No s'ha pogut actualitzar la pausa. Torna-ho a provar.",
+        "connection": "Error de connexió. Comprova la xarxa."
+      }
+    }
+  },
+  "delivery": {
+    "list": {
+      "title": "Lliuraments",
+      "subtitle": "Segueix l'estat de les teves sessions de lliurament actives i històriques.",
+      "tabs_label": "Rol al lliurament",
+      "tab_donor": "Com a donant",
+      "tab_receiver": "Com a receptor",
+      "loading": "Carregant sessions…",
+      "section_active": "Actives",
+      "section_history": "Historial",
+      "empty_title": "Sense lliuraments aquí",
+      "empty_body": "Quan s'activi una sessió de lliurament, apareixerà aquí amb tota la informació.",
+      "select_hint": "Selecciona una sessió per veure els detalls",
+      "close_detail": "Tancar detall de sessió",
+      "count_one": "1 sessió",
+      "count": "{{count}} sessions",
+      "deadline_last_day": "Últim dia",
+      "deadline_days": "{{days}}d",
+      "row_as_donor": "{{title}}, sessió com a donant",
+      "row_as_receiver": "{{title}}, sessió com a receptor",
+      "errors": {
+        "load_failed": "No s'han pogut carregar les teves sessions de lliurament."
+      }
+    },
+    "detail": {
+      "back": "Tornar a lliuraments",
+      "loading": "Carregant sessió…",
+      "role_donor": "Com a donant",
+      "role_receiver": "Com a receptor",
+      "status_active": "Activa",
+      "status_completed": "Completada",
+      "status_cancelled": "Cancel·lada",
+      "status_expired": "Expirada",
+      "deadline_last_day": "Últim dia",
+      "deadline_one_day": "1 dia restant",
+      "deadline_days": "{{days}} dies restants",
+      "deadline_unknown": "Termini de lliurament",
+      "deadline_expires": "· venç el {{date}}",
+      "other_receiver": "Receptor seleccionat",
+      "other_donor": "Donant",
+      "distance_away": "{{km}} km de distància",
+      "channel_receiver_label": "Canal de contacte del donant",
+      "channel_shared_label": "Canal facilitat al receptor",
+      "channel_shared_hint": "Només visible durant la sessió activa.",
+      "receiver_contact_channel_label": "Com contactar el receptor",
+      "channel_unavailable": "Canal no disponible",
+      "expired_title": "Sessió expirada",
+      "expired_body": "El termini ha vençut sense confirmació. L'objecte ha tornat al tauler.",
+      "completed_donor": "Lliurament completat · +10 punts de reputació",
+      "completed_donor_lead": "Lliurament completat · ",
+      "completed_donor_points": "+10 punts",
+      "completed_donor_tail": " de reputació",
+      "completed_receiver": "Lliurament completat amb èxit!",
+      "cancelled_no_show_title": "Absència registrada",
+      "cancelled_no_show_body": "Si no es va presentar, en futures llistes pot aparèixer més avall.",
+      "receiver_deadline_hint": "El termini és estricte. Si venç sense confirmació del donant, la sessió expirarà automàticament sense afectar la teva reputació.",
+      "steps_title": "Estat de la sessió",
+      "step_donor_selected": "Receptor seleccionat",
+      "step_donor_active": "Sessió activa — en espera de lliurament",
+      "step_donor_completed": "Lliurament confirmat",
+      "step_receiver_selected": "Seleccionat pel donant",
+      "step_receiver_contact": "Contacte rebut — coordina el lliurament",
+      "step_receiver_completed": "Lliurament completat",
+      "actions": {
+        "confirm": "Confirmar lliurament realitzat",
+        "cancel": "Cancel·lar sessió"
+      },
+      "errors": {
+        "title": "No s'ha pogut carregar la sessió",
+        "back": "Tornar",
+        "forbidden": "No tens accés a aquesta sessió de lliurament.",
+        "not_found": "La sessió no existeix o ja no està disponible.",
+        "load_failed": "No s'ha pogut carregar la sessió. Torna-ho a provar.",
+        "confirm_conflict": "La sessió ja no està activa o el lliurament ja s'ha confirmat.",
+        "cancel_conflict": "La sessió ja no està activa o ja s'ha cancel·lat.",
+        "cancel_invalid": "Les dades de cancel·lació no són vàlides.",
+        "action_failed": "No s'ha pogut completar l'acció. Torna-ho a provar."
+      }
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Fem servir cookies",
+      "description": "Fem servir emmagatzematge local necessari per al funcionament. Si ho acceptes, Google Analytics pot fer servir cookies de tercers. En registre i accés es pot fer servir reCAPTCHA de Google."
+    },
+    "actions": {
+      "accept_all": "Acceptar-ho tot",
+      "reject_non_essential": "Rebutjar no essencials",
+      "configure": "Configurar",
+      "save_preferences": "Desar preferències",
+      "reopen_preferences": "Configurar cookies"
+    },
+    "preferences": {
+      "title": "Preferències de cookies",
+      "close": "Tancar el panell de preferències de cookies",
+      "sections": {
+        "necessary": {
+          "title": "Cookies necessàries",
+          "description": "Emmagatzematge local imprescindible (sessió, idioma, elecció de cookies). reCAPTCHA de Google als formularis d'accés."
+        },
+        "analytics": {
+          "title": "Cookies d'analítica",
+          "description": "Google Analytics 4 (Google). Cookies de tercers per a ús agregat. Només es carrega si acceptes aquesta categoria."
+        },
+        "marketing": {
+          "title": "Cookies de màrqueting",
+          "description": "En la versió actual no instal·lem cookies de màrqueting ni píxels publicitaris."
+        },
+        "preferences": {
+          "title": "Cookies de preferències",
+          "description": "En la versió actual no hi ha cookies ni emmagatzematge opcional addicional en aquesta categoria."
+        }
+      }
+    }
+  },
+  "legal": {
+    "common": {
+      "eyebrow": "Documentació legal",
+      "contents": "Contingut",
+      "meta": {
+        "updated_label": "Darrera actualització:",
+        "updated_date": "28 de maig de 2026",
+        "effective_label": "Vigent des del",
+        "effective_date": "28 de maig de 2026"
+      },
+      "footer": {
+        "description": "Redistribueix el que no necessites. Donació d'objectes entre persones, sense diners ni bescanvi. Espanya.",
+        "contact_label": "Contacte",
+        "copy": "© 2026 Regálalo · Tots els drets reservats",
+        "motto": "Tot el que es dona, torna."
+      },
+      "policy_version": "2026-05-28",
+      "policy_version_label": "Versió de la política de cookies:"
+    },
+    "privacy": {
+      "title": "Política de privacitat",
+      "info": {
+        "part1": "Aquesta política explica quines dades personals recull ",
+        "brand": "Regálalo",
+        "part2": ", amb quina finalitat, durant quant de temps les conservem i quins drets tens sobre elles. Ens ajustem al ",
+        "rgpd": "Reglament General de Protecció de Dades (RGPD)",
+        "part3": " i a la Llei Orgànica 3/2018 de protecció de dades personals i garantia dels drets digitals (LOPDGDD)."
+      },
+      "toc": {
+        "controller": "Responsable del tractament",
+        "data": "Dades que recollim",
+        "purpose": "Finalitat i base legal",
+        "retention": "Conservació de dades",
+        "recipients": "Destinataris i transferències",
+        "rights": "Els teus drets",
+        "minors": "Menors d'edat",
+        "changes": "Canvis en aquesta política",
+        "contact": "Contacte"
+      },
+      "sections": {
+        "controller": {
+          "title": "Responsable del tractament",
+          "rows": {
+            "company_label": "Denominació social",
+            "company_value": "Regálalo S.L. (en constitución)",
+            "address_label": "Domicili",
+            "address_value": "Espanya (MVP — mercat espanyol)",
+            "email_label": "Correu electrònic de contacte",
+            "email_value": "privacidad@regalalo.org"
+          }
+        },
+        "data": {
+          "title": "Dades que recollim",
+          "intro": "Recollim únicament les dades necessàries perquè la plataforma funcioni. A continuació es detallen les categories de dades i el seu origen.",
+          "table": {
+            "headers": {
+              "0": "Categoria",
+              "1": "Dades concretes",
+              "2": "Origen"
+            },
+            "rows": {
+              "0": {
+                "0": "Identificació",
+                "1": "Adreça de correu electrònic",
+                "2": "Proporcionada per l'usuari en registrar-se"
+              },
+              "1": {
+                "0": "Localització",
+                "1": "Codi postal",
+                "2": "Proporcionat per l'usuari al perfil"
+              },
+              "2": {
+                "0": "Activitat",
+                "1": "Objectes publicats, sol·licituds enviades, sessions d'entrega, historial de reputació",
+                "2": "Generat per l'ús de la plataforma"
+              },
+              "3": {
+                "0": "Imatges",
+                "1": "Fotos d'objectes publicats (màx. 5 per objecte)",
+                "2": "Pujades per l'usuari en publicar un objecte"
+              },
+              "4": {
+                "0": "Canal de contacte",
+                "1": "Número de telèfon o correu extern per coordinar l'entrega",
+                "2": "Proporcionat pel donant en seleccionar receptor"
+              },
+              "5": {
+                "0": "Tècniques",
+                "1": "Adreça IP, tipus de navegador, timestamps d'accés",
+                "2": "Recollits automàticament en cada petició al servidor"
+              }
+            }
+          },
+          "not_collected_title": "Dades que no recollim",
+          "not_collected_body": "No demanem nom complet, DNI, número de telèfon en el registre, ni cap dada de categoria especial segons l'article 9 del RGPD (salut, origen ètnic, religió, opinions polítiques, etc.)."
+        },
+        "purpose": {
+          "title": "Finalitat i base legal",
+          "table": {
+            "headers": {
+              "0": "Finalitat",
+              "1": "Base legal (RGPD art. 6)"
+            },
+            "rows": {
+              "0": {
+                "0": "Gestionar el teu compte i autenticació",
+                "1": "Execució del contracte (art. 6.1.b)"
+              },
+              "1": {
+                "0": "Mostrar objectes dins del radi geogràfic de 50 km",
+                "1": "Execució del contracte (art. 6.1.b)"
+              },
+              "2": {
+                "0": "Calcular la reputació i el lloc a la llista de candidats",
+                "1": "Execució del contracte (art. 6.1.b)"
+              },
+              "3": {
+                "0": "Enviar notificacions per correu relacionades amb els teus objectes o sol·licituds",
+                "1": "Execució del contracte (art. 6.1.b)"
+              },
+              "4": {
+                "0": "Detectar si algú només rep sense aportar a la comunitat, per ajustar la seva visibilitat a la llista",
+                "1": "Interès legítim (art. 6.1.f) — equilibri de la comunitat"
+              },
+              "5": {
+                "0": "Prevenció de frau i seguretat tècnica",
+                "1": "Interès legítim (art. 6.1.f)"
+              }
+            }
+          },
+          "footer": "No fem servir les teves dades per a publicitat, perfils comercials, ni les cedim a tercers amb finalitats de màrqueting."
+        },
+        "retention": {
+          "title": "Conservació de dades",
+          "intro": "Conservem les teves dades el temps mínim necessari per complir la finalitat per a la qual van ser recollides.",
+          "table": {
+            "headers": {
+              "0": "Dada",
+              "1": "Termini de conservació"
+            },
+            "rows": {
+              "0": {
+                "0": "Compte i dades de perfil",
+                "1": "Mentre el compte estigui actiu. Després de la baixa: 30 dies per poder reactivar-lo, i eliminació definitiva transcorregut aquest termini"
+              },
+              "1": {
+                "0": "Imatges d'objectes completats o cancel·lats",
+                "1": "30 dies des del canvi d'estat; després s'eliminen automàticament"
+              },
+              "2": {
+                "0": "Canal de contacte de la sessió d'entrega",
+                "1": "Es purga (sobrescrit amb NULL) als 7 dies d'assolir estat completada, cancel·lada o expirada"
+              },
+              "3": {
+                "0": "Registres tècnics (IP, timestamps)",
+                "1": "90 dies"
+              },
+              "4": {
+                "0": "Historial de reputació",
+                "1": "Associat al compte actiu; s'elimina amb el compte"
+              }
+            }
+          }
+        },
+        "recipients": {
+          "title": "Destinataris i transferències",
+          "intro": "No venem les teves dades ni les compartim amb tercers amb finalitats comercials. Només les podem compartir amb proveïdors de serveis que actuen com encarregats del tractament i amb qui mantenim els contractes d'encàrrec exigits pel RGPD.",
+          "table": {
+            "headers": {
+              "0": "Proveïdor",
+              "1": "Servei",
+              "2": "Ubicació"
+            },
+            "rows": {
+              "0": {
+                "0": "Proveïdor d'infraestructura cloud",
+                "1": "Allotjament de l'aplicació i base de dades",
+                "2": "Unió Europea"
+              },
+              "1": {
+                "0": "Proveïdor d'enviament de correus transaccionals",
+                "1": "Notificacions de la plataforma",
+                "2": "Unió Europea o amb garanties equivalents"
+              }
+            }
+          },
+          "footer": "No realitzem transferències internacionals de dades fora de l'Espai Econòmic Europeu sense les garanties adequades previstes al RGPD (arts. 44 a 49)."
+        },
+        "rights": {
+          "title": "Els teus drets",
+          "intro_before": "Com a titular de les dades, pots exercir els drets següents en qualsevol moment escrivint-nos a ",
+          "intro_email": "privacidad@regalalo.org",
+          "intro_after": ". Respondrem en el termini màxim d'un mes.",
+          "cards": {
+            "0": {
+              "tag": "Art. 15",
+              "label": "Accés",
+              "desc": "Saber quines dades teves tractem i obtenir-hi una còpia."
+            },
+            "1": {
+              "tag": "Art. 16",
+              "label": "Rectificació",
+              "desc": "Corregir dades inexactes o incompletes."
+            },
+            "2": {
+              "tag": "Art. 17",
+              "label": "Supressió",
+              "desc": "Sol·licitar que eliminem les teves dades («dret a l'oblit»)."
+            },
+            "3": {
+              "tag": "Art. 18",
+              "label": "Limitació",
+              "desc": "Demanar que suspendrem el tractament mentre revisem una reclamació."
+            },
+            "4": {
+              "tag": "Art. 20",
+              "label": "Portabilitat",
+              "desc": "Rebre les teves dades en format estructurat i llegible per màquina."
+            },
+            "5": {
+              "tag": "Art. 21",
+              "label": "Oposició",
+              "desc": "Oposar-te al tractament basat en interès legítim."
+            }
+          },
+          "aepd_before": "Si consideres que el tractament de les teves dades no és correcte, pots presentar una reclamació davant l'",
+          "aepd_link": "Agència Espanyola de Protecció de Dades (AEPD)",
+          "aepd_after": " a www.aepd.es."
+        },
+        "minors": {
+          "title": "Menors d'edat",
+          "paragraphs": {
+            "0": "La plataforma està dirigida a persones majors de 18 anys. No recollim conscientment dades de menors. Si detectem que un usuari és menor de 18 anys, eliminarem el seu compte i dades associades.",
+            "1": "Si ets pare, mare o tutor i creus que un menor ha creat un compte, escriu-nos a privacidad@regalalo.org."
+          }
+        },
+        "changes": {
+          "title": "Canvis en aquesta política",
+          "paragraphs": {
+            "0": "Podem actualitzar aquesta política quan sigui necessari per canvis normatius o de producte. Si els canvis són rellevants, t'ho notificarem per correu amb almenys 15 dies d'antelació. La data de «darrera actualització» a la capçalera reflecteix sempre la versió vigent.",
+            "1": "L'ús continuat de la plataforma després de l'entrada en vigor dels canvis implica la seva acceptació."
+          }
+        },
+        "contact": {
+          "title": "Contacte",
+          "intro": "Per a qualsevol consulta sobre aquesta política o per exercir els teus drets, contacta amb nosaltres:",
+          "rows": {
+            "email_label": "Correu de privacitat",
+            "email_value": "privacidad@regalalo.org",
+            "response_label": "Termini de resposta",
+            "response_value": "Màxim 30 dies des de la recepció de la teva sol·licitud"
+          }
+        }
+      }
+    },
+    "cookies": {
+      "title": "Política de cookies",
+      "info": {
+        "part1": "Aquesta política explica quines tecnologies d'emmagatzematge i quins serveis de tercers fa servir ",
+        "brand": "Regálalo",
+        "part2": ", per a què serveixen i com pots gestionar-les. Complim la ",
+        "lssi": "Llei 34/2002 de serveis de la societat de la informació (LSSI)",
+        "part3": " i el RGPD. En la versió actual no instal·lem cookies HTTP pròpies (first-party); fem servir emmagatzematge local del navegador i, si escau, cookies de proveïdors externs."
+      },
+      "toc": {
+        "what": "Què són les cookies",
+        "types": "Tipus de cookies que fem servir",
+        "table": "Taula de cookies",
+        "consent": "Consentiment i banner",
+        "manage": "Gestionar les teves preferències",
+        "third_party": "Cookies de tercers",
+        "changes": "Canvis en aquesta política",
+        "contact": "Contacte"
+      },
+      "sections": {
+        "what": {
+          "title": "Què són les cookies",
+          "paragraphs": {
+            "p0": "Les cookies són fitxers petits que un lloc pot desar al navegador. A Regálalo la sessió i la configuració essencial es guarden principalment a localStorage, no mitjançant cookies amb nom propi.",
+            "p1_before": "A més de cookies, fem servir ",
+            "p1_strong": "emmagatzematge local (localStorage)",
+            "p1_after": " del navegador. Només els serveis de tercers integrats (p. ex. Google Analytics o reCAPTCHA) poden instal·lar cookies al teu dispositiu quan correspongui."
+          }
+        },
+        "types": {
+          "title": "Tipus de cookies que fem servir",
+          "footer": "No fem servir cookies publicitàries pròpies ni píxels de seguiment entre llocs. L'analítica opcional la presta Google.",
+          "cards": {
+            "necessary": {
+              "name": "Tècniques (estrictament necessàries)",
+              "pill": "Sempre actives",
+              "desc": "Emmagatzematge local imprescindible (sessió amb token, idioma, elecció de cookies). En registre i inici de sessió es carrega reCAPTCHA de Google (antifrau)."
+            },
+            "analytics": {
+              "name": "Analítiques",
+              "pill": "Opcionals",
+              "desc": "Google Analytics 4 (Google). Pot instal·lar cookies de tercers (_ga, _gid, etc.) per mesurar l'ús de forma agregada. El script només es carrega si acceptes aquesta categoria al banner."
+            },
+            "marketing": {
+              "name": "Màrqueting",
+              "pill": "Opcionals",
+              "desc": "Categoria disponible al panell de preferències per a futures funcions. En la versió actual no instal·lem cookies de màrqueting ni píxels publicitaris."
+            },
+            "preferences": {
+              "name": "Preferències",
+              "pill": "Opcionals",
+              "desc": "Categoria reservada al panell de consentiment. En la versió actual no activem cookies ni emmagatzematge opcional addicional distint de l'analítica de Google."
+            }
+          }
+        },
+        "table": {
+          "title": "Tecnologies d'emmagatzematge i cookies de tercers",
+          "intro": "Taula d'elements reals a la versió actual. Les claus a localStorage no són cookies HTTP; les files de Google només s'apliquen quan el servei corresponent està actiu.",
+          "headers": {
+            "0": "Nom",
+            "1": "Tipus",
+            "2": "Finalitat",
+            "3": "Durada"
+          },
+          "rows": {
+            "0": {
+              "0": "rgl_auth_token",
+              "1": "localStorage (propi)",
+              "2": "Manté la sessió iniciada (token JWT al navegador)",
+              "3": "Fins a tancar sessió o caducar el token"
+            },
+            "1": {
+              "0": "rgl_cookie_consent_snapshot",
+              "1": "localStorage (propi)",
+              "2": "Desa la teva elecció de consentiment i evita mostrar el banner a cada visita",
+              "3": "Fins que esborris dades del lloc"
+            },
+            "2": {
+              "0": "rgl_locale",
+              "1": "localStorage (propi)",
+              "2": "Recorda l'idioma de la interfície",
+              "3": "Fins que esborris dades del lloc"
+            },
+            "3": {
+              "0": "_ga / _gid (Google Analytics)",
+              "1": "Cookie de tercers",
+              "2": "Mesura agregada de l'ús del lloc",
+              "3": "Només si acceptes analítica; segons política de Google"
+            },
+            "4": {
+              "0": "reCAPTCHA (Google)",
+              "1": "Cookie/script de tercers",
+              "2": "Protecció antifrau en registre i inici de sessió",
+              "3": "Segons política de Google en usar aquests formularis"
+            }
+          },
+          "footer": "Aquesta taula s'actualitza cada vegada que modifiquem les cookies utilitzades. La data a la capçalera d'aquesta pàgina reflecteix sempre la versió més recent."
+        },
+        "consent": {
+          "title": "Consentiment i banner",
+          "intro": "En entrar veuràs un banner per gestionar l'analítica opcional (Google Analytics). L'emmagatzematge local essencial i reCAPTCHA a l'accés no depenen d'aquest banner.",
+          "preview_label": "Vista prèvia",
+          "preview_suffix": "— Així es veu el banner a la plataforma",
+          "banner_lead": "Privacitat i mesura.",
+          "banner_body": " Fem servir emmagatzematge local necessari perquè la plataforma funcioni. Si ho acceptes, carreguem Google Analytics (cookies de tercers). En registre i accés es pot fer servir reCAPTCHA de Google.",
+          "banner_accept": "Acceptar totes",
+          "banner_basic": "Només les necessàries",
+          "banner_config": "Configurar",
+          "footer_before": "Si prems ",
+          "footer_strong": "Configurar",
+          "footer_mid": ", pots activar o desactivar l'analítica abans de confirmar. La teva elecció es desa a ",
+          "footer_cookie": "rgl_cookie_consent_snapshot",
+          "footer_after": " (localStorage)."
+        },
+        "manage": {
+          "title": "Gestionar les teves preferències",
+          "intro_before": "Pots revisar i canviar les teves preferències en qualsevol moment des de la secció ",
+          "intro_strong": "Privacitat",
+          "intro_after": " del teu perfil o des del peu de pàgina legal. Les categories opcionals (analítica, màrqueting i preferències) estan desactivades per defecte.",
+          "toggles": {
+            "necessary": {
+              "name": "Cookies tècniques",
+              "desc": "Necessàries per al funcionament de la plataforma. No es poden desactivar.",
+              "aria": "Sempre actives"
+            },
+            "analytics": {
+              "name": "Cookies analítiques",
+              "desc": "Mesura anònima i agregada de l'ús de la plataforma.",
+              "aria": "Desactivades per defecte"
+            },
+            "marketing": {
+              "name": "Cookies de màrqueting",
+              "desc": "Mesura de campanyes i contingut promocional quan existeixi. En el MVP no hi ha cookies de màrqueting actives.",
+              "aria": "Desactivades per defecte"
+            },
+            "preferences": {
+              "name": "Cookies de preferències",
+              "desc": "Recorden els teus ajustos de cerca i visualització entre sessions.",
+              "aria": "Desactivades per defecte"
+            }
+          },
+          "browser_title": "Des del navegador",
+          "browser_intro": "També pots eliminar o bloquejar cookies directament des de la configuració del teu navegador. Tingues en compte que bloquejar totes les cookies pot impedir que la sessió funcioni correctament.",
+          "browser_table": {
+            "headers": {
+              "0": "Navegador",
+              "1": "On trobar la configuració de cookies"
+            },
+            "rows": {
+              "0": {
+                "0": "Chrome",
+                "1": "Configuració → Privadesa i seguretat → Cookies i altres dades de llocs"
+              },
+              "1": {
+                "0": "Firefox",
+                "1": "Preferències → Privadesa i seguretat → Cookies i dades del lloc"
+              },
+              "2": {
+                "0": "Safari",
+                "1": "Preferències → Privadesa → Gestionar dades del lloc web"
+              },
+              "3": {
+                "0": "Edge",
+                "1": "Configuració → Privadesa, cerca i serveis → Cookies i permisos del lloc"
+              }
+            }
+          }
+        },
+        "third_party": {
+          "title": "Cookies de tercers",
+          "paragraphs": {
+            "p0_before": "En la versió actual de la plataforma ",
+            "p0_strong": "Google Analytics (opcional, amb el teu consentiment) i Google reCAPTCHA v3",
+            "p0_after": " als formularis de registre i accés. No fem servir Meta Pixel ni altres xarxes publicitàries.",
+            "p1": "Les tipografies es carreguen des de Google Fonts; en mode habitual no instal·len cookies de seguiment. Si afegim altres proveïdors amb cookies pròpies, actualitzarem aquesta política."
+          }
+        },
+        "changes": {
+          "title": "Canvis en aquesta política",
+          "paragraphs": {
+            "0": "Si canviem les integracions de tercers o l'ús d'emmagatzematge local, actualitzarem aquesta pàgina. Si afecta opcions que ja havies acceptat, tornarem a mostrar el banner de consentiment."
+          }
+        },
+        "contact": {
+          "title": "Contacte",
+          "intro": "Si tens dubtes sobre l'ús de cookies en aquesta plataforma, escriu-nos:",
+          "rows": {
+            "email_label": "Correu de privacitat",
+            "email_value": "privacidad@regalalo.org",
+            "related_label": "Política relacionada",
+            "related_link": "Veure política de privacitat →"
+          }
+        }
+      }
+    }
+  },
+  "site_footer": {
+    "description": "Redistribueix el que no necessites. Donació d'objectes entre persones, sense diners ni bescanvi. Espanya.",
+    "share_label": "Compartir l'app",
+    "share_whatsapp": "Compartir a WhatsApp",
+    "share_facebook": "Compartir a Facebook",
+    "share_twitter": "Compartir a X / Twitter",
+    "platform": {
+      "explore": "Explorar objectes",
+      "my_items": "Els meus objectes",
+      "deliveries": "Lliuraments",
+      "reputation": "Com funciona la teva reputació",
+      "profile": "El meu perfil"
+    },
+    "contact_label": "Contacte",
+    "copy": "© 2026 Regálalo · Tots els drets reservats",
+    "motto": "Tot el que es dona, torna."
+  },
+  "nav": {
+    "explore": "Explorar",
+    "my_items": "Els meus objectes",
+    "deliveries": "Lliuraments",
+    "profile": "Perfil",
+    "publish": "Publicar",
+    "publish_object": "Publicar objecte",
+    "menu": "Menú",
+    "logout": "Tancar sessió",
+    "login": "Inicia sessió",
+    "register": "Registra't",
+    "publish_gated_aria": "Publicar — cal registrar-se"
+  },
+  "language_selector": {
+    "aria_label": "Seleccionar idioma"
+  },
+  "reputation_guide": {
+    "header": {
+      "eyebrow": "Com funciona",
+      "title": "La teva reputació",
+      "lede_before": "La teva reputació compta el que aportes a la comunitat. ",
+      "lede_strong": "Com més dones, més fàcil és rebre.",
+      "lede_after": " Aquí t'ho expliquem pas a pas: què suma punts, què en resta i què passa amb el teu lloc a la llista quan els donants trien a qui regalar."
+    },
+    "start": {
+      "strong": "Tothom comença a zero.",
+      "body": " No cal res per entrar-hi. La reputació puja quan participes. Si et compromets a recollir alguna cosa i no hi vas, els punts poden baixar —fins i tot quedar per sota de zero—, però sempre els pots recuperar donant o completant lliuraments."
+    },
+    "gain": {
+      "kicker": "La teva reputació puja",
+      "title": "Com guanyar punts",
+      "sub": "Participar és el que et fa guanyar reputació. Hi ha tres maneres de sumar, i donar és sempre la que més compta.",
+      "cards": {
+        "first": {
+          "points": "+15",
+          "name": "La teva primera donació",
+          "desc": "La primera vegada que lliures un objecte a algú, reps un impuls extra per començar amb bon peu.",
+          "tag": "Només la primera vegada"
+        },
+        "next": {
+          "points": "+10",
+          "name": "Cada donació següent",
+          "desc": "Cada vegada que tornes a regalar alguna cosa i el lliurament es completa, la reputació puja de nou.",
+          "tag": "Cada vegada que dones"
+        },
+        "receive": {
+          "points": "+1",
+          "name": "Rebre un objecte",
+          "desc": "Quan reculls alguna cosa que t'han regalat i el lliurament es completa, també sumes un punt.",
+          "tag": "Cada vegada que reps"
+        }
+      }
+    },
+    "lose": {
+      "kicker": "Quan baixen els punts",
+      "title": "Quan baixen els punts",
+      "sub_before": "Només passa en una situació: ",
+      "sub_strong": "comprometre't a recollir un objecte i no presentar-te.",
+      "sub_after": " Quan algú aparta alguna cosa per a tu i no hi vas, aquesta persona es queda esperant. Si torna a passar sense un lliurament entremig, cada vegada es resten uns punts més.",
+      "first": {
+        "points": "−10",
+        "strong": "La primera vegada que no et presentes",
+        "body": " a recollir un objecte, es resten 10 punts."
+      },
+      "stairs": {
+        "caption": "Si torna a passar abans de completar un lliurament, cada vegada es resta una mica més.",
+        "first": {
+          "order": "1a vegada",
+          "points": "−10",
+          "note": "No et presentes a recollir."
+        },
+        "second": {
+          "order": "2a vegada",
+          "points": "−20",
+          "note": "Torna a passar sense haver completat cap lliurament."
+        },
+        "third": {
+          "order": "3a vegada",
+          "points": "−30",
+          "note": "I així, una mica més en cada repetició, fins que completis un lliurament."
+        }
+      },
+      "reset": {
+        "strong": "Un lliurament completat reinicia el comptador.",
+        "body": " Quan tornes a donar o a rebre i confirmeu el lliurament, comences de nou. Si no et presentes una altra vegada, es resten 10 punts —com la primera vegada—, no més fins que completis un altre lliurament."
+      }
+    },
+    "visibility": {
+      "kicker": "El teu lloc a la llista",
+      "title": "Què passa si no dones",
+      "sub_before": "Regálalo funciona perquè la gent dóna i rep. Si només demanes durant molt de temps i mai regales res, a poc a poc ",
+      "sub_strong": "els donants et veuen menys",
+      "sub_after": " quan trien a qui lliurar.",
+      "stages": {
+        "one_month": {
+          "months": "1",
+          "unit": "mes demanant\nsense donar",
+          "headline": "Apareixes més avall a la llista",
+          "desc": "Quan un donant mira qui ha demanat el seu objecte, hi ets, però més avall. Les persones que també donen a la comunitat apareixen per davant teu."
+        },
+        "two_months": {
+          "months": "2",
+          "unit": "mesos demanant\nsense donar",
+          "headline": "La teva sol·licitud no es mostra als donants",
+          "desc": "Si passen dos mesos i continues sense regalar res, la teva sol·licitud deixa d'aparèixer a la llista quan els donants trien receptor."
+        }
+      },
+      "list": {
+        "giver": "Reparteix i rep",
+        "you_lower": "Tu · més avall",
+        "invisible": "No a la llista del donant"
+      },
+      "restore": {
+        "strong": "Amb una sola donació tornes a la normalitat a l'instant.",
+        "body": " En quant regales alguna cosa, tornes a aparèixer amb normalitat per als donants, sense importar quant de temps portessis sense haver donat."
+      }
+    },
+    "closing": {
+      "quote": "\"No lo vendo, lo regalo.\"",
+      "sub": "Dona el que no necessites i la teva reputació cuidarà de tu."
+    },
+    "meta": {
+      "title": "La teva reputació a Regálalo — Sistema de punts",
+      "description": "Aprèn com funciona la reputació a Regálalo: com guanyar punts donant, què passa si no et presentes i com afecta el teu historial a la teva posició a la llista."
+    },
+    "seo": {
+      "breadcrumb_home": "Inici",
+      "breadcrumb_page": "La teva reputació",
+      "faq": {
+        "q1": "Com es guanya reputació a Regálalo?",
+        "a1": "Guanyes +15 punts per la teva primera donació, +10 punts per cada donació posterior completada, i +1 punt cada vegada que reps un objecte i completes la recollida. Donar sempre suma més que rebre.",
+        "q2": "Quan baixen els punts de reputació a Regálalo?",
+        "a2": "Els punts baixen si et compromets a recollir un objecte i no et presentes: −10 el primer cop, −20 el segon, −30 el tercer i successius. Un lliurament completat reinicia el comptador.",
+        "q3": "Què passa si només sol·licito objectes però mai dono res?",
+        "a3": "Després d'un mes sol·licitant sense donar, aparèixes més avall a la llista. Després de dos mesos, la teva sol·licitud deixa de mostrar-se als donants. Una sola donació completada et torna a la normalitat a l'instant."
+      }
+    }
+  },
+  "profile": {
+    "title": "El meu perfil",
+    "loading": "Carregant perfil…",
+    "member_since": "Membre des de {{date}}",
+    "stats": {
+      "aria_label": "Mètriques del perfil",
+      "reputation": "Reputació",
+      "donated": "Donats",
+      "received": "Rebuts",
+      "no_shows": "Sense acudir a recollir",
+      "consecutive": "{{n}} seguides sense lliurament entre mitges"
+    },
+    "tabs": {
+      "aria_label": "Seccions del perfil",
+      "donations": "Donacions",
+      "requests": "Sol·licituds",
+      "reputation": "Reputació",
+      "settings": "Configuració",
+      "coming_soon_donations": "Pròximament — historial de donacions",
+      "coming_soon_requests": "Pròximament — historial de sol·licituds",
+      "coming_soon_reputation": "Pròximament — historial de reputació"
+    },
+    "account": {
+      "title": "Compte",
+      "email_label": "Correu electrònic",
+      "postal_label": "Codi postal",
+      "phone_label": "Telèfon",
+      "phone_empty": "No indicat",
+      "language_label": "Idioma preferit",
+      "language": {
+        "es": "Espanyol",
+        "ca": "Català",
+        "en": "Anglès"
+      },
+      "email_verified_label": "Correu verificat",
+      "email_verified_yes": "Verificat",
+      "email_verified_no": "Pendent de verificació"
+    },
+    "settings": {
+      "first_name_label": "Nom",
+      "last_name_label": "Cognoms",
+      "avatar_url_label": "URL de l'avatar",
+      "avatar_url_helper": "Enllaç públic a la teva imatge. Deixa-ho buit per usar inicials.",
+      "phone_label": "Telèfon",
+      "postal_label": "Codi postal",
+      "language_label": "Idioma preferit",
+      "save": "Desar canvis",
+      "saving": "Desant…",
+      "success": "Perfil actualitzat",
+      "postal_warning": "Canviar el teu codi postal actualitzarà la teva ubicació i tancarà la sessió actual. Hauràs de tornar a iniciar sessió.",
+      "error": {
+        "postal_invalid": "Codi postal no vàlid o no geocodificable",
+        "generic": "No s'ha pogut desar. Torna-ho a provar.",
+        "field_invalid": "Valor no vàlid"
+      },
+      "validation": {
+        "first_name_min": "Mínim 2 caràcters",
+        "last_name_min": "Mínim 2 caràcters",
+        "postal_format": "Introdueix 5 dígits"
+      }
+    },
+    "banners": {
+      "degraded_title": "Apareixes més avall a les llistes",
+      "degraded_body": "Els donants et veuen menys en triar. Donar i completar un lliurament t'ajuda a pujar de lloc.",
+      "new_user_title": "Benvingut a la comunitat",
+      "new_user_body": "Comences amb 0 punts. Donar i completar lliuraments t'ajuda a guanyar visibilitat a la llista."
+    },
+    "errors": {
+      "load": "No s'ha pogut carregar el teu perfil. Torna-ho a provar.",
+      "retry": "Tornar a intentar"
+    },
+    "reputation": {
+      "total_score": "Punts de participació",
+      "earned": "+{{value}} sumats",
+      "lost": "{{value}} restats",
+      "event_delivery": "Lliurament completat",
+      "event_no_show": "No va acudir a la recollida",
+      "start_of_history": "Inici de l'historial",
+      "empty_title": "Sense activitat registrada encara",
+      "empty_sub": "Completa el teu primer lliurament per començar a sumar punts.",
+      "error_load": "No s'ha pogut carregar l'historial de reputació.",
+      "retry": "Tornar a intentar"
+    },
+    "donations": {
+      "empty_title": "Encara no has donat cap objecte",
+      "empty_sub": "Quan publiquis alguna cosa, apareixerà aquí amb el seu estat i l'historial de sol·licituds.",
+      "empty_cta": "Publicar objecte",
+      "empty_filter": "No hi ha objectes en aquest estat.",
+      "error_load": "No s'han pogut carregar les teves donacions.",
+      "retry": "Tornar a intentar",
+      "load_more": "Carregar més",
+      "degraded_badge": "fa temps aquí"
+    },
+    "requests": {
+      "quota_label": "Sol·licituds aquest període",
+      "quota_used": "{{count}} de 3 usades",
+      "quota_exhausted": "Quota esgotada",
+      "empty_title": "Sense sol·licituds recents",
+      "empty_sub": "Les teves sol·licituds d'objectes apareixeran aquí. Tens fins a 3 per cada període de 30 dies.",
+      "empty_cta": "Explorar objectes",
+      "empty_filter": "No hi ha sol·licituds en aquest estat.",
+      "error_load": "No s'han pogut carregar les teves sol·licituds.",
+      "retry": "Tornar a intentar",
+      "load_more": "Carregar més",
+      "filters_aria": "Filtrar sol·licituds per estat",
+      "filters": {
+        "all": "Totes",
+        "pending": "Pendents",
+        "selected": "Seleccionades",
+        "rejected": "No seleccionades",
+        "cancelled": "Cancel·lades"
+      },
+      "status": {
+        "pending": "pendent",
+        "selected": "seleccionat",
+        "completed": "completat",
+        "rejected": "no seleccionat",
+        "cancelled": "cancel·lat"
+      },
+      "delivery_link_aria": "Veure lliurament de {{title}}"
+    },
+    "public": {
+      "title": "Perfil d'usuari",
+      "display_name_aria": "Perfil de {{name}}",
+      "anonymous_user": "Usuari anònim",
+      "member_since": "Membre des de {{date}}",
+      "back": "Tornar",
+      "loading": "Carregant el perfil…",
+      "privacy_note": "Només es mostra informació pública. No es mostren dades de contacte ni historial detallat.",
+      "stats": {
+        "aria_label": "Mètriques públiques",
+        "commitment": "Compromís",
+        "given": "Ha regalat",
+        "received": "Ha rebut"
+      },
+      "errors": {
+        "invalid_id": "Identificador d'usuari no vàlid.",
+        "not_found": "No hem trobat aquest usuari.",
+        "load": "No s'ha pogut carregar el perfil. Torna-ho a provar.",
+        "retry": "Tornar a provar",
+        "back_explore": "Explorar objectes"
+      }
+    }
+  },
+  "reports": {
+    "modal": {
+      "title_item": "Informar sobre un objecte",
+      "title_user": "Informar sobre un usuari",
+      "step1": {
+        "instruction": "Quin tipus de problema vols reportar?"
+      },
+      "step2": {
+        "title": "Afegeix context (opcional)",
+        "reason_label": "Motiu seleccionat",
+        "reason_change": "Canviar",
+        "textarea_label": "Descripció addicional",
+        "textarea_optional": "opcional",
+        "textarea_placeholder": "Afegeix qualsevol detall que pugui ajudar en la revisió.",
+        "privacy_note": "La teva identitat no serà revelada a l'usuari reportat."
+      },
+      "step3": {
+        "title": "Reporte enviat",
+        "body": "Hem rebut el teu reporte. El revisarem el més aviat possible i t'ho confirmarem per correu electrònic quan hàgim pres una decisió."
+      },
+      "btn": {
+        "next": "Següent",
+        "back": "Enrere",
+        "cancel": "Cancel·lar",
+        "submit": "Enviar reporte",
+        "submitting": "Enviant...",
+        "close": "Tancar"
+      },
+      "reasons": {
+        "contenido_inadecuado": "Contingut inadequat o ofensiu",
+        "contenido_inadecuado_sub": "Imatges o text que no són apropiats",
+        "fraude_o_enganio": "Frau o engany",
+        "fraude_o_enganio_sub": "L'objecte no existeix, està en mal estat real, etc.",
+        "spam": "Spam o publicitat",
+        "spam_sub": "Publicació amb fins comercials",
+        "objeto_ilegal": "Objecte il·legal",
+        "objeto_ilegal_sub": "Producte prohibit o de venda il·legal",
+        "objeto_peligroso": "Objecte perillós",
+        "objeto_peligroso_sub": "Pot causar danys físics",
+        "información_falsa": "Informació falsa o enganyosa",
+        "información_falsa_sub": "Dades incorrectes sobre l'objecte o l'usuari",
+        "comportamiento_abusivo": "Comportament abusiu",
+        "comportamiento_abusivo_sub": "Missatges, assetjament o hostilitat",
+        "otro": "Un altre motiu"
+      }
+    },
+    "error": {
+      "already_pending": "Ja tens un reporte pendent de revisió sobre aquest contingut.",
+      "not_reportable": "Aquest contingut no es pot reportar en aquest moment.",
+      "recaptcha_failed": "No hem pogut verificar la teva sol·licitud. Torna-ho a intentar.",
+      "rate_limit_entity": "Has enviat massa reportes sobre aquest contingut recentment. Torna-ho a intentar més tard.",
+      "rate_limit_total": "Has assolit el límit de reportes permesos. Torna-ho a intentar en uns dies.",
+      "generic": "S'ha produït un error inesperat. Torna-ho a intentar en uns instants."
+    },
+    "trigger": {
+      "report_item": "Denunciar objecte",
+      "report_item_full": "Denunciar aquest objecte",
+      "report_user": "Denunciar aquest usuari",
+      "menu_aria": "Opcions de l’objecte"
+    }
+  },
+  "guest": {
+    "banner": {
+      "text": "Veus objectes de tot Espanya.",
+      "register_cta": "Registra't",
+      "register_cta_suffix": "per veure només els de la teva zona.",
+      "dismiss": "Tanca el bàner"
+    },
+    "item_card": {
+      "available_in_spain": "Disponible a Espanya"
+    },
+    "donor_row": {
+      "anonymous_name": "Donant anònim"
+    },
+    "conversion_modal": {
+      "close": "Tancar",
+      "tagline": "Sense targeta de crèdit · Sense compromisos",
+      "benefit_1": "Demana objectes que altri ja no usa",
+      "benefit_2": "Dona el que tens sense usar",
+      "benefit_3": "El teu historial et dona prioritat",
+      "cta_register": "Crea el compte gratis",
+      "cta_login": "Ja tinc compte — Inicia sessió",
+      "request_item": {
+        "title": "T'interessa aquest objecte?",
+        "subtitle": "Per demanar-lo, crea el teu compte gratuït. Només et porta un minut."
+      },
+      "publish_item": {
+        "title": "Regala el que ja no necessites",
+        "subtitle": "Crea el teu compte per publicar objectes i que arribin a qui els necessita."
+      },
+      "view_profile": {
+        "title": "Coneix la comunitat",
+        "subtitle": "Amb un compte pots veure els perfils i l historial dels membres."
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.item-detail-receiver-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-detail-receiver-controls__paused {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: var(--color-warning-50);
+  border: 1px solid var(--status-reserved-border);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-warning-700);
+  line-height: 1.55;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+}

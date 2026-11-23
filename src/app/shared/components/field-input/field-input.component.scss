@@ -1,0 +1,86 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field__control {
+  position: relative;
+}
+
+.field__control--password .field__input {
+  padding-right: 40px;
+}
+
+.field__toggle {
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border: none;
+  background: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.field__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  color: var(--fg-primary);
+  line-height: 1;
+}
+
+.field__input {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--fg-primary);
+  background: var(--bg-surface);
+  width: 100%;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  outline: none;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+
+  &:focus {
+    border-color: var(--border-focus);
+    box-shadow: var(--shadow-focus);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    background: var(--bg-subtle);
+  }
+}
+
+.field__input--error {
+  border-color: var(--border-error);
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.field__helper {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+
+.field__helper--error {
+  color: var(--color-error-500);
+}

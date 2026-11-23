@@ -1,0 +1,904 @@
+<div class="perfil" *transloco="let t">
+
+  <!-- Loading skeleton -->
+  @if (loading()) {
+    <div class="perfil__skeleton" role="status" [attr.aria-label]="t('profile.loading')">
+      <div class="perfil__skeleton-card">
+        <div class="perfil__skeleton-avatar"></div>
+        <div class="perfil__skeleton-lines">
+          <div class="perfil__skeleton-line perfil__skeleton-line--wide"></div>
+          <div class="perfil__skeleton-line perfil__skeleton-line--short"></div>
+        </div>
+      </div>
+      <div class="perfil__skeleton-stats">
+        @for (i of [1, 2, 3, 4]; track i) {
+          <div class="perfil__skeleton-stat"></div>
+        }
+      </div>
+    </div>
+
+  } @else if (errorKey(); as key) {
+    <!-- Error state -->
+    <div class="perfil__error" role="alert">
+      <svg
+        class="perfil__error-icon"
+        width="36"
+        height="36"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      <p class="perfil__error-msg">{{ t(key) }}</p>
+      <button type="button" class="perfil__retry-btn" (click)="reload()">
+        {{ t('profile.errors.retry') }}
+      </button>
+    </div>
+
+  } @else if (profile(); as p) {
+    <!-- Degraded banner -->
+    @if (showDegradedBanner()) {
+      <div class="perfil__banner perfil__banner--warn" role="note">
+        <svg
+          class="perfil__banner-icon"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+        <div>
+          <p class="perfil__banner-title">{{ t('profile.banners.degraded_title') }}</p>
+          <p class="perfil__banner-body">{{ t('profile.banners.degraded_body') }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- New user banner -->
+    @if (showNewUserBanner()) {
+      <div class="perfil__banner perfil__banner--primary" role="note">
+        <svg
+          class="perfil__banner-icon"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <div>
+          <p class="perfil__banner-title">{{ t('profile.banners.new_user_title') }}</p>
+          <p class="perfil__banner-body">{{ t('profile.banners.new_user_body') }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Profile header card -->
+    <div class="perfil__card" data-testid="profile-private">
+      <div class="perfil__card-header">
+
+        <!-- User row -->
+        <div class="perfil__user-row">
+          <app-user-avatar
+            size="lg"
+            [avatarUrl]="p.avatarUrl"
+            [firstName]="p.firstName"
+            [lastName]="p.lastName"
+            [userId]="p.id"
+            [ariaLabel]="displayName()"
+          />
+          <div class="perfil__user-meta">
+            <div class="perfil__display-name" data-testid="profile-name">{{ displayName() }}</div>
+            <div class="perfil__user-sub">
+              <span>{{ t('profile.member_since', { date: memberSince() }) }}</span>
+              <span class="perfil__sep" aria-hidden="true"></span>
+              <span class="perfil__postal-row" data-testid="profile-postal">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {{ p.postalCode }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="perfil__stats" role="list" [attr.aria-label]="t('profile.stats.aria_label')">
+          <div class="perfil__stat-card" role="listitem">
+            <div
+              class="perfil__stat-value"
+              [class.perfil__stat-value--good]="scoreTone() === 'good'"
+              [class.perfil__stat-value--muted]="scoreTone() === 'muted'"
+              [class.perfil__stat-value--low]="scoreTone() === 'low'"
+            >{{ scoreDisplay() }}</div>
+            <div class="perfil__stat-label">{{ t('profile.stats.reputation') }}</div>
+          </div>
+          <div class="perfil__stat-card" role="listitem">
+            <div class="perfil__stat-value">{{ p.totalDonated }}</div>
+            <div class="perfil__stat-label">{{ t('profile.stats.donated') }}</div>
+          </div>
+          <div class="perfil__stat-card" role="listitem">
+            <div class="perfil__stat-value">{{ p.totalReceived }}</div>
+            <div class="perfil__stat-label">{{ t('profile.stats.received') }}</div>
+          </div>
+          <div class="perfil__stat-card" role="listitem">
+            <div class="perfil__stat-value">{{ p.consecutiveNoShows }}</div>
+            <div class="perfil__stat-label">{{ t('profile.stats.no_shows') }}</div>
+            @if (p.consecutiveNoShows > 0) {
+              <div class="perfil__stat-sub">
+                {{ t('profile.stats.consecutive', { n: p.consecutiveNoShows }) }}
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab bar -->
+      <div
+        class="perfil__tabs"
+        role="tablist"
+        [attr.aria-label]="t('profile.tabs.aria_label')"
+      >
+        <button
+          type="button"
+          role="tab"
+          id="perfil-tab-donaciones"
+          class="perfil__tab"
+          [class.perfil__tab--active]="activeTab() === 'donaciones'"
+          [attr.aria-selected]="activeTab() === 'donaciones'"
+          aria-controls="perfil-panel"
+          (click)="setTab('donaciones')"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+            <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+          </svg>
+          {{ t('profile.tabs.donations') }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="perfil-tab-solicitudes"
+          class="perfil__tab"
+          [class.perfil__tab--active]="activeTab() === 'solicitudes'"
+          [attr.aria-selected]="activeTab() === 'solicitudes'"
+          aria-controls="perfil-panel"
+          (click)="setTab('solicitudes')"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+          {{ t('profile.tabs.requests') }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="perfil-tab-reputacion"
+          class="perfil__tab"
+          [class.perfil__tab--active]="activeTab() === 'reputacion'"
+          [attr.aria-selected]="activeTab() === 'reputacion'"
+          aria-controls="perfil-panel"
+          (click)="setTab('reputacion')"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+          {{ t('profile.tabs.reputation') }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="perfil-tab-configuracion"
+          class="perfil__tab"
+          [class.perfil__tab--active]="activeTab() === 'configuracion'"
+          [attr.aria-selected]="activeTab() === 'configuracion'"
+          aria-controls="perfil-panel"
+          (click)="setTab('configuracion')"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+          </svg>
+          {{ t('profile.tabs.settings') }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab panel -->
+    <div
+      id="perfil-panel"
+      class="perfil__panel"
+      role="tabpanel"
+      [attr.aria-labelledby]="'perfil-tab-' + activeTab()"
+    >
+      @switch (activeTab()) {
+        @case ('donaciones') {
+          <div class="perfil__don-stack">
+            <nav
+              class="perfil__don-filters"
+              data-testid="my-items-filter-status"
+              [attr.aria-label]="t('items.my_objects.tabs_label')"
+            >
+              @for (filter of donationFilters; track filter) {
+                <button
+                  type="button"
+                  class="perfil__don-filter"
+                  [class.perfil__don-filter--active]="donFilter() === filter"
+                  [attr.aria-pressed]="donFilter() === filter"
+                  (click)="changeDonationsFilter(filter)"
+                >
+                  {{ t(donationsFilterLabelKey(filter)) }}
+                </button>
+              }
+            </nav>
+
+            @if (donLoading() && donItems().length === 0) {
+              <div
+                class="perfil__don-loading"
+                role="status"
+                [attr.aria-label]="t('profile.loading')"
+              >
+                @for (i of [1, 2, 3]; track i) {
+                  <div class="perfil__don-loading-card"></div>
+                }
+              </div>
+            } @else if (donErrorKey(); as donErrKey) {
+              <div class="perfil__don-error" role="alert">
+                <p class="perfil__error-msg">{{ t(donErrKey) }}</p>
+                <button
+                  type="button"
+                  class="perfil__retry-btn"
+                  (click)="retryDonations()"
+                >
+                  {{ t('profile.donations.retry') }}
+                </button>
+              </div>
+            } @else if (donItems().length === 0) {
+              <div class="perfil__don-empty">
+                <div class="perfil__don-empty-icon-wrap" aria-hidden="true">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                    <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                  </svg>
+                </div>
+                @if (donFilter() === 'all') {
+                  <p class="perfil__don-empty-title">{{ t('profile.donations.empty_title') }}</p>
+                  <p class="perfil__don-empty-sub">{{ t('profile.donations.empty_sub') }}</p>
+                  <a routerLink="/mis-objetos/publicar" class="perfil__don-empty-btn">
+                    {{ t('profile.donations.empty_cta') }}
+                  </a>
+                } @else {
+                  <p class="perfil__don-empty-title">{{ t('profile.donations.empty_filter') }}</p>
+                }
+              </div>
+            } @else {
+              <div class="perfil__don-list" role="list" data-testid="my-items-list">
+                @for (item of donItems(); track item.id) {
+                  @let pausedDescId = showPausedSuffix(item) ? 'don-paused-' + item.id : null;
+                  <button
+                    type="button"
+                    role="listitem"
+                    class="perfil__don-card"
+                    [attr.aria-describedby]="pausedDescId"
+                    (click)="openDonationItem(item)"
+                  >
+                    <div
+                      class="perfil__don-thumb"
+                      [class.perfil__don-thumb--placeholder]="item.images.length === 0"
+                    >
+                      @if (item.images.length > 0) {
+                        <img
+                          [ngSrc]="item.images[0]"
+                          width="56"
+                          height="56"
+                          [alt]="item.title"
+                        />
+                      } @else {
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.75"
+                          aria-hidden="true"
+                        >
+                          <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                          <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                        </svg>
+                      }
+                    </div>
+
+                    <div class="perfil__don-body">
+                      <div class="perfil__don-title">{{ item.title }}</div>
+                      <div class="perfil__don-meta">
+                        @if (isDegraded(item)) {
+                          <span class="perfil__don-badge perfil__don-badge--degraded">
+                            <span class="perfil__don-badge-dot" aria-hidden="true"></span>
+                            {{ t('profile.donations.degraded_badge') }}
+                          </span>
+                        } @else {
+                          <span
+                            class="perfil__don-badge"
+                            [class.perfil__don-badge--active]="item.status === 'active'"
+                            [class.perfil__don-badge--reserved]="item.status === 'reserved'"
+                            [class.perfil__don-badge--completed]="item.status === 'completed'"
+                            [class.perfil__don-badge--cancelled]="item.status === 'cancelled'"
+                          >
+                            <span class="perfil__don-badge-dot" aria-hidden="true"></span>
+                            {{ t('items.my_objects.status_' + item.status) }}
+                          </span>
+                        }
+                        <span class="perfil__don-condition">{{
+                          t(conditionLabelKey(item.condition))
+                        }}</span>
+                        <app-item-category-chip
+                          [category]="itemCategory(item)"
+                          size="large"
+                          surface="elevated"
+                        />
+                        @if (showPausedSuffix(item)) {
+                          <span [id]="pausedDescId" class="perfil__don-paused-suffix">{{
+                            t('items.pause.list_suffix')
+                          }}</span>
+                        }
+                      </div>
+                    </div>
+
+                    <div class="perfil__don-aside">
+                      <span class="perfil__don-date">{{ formatItemDate(item.createdAt) }}</span>
+                      <span class="perfil__don-chevron" aria-hidden="true">
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path d="M9 18l6-6-6-6" />
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
+                }
+              </div>
+
+              @if (hasMoreDonations()) {
+                <div class="perfil__don-load-more">
+                  @if (donLoadMoreErrorKey(); as loadMoreErrKey) {
+                    <p class="perfil__don-load-more-error" role="alert">
+                      {{ t(loadMoreErrKey) }}
+                    </p>
+                  }
+                  <button
+                    type="button"
+                    class="perfil__don-load-more-btn"
+                    [disabled]="donLoading()"
+                    (click)="loadMoreDonations()"
+                  >
+                    {{ t('profile.donations.load_more') }}
+                  </button>
+                </div>
+              }
+            }
+          </div>
+        }
+        @case ('solicitudes') {
+          <div class="perfil__req-stack">
+            <nav
+              class="perfil__req-filters"
+              data-testid="my-requests-filter-status"
+              [attr.aria-label]="t('profile.requests.filters_aria')"
+            >
+              @for (filter of requestFilters; track filter) {
+                <button
+                  type="button"
+                  class="perfil__req-filter"
+                  [class.perfil__req-filter--active]="reqFilter() === filter"
+                  [attr.aria-pressed]="reqFilter() === filter"
+                  (click)="changeRequestsFilter(filter)"
+                >
+                  {{ t(requestsFilterLabelKey(filter)) }}
+                </button>
+              }
+            </nav>
+
+            @if (reqLoading() && reqItems().length === 0) {
+              <div
+                class="perfil__req-loading"
+                role="status"
+                [attr.aria-label]="t('profile.loading')"
+              >
+                @for (i of [1, 2, 3]; track i) {
+                  <div class="perfil__req-loading-card"></div>
+                }
+              </div>
+            } @else if (reqErrorKey(); as reqErrKey) {
+              <div class="perfil__req-error" role="alert">
+                <p class="perfil__error-msg">{{ t(reqErrKey) }}</p>
+                <button
+                  type="button"
+                  class="perfil__retry-btn"
+                  (click)="retryRequests()"
+                >
+                  {{ t('profile.requests.retry') }}
+                </button>
+              </div>
+            } @else {
+              @if (showRequestQuota()) {
+                <div class="perfil__req-quota">
+                  <div class="perfil__req-quota-main">
+                    <div class="perfil__req-quota-label">
+                      {{ t('profile.requests.quota_label') }}
+                    </div>
+                    <div class="perfil__req-quota-slots" aria-hidden="true">
+                      @for (slot of quotaSlotIndices; track slot) {
+                        <div
+                          class="perfil__req-quota-slot"
+                          [class.perfil__req-quota-slot--filled]="isQuotaSlotFilled(slot)"
+                        >
+                          @if (isQuotaSlotFilled(slot)) {
+                            <svg
+                              width="10"
+                              height="10"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="3"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          }
+                        </div>
+                      }
+                      <span class="perfil__req-quota-text">
+                        {{ t('profile.requests.quota_used', { count: reqActiveCount() }) }}
+                      </span>
+                    </div>
+                  </div>
+                  @if (reqQuotaExhausted()) {
+                    <span class="perfil__req-quota-exhausted">
+                      {{ t('profile.requests.quota_exhausted') }}
+                    </span>
+                  }
+                </div>
+              }
+
+              @if (reqItems().length === 0) {
+                @if (reqFilter() === 'all' && reqActiveCount() === 0) {
+                  <div class="perfil__req-empty">
+                    <div class="perfil__req-empty-icon-wrap" aria-hidden="true">
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                      </svg>
+                    </div>
+                    <p class="perfil__req-empty-title">{{ t('profile.requests.empty_title') }}</p>
+                    <p class="perfil__req-empty-sub">{{ t('profile.requests.empty_sub') }}</p>
+                    <a routerLink="/explorar" class="perfil__req-empty-btn">
+                      {{ t('profile.requests.empty_cta') }}
+                    </a>
+                  </div>
+                } @else {
+                  <p class="perfil__req-empty-filter">
+                    {{ t('profile.requests.empty_filter') }}
+                  </p>
+                }
+              } @else {
+                <div class="perfil__req-list" role="list" data-testid="my-requests-list">
+                  @for (req of reqItems(); track req.id) {
+                    @let displayStatus = displayRequestStatus(req);
+                    <button
+                      type="button"
+                      role="listitem"
+                      class="perfil__req-card"
+                      [attr.aria-label]="requestRowAriaLabel(req)"
+                      (click)="openRequest(req)"
+                    >
+                      <div
+                        class="perfil__req-thumb"
+                        [class.perfil__req-thumb--placeholder]="!requestThumbnail(req)"
+                        aria-hidden="true"
+                      >
+                        @if (requestThumbnail(req); as thumbUrl) {
+                          <img
+                            [ngSrc]="thumbUrl"
+                            width="56"
+                            height="56"
+                            [alt]="req.itemTitle"
+                          />
+                        } @else {
+                          <svg
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.75"
+                          >
+                            <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                            <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                          </svg>
+                        }
+                      </div>
+
+                      <div class="perfil__req-body">
+                        <div class="perfil__req-title">{{ req.itemTitle }}</div>
+                        <span
+                          class="perfil__req-badge"
+                          [class.perfil__req-badge--pending]="displayStatus === 'pending'"
+                          [class.perfil__req-badge--selected]="displayStatus === 'selected'"
+                          [class.perfil__req-badge--completed]="displayStatus === 'completed'"
+                          [class.perfil__req-badge--rejected]="displayStatus === 'rejected'"
+                          [class.perfil__req-badge--cancelled]="displayStatus === 'cancelled'"
+                        >
+                          <span class="perfil__req-badge-dot" aria-hidden="true"></span>
+                          {{ t(requestStatusLabelKey(displayStatus)) }}
+                        </span>
+                      </div>
+
+                      <div class="perfil__req-date">{{ formatRequestDate(req.createdAt) }}</div>
+                    </button>
+                  }
+                </div>
+
+                @if (hasMoreRequests()) {
+                  <div class="perfil__req-load-more">
+                    @if (reqLoadMoreErrorKey(); as loadMoreErrKey) {
+                      <p class="perfil__req-load-more-error" role="alert">
+                        {{ t(loadMoreErrKey) }}
+                      </p>
+                    }
+                    <button
+                      type="button"
+                      class="perfil__req-load-more-btn"
+                      [disabled]="reqLoading()"
+                      (click)="loadMoreRequests()"
+                    >
+                      {{ t('profile.requests.load_more') }}
+                    </button>
+                  </div>
+                }
+              }
+            }
+
+            @if (detailRequestItemId(); as openRequestItemId) {
+              <app-item-detail-modal
+                [itemId]="openRequestItemId"
+                (closed)="closeRequestDetail()"
+              />
+            }
+          </div>
+        }
+        @case ('reputacion') {
+          @if (repLoading()) {
+            <div
+              class="perfil__rep-loading"
+              role="status"
+              [attr.aria-label]="t('profile.loading')"
+            >
+              <div class="perfil__rep-loading-summary"></div>
+              <div class="perfil__rep-loading-list"></div>
+            </div>
+          } @else if (repErrorKey(); as repErrKey) {
+            <div class="perfil__rep-error" role="alert">
+              <p class="perfil__error-msg">{{ t(repErrKey) }}</p>
+              <button
+                type="button"
+                class="perfil__retry-btn"
+                (click)="retryReputation()"
+              >
+                {{ t('profile.reputation.retry') }}
+              </button>
+            </div>
+          } @else if (repEvents().length === 0) {
+            <div class="perfil__rep-empty">
+              <div class="perfil__rep-empty-icon-wrap" aria-hidden="true">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </div>
+              <p class="perfil__rep-empty-title">{{ t('profile.reputation.empty_title') }}</p>
+              <p class="perfil__rep-empty-sub">{{ t('profile.reputation.empty_sub') }}</p>
+            </div>
+          } @else {
+            <div class="perfil__rep-stack">
+              <div class="perfil__rep-summary">
+                <div class="perfil__rep-summary-main">
+                  <div class="perfil__rep-summary-label">
+                    {{ t('profile.reputation.total_score') }}
+                  </div>
+                  <div
+                    class="perfil__rep-score"
+                    [class.perfil__rep-score--good]="scoreTone() === 'good'"
+                    [class.perfil__rep-score--muted]="scoreTone() === 'muted'"
+                    [class.perfil__rep-score--low]="scoreTone() === 'low'"
+                    data-testid="reputation-score"
+                  >
+                    {{ scoreDisplay() }}
+                  </div>
+                  <div class="perfil__rep-totals">
+                    <span class="perfil__rep-totals-pos">
+                      {{ t('profile.reputation.earned', { value: repTotPos() }) }}
+                    </span>
+                    <span class="perfil__rep-totals-neg">
+                      {{ t('profile.reputation.lost', { value: repTotNeg() }) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="perfil__rep-sparkline" aria-hidden="true">
+                  @for (bar of repSparkline(); track bar.id; let i = $index) {
+                    <div
+                      class="perfil__rep-bar"
+                      [style.height.%]="sparklineBarHeight(bar.delta)"
+                      [style.background]="sparklineBarBackground(bar, i)"
+                    ></div>
+                  }
+                </div>
+              </div>
+
+              <div class="perfil__rep-list" data-testid="reputation-history-list">
+                @for (event of repEvents(); track event.id) {
+                  <div class="perfil__rep-row">
+                    <div class="perfil__rep-row-main">
+                      <div
+                        class="perfil__rep-icon"
+                        [class.perfil__rep-icon--pos]="event.delta > 0"
+                        [class.perfil__rep-icon--neg]="event.delta <= 0"
+                      >
+                        @if (event.delta > 0) {
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                          </svg>
+                        } @else {
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M15 9l-6 6M9 9l6 6" />
+                          </svg>
+                        }
+                      </div>
+                      <div class="perfil__rep-row-text">
+                        <div class="perfil__rep-row-label">{{ t(eventLabelKey(event.type)) }}</div>
+                        <div class="perfil__rep-row-date">{{ formatEventDate(event.createdAt) }}</div>
+                      </div>
+                    </div>
+                    <span
+                      class="perfil__rep-chip"
+                      [class.perfil__rep-chip--pos]="event.delta > 0"
+                      [class.perfil__rep-chip--neg]="event.delta <= 0"
+                    >
+                      {{ formatDelta(event.delta) }}
+                    </span>
+                  </div>
+                }
+                <div class="perfil__rep-footer">
+                  {{ t('profile.reputation.start_of_history') }}
+                </div>
+              </div>
+            </div>
+          }
+        }
+        @case ('configuracion') {
+          <div class="perfil__account">
+            @if (settingsSuccess()) {
+              <div
+                class="perfil__settings-banner perfil__settings-banner--success"
+                role="status"
+                aria-live="polite"
+              >
+                {{ t('profile.settings.success') }}
+              </div>
+            }
+            @if (settingsBannerKey(); as bannerKey) {
+              <div class="perfil__settings-banner perfil__settings-banner--error" role="alert">
+                {{ t(bannerKey) }}
+              </div>
+            }
+            <form
+              class="perfil__account-section perfil__settings-form"
+              [formGroup]="settingsForm"
+              (ngSubmit)="saveSettings()"
+              novalidate
+              data-testid="profile-settings-form"
+            >
+              <div class="perfil__account-section-header">
+                {{ t('profile.account.title') }}
+              </div>
+              <div class="perfil__account-row perfil__account-row--readonly">
+                <div>
+                  <div class="perfil__account-row-label">{{ t('profile.account.email_label') }}</div>
+                  <div class="perfil__account-row-value">{{ p.email }}</div>
+                </div>
+                <span
+                  class="perfil__email-verified-badge"
+                  [class.perfil__email-verified-badge--yes]="p.emailVerified"
+                  [class.perfil__email-verified-badge--no]="!p.emailVerified"
+                >
+                  <span class="perfil__email-verified-dot" aria-hidden="true"></span>
+                  {{ t(emailVerifiedLabelKey(p.emailVerified)) }}
+                </span>
+              </div>
+              <div class="perfil__settings-fields">
+                <div class="perfil__settings-name-grid">
+                  <app-field-input
+                    formControlName="firstName"
+                    [label]="t('profile.settings.first_name_label')"
+                    [error]="settingsFieldError('firstName')"
+                    inputId="settings-first-name"
+                    testId="profile-first-name"
+                  />
+                  <app-field-input
+                    formControlName="lastName"
+                    [label]="t('profile.settings.last_name_label')"
+                    [error]="settingsFieldError('lastName')"
+                    inputId="settings-last-name"
+                    testId="profile-last-name"
+                  />
+                </div>
+                <!-- Avatar URL: feature desactivada hasta soporte de subida de imagen
+                <app-field-input
+                  formControlName="avatarUrl"
+                  type="url"
+                  [label]="t('profile.settings.avatar_url_label')"
+                  [helper]="t('profile.settings.avatar_url_helper')"
+                  [error]="settingsFieldError('avatarUrl')"
+                  inputId="settings-avatar-url"
+                />
+                -->
+                <app-field-input
+                  formControlName="phone"
+                  type="tel"
+                  [label]="t('profile.settings.phone_label')"
+                  [error]="settingsFieldError('phone')"
+                  inputId="settings-phone"
+                />
+                <app-field-input
+                  formControlName="postalCode"
+                  [label]="t('profile.settings.postal_label')"
+                  [error]="settingsFieldError('postalCode')"
+                  inputId="settings-postal-code"
+                  autocomplete="postal-code"
+                  testId="profile-postal-input"
+                />
+                @if (showPostalWarning()) {
+                  <div
+                    class="perfil__postal-warning"
+                    role="note"
+                    aria-live="polite"
+                    data-testid="profile-postal-warning"
+                  >
+                    {{ t('profile.settings.postal_warning') }}
+                  </div>
+                }
+                <div class="field perfil__settings-language-field">
+                  <label class="field__label">
+                    {{ t('profile.settings.language_label') }}
+                  </label>
+                  <app-language-selector
+                    variant="field"
+                    (selected)="onPreferredLanguageSelect($event)"
+                  ></app-language-selector>
+                  @if (settingsFieldError('preferredLanguage'); as langErr) {
+                    <span class="field__helper field__helper--error">{{ langErr }}</span>
+                  }
+                </div>
+              </div>
+              <div class="perfil__settings-actions">
+                <button
+                  type="submit"
+                  class="perfil__settings-save"
+                  [disabled]="!canSaveSettings()"
+                  data-testid="profile-save-btn"
+                >
+                  {{
+                    settingsSaving()
+                      ? t('profile.settings.saving')
+                      : t('profile.settings.save')
+                  }}
+                </button>
+              </div>
+            </form>
+          </div>
+        }
+      }
+    </div>
+    <button type="button" class="perfil__logout" (click)="logout()">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+      </svg>
+      {{ t('nav.logout') }}
+    </button>
+  }
+
+</div>

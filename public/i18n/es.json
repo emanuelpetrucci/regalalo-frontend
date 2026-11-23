@@ -1,0 +1,1743 @@
+{
+  "common": {
+    "language": {
+      "es": "Español",
+      "ca": "Català",
+      "en": "English"
+    },
+    "user_avatar": {
+      "default_label": "Avatar de usuario"
+    }
+  },
+  "landing": {
+    "nav": {
+      "aria_label": "Navegación principal",
+      "login": "Iniciar sesión",
+      "register": "Crear cuenta",
+      "menu_open": "Abrir menú",
+      "menu_close": "Cerrar menú"
+    },
+    "hero": {
+      "pill": "Distribución comunitaria · Sin dinero de por medio",
+      "headline_1": "Lo que ya no usas,",
+      "headline_em": "alguien lo necesita",
+      "lead": "Una plataforma donde los objetos encuentran nuevas manos. El acceso depende de tu comportamiento en la comunidad, no de tu cartera.",
+      "cta_primary": "Unirme a la comunidad",
+      "cta_secondary": "Explorar objetos",
+      "note": "Gratis. Solo necesitas email y código postal.",
+      "mock": {
+        "card1_title": "Chaqueta de lana gris",
+        "card1_meta": "Como nueva · Gràcia, BCN",
+        "card2_title": "Estantería IKEA Kallax",
+        "card2_meta": "Bueno · Eixample, BCN · 2.3 km",
+        "card2_requests": "7 solicitudes",
+        "card3_title": "Bicicleta plegable",
+        "card3_meta": "Aceptable · Poblenou",
+        "badge_active": "activo",
+        "badge_reserved": "reservado",
+        "chip_name": "Carlos R.",
+        "chip_reputation": "+92 reputación",
+        "chip_distance": "a 3.8 km"
+      }
+    },
+    "stats": {
+      "objects": "objetos publicados",
+      "cities": "ciudades activas",
+      "radius": "radio de distribución",
+      "cost_label": "coste siempre"
+    },
+    "how": {
+      "label": "Cómo funciona",
+      "title": "Tres pasos. Sin complicaciones.",
+      "subtitle": "Un ciclo sencillo que mantiene los objetos en movimiento y la comunidad en equilibrio.",
+      "step1_num": "01",
+      "step1_title": "Publica lo que quieras regalar",
+      "step1_body": "Fotografía y describe el objeto que ya no necesitas. Queda disponible para personas a menos de 50 km. Hasta 5 fotos por objeto.",
+      "step2_num": "02",
+      "step2_title": "Solicita lo que necesites",
+      "step2_body": "Explora objetos cerca de ti. Puedes solicitar hasta 3 al mes. El donante elige al mejor candidato según su reputación y distancia.",
+      "step3_num": "03",
+      "step3_title": "Entrega y completa",
+      "step3_body": "El donante comparte su canal de contacto. Quedáis en persona y se confirma la entrega. Cada entrega exitosa mejora tu reputación."
+    },
+    "system": {
+      "label": "La comunidad",
+      "title_1": "No es un marketplace.",
+      "title_2": "Es equilibrio compartido.",
+      "subtitle": "El comportamiento condiciona las oportunidades. Quien da, recibe más fácilmente. Quien no se presenta, aparece más abajo en la lista.",
+      "value1_title": "Gratis. Siempre.",
+      "value1_body": "Ningún objeto tiene precio. Aquí no hay transacciones económicas. Lo que donas, lo regalas sin excepción.",
+      "value2_title": "Tu puesto en la lista",
+      "value2_body": "Tu historial de entregas determina tu puesto en la lista de candidatos. Si participas y te presentas, subes de puesto. Si no te presentas, bajas en la lista.",
+      "value3_title": "Radio de 50 km",
+      "value3_body": "Los objetos circulan localmente. Menos huella, más comunidad real. Solo ves objetos que están cerca de ti.",
+      "value4_title": "Privacidad desde el principio",
+      "value4_body": "Sin chat interno. El canal de contacto solo se revela cuando el donante confirma la entrega. Se purga automáticamente a los 7 días."
+    },
+    "reputation": {
+      "label": "Reputación",
+      "title_1": "Tu historial habla",
+      "title_em": "por ti",
+      "subtitle": "Ordenamos los candidatos en tiempo real. La cercanía, el historial de entregas y el tiempo de espera determinan quién llega primero.",
+      "cta": "Crear mi perfil",
+      "table_label": "Candidatos — Estantería Kallax",
+      "example_aria": "Ejemplo de lista de candidatos",
+      "list_note": "La lista se actualiza en tiempo real · ±2 pts de variación",
+      "example": {
+        "name1": "Carlos R.",
+        "meta1": "2.3 km · 4 entregas",
+        "name2": "Marta L.",
+        "meta2": "5.1 km · 1 entrega",
+        "name3": "Jordi P.",
+        "meta3": "12.8 km · 0 entregas",
+        "rank1": "1.º",
+        "rank2": "2.º",
+        "rank3": "3.º"
+      }
+    },
+    "cta_section": {
+      "label": "Empieza hoy",
+      "title": "¿Tienes algo que ya no usas?",
+      "subtitle": "Publícalo y encuentra a quien lo necesita. O regístrate y explora objetos cerca de ti. Sin dinero. Sin intermediarios.",
+      "publish": "Publicar un objeto",
+      "explore": "Explorar objetos"
+    },
+    "footer": {
+      "tagline": "Comunidad de redistribución de objetos. Sin dinero, sin intermediarios.",
+      "col_platform": "Plataforma",
+      "link_login": "Iniciar sesión",
+      "link_register": "Crear cuenta",
+      "link_reputation": "Cómo funciona la reputación",
+      "link_how": "Cómo funciona",
+      "col_legal": "Legal",
+      "link_legal_notice": "Aviso legal",
+      "link_privacy": "Privacidad",
+      "link_cookies": "Política de cookies",
+      "copy": "© 2026 Regálalo. Todos los derechos reservados.",
+      "made_in": "Hecho en España"
+    },
+    "meta": {
+      "title": "Regálalo — Da una segunda vida a tus objetos",
+      "description": "Una plataforma comunitaria donde los objetos encuentran nuevas manos. El acceso depende de tu comportamiento en la comunidad, no de tu cartera."
+    },
+    "seo": {
+      "faq": {
+        "section_label": "FAQ",
+        "section_title": "Preguntas frecuentes",
+        "q1": "¿Qué es Regálalo?",
+        "a1": "Regálalo es una comunidad donde puedes dar objetos que ya no usas y recibir los que otros ofrecen, todo sin dinero. Cuanto más participas y contribuyes, más fácil es que te elijan cuando solicitas algo. No importa lo que tienes en el bolsillo, sino lo que aportas.",
+        "q2": "¿Cómo funciona Regálalo?",
+        "a2": "Publicas lo que quieras regalar, solicitas objetos cerca de ti (hasta 3 al mes) y la persona que dona elige a quién dárselo — suele priorizar a quien más ha participado en la comunidad y vive más cerca. La entrega se hace en persona.",
+        "q3": "¿Es gratis usar Regálalo?",
+        "a3": "Sí. No hay precios ni transacciones económicas. Solo necesitas email y código postal para unirte.",
+        "q4": "¿En qué ciudades está disponible Regálalo?",
+        "a4": "Regálalo está disponible en toda España. Los objetos se distribuyen en un radio de 50 km, así que cualquier persona con código postal español puede participar.",
+        "q5": "¿En qué se diferencia Regálalo de otras plataformas de segunda mano?",
+        "a5": "En Regálalo no existe el dinero. No puedes vender ni comprar: solo regalar y recibir. A diferencia de otros sitios donde lo que importa es el precio, aquí lo que determina quién recibe un objeto es cuánto has contribuido a la comunidad, no lo que estás dispuesto a pagar.",
+        "q6": "¿Cómo funciona la reputación en Regálalo?",
+        "a6": "Cada vez que entregas algo o confirmas una recogida, la comunidad te conoce un poco mejor. Cuanto más das, más visible eres y más fácil es que los donantes te elijan cuando solicitas algo. Si te comprometes a recoger algo y no te presentas, se restan puntos: −10 la primera vez, −20 la segunda y −30 la tercera. Una entrega completada reinicia el contador. Si llevas meses pidiendo sin donar, tu candidatura aparece más abajo —o deja de mostrarse a los donantes— hasta que completes una donación.",
+        "q7": "¿Es seguro Regálalo? ¿Cómo protegen mi privacidad?",
+        "a7": "Sí. Los datos de la persona donante (cómo contactarla) solo se comparten una vez confirmada la entrega, y se borran automáticamente a los 7 días. Antes de ese momento, nadie ve información personal del otro. No hay mensajería interna: el acuerdo se cierra en el momento de la entrega.",
+        "q8": "¿Cuántos objetos puedo solicitar al mes?",
+        "a8": "Puedes solicitar hasta 3 objetos al mes. Para publicar objetos para regalar no hay límite mensual."
+      }
+    }
+  },
+  "auth": {
+    "layout": {
+      "tagline": "\"No lo vendo, lo regalo.\"",
+      "copy": "Una comunidad donde los objetos encuentran un nuevo dueño. Sin dinero. Solo reputación.",
+      "footer": "España · 2026",
+      "note": "El acceso a objetos depende de tu reputación en la comunidad."
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "subtitle": "Accede a tu cuenta para publicar y solicitar objetos.",
+      "field": {
+        "email": "Correo electrónico",
+        "email_placeholder": "tu@email.es",
+        "password": "Contraseña",
+        "password_placeholder": "••••••••"
+      },
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión…",
+      "forgot_link": "¿Olvidaste tu contraseña?",
+      "footer": "¿No tienes cuenta?",
+      "register_link": "Crear cuenta",
+      "session_expired": "Tu sesión ha expirado. Inicia sesión de nuevo.",
+      "email_verified_success": "Tu email ha sido verificado. Ya puedes iniciar sesión.",
+      "recaptcha": "Protegido por reCAPTCHA",
+      "recaptcha_privacy": "Privacidad",
+      "recaptcha_terms": "Condiciones",
+      "validation": {
+        "email_required": "Introduce tu correo electrónico",
+        "email_format": "El formato del correo no es válido",
+        "password_required": "Introduce tu contraseña"
+      },
+      "error": {
+        "401": "Correo o contraseña incorrectos.",
+        "422": "No pudimos verificar que eres humano. Inténtalo de nuevo.",
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "generic": "No pudimos iniciar sesión. Inténtalo más tarde.",
+        "recaptcha_unavailable": "La verificación de seguridad no está disponible. Recarga la página."
+      }
+    },
+    "common": {
+      "back_to_login": "Volver al inicio"
+    },
+    "forgot": {
+      "title": "Recuperar acceso",
+      "subtitle": "Introduce tu correo y te enviaremos un enlace para recuperar el acceso.",
+      "field": {
+        "email": "Correo electrónico",
+        "email_placeholder": "tu@email.es"
+      },
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "sent": {
+        "title": "Revisa tu bandeja de entrada",
+        "lead": "Si ese correo está registrado, recibirás el enlace en breve.",
+        "spam_hint": "Comprueba también la carpeta de spam."
+      },
+      "recaptcha": "Protegido por reCAPTCHA",
+      "recaptcha_privacy": "Privacidad",
+      "recaptcha_terms": "Condiciones",
+      "validation": {
+        "email_required": "Introduce tu correo electrónico",
+        "email_format": "El formato del correo no es válido"
+      },
+      "error": {
+        "validation": "Revisa el correo e inténtalo de nuevo.",
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "generic": "No pudimos enviar el enlace. Inténtalo más tarde."
+      }
+    },
+    "reset": {
+      "title": "Nueva contraseña",
+      "subtitle": "Elige una contraseña segura. Debe tener al menos 8 caracteres.",
+      "field": {
+        "new_password": "Nueva contraseña",
+        "confirm_password": "Confirmar contraseña",
+        "password_placeholder": "••••••••"
+      },
+      "submit": "Guardar contraseña",
+      "submitting": "Guardando…",
+      "done": {
+        "title": "Contraseña guardada",
+        "subtitle": "Tu contraseña ha sido actualizada correctamente. Ya puedes acceder con tus nuevas credenciales.",
+        "login_cta": "Iniciar sesión"
+      },
+      "invalid": {
+        "title": "Enlace no válido",
+        "subtitle": "Este enlace ha expirado o ya fue utilizado. Puedes solicitar uno nuevo desde el inicio de sesión.",
+        "request_new": "Solicitar nuevo enlace"
+      },
+      "validation": {
+        "new_password_required": "Introduce tu nueva contraseña",
+        "new_password_min": "La contraseña debe tener al menos 8 caracteres",
+        "new_password_whitespace": "La contraseña no puede estar formada solo por espacios",
+        "confirm_required": "Confirma tu contraseña",
+        "password_mismatch": "Las contraseñas no coinciden"
+      },
+      "error": {
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "generic": "No pudimos guardar la contraseña. Inténtalo más tarde."
+      }
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Regístrate para publicar y solicitar objetos en tu zona.",
+      "field": {
+        "first_name": "Nombre",
+        "first_name_placeholder": "Tu nombre",
+        "last_name": "Apellidos",
+        "last_name_placeholder": "Tus apellidos",
+        "email": "Correo electrónico",
+        "email_placeholder": "tu@email.es",
+        "password": "Contraseña",
+        "password_placeholder": "••••••••",
+        "postal_code": "Código postal",
+        "postal_placeholder": "28001",
+        "phone": "Teléfono (opcional)",
+        "phone_placeholder": "+34 600 000 000"
+      },
+      "submit": "Crear cuenta",
+      "submitting": "Creando cuenta…",
+      "recaptcha": "Protegido por reCAPTCHA",
+      "recaptcha_privacy": "Privacidad",
+      "recaptcha_terms": "Condiciones",
+      "footer": "¿Ya tienes cuenta?",
+      "login_link": "Iniciar sesión",
+      "inline_login_link": "Iniciar sesión",
+      "validation": {
+        "first_name_required": "Introduce tu nombre",
+        "first_name_min": "Mínimo 2 caracteres",
+        "last_name_required": "Introduce tus apellidos",
+        "last_name_min": "Mínimo 2 caracteres",
+        "email_required": "Introduce tu correo electrónico",
+        "email_format": "El formato del correo no es válido",
+        "password_required": "Introduce tu contraseña",
+        "password_min": "Mínimo 8 caracteres",
+        "postal_required": "Introduce tu código postal",
+        "postal_format": "El código postal debe tener 5 dígitos",
+        "postal_helper": "Para mostrarte objetos a menos de 50 km"
+      },
+      "error": {
+        "409": "No pudimos crear la cuenta con este correo. ¿Ya tienes cuenta?",
+        "422": "No pudimos verificar que eres humano. Inténtalo de nuevo.",
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "postal_invalid": "Código postal no válido o no encontrado",
+        "form_invalid": "Revisa los datos del formulario.",
+        "generic": "No pudimos completar el registro. Inténtalo más tarde.",
+        "field_invalid": "Valor no válido",
+        "recaptcha_unavailable": "La verificación de seguridad no está disponible. Recarga la página."
+      }
+    },
+    "verifyEmail": {
+      "loading_title": "Verificando tu correo…",
+      "loading_lead": "Espera un momento mientras confirmamos tu enlace.",
+      "error": {
+        "invalid_title": "Enlace no válido",
+        "connection_title": "Error de conexión",
+        "generic_title": "No se pudo verificar",
+        "invalid": "El enlace no es válido o ha expirado.",
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "generic": "No pudimos verificar tu correo. Inténtalo más tarde."
+      },
+      "cta_resend": "Solicitar nuevo enlace"
+    },
+    "verificationPending": {
+      "title": "Verifica tu correo electrónico",
+      "lead": "Te hemos enviado un enlace de verificación. Revisa tu bandeja de entrada (y la carpeta de spam).",
+      "resend_btn": "Reenviar email de verificación",
+      "resend_btn_cooldown": "Reenviar email ({{ seconds }}s)",
+      "already_verified_title": "Tu email ya está verificado",
+      "already_verified_lead": "Ya puedes iniciar sesión con tu cuenta.",
+      "already_verified_cta": "Ir a iniciar sesión",
+      "error": {
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "generic": "No pudimos enviar el correo. Inténtalo más tarde."
+      }
+    }
+  },
+  "onboarding": {
+    "chrome": {
+      "progress_aria": "Progreso del onboarding",
+      "skip": "Omitir",
+      "prev": "Anterior",
+      "next": "Siguiente"
+    },
+    "slide0": {
+      "kicker": "Regálalo, lo regalo",
+      "title_line1": "No somos un marketplace.",
+      "title_em": "Somos algo diferente.",
+      "body": "Una comunidad de redistribución donde los objetos encuentran nuevo dueño sin dinero, sin subastas, sin compradores. Solo comunidad y reputación."
+    },
+    "slide1": {
+      "kicker": "Cómo participas",
+      "title_line1": "Dos formas de contribuir.",
+      "title_em": "Sin roles fijos.",
+      "donate_title": "Donar",
+      "donate_sub": "Tienes un objeto que ya no usas. Lo publicas y eliges quién se lo lleva.",
+      "donate_li1": "Publicas con título, descripción y fotos",
+      "donate_li2": "Te mostramos los candidatos ordenados por reputación",
+      "donate_li3": "Tú decides quién se lo lleva",
+      "receive_title": "Recibir",
+      "receive_sub": "Ves algo que te interesa. Solicitas y valoramos tu candidatura.",
+      "receive_li1": "Solicitas objetos dentro de 50 km",
+      "receive_li2": "Tu reputación y cercanía afectan tu puesto en la lista",
+      "receive_li3": "El donante confirma la entrega"
+    },
+    "slide2": {
+      "kicker": "Reputación",
+      "title_line1": "Tu historial",
+      "title_em": "cuenta en la lista.",
+      "body": "Tu puesto en la lista refleja cómo participas. Cuanto más aportas a la comunidad, más posibilidades tienes. No hay atajos.",
+      "delta_first_donation": "tu primera donación completada",
+      "delta_next_donation": "cada donación siguiente",
+      "delta_receive": "por recibir un objeto",
+      "delta_absent": "si no te presentas a recoger (en siguientes veces se restan un poco más, hasta que completes una entrega)",
+      "ring_caption": "puntos al inicio",
+      "ring_note": "Los puntos pueden quedar por debajo de cero, pero siempre puedes recuperarlos donando o recibiendo con éxito."
+    },
+    "slide3": {
+      "kicker": "Límites justos",
+      "title_prefix": "Máximo",
+      "title_accent": "3 solicitudes",
+      "title_suffix": "cada 30 días.",
+      "body": "Así mantenemos el equilibrio entre quien da y quien recibe. Las solicitudes se cuentan en los últimos 30 días.",
+      "check1": "Quien dona con frecuencia aparece más arriba en la lista",
+      "check2": "Si solo recibes durante mucho tiempo, los donantes te verán menos al elegir",
+      "check3": "El equilibrio se cuida con límites, no con reglas duras"
+    },
+    "slide4": {
+      "kicker": "Radio geográfico",
+      "title_line1": "Objetos a menos de",
+      "title_km": "50 km",
+      "body": "Solo verás objetos cerca de tu código postal. Así la comunidad sigue siendo de tu zona.",
+      "cta": "Empezar a explorar",
+      "note": "Tu código postal ya fue guardado en el registro."
+    }
+  },
+  "items": {
+    "publish": {
+      "step1_title": "¿Qué regalas?",
+      "step2_title": "Añade fotos",
+      "step3_title": "Revisa y publica",
+      "step_indicator": "Paso {{current}} de {{total}}",
+      "field_title": "Título",
+      "field_description": "Descripción",
+      "field_postal_code": "Código postal del objeto",
+      "field_condition": "Condición",
+      "field_category": "Categoría",
+      "field_weight_range": "Peso aproximado",
+      "placeholder_category": "Selecciona una categoría",
+      "placeholder_weight_range": "Selecciona un rango",
+      "placeholder_title": "Ej: Bicicleta de montaña Scott",
+      "placeholder_description": "Describe el estado, tamaño, cómo se recoge...",
+      "placeholder_postal": "28001",
+      "condition_new": "A estrenar",
+      "condition_like_new": "Como nuevo",
+      "condition_good": "Buen estado",
+      "condition_fair": "Aceptable",
+      "photos_intro": "Añade hasta 5 fotos. La primera será la principal. Las imágenes se comprimen automáticamente.",
+      "review_notice": "Revisa los datos antes de publicar. El objeto será visible en el tablón inmediatamente.",
+      "review_photos_label": "Fotos",
+      "photo_one": "foto",
+      "photo_many": "fotos",
+      "success_hint": "Después de publicar puedes pausar solicitudes o cancelar el objeto desde Mis objetos.",
+      "btn_continue": "Continuar",
+      "btn_back": "Atrás",
+      "btn_publish": "Publicar objeto",
+      "btn_publishing": "Publicando…",
+      "validation": {
+        "title_required": "El título es obligatorio",
+        "title_max": "El título no puede superar 100 caracteres",
+        "description_required": "La descripción es obligatoria",
+        "description_max": "La descripción no puede superar 1000 caracteres",
+        "postal_required": "Introduce el código postal del objeto",
+        "postal_format": "El código postal debe tener 5 dígitos",
+        "category_required": "Elige una categoría",
+        "weight_range_required": "Elige un rango de peso"
+      },
+      "errors": {
+        "photos_required": "Añade al menos una foto.",
+        "generic": "No se pudo publicar. Revisa los datos e inténtalo de nuevo.",
+        "connection": "Error de conexión. Inténtalo de nuevo.",
+        "field_invalid": "Valor no válido",
+        "field_title": "Revisa el título",
+        "field_description": "Revisa la descripción",
+        "field_condition": "Revisa la condición",
+        "field_category": "Revisa la categoría",
+        "field_weight_range": "Revisa el rango de peso",
+        "field_postal_code": "Código postal no válido o no encontrado",
+        "field_images": "Revisa las imágenes"
+      },
+      "success": {
+        "title": "Objeto publicado"
+      },
+      "share": {
+        "title": "¡Objeto publicado!",
+        "subtitle": "Ya es visible en el tablón. ¿Lo compartes con tus contactos?",
+        "message": "Acabo de publicar algo para regalar en Regálalo: {{title}}",
+        "whatsapp": "Compartir en WhatsApp",
+        "facebook": "Compartir en Facebook",
+        "twitter": "Compartir en X",
+        "go_my_items": "Ir a mis objetos"
+      }
+    },
+    "category": {
+      "furniture": "Muebles",
+      "electronics": "Electrónica",
+      "clothing": "Ropa y calzado",
+      "books": "Libros y material educativo",
+      "toys": "Juguetes",
+      "kitchen": "Cocina y hogar",
+      "sports": "Deporte y ocio",
+      "tools": "Herramientas",
+      "other": "Otro"
+    },
+    "weight_range": {
+      "lt1": "Menos de 1 kg",
+      "1to5": "Entre 1 y 5 kg",
+      "5to20": "Entre 5 y 20 kg",
+      "gt20": "Más de 20 kg"
+    },
+    "explore": {
+      "title": "Tablón",
+      "subtitle": "{{count}} objetos cerca de ti · radio 50 km",
+      "subtitle_one": "1 objeto cerca de ti · radio 50 km",
+      "search_placeholder": "Buscar objetos…",
+      "search_clear": "Borrar búsqueda",
+      "filters_label": "Filtrar por condición",
+      "category_filters_label": "Filtrar por categoría",
+      "filter_all": "Todos",
+      "filter_category_all": "Todas las categorías",
+      "empty_filter_body": "No hay objetos disponibles con ese filtro cerca de ti.",
+      "distance_km": "{{km}} km",
+      "degraded_badge": "lleva tiempo aquí",
+      "empty_title": "Nada por aquí todavía",
+      "empty_body": "No hay objetos disponibles cerca de ti en este momento.",
+      "empty_cta": "Publicar un objeto",
+      "load_more": "Cargar más",
+      "loading": "Cargando objetos…",
+      "image_alt": "Foto de {{title}}",
+      "errors": {
+        "load_failed": "No se pudieron cargar los objetos.",
+        "retry": "Reintentar"
+      },
+      "meta": {
+        "title": "Explorar objetos gratuitos · Regálalo",
+        "description": "Explora objetos gratuitos cerca de ti. Filtra por categoría y estado, encuentra lo que necesitas y solícitalo sin dinero. Donación comunitaria en tu zona."
+      },
+      "seo": {
+        "breadcrumb_home": "Inicio",
+        "breadcrumb_page": "Explorar"
+      }
+    },
+    "detail": {
+      "back": "Volver al listado",
+      "close": "Cerrar detalle",
+      "section_description": "Descripción",
+      "section_donor_manage": "Gestión del objeto",
+      "section_request": "Solicitar objeto",
+      "share_object": "Compartir objeto",
+      "request_item": "Solicitar objeto",
+      "edit_item": "Editar objeto",
+      "pause_subtitle": "Pausa nuevas solicitudes",
+      "stat_requests": "Solicitudes",
+      "stat_published": "Publicado",
+      "view_candidates": "Ver candidatos ({{count}})",
+      "hide_candidates": "Ocultar candidatos",
+      "candidates_title": "Candidatos",
+      "candidates_ranked_hint": "Ordenados por reputación",
+      "candidates_empty": "Sin solicitudes todavía.",
+      "receiver_paused_notice": "Las solicitudes están temporalmente pausadas por el donante.",
+      "donor_anonymous": "Donante anónimo",
+      "status_active": "Disponible",
+      "status_reserved": "Reservado",
+      "status_completed": "Completado",
+      "status_cancelled": "Cancelado",
+      "status_degraded": "Publicado hace tiempo",
+      "status_paused": "pausado",
+      "published_days_ago": "publicado hace {{days}} días",
+      "days_ago": "hace {{days}} días",
+      "photo_of": "Foto {{current}} de {{total}}",
+      "gallery_prev": "Foto anterior",
+      "gallery_next": "Foto siguiente",
+      "gallery_thumbs": "Miniaturas de fotos",
+      "gallery_thumb": "Foto {{n}}",
+      "donor_label": "Donante",
+      "manage_in_my_items": "Gestionar candidatos en Mis objetos",
+      "reputation_good": "Mucha participación",
+      "reputation_fair": "Participación regular",
+      "reputation_low": "Poca participación aún",
+      "degraded_notice": "Este objeto lleva un tiempo publicado. El donante aún puede elegir receptor.",
+      "cta_interested": "Me interesa",
+      "cta_paused_title": "Solicitudes pausadas",
+      "cta_paused_body": "El donante ha pausado nuevas solicitudes temporalmente.",
+      "cta_unavailable": "No disponible para solicitar",
+      "donor_manage_hint": "Gestiona este objeto desde Mis objetos.",
+      "not_found_title": "Objeto no encontrado",
+      "not_found_body": "Puede que se haya cancelado o ya no esté disponible.",
+      "loading": "Cargando objeto…",
+      "errors": {
+        "load_failed": "No se pudo cargar el objeto.",
+        "retry": "Reintentar"
+      },
+      "gone": {
+        "title": "Este objeto ya no está disponible",
+        "body": "El objeto que buscas ya fue retirado permanentemente.",
+        "back_link": "Ver objetos disponibles"
+      },
+      "meta": {
+        "title_suffix": "· Regálalo"
+      },
+      "seo": {
+        "breadcrumb_home": "Inicio",
+        "breadcrumb_explore": "Explorar"
+      }
+    },
+    "share": {
+      "title": "Compartir",
+      "open": "Compartir",
+      "close": "Cerrar",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "network_whatsapp": "WhatsApp",
+      "network_facebook": "Facebook",
+      "network_twitter": "X / Twitter",
+      "default_text": "Descubre Regálalo: regala y recibe objetos gratis en tu comunidad.",
+      "item_text": "¡Regalan esto en Regálalo: {{title}}! ¿Lo necesitas?"
+    },
+    "request": {
+      "contact_sheet": {
+        "title": "¿Cómo puede contactarte el donante?",
+        "subtitle": "Si te seleccionan, el donante usará este dato para coordinarse contigo.",
+        "cta_submit": "Enviar solicitud",
+        "cta_cancel": "Cancelar"
+      },
+      "contact_step": {
+        "title": "Deja tu contacto",
+        "lead_before": "El donante ",
+        "lead_emphasis": "solo lo verá si te elige",
+        "lead_after": ". No se muestra a nadie más ni aparece en el tablón.",
+        "back": "Volver",
+        "submit": "Enviar solicitud"
+      },
+      "contact_channel": {
+        "label": "Tu canal de contacto",
+        "placeholder": "Ej: WhatsApp +34 600 000 000, Telegram @usuario...",
+        "hint": "Puedes escribir lo que prefieras: número, usuario, app, etc.",
+        "error": {
+          "required": "Introduce tu canal de contacto para continuar"
+        }
+      },
+      "slots_remaining_lead": "Te quedan ",
+      "slots_remaining_tail": " este mes",
+      "slot_label_one": "turno",
+      "slot_label_other": "turnos",
+      "slots_confirm_use": "Usarás ",
+      "slots_confirm_of_one": " de tu ",
+      "slots_confirm_of_other": " de tus ",
+      "slots_confirm_slot_one": "turno restante del mes.",
+      "slots_confirm_slot_other": "turnos restantes del mes.",
+      "dialog_title": "Confirmar interés",
+      "dialog_body": "Si el donante te elige, verás su canal de contacto aquí mismo. Valoramos tu reputación, cercanía y antigüedad de la solicitud.",
+      "confirm": "Confirmar interés",
+      "confirming": "Enviando…",
+      "dismiss": "Cancelar",
+      "pending_title": "Solicitud enviada",
+      "pending_body": "Estás en el ranking. Si el donante te elige, le compartiremos tu canal de contacto.",
+      "pending_contact_label": "Tu canal de contacto",
+      "pending_contact_edit": "Editar",
+      "pending_step_sent": "Solicitud enviada",
+      "pending_step_waiting": "Esperando decisión",
+      "pending_step_contact": "Contacto recibido",
+      "limit_title": "Has agotado tus turnos",
+      "errors": {
+        "own_item": "No puedes solicitar tu propio objeto",
+        "duplicate": "Ya tienes una solicitud activa para este objeto",
+        "limit_reached": "Has alcanzado el límite de 3 solicitudes activas. Espera a que alguna se resuelva.",
+        "paused": "El donante ha pausado temporalmente las solicitudes de este objeto",
+        "generic": "No se pudo enviar la solicitud. Inténtalo de nuevo.",
+        "connection": "Error de conexión. Comprueba tu red."
+      }
+    },
+    "cancel": {
+      "dialog_title": "Cancelar objeto",
+      "dialog_body": "El objeto dejará de aparecer en el tablón. No tiene consecuencias en tu reputación.",
+      "dialog_title_with_session": "Cancelar objeto y entrega",
+      "dialog_body_with_session": "Se cancelará la entrega en curso y el objeto dejará de aparecer en el tablón. El receptor será notificado. Esta acción no se puede deshacer.",
+      "confirm": "Cancelar objeto",
+      "confirming": "Cancelando…",
+      "dismiss": "Volver",
+      "trigger": "Cancelar objeto",
+      "success": "Objeto cancelado correctamente",
+      "errors": {
+        "forbidden": "No puedes cancelar este objeto",
+        "not_found": "El objeto ya no está disponible",
+        "generic": "No se pudo cancelar el objeto. Inténtalo de nuevo.",
+        "connection": "Error de conexión. Comprueba tu red."
+      }
+    },
+    "image_picker": {
+      "add": "Añadir",
+      "main": "Principal",
+      "photo_n": "Foto {{n}}",
+      "remove": "Eliminar foto",
+      "processing": "Procesando…",
+      "format_invalid": "Formato no compatible. Usa JPG, PNG o WebP.",
+      "too_large": "La imagen supera el límite de 2 MB después de comprimir.",
+      "max_reached": "Máximo 5 fotos por objeto.",
+      "hint": "Formatos: JPG, PNG, WEBP · Máx. 2 MB por imagen · Se comprimen automáticamente"
+    },
+    "my_objects": {
+      "subtitle": "Gestiona todo lo que has publicado para regalar.",
+      "publish_cta": "Publicar objeto",
+      "loading": "Cargando tus objetos…",
+      "tabs_label": "Filtrar por estado",
+      "tabs": {
+        "all": "Todos",
+        "active": "Activos",
+        "reserved": "Reservados",
+        "completed": "Completados",
+        "cancelled": "Cancelados"
+      },
+      "status_active": "Activo",
+      "status_reserved": "Reservado",
+      "status_completed": "Completado",
+      "status_cancelled": "Cancelado",
+      "status_degraded": "Publicado hace tiempo",
+      "status_paused": "Pausado",
+      "photo_count": "{{count}} fotos",
+      "photo_count_one": "1 foto",
+      "empty_title": "Nada aquí de momento",
+      "empty_body": "Cuando publiques un objeto para regalar, aparecerá aquí.",
+      "empty_cta": "Publicar objeto",
+      "list_count": "{{count}} objetos",
+      "list_count_one": "1 objeto",
+      "select_hint": "Selecciona un objeto para ver los candidatos y gestionar la entrega",
+      "close_detail": "Cerrar detalle",
+      "days_today": "hoy",
+      "days_yesterday": "ayer",
+      "days_ago": "hace {{days}}d",
+      "no_requests_yet": "Sin solicitudes aún",
+      "requests_count_one": "1 solicitud",
+      "requests_count": "{{count}} solicitudes",
+      "session_expires": "Expira el {{date}}",
+      "candidates_title": "Candidatos",
+      "candidates_loading": "Cargando candidatos…",
+      "candidates_empty": "Todavía no hay solicitudes. El objeto es visible en el tablón.",
+      "best_candidate": "Mejor candidato",
+      "select": "Seleccionar",
+      "select_candidate": "Seleccionar candidato en posición {{rank}}",
+      "select_disabled_paused": "Selección no disponible: solicitudes pausadas",
+      "close_modal": "Cerrar",
+      "select_modal_title": "Seleccionar receptor",
+      "select_modal_lead": "El receptor verá tu canal de contacto al ser seleccionado. Empieza el plazo de 7 días.",
+      "select_channel_label": "Canal de contacto",
+      "select_channel_type_whatsapp": "WhatsApp",
+      "select_channel_type_phone": "Teléfono",
+      "select_channel_type_telegram": "Telegram",
+      "select_channel_type_email": "Email",
+      "select_channel_placeholder_whatsapp": "+34 612 345 678",
+      "select_channel_placeholder_phone": "+34 900 000 000",
+      "select_channel_placeholder_telegram": "tu_usuario",
+      "select_channel_placeholder_email": "tu@email.com",
+      "select_channel_required": "Introduce un canal de contacto.",
+      "select_legal_warning": "Si cancelas la sesión antes del plazo, el canal de contacto no quedará visible para el receptor.",
+      "select_confirm": "Confirmar selección",
+      "select_confirming": "Confirmando…",
+      "select_cancel": "Cancelar",
+      "select_score_points": "puntos",
+      "select_success": "Receptor seleccionado. Sesión {{sessionId}} · plazo hasta el {{date}}.",
+      "select_success_link": "Ver sesión de entrega",
+      "select_errors": {
+        "validation": "Revisa el canal de contacto e inténtalo de nuevo.",
+        "forbidden": "No tienes permiso para seleccionar este candidato.",
+        "not_found": "El objeto o la solicitud ya no están disponibles.",
+        "conflict_pending": "Esta solicitud ya no está pendiente.",
+        "conflict_active": "El objeto ya no está activo.",
+        "conflict_generic": "No se pudo completar la selección por un conflicto.",
+        "generic": "No se pudo seleccionar al receptor. Inténtalo de nuevo."
+      },
+      "reserved_session_title": "Sesión de entrega activa",
+      "reserved_session_body": "Plazo de 7 días · expira el {{date}}",
+      "reserved_session_body_lead": "Plazo de 7 días · expira el ",
+      "reserved_receiver_label": "Receptor seleccionado",
+      "reserved_contact_label": "Canal de contacto facilitado al receptor",
+      "confirm_delivery": {
+        "action": "Confirmar entrega realizada",
+        "title": "¿Confirmar entrega?",
+        "body_lead": "Al confirmar, la sesión se cerrará y ambas reputaciones se actualizarán. Tú recibirás ",
+        "body_points": "+10 puntos",
+        "body_points_first": "+15 puntos",
+        "body_tail": ".",
+        "dismiss": "Cancelar",
+        "confirm": "Confirmar entrega",
+        "confirming": "Confirmando…"
+      },
+      "cancel_session": {
+        "action": "Cancelar sesión",
+        "title": "Cancelar sesión de entrega",
+        "body": "El objeto volverá a estado activo y quedará disponible en el tablón para nuevas solicitudes.",
+        "no_show_title": "El receptor no se presentó",
+        "no_show_body": "Indica que no vino a recoger el objeto. Puede afectar su puesto en futuras listas.",
+        "no_show_confirm": "Confirmar ausencia y cancelar",
+        "dismiss": "Volver",
+        "confirm": "Cancelar sesión",
+        "confirming": "Cancelando…"
+      },
+      "delivery_errors": {
+        "generic": "No se pudo completar la acción. Inténtalo de nuevo."
+      },
+      "closed_completed_title": "Entrega completada",
+      "closed_completed_body": "¡Gracias por contribuir a la comunidad! Tu reputación ha aumentado.",
+      "closed_cancelled_title": "Objeto cancelado",
+      "closed_cancelled_body": "Este objeto fue cancelado y ya no es visible en el tablón.",
+      "errors": {
+        "load_failed": "No se pudieron cargar tus objetos.",
+        "candidates_load_failed": "No se pudieron cargar las solicitudes. Inténtalo de nuevo.",
+        "candidates_forbidden": "No tienes permiso para ver las solicitudes de este objeto.",
+        "select_refresh_failed": "Receptor seleccionado, pero no se pudo actualizar la vista. Recarga la página o inténtalo de nuevo."
+      }
+    },
+    "pause": {
+      "title": "Pausar solicitudes",
+      "subtitle_active": "Aceptando nuevas solicitudes",
+      "subtitle_paused": "No se admiten nuevas solicitudes",
+      "banner_paused": "Las solicitudes están pausadas. Reactívalas para que nuevos receptores puedan interesarse.",
+      "list_suffix": "· pausadas",
+      "not_available": "La gestión de pausa no está disponible en este estado.",
+      "errors": {
+        "forbidden": "No puedes cambiar la pausa de este objeto",
+        "not_found": "El objeto ya no está disponible",
+        "not_active": "Solo puedes pausar objetos activos",
+        "generic": "No se pudo actualizar la pausa. Inténtalo de nuevo.",
+        "connection": "Error de conexión. Comprueba tu red."
+      }
+    }
+  },
+  "delivery": {
+    "list": {
+      "title": "Entregas",
+      "subtitle": "Sigue el estado de tus sesiones de entrega activas e históricas.",
+      "tabs_label": "Rol en la entrega",
+      "tab_donor": "Como donante",
+      "tab_receiver": "Como receptor",
+      "loading": "Cargando sesiones…",
+      "section_active": "Activas",
+      "section_history": "Historial",
+      "empty_title": "Sin entregas aquí",
+      "empty_body": "Cuando se active una sesión de entrega, aparecerá aquí con toda la información.",
+      "select_hint": "Selecciona una sesión para ver los detalles",
+      "close_detail": "Cerrar detalle de sesión",
+      "count_one": "1 sesión",
+      "count": "{{count}} sesiones",
+      "deadline_last_day": "Último día",
+      "deadline_days": "{{days}}d",
+      "row_as_donor": "{{title}}, sesión como donante",
+      "row_as_receiver": "{{title}}, sesión como receptor",
+      "errors": {
+        "load_failed": "No se pudieron cargar tus sesiones de entrega."
+      }
+    },
+    "detail": {
+      "back": "Volver a entregas",
+      "loading": "Cargando sesión…",
+      "role_donor": "Como donante",
+      "role_receiver": "Como receptor",
+      "status_active": "Activa",
+      "status_completed": "Completada",
+      "status_cancelled": "Cancelada",
+      "status_expired": "Expirada",
+      "deadline_last_day": "Último día",
+      "deadline_one_day": "1 día restante",
+      "deadline_days": "{{days}} días restantes",
+      "deadline_unknown": "Plazo de entrega",
+      "deadline_expires": "· vence el {{date}}",
+      "other_receiver": "Receptor seleccionado",
+      "other_donor": "Donante",
+      "distance_away": "{{km}} km de distancia",
+      "channel_receiver_label": "Canal de contacto del donante",
+      "channel_shared_label": "Canal facilitado al receptor",
+      "channel_shared_hint": "Solo visible durante la sesión activa.",
+      "receiver_contact_channel_label": "Cómo contactar al receptor",
+      "channel_unavailable": "Canal no disponible",
+      "expired_title": "Sesión expirada",
+      "expired_body": "El plazo venció sin confirmación. El objeto ha vuelto al tablón.",
+      "completed_donor": "Entrega completada · +10 puntos de reputación",
+      "completed_donor_lead": "Entrega completada · ",
+      "completed_donor_points": "+10 puntos",
+      "completed_donor_tail": " de reputación",
+      "completed_receiver": "¡Entrega completada con éxito!",
+      "cancelled_no_show_title": "Ausencia registrada",
+      "cancelled_no_show_body": "Si no se presentó, en futuras listas puede aparecer más abajo.",
+      "receiver_deadline_hint": "El plazo es estricto. Si vence sin confirmación del donante, la sesión expirará automáticamente sin afectar tu reputación.",
+      "steps_title": "Estado de la sesión",
+      "step_donor_selected": "Receptor seleccionado",
+      "step_donor_active": "Sesión activa — en espera de entrega",
+      "step_donor_completed": "Entrega confirmada",
+      "step_receiver_selected": "Seleccionado por el donante",
+      "step_receiver_contact": "Contacto recibido — coordina la entrega",
+      "step_receiver_completed": "Entrega completada",
+      "actions": {
+        "confirm": "Confirmar entrega realizada",
+        "cancel": "Cancelar sesión"
+      },
+      "errors": {
+        "title": "No se pudo cargar la sesión",
+        "back": "Volver",
+        "forbidden": "No tienes acceso a esta sesión de entrega.",
+        "not_found": "La sesión no existe o ya no está disponible.",
+        "load_failed": "No se pudo cargar la sesión. Inténtalo de nuevo.",
+        "confirm_conflict": "La sesión ya no está activa o la entrega ya fue confirmada.",
+        "cancel_conflict": "La sesión ya no está activa o ya fue cancelada.",
+        "cancel_invalid": "Los datos de cancelación no son válidos.",
+        "action_failed": "No se pudo completar la acción. Inténtalo de nuevo."
+      }
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Usamos cookies",
+      "description": "Usamos almacenamiento local necesario para el funcionamiento. Si lo aceptas, Google Analytics puede usar cookies de terceros. En registro y acceso puede usarse reCAPTCHA de Google."
+    },
+    "actions": {
+      "accept_all": "Aceptar todo",
+      "reject_non_essential": "Rechazar no esenciales",
+      "configure": "Configurar",
+      "save_preferences": "Guardar preferencias",
+      "reopen_preferences": "Configurar cookies"
+    },
+    "preferences": {
+      "title": "Preferencias de cookies",
+      "close": "Cerrar panel de preferencias de cookies",
+      "sections": {
+        "necessary": {
+          "title": "Cookies necesarias",
+          "description": "Almacenamiento local imprescindible (sesión, idioma, elección de cookies). reCAPTCHA de Google en formularios de acceso."
+        },
+        "analytics": {
+          "title": "Cookies de analítica",
+          "description": "Google Analytics 4 (Google). Cookies de terceros para uso agregado. Solo se carga si aceptas esta categoría."
+        },
+        "marketing": {
+          "title": "Cookies de marketing",
+          "description": "En la versión actual no instalamos cookies de marketing ni píxeles publicitarios."
+        },
+        "preferences": {
+          "title": "Cookies de preferencias",
+          "description": "En la versión actual no hay cookies ni almacenamiento opcional adicional bajo esta categoría."
+        }
+      }
+    }
+  },
+  "legal": {
+    "common": {
+      "eyebrow": "Documentos legales",
+      "contents": "Contenidos",
+      "meta": {
+        "updated_label": "Última actualización:",
+        "updated_date": "28 de mayo de 2026",
+        "effective_label": "Vigente desde el",
+        "effective_date": "28 de mayo de 2026"
+      },
+      "footer": {
+        "description": "Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.",
+        "contact_label": "Contacto",
+        "copy": "© 2026 Regálalo · Todos los derechos reservados",
+        "motto": "Todo lo que se da, vuelve."
+      },
+      "policy_version": "2026-05-28",
+      "policy_version_label": "Versión de política de cookies:"
+    },
+    "privacy": {
+      "title": "Política de privacidad",
+      "info": {
+        "part1": "Esta política explica qué datos personales recoge ",
+        "brand": "Regálalo",
+        "part2": ", con qué finalidad, durante cuánto tiempo los conservamos y qué derechos tienes sobre ellos. Nos ajustamos al ",
+        "rgpd": "Reglamento General de Protección de Datos (RGPD)",
+        "part3": " y a la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD)."
+      },
+      "toc": {
+        "controller": "Responsable del tratamiento",
+        "data": "Datos que recogemos",
+        "purpose": "Finalidad y base legal",
+        "retention": "Conservación de datos",
+        "recipients": "Destinatarios y transferencias",
+        "rights": "Tus derechos",
+        "minors": "Menores de edad",
+        "changes": "Cambios en esta política",
+        "contact": "Contacto"
+      },
+      "sections": {
+        "controller": {
+          "title": "Responsable del tratamiento",
+          "rows": {
+            "company_label": "Denominación social",
+            "company_value": "Regálalo S.L. (en constitución)",
+            "address_label": "Domicilio",
+            "address_value": "España (MVP — mercado español)",
+            "email_label": "Correo electrónico de contacto",
+            "email_value": "privacidad@regalalo.org"
+          }
+        },
+        "data": {
+          "title": "Datos que recogemos",
+          "intro": "Recogemos únicamente los datos necesarios para que la plataforma funcione. A continuación se detallan las categorías de datos y su origen.",
+          "table": {
+            "headers": {
+              "0": "Categoría",
+              "1": "Datos concretos",
+              "2": "Origen"
+            },
+            "rows": {
+              "0": {
+                "0": "Identificación",
+                "1": "Dirección de correo electrónico",
+                "2": "Proporcionado por el usuario al registrarse"
+              },
+              "1": {
+                "0": "Localización",
+                "1": "Código postal",
+                "2": "Proporcionado por el usuario en el perfil"
+              },
+              "2": {
+                "0": "Actividad",
+                "1": "Objetos publicados, solicitudes enviadas, sesiones de entrega, historial de reputación",
+                "2": "Generado por el uso de la plataforma"
+              },
+              "3": {
+                "0": "Imágenes",
+                "1": "Fotos de objetos publicados (máx. 5 por objeto)",
+                "2": "Subidas por el usuario al publicar un objeto"
+              },
+              "4": {
+                "0": "Canal de contacto",
+                "1": "Número de teléfono o email externo para coordinar la entrega",
+                "2": "Proporcionado por el donante al seleccionar receptor"
+              },
+              "5": {
+                "0": "Técnicos",
+                "1": "Dirección IP, tipo de navegador, timestamps de acceso",
+                "2": "Recogidos automáticamente en cada petición al servidor"
+              }
+            }
+          },
+          "not_collected_title": "Datos que no recogemos",
+          "not_collected_body": "No pedimos nombre completo, DNI, número de teléfono en el registro, ni ningún dato de categoría especial según el artículo 9 del RGPD (salud, origen étnico, religión, opiniones políticas, etc.)."
+        },
+        "purpose": {
+          "title": "Finalidad y base legal",
+          "table": {
+            "headers": {
+              "0": "Finalidad",
+              "1": "Base legal (RGPD art. 6)"
+            },
+            "rows": {
+              "0": {
+                "0": "Gestionar tu cuenta y autenticación",
+                "1": "Ejecución del contrato (art. 6.1.b)"
+              },
+              "1": {
+                "0": "Mostrar objetos dentro del radio geográfico de 50 km",
+                "1": "Ejecución del contrato (art. 6.1.b)"
+              },
+              "2": {
+                "0": "Calcular la reputación y el puesto en la lista de candidatos",
+                "1": "Ejecución del contrato (art. 6.1.b)"
+              },
+              "3": {
+                "0": "Enviar notificaciones por email relacionadas con tus objetos o solicitudes",
+                "1": "Ejecución del contrato (art. 6.1.b)"
+              },
+              "4": {
+                "0": "Detectar si alguien solo recibe sin aportar a la comunidad, para ajustar su visibilidad en la lista",
+                "1": "Interés legítimo (art. 6.1.f) — equilibrio de la comunidad"
+              },
+              "5": {
+                "0": "Prevención de fraude y seguridad técnica",
+                "1": "Interés legítimo (art. 6.1.f)"
+              }
+            }
+          },
+          "footer": "No usamos tus datos para publicidad, perfiles comerciales, ni los cedemos a terceros con fines de marketing."
+        },
+        "retention": {
+          "title": "Conservación de datos",
+          "intro": "Conservamos tus datos el tiempo mínimo necesario para cumplir la finalidad para la que fueron recogidos.",
+          "table": {
+            "headers": {
+              "0": "Dato",
+              "1": "Plazo de conservación"
+            },
+            "rows": {
+              "0": {
+                "0": "Cuenta y datos de perfil",
+                "1": "Mientras la cuenta esté activa. Tras solicitud de baja: 30 días para poder reactivarla, y eliminación definitiva transcurrido ese plazo"
+              },
+              "1": {
+                "0": "Imágenes de objetos completados o cancelados",
+                "1": "30 días desde el cambio de estado, después se eliminan automáticamente"
+              },
+              "2": {
+                "0": "Canal de contacto de la sesión de entrega",
+                "1": "Se purga (sobrescrito con NULL) a los 7 días de que la sesión alcance estado completada, cancelada o expirada"
+              },
+              "3": {
+                "0": "Logs técnicos (IP, timestamps)",
+                "1": "90 días"
+              },
+              "4": {
+                "0": "Historial de reputación",
+                "1": "Asociado a la cuenta activa; se elimina con la cuenta"
+              }
+            }
+          }
+        },
+        "recipients": {
+          "title": "Destinatarios y transferencias",
+          "intro": "No vendemos tus datos ni los compartimos con terceros con fines comerciales. Podemos compartirlos únicamente con proveedores de servicios que actúan como encargados del tratamiento y con quienes mantenemos los contratos de encargo exigidos por el RGPD.",
+          "table": {
+            "headers": {
+              "0": "Proveedor",
+              "1": "Servicio",
+              "2": "Ubicación"
+            },
+            "rows": {
+              "0": {
+                "0": "Proveedor de infraestructura cloud",
+                "1": "Alojamiento de la aplicación y base de datos",
+                "2": "Unión Europea"
+              },
+              "1": {
+                "0": "Proveedor de envío de emails transaccionales",
+                "1": "Notificaciones de la plataforma",
+                "2": "Unión Europea o con garantías equivalentes"
+              }
+            }
+          },
+          "footer": "No realizamos transferencias internacionales de datos fuera del Espacio Económico Europeo sin las garantías adecuadas previstas en el RGPD (arts. 44 a 49)."
+        },
+        "rights": {
+          "title": "Tus derechos",
+          "intro_before": "Como titular de los datos, puedes ejercer los siguientes derechos en cualquier momento escribiéndonos a ",
+          "intro_email": "privacidad@regalalo.org",
+          "intro_after": ". Responderemos en el plazo máximo de un mes.",
+          "cards": {
+            "0": {
+              "tag": "Art. 15",
+              "label": "Acceso",
+              "desc": "Saber qué datos tuyos tratamos y obtener una copia."
+            },
+            "1": {
+              "tag": "Art. 16",
+              "label": "Rectificación",
+              "desc": "Corregir datos inexactos o incompletos."
+            },
+            "2": {
+              "tag": "Art. 17",
+              "label": "Supresión",
+              "desc": "Solicitar que eliminemos tus datos (\"derecho al olvido\")."
+            },
+            "3": {
+              "tag": "Art. 18",
+              "label": "Limitación",
+              "desc": "Pedir que suspendamos el tratamiento mientras revisamos una reclamación."
+            },
+            "4": {
+              "tag": "Art. 20",
+              "label": "Portabilidad",
+              "desc": "Recibir tus datos en formato estructurado y legible por máquina."
+            },
+            "5": {
+              "tag": "Art. 21",
+              "label": "Oposición",
+              "desc": "Oponerte al tratamiento basado en interés legítimo."
+            }
+          },
+          "aepd_before": "Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la ",
+          "aepd_link": "Agencia Española de Protección de Datos (AEPD)",
+          "aepd_after": " en www.aepd.es."
+        },
+        "minors": {
+          "title": "Menores de edad",
+          "paragraphs": {
+            "0": "La plataforma está dirigida a personas mayores de 18 años. No recogemos conscientemente datos de menores. Si detectamos que un usuario es menor de 18 años, eliminaremos su cuenta y datos asociados.",
+            "1": "Si eres padre, madre o tutor y crees que un menor ha creado una cuenta, escríbenos a privacidad@regalalo.org."
+          }
+        },
+        "changes": {
+          "title": "Cambios en esta política",
+          "paragraphs": {
+            "0": "Podemos actualizar esta política cuando sea necesario por cambios normativos o de producto. Si los cambios son relevantes, te lo notificaremos por email con al menos 15 días de antelación. La fecha de \"última actualización\" en el encabezado refleja siempre la versión vigente.",
+            "1": "El uso continuado de la plataforma tras la entrada en vigor de los cambios implica su aceptación."
+          }
+        },
+        "contact": {
+          "title": "Contacto",
+          "intro": "Para cualquier consulta sobre esta política o para ejercer tus derechos, contacta con nosotros:",
+          "rows": {
+            "email_label": "Email de privacidad",
+            "email_value": "privacidad@regalalo.org",
+            "response_label": "Plazo de respuesta",
+            "response_value": "Máximo 30 días desde la recepción de tu solicitud"
+          }
+        }
+      }
+    },
+    "cookies": {
+      "title": "Política de cookies",
+      "info": {
+        "part1": "Esta política explica qué tecnologías de almacenamiento y qué servicios de terceros utiliza ",
+        "brand": "Regálalo",
+        "part2": ", para qué sirven y cómo puedes gestionarlas. Cumplimos con la ",
+        "lssi": "Ley 34/2002 de Servicios de la Sociedad de la Información (LSSI)",
+        "part3": " y el RGPD. En la versión actual no instalamos cookies HTTP propias (first-party); usamos almacenamiento local del navegador y, en su caso, cookies de proveedores externos."
+      },
+      "toc": {
+        "what": "Qué son las cookies",
+        "types": "Tipos de cookies que usamos",
+        "table": "Tabla de cookies",
+        "consent": "Consentimiento y banner",
+        "manage": "Gestionar tus preferencias",
+        "third_party": "Cookies de terceros",
+        "changes": "Cambios en esta política",
+        "contact": "Contacto"
+      },
+      "sections": {
+        "what": {
+          "title": "Qué son las cookies",
+          "paragraphs": {
+            "p0": "Las cookies son pequeños archivos que un sitio puede guardar en tu navegador. En Regálalo la sesión y la configuración esencial se guardan principalmente en almacenamiento local (localStorage), no mediante cookies con nombre propio.",
+            "p1_before": "Además de cookies, usamos ",
+            "p1_strong": "almacenamiento local (localStorage)",
+            "p1_after": " del navegador. Solo los servicios de terceros integrados (p. ej. Google Analytics o reCAPTCHA) pueden instalar cookies en tu dispositivo cuando corresponda."
+          }
+        },
+        "types": {
+          "title": "Tipos de cookies que usamos",
+          "footer": "No usamos cookies publicitarias propias ni píxeles de seguimiento entre sitios. La analítica opcional la presta Google.",
+          "cards": {
+            "necessary": {
+              "name": "Técnicas (estrictamente necesarias)",
+              "pill": "Siempre activas",
+              "desc": "Almacenamiento local imprescindible (sesión con token, idioma, registro de tu elección de cookies). En registro e inicio de sesión se carga reCAPTCHA de Google (antifraude). No requieren consentimiento de cookies opcionales según la LSSI para lo estrictamente necesario."
+            },
+            "analytics": {
+              "name": "Analíticas",
+              "pill": "Opcionales",
+              "desc": "Google Analytics 4 (Google). Puede instalar cookies de terceros (_ga, _gid, etc.) para medir el uso de forma agregada. El script solo se carga si aceptas esta categoría en el banner."
+            },
+            "preferences": {
+              "name": "Preferencias",
+              "pill": "Opcionales",
+              "desc": "Categoría reservada en el panel de consentimiento. En la versión actual no activamos cookies ni almacenamiento opcional adicional distinto de la analítica de Google."
+            },
+            "marketing": {
+              "name": "Marketing",
+              "pill": "Opcionales",
+              "desc": "Categoría disponible en el panel de preferencias para futuras funciones. En la versión actual no instalamos cookies de marketing ni píxeles publicitarios."
+            }
+          }
+        },
+        "table": {
+          "title": "Tecnologías de almacenamiento y cookies de terceros",
+          "intro": "Tabla de elementos reales en la versión actual. Las claves en localStorage no son cookies HTTP; las filas de Google solo aplican cuando el servicio correspondiente está activo.",
+          "headers": {
+            "0": "Nombre",
+            "1": "Tipo",
+            "2": "Finalidad",
+            "3": "Duración"
+          },
+          "rows": {
+            "0": {
+              "0": "rgl_auth_token",
+              "1": "localStorage (propio)",
+              "2": "Mantiene la sesión iniciada (token JWT en el navegador)",
+              "3": "Hasta cerrar sesión o caducar el token"
+            },
+            "1": {
+              "0": "rgl_cookie_consent_snapshot",
+              "1": "localStorage (propio)",
+              "2": "Guarda tu elección de consentimiento y evita mostrar el banner en cada visita",
+              "3": "Hasta que borres datos del sitio"
+            },
+            "2": {
+              "0": "rgl_locale",
+              "1": "localStorage (propio)",
+              "2": "Recuerda el idioma de la interfaz",
+              "3": "Hasta que borres datos del sitio"
+            },
+            "3": {
+              "0": "_ga / _gid (Google Analytics)",
+              "1": "Cookie de terceros",
+              "2": "Medición agregada del uso del sitio",
+              "3": "Solo si aceptas analítica; según política de Google"
+            },
+            "4": {
+              "0": "reCAPTCHA (Google)",
+              "1": "Cookie/script de terceros",
+              "2": "Protección antifraude en registro e inicio de sesión",
+              "3": "Según política de Google al usar esos formularios"
+            }
+          },
+          "footer": "Actualizamos esta tabla cuando cambien las integraciones. La fecha del encabezado refleja la versión vigente de esta política."
+        },
+        "consent": {
+          "title": "Consentimiento y banner",
+          "intro": "Al entrar verás un banner para gestionar la analítica opcional (Google Analytics). El almacenamiento local esencial y reCAPTCHA en acceso no dependen de ese banner, pero puedes revisar los detalles aquí.",
+          "preview_label": "Vista previa",
+          "preview_suffix": "— Así se ve el banner en la plataforma",
+          "banner_lead": "Privacidad y medición.",
+          "banner_body": " Usamos almacenamiento local necesario para que la plataforma funcione. Si lo aceptas, cargamos Google Analytics (cookies de terceros). En registro y acceso puede usarse reCAPTCHA de Google.",
+          "banner_accept": "Aceptar todas",
+          "banner_basic": "Solo las necesarias",
+          "banner_config": "Configurar",
+          "footer_before": "Si pulsas ",
+          "footer_strong": "Configurar",
+          "footer_mid": ", puedes activar o desactivar la analítica antes de confirmar. Tu elección se guarda en ",
+          "footer_cookie": "rgl_cookie_consent_snapshot",
+          "footer_after": " (localStorage)."
+        },
+        "manage": {
+          "title": "Gestionar tus preferencias",
+          "intro_before": "Puedes revisar y cambiar tus preferencias en cualquier momento desde la sección ",
+          "intro_strong": "Privacidad",
+          "intro_after": " de tu perfil o desde el pie de página legal. Las categorías opcionales (analítica, marketing y preferencias) están desactivadas por defecto.",
+          "toggles": {
+            "necessary": {
+              "name": "Cookies técnicas",
+              "desc": "Almacenamiento local de sesión, idioma y consentimiento; reCAPTCHA en acceso cuando usas esos formularios.",
+              "aria": "Siempre activas"
+            },
+            "analytics": {
+              "name": "Cookies analíticas",
+              "desc": "Google Analytics 4. Cookies de terceros solo si aceptas esta categoría.",
+              "aria": "Desactivadas por defecto"
+            },
+            "preferences": {
+              "name": "Cookies de preferencias",
+              "desc": "Sin cookies ni almacenamiento opcional adicional en la versión actual.",
+              "aria": "Desactivadas por defecto"
+            },
+            "marketing": {
+              "name": "Cookies de marketing",
+              "desc": "Sin cookies de marketing en la versión actual.",
+              "aria": "Desactivadas por defecto"
+            }
+          },
+          "browser_title": "Desde el navegador",
+          "browser_intro": "Puedes borrar cookies y datos del sitio desde tu navegador. Si bloqueas todo, la sesión o reCAPTCHA pueden dejar de funcionar.",
+          "browser_table": {
+            "headers": {
+              "0": "Navegador",
+              "1": "Dónde encontrar la configuración de cookies"
+            },
+            "rows": {
+              "0": {
+                "0": "Chrome",
+                "1": "Configuración → Privacidad y seguridad → Cookies y otros datos de sitios"
+              },
+              "1": {
+                "0": "Firefox",
+                "1": "Preferencias → Privacidad y seguridad → Cookies y datos del sitio"
+              },
+              "2": {
+                "0": "Safari",
+                "1": "Preferencias → Privacidad → Gestionar datos del sitio web"
+              },
+              "3": {
+                "0": "Edge",
+                "1": "Configuración → Privacidad, búsqueda y servicios → Cookies y permisos del sitio"
+              }
+            }
+          }
+        },
+        "third_party": {
+          "title": "Cookies de terceros",
+          "paragraphs": {
+            "p0_before": "En la versión actual de la plataforma ",
+            "p0_strong": "Google Analytics (opcional, con tu consentimiento) y Google reCAPTCHA v3",
+            "p0_after": " en formularios de registro y acceso. No usamos Meta Pixel ni otras redes publicitarias.",
+            "p1": "Las tipografías se cargan desde Google Fonts; en modo habitual no instalan cookies de seguimiento en tu navegador. Si añadimos otros proveedores con cookies propias, actualizaremos esta política y, si procede, pediremos consentimiento."
+          }
+        },
+        "changes": {
+          "title": "Cambios en esta política",
+          "paragraphs": {
+            "0": "Si cambiamos las integraciones de terceros o el uso de almacenamiento local, actualizaremos esta página y la fecha de «última actualización». Si afecta a opciones que ya habías aceptado (p. ej. analítica), mostraremos de nuevo el banner de consentimiento."
+          }
+        },
+        "contact": {
+          "title": "Contacto",
+          "intro": "Si tienes dudas sobre el uso de cookies en esta plataforma, escríbenos:",
+          "rows": {
+            "email_label": "Email de privacidad",
+            "email_value": "privacidad@regalalo.org",
+            "related_label": "Política relacionada",
+            "related_link": "Ver política de privacidad →"
+          }
+        }
+      }
+    }
+  },
+  "site_footer": {
+    "description": "Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.",
+    "share_label": "Compartir la app",
+    "share_whatsapp": "Compartir en WhatsApp",
+    "share_facebook": "Compartir en Facebook",
+    "share_twitter": "Compartir en X / Twitter",
+    "platform": {
+      "explore": "Explorar objetos",
+      "my_items": "Mis objetos",
+      "deliveries": "Entregas",
+      "reputation": "Cómo funciona tu reputación",
+      "profile": "Mi perfil"
+    },
+    "contact_label": "Contacto",
+    "copy": "© 2026 Regálalo · Todos los derechos reservados",
+    "motto": "Todo lo que se da, vuelve."
+  },
+  "nav": {
+    "explore": "Explorar",
+    "my_items": "Mis objetos",
+    "deliveries": "Entregas",
+    "profile": "Perfil",
+    "publish": "Publicar",
+    "publish_object": "Publicar objeto",
+    "menu": "Menú",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "publish_gated_aria": "Publicar — es necesario registrarse"
+  },
+  "language_selector": {
+    "aria_label": "Seleccionar idioma"
+  },
+  "reputation_guide": {
+    "header": {
+      "eyebrow": "Cómo funciona",
+      "title": "Tu reputación",
+      "lede_before": "Tu reputación cuenta lo que aportas a la comunidad. ",
+      "lede_strong": "Cuanto más das, más fácil es recibir.",
+      "lede_after": " Aquí te lo explicamos paso a paso: qué suma puntos, qué los resta y qué pasa con tu puesto en la lista cuando los donantes eligen a quién regalar."
+    },
+    "start": {
+      "strong": "Todo el mundo empieza en cero.",
+      "body": " No hace falta nada para entrar. Tu reputación sube cuando participas. Si te comprometes a recoger algo y no vas, los puntos pueden bajar —incluso quedar por debajo de cero—, pero siempre puedes recuperarlos donando o completando entregas."
+    },
+    "gain": {
+      "kicker": "Tu reputación sube",
+      "title": "Cómo ganar puntos",
+      "sub": "Participar es lo que te hace ganar reputación. Hay tres formas de sumar, y dar es siempre la que más cuenta.",
+      "cards": {
+        "first": {
+          "points": "+15",
+          "name": "Tu primera donación",
+          "desc": "La primera vez que entregas un objeto a alguien, recibes un empujón extra para empezar con buen pie.",
+          "tag": "Solo la primera vez"
+        },
+        "next": {
+          "points": "+10",
+          "name": "Cada donación siguiente",
+          "desc": "Cada vez que vuelves a regalar algo y la entrega se completa, tu reputación sube de nuevo.",
+          "tag": "Cada vez que donas"
+        },
+        "receive": {
+          "points": "+1",
+          "name": "Recibir un objeto",
+          "desc": "Cuando recoges algo que te han regalado y la entrega se completa, también sumas un punto.",
+          "tag": "Cada vez que recibes"
+        }
+      }
+    },
+    "lose": {
+      "kicker": "Cuándo bajan los puntos",
+      "title": "Cuándo bajan los puntos",
+      "sub_before": "Solo ocurre en una situación: ",
+      "sub_strong": "comprometerte a recoger un objeto y no presentarte.",
+      "sub_after": " Cuando alguien aparta algo para ti y no vas, esa persona se queda esperando. Si vuelve a ocurrir sin una entrega entre medias, cada vez se restan un poco más puntos.",
+      "first": {
+        "points": "−10",
+        "strong": "La primera vez que no te presentas",
+        "body": " a recoger un objeto, se restan 10 puntos."
+      },
+      "stairs": {
+        "caption": "Si ocurre otra vez antes de completar una entrega, cada vez se restan un poco más.",
+        "first": {
+          "order": "1.ª vez",
+          "points": "−10",
+          "note": "No te presentas a recoger."
+        },
+        "second": {
+          "order": "2.ª vez",
+          "points": "−20",
+          "note": "Vuelve a pasar sin haber completado ninguna entrega."
+        },
+        "third": {
+          "order": "3.ª vez",
+          "points": "−30",
+          "note": "Y así, un poco más en cada repetición, hasta que completes una entrega."
+        }
+      },
+      "reset": {
+        "strong": "Una entrega completada reinicia el contador.",
+        "body": " Cuando vuelves a donar o a recibir y confirmáis la entrega, vuelves a empezar. Si no te presentas otra vez, se restan 10 puntos —como la primera vez—, no más hasta que completes otra entrega."
+      }
+    },
+    "visibility": {
+      "kicker": "Tu puesto en la lista",
+      "title": "Qué pasa si no donas",
+      "sub_before": "Regálalo funciona porque la gente da y recibe. Si solo pides durante mucho tiempo y nunca regalas nada, poco a poco ",
+      "sub_strong": "los donantes te ven menos",
+      "sub_after": " cuando eligen a quién entregar.",
+      "stages": {
+        "one_month": {
+          "months": "1",
+          "unit": "mes pidiendo\nsin donar",
+          "headline": "Apareces más abajo en la lista",
+          "desc": "Cuando un donante mira quién ha pedido su objeto, sigues ahí, pero más abajo. Las personas que también dan a la comunidad aparecen por delante de ti."
+        },
+        "two_months": {
+          "months": "2",
+          "unit": "meses pidiendo\nsin donar",
+          "headline": "Tu solicitud no se muestra a los donantes",
+          "desc": "Si pasan dos meses y sigues sin regalar nada, tu solicitud deja de aparecer en la lista cuando los donantes eligen receptor."
+        }
+      },
+      "list": {
+        "giver": "Reparte y recibe",
+        "you_lower": "Tú · más abajo",
+        "invisible": "No en la lista del donante"
+      },
+      "restore": {
+        "strong": "Con una sola donación vuelves a la normalidad al instante.",
+        "body": " En cuanto regalas algo, vuelves a aparecer con normalidad para los donantes, sin importar cuánto tiempo llevaras sin haber donado."
+      }
+    },
+    "closing": {
+      "quote": "\"No lo vendo, lo regalo.\"",
+      "sub": "Da lo que no necesitas y tu reputación cuidará de ti."
+    },
+    "meta": {
+      "title": "Tu reputación en Regálalo — Sistema de puntos",
+      "description": "Aprende cómo funciona la reputación en Regálalo: cómo ganar puntos donando, qué pasa si no te presentas y cómo afecta tu historial a tu posición en la lista."
+    },
+    "seo": {
+      "breadcrumb_home": "Inicio",
+      "breadcrumb_page": "Tu reputación",
+      "faq": {
+        "q1": "¿Cómo se gana reputación en Regálalo?",
+        "a1": "Ganas +15 puntos por tu primera donación, +10 puntos por cada donación siguiente completada, y +1 punto cada vez que recibes un objeto y completas la recogida. Dar siempre suma más que recibir.",
+        "q2": "¿Cuándo bajan los puntos de reputación?",
+        "a2": "Los puntos bajan si te comprometes a recoger un objeto y no te presentas: −10 la primera vez, −20 la segunda, −30 la tercera y siguientes. Una entrega completada reinicia el contador.",
+        "q3": "¿Qué pasa si solo pido objetos pero nunca dono nada?",
+        "a3": "Después de un mes pidiendo sin donar, apareces más abajo en la lista. Después de dos meses, tu solicitud deja de mostrarse a los donantes. Una sola donación completada te devuelve a la normalidad al instante."
+      }
+    }
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "loading": "Cargando perfil…",
+    "member_since": "Miembro desde {{date}}",
+    "stats": {
+      "aria_label": "Métricas del perfil",
+      "reputation": "Reputación",
+      "donated": "Donados",
+      "received": "Recibidos",
+      "no_shows": "Sin acudir a recoger",
+      "consecutive": "{{n}} seguidas sin entrega entre medias"
+    },
+    "tabs": {
+      "aria_label": "Secciones del perfil",
+      "donations": "Donaciones",
+      "requests": "Solicitudes",
+      "reputation": "Reputación",
+      "settings": "Configuración",
+      "coming_soon_donations": "Próximamente — historial de donaciones",
+      "coming_soon_requests": "Próximamente — historial de solicitudes",
+      "coming_soon_reputation": "Próximamente — historial de reputación"
+    },
+    "account": {
+      "title": "Cuenta",
+      "email_label": "Correo electrónico",
+      "postal_label": "Código postal",
+      "phone_label": "Teléfono",
+      "phone_empty": "No indicado",
+      "language_label": "Idioma preferido",
+      "language": {
+        "es": "Español",
+        "ca": "Catalán",
+        "en": "Inglés"
+      },
+      "email_verified_label": "Correo verificado",
+      "email_verified_yes": "Verificado",
+      "email_verified_no": "Pendiente de verificación"
+    },
+    "settings": {
+      "first_name_label": "Nombre",
+      "last_name_label": "Apellidos",
+      "avatar_url_label": "URL del avatar",
+      "avatar_url_helper": "Enlace público a tu imagen. Déjalo vacío para usar iniciales.",
+      "phone_label": "Teléfono",
+      "postal_label": "Código postal",
+      "language_label": "Idioma preferido",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "success": "Perfil actualizado",
+      "postal_warning": "Cambiar tu código postal actualizará tu ubicación y cerrará tu sesión actual. Tendrás que volver a iniciar sesión.",
+      "error": {
+        "postal_invalid": "Código postal no válido o no geocodificable",
+        "generic": "No se pudo guardar. Inténtalo de nuevo.",
+        "field_invalid": "Valor no válido"
+      },
+      "validation": {
+        "first_name_min": "Mínimo 2 caracteres",
+        "last_name_min": "Mínimo 2 caracteres",
+        "postal_format": "Introduce 5 dígitos"
+      }
+    },
+    "banners": {
+      "degraded_title": "Apareces más abajo en las listas",
+      "degraded_body": "Los donantes te ven menos al elegir. Donar y completar una entrega te ayuda a subir de puesto.",
+      "new_user_title": "Bienvenido a la comunidad",
+      "new_user_body": "Empiezas con 0 puntos. Donar y completar entregas te ayuda a ganar visibilidad en la lista."
+    },
+    "errors": {
+      "load": "No se pudo cargar tu perfil. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    },
+    "reputation": {
+      "total_score": "Puntos de participación",
+      "earned": "+{{value}} sumados",
+      "lost": "{{value}} restados",
+      "event_delivery": "Entrega completada",
+      "event_no_show": "No acudió a la recogida",
+      "start_of_history": "Inicio del historial",
+      "empty_title": "Sin actividad registrada aún",
+      "empty_sub": "Completa tu primera entrega para empezar a sumar puntos.",
+      "error_load": "No se pudo cargar el historial de reputación.",
+      "retry": "Reintentar"
+    },
+    "donations": {
+      "empty_title": "Todavía no has donado ningún objeto",
+      "empty_sub": "Cuando publiques algo, aparecerá aquí con su estado e historial de solicitudes.",
+      "empty_cta": "Publicar objeto",
+      "empty_filter": "No hay objetos en este estado.",
+      "error_load": "No se pudo cargar tus donaciones.",
+      "retry": "Reintentar",
+      "load_more": "Cargar más",
+      "degraded_badge": "lleva tiempo aquí"
+    },
+    "requests": {
+      "quota_label": "Solicitudes este período",
+      "quota_used": "{{count}} de 3 usadas",
+      "quota_exhausted": "Cuota agotada",
+      "empty_title": "Sin solicitudes recientes",
+      "empty_sub": "Tus solicitudes de objetos aparecerán aquí. Tienes hasta 3 por cada período de 30 días.",
+      "empty_cta": "Explorar objetos",
+      "empty_filter": "No hay solicitudes en este estado.",
+      "error_load": "No se pudieron cargar tus solicitudes.",
+      "retry": "Reintentar",
+      "load_more": "Cargar más",
+      "filters_aria": "Filtrar solicitudes por estado",
+      "filters": {
+        "all": "Todas",
+        "pending": "Pendientes",
+        "selected": "Seleccionadas",
+        "rejected": "No seleccionadas",
+        "cancelled": "Canceladas"
+      },
+      "status": {
+        "pending": "pendiente",
+        "selected": "seleccionado",
+        "completed": "completado",
+        "rejected": "no seleccionado",
+        "cancelled": "cancelado"
+      },
+      "delivery_link_aria": "Ver entrega de {{title}}"
+    },
+    "public": {
+      "title": "Perfil de usuario",
+      "display_name_aria": "Perfil de {{name}}",
+      "anonymous_user": "Usuario anónimo",
+      "member_since": "Miembro desde {{date}}",
+      "back": "Volver",
+      "loading": "Cargando perfil…",
+      "privacy_note": "Solo información pública visible. No se muestran datos de contacto ni historial detallado.",
+      "stats": {
+        "aria_label": "Métricas públicas",
+        "commitment": "Compromiso",
+        "given": "Ha regalado",
+        "received": "Ha recibido"
+      },
+      "errors": {
+        "invalid_id": "Identificador de usuario no válido.",
+        "not_found": "No encontramos este usuario.",
+        "load": "No se pudo cargar el perfil. Inténtalo de nuevo.",
+        "retry": "Reintentar",
+        "back_explore": "Explorar objetos"
+      }
+    }
+  },
+  "reports": {
+    "modal": {
+      "title_item": "Reportar objeto",
+      "title_user": "Reportar usuario",
+      "step1": {
+        "instruction": "¿Qué tipo de problema quieres reportar?"
+      },
+      "step2": {
+        "title": "Añade contexto (opcional)",
+        "reason_label": "Motivo seleccionado",
+        "reason_change": "Cambiar",
+        "textarea_label": "Descripción adicional",
+        "textarea_optional": "opcional",
+        "textarea_placeholder": "Añade cualquier detalle que pueda ayudar en la revisión.",
+        "privacy_note": "Tu identidad no será revelada al usuario reportado."
+      },
+      "step3": {
+        "title": "Reporte enviado",
+        "body": "Hemos recibido tu reporte. Lo revisaremos lo antes posible y te confirmaremos por email cuando hayamos tomado una decisión."
+      },
+      "btn": {
+        "next": "Siguiente",
+        "back": "Atrás",
+        "cancel": "Cancelar",
+        "submit": "Enviar reporte",
+        "submitting": "Enviando...",
+        "close": "Cerrar"
+      },
+      "reasons": {
+        "contenido_inadecuado": "Contenido inadecuado u ofensivo",
+        "contenido_inadecuado_sub": "Imágenes o texto que no son apropiados",
+        "fraude_o_enganio": "Fraude o engaño",
+        "fraude_o_enganio_sub": "El objeto no existe, está en mal estado real, etc.",
+        "spam": "Spam o publicidad",
+        "spam_sub": "Publicación con fines comerciales",
+        "objeto_ilegal": "Objeto ilegal",
+        "objeto_ilegal_sub": "Producto prohibido o de venta ilegal",
+        "objeto_peligroso": "Objeto peligroso",
+        "objeto_peligroso_sub": "Puede causar daños físicos",
+        "información_falsa": "Información falsa o engañosa",
+        "información_falsa_sub": "Datos incorrectos sobre el objeto o el usuario",
+        "comportamiento_abusivo": "Comportamiento abusivo",
+        "comportamiento_abusivo_sub": "Mensajes, acoso u hostigamiento",
+        "otro": "Otro motivo"
+      }
+    },
+    "error": {
+      "already_pending": "Ya tienes un reporte pendiente de revisión sobre este contenido.",
+      "not_reportable": "Este contenido no puede ser reportado en este momento.",
+      "recaptcha_failed": "No hemos podido verificar tu solicitud. Inténtalo de nuevo.",
+      "rate_limit_entity": "Has enviado demasiados reportes sobre este contenido recientemente. Inténtalo más tarde.",
+      "rate_limit_total": "Has alcanzado el límite de reportes permitidos. Inténtalo de nuevo en unos días.",
+      "generic": "Ha ocurrido un error inesperado. Inténtalo de nuevo en unos instantes."
+    },
+    "trigger": {
+      "report_item": "Reportar objeto",
+      "report_item_full": "Reportar este objeto",
+      "report_user": "Reportar este usuario",
+      "menu_aria": "Opciones del objeto"
+    }
+  },
+  "guest": {
+    "banner": {
+      "text": "Ves objetos de toda España.",
+      "register_cta": "Regístrate",
+      "register_cta_suffix": "para ver solo los de tu zona.",
+      "dismiss": "Cerrar banner"
+    },
+    "item_card": {
+      "available_in_spain": "Disponible en España"
+    },
+    "donor_row": {
+      "anonymous_name": "Donante anónimo"
+    },
+    "conversion_modal": {
+      "close": "Cerrar",
+      "tagline": "Sin tarjeta de crédito · Sin compromisos",
+      "benefit_1": "Pide objetos que otros ya no usan",
+      "benefit_2": "Dona lo que tienes sin usar",
+      "benefit_3": "Tu historial te da prioridad en el reparto",
+      "cta_register": "Crear cuenta gratis",
+      "cta_login": "Ya tengo cuenta — Iniciar sesión",
+      "request_item": {
+        "title": "¿Te interesa este objeto?",
+        "subtitle": "Para pedirlo, crea tu cuenta gratuita. Solo te toma un minuto."
+      },
+      "publish_item": {
+        "title": "Regala lo que ya no necesitas",
+        "subtitle": "Crea tu cuenta para publicar objetos y que lleguen a quien los necesita."
+      },
+      "view_profile": {
+        "title": "Conoce a la comunidad",
+        "subtitle": "Con una cuenta puedes ver los perfiles y el historial de los miembros."
+      }
+    }
+  }
+}

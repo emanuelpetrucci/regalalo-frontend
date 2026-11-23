@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Explorar v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { min-height: 100%; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F5F6; -webkit-font-smoothing: antialiased; }
+  input, button, select, textarea { font-family: inherit; }
+  ::placeholder { color: #9AA2AD; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D5D9DE; border-radius: 3px; }
+
+  @keyframes modalIn  { from { opacity:0; transform:scale(0.97) translateY(10px); } to { opacity:1; transform:none; } }
+  @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+  @keyframes cardIn   { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .modal-in  { animation: modalIn  260ms cubic-bezier(0.16,1,0.3,1) both; }
+  .fade-in   { animation: fadeIn   180ms ease both; }
+  .card-in   { animation: cardIn   220ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  /* ── Responsive ─────────────────────────────────────── */
+  .nav-hamburger { display: none; }
+  @media (max-width: 760px) {
+    .nav-links     { display: none !important; }
+    .nav-hamburger { display: flex !important; }
+    .nav-publish   { display: none !important; }
+    .toolbar       { flex-direction: column !important; align-items: stretch !important; }
+    .search-box    { flex: 0 0 auto !important; width: 100%; }
+    .cond-chips    { overflow-x: auto; -webkit-overflow-scrolling: touch;
+                     scrollbar-width: none;
+                     margin-left: calc(-1 * clamp(16px,3vw,40px));
+                     margin-right: calc(-1 * clamp(16px,3vw,40px));
+                     padding-left: clamp(16px,3vw,40px);
+                     padding-right: clamp(16px,3vw,40px); }
+    .cond-chips::-webkit-scrollbar { display: none; }
+    .cat-row       { margin-left: calc(-1 * clamp(16px,3vw,40px));
+                     margin-right: calc(-1 * clamp(16px,3vw,40px));
+                     padding-left: clamp(16px,3vw,40px) !important;
+                     padding-right: clamp(16px,3vw,40px) !important; }
+    .modal-wrap    { padding: 0 !important; align-items: flex-end !important; }
+    .modal-inner   { max-width: 100% !important; max-height: 92vh !important;
+                     border-radius: 16px 16px 0 0 !important; }
+    .modal-grid    { grid-template-columns: 1fr !important; }
+    .gallery-border { border-right: none !important; border-bottom: 1px solid #D5D9DE !important; }
+    .page-header   { padding-top: 22px !important; }
+  }
+  @media (max-width: 560px) {
+    .item-grid     { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important; gap: 12px !important; }
+    .page-header   { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
+  }
+  @media (max-width: 380px) {
+    .item-grid     { grid-template-columns: 1fr !important; }
+  }
+  @media (min-width: 761px) and (max-width: 980px) {
+    .modal-inner { max-width: 92vw !important; }
+    .nav-links   { gap: 0 !important; }
+    .nav-links button { padding: 8px 10px !important; font-size: 13px !important; }
+  }
+  @keyframes navMenuIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+  .nav-menu-in { animation: navMenuIn 180ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  @keyframes rptSpin    { to { transform:rotate(360deg); } }
+  @keyframes rptFadeIn  { from { opacity:0; } to { opacity:1; } }
+  @keyframes rptModalIn { from { opacity:0; transform:scale(0.97) translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes rptStepFwd { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }
+  @keyframes rptStepBack{ from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:none; } }
+  @keyframes rptMenuIn  { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
+  .rpt-fade-in  { animation:rptFadeIn  180ms ease both; }
+  .rpt-modal-in { animation:rptModalIn 260ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-step-fwd  { animation:rptStepFwd  220ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-step-back { animation:rptStepBack 220ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-menu-in   { animation:rptMenuIn   150ms cubic-bezier(0.16,1,0.3,1) both; }
+  @keyframes panelIn  { from { transform:translateX(100%); } to { transform:translateX(0); } }
+  @keyframes stepIn   { from { opacity:0; transform:translateX(24px); } to { opacity:1; transform:none; } }
+  @keyframes stepBack { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:none; } }
+  .panel-slide { animation: panelIn 280ms cubic-bezier(0.16,1,0.3,1) both; }
+  .step-fwd    { animation: stepIn  220ms cubic-bezier(0.16,1,0.3,1) both; }
+  .step-back   { animation: stepBack 220ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  @media (max-width: 760px) {
+    .detail-panel { width: 100vw !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="report-modal.jsx"></script>
+<script type="text/babel">
+
+/* ── TOKENS ──────────────────────────────────────────────────── */
+const C = {
+  primary:      '#3A7358',
+  primaryHov:   '#2D5C45',
+  primaryLight: '#F0F5F2',
+  accent:       '#253F72',
+  bgPage:       '#F4F5F6',
+  bgSurface:    '#FFFFFF',
+  bgSubtle:     '#E8EAEC',
+  fg:           '#14171A',
+  fgMid:        '#606A76',
+  fgMuted:      '#7C8692',
+  fgDisabled:   '#9AA2AD',
+  border:       '#D5D9DE',
+  borderStr:    '#B8BFC7',
+  error:        '#B33A2A',
+  errorBg:      '#FDECEA',
+  warnBg:       '#FEF6E7',
+  warnBorder:   '#EDD090',
+  warnFg:       '#8F5907',
+  sh1: '0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)',
+  sh2: '0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+  sh3: '0 8px 32px rgba(0,0,0,0.14)',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', system-ui, sans-serif";
+const FM = "'JetBrains Mono', monospace";
+
+/* ── DATA ────────────────────────────────────────────────────── */
+const CONDITION_LABELS = {
+  new:      'A estrenar',
+  like_new: 'Como nuevo',
+  good:     'Buen estado',
+  fair:     'Aceptable',
+};
+
+const ALL_ITEMS = [
+  { id:1, title:'Bicicleta de montaña Scott', condition:'good', category:'sports', distance:1.2, localidad:'Sant Gervasi',
+    requestCount:7, daysAgo:3, donor:{ score:85, initials:'MG', since:'mar 2025' },
+    degraded:false,
+    desc:'Bicicleta de montaña 26" en buen estado. Se nota el uso pero funciona perfectamente. Incluye casco y bomba de aire. Recogida en Sant Gervasi, a convenir horario.' },
+  { id:2, title:'Sofá de dos plazas gris', condition:'fair', category:'furniture', distance:2.8, localidad:'Poblenou',
+    requestCount:2, daysAgo:1, donor:{ score:40, initials:'CR', since:'oct 2025' },
+    degraded:false,
+    desc:'Sofá de tela gris marengo. Tiene alguna mancha que no sale, de ahí el estado aceptable. Estructura y cojines en buen estado. Hay que buscarse la vida para el transporte.' },
+  { id:3, title:'Mesa escritorio IKEA ALEX', condition:'like_new', category:'furniture', distance:0.6, localidad:'Sants',
+    requestCount:12, daysAgo:9, donor:{ score:120, initials:'PT', since:'ene 2025' },
+    degraded:true,
+    desc:'Mesa de escritorio IKEA modelo ALEX, blanca, 131×60 cm. Sin golpes ni manchas. Me la regalaron y no cabe en mi piso nuevo. Desmontada y con los tornillos.' },
+  { id:4, title:'Cámara analógica Olympus OM-10', condition:'good', category:'electronics', distance:3.4, localidad:'Gràcia',
+    requestCount:5, daysAgo:2, donor:{ score:60, initials:'AS', since:'jun 2025' },
+    degraded:false,
+    desc:'Cámara analógica Olympus OM-10. Funciona, he tirado varios carretes sin problema. Incluye objetivo 50mm f/1.8, funda y correa.' },
+  { id:5, title:'Lámpara de pie nórdica', condition:'new', category:'furniture', distance:1.9, localidad:'Eixample',
+    requestCount:3, daysAgo:5, donor:{ score:30, initials:'LB', since:'feb 2026' },
+    degraded:false,
+    desc:'Lámpara de pie con pantalla beige y cable textil trenzado. En perfecto estado, la cambié por otra. Altura 160 cm, bombilla no incluida.' },
+  { id:6, title:'Pack libros Harari (3 tomos)', condition:'good', category:'books', distance:0.4, localidad:'Poblenou',
+    requestCount:1, daysAgo:0, donor:{ score:15, initials:'RM', since:'may 2026' },
+    degraded:false,
+    desc:'Sapiens + Homo Deus + 21 lecciones para el siglo XXI. Los tres en buen estado, algunas páginas dobladas. Recogida en el Poblenou.' },
+  { id:7, title:'Silla Eames réplica blanca', condition:'fair', category:'furniture', distance:4.1, localidad:'Nou Barris',
+    requestCount:0, daysAgo:6, donor:{ score:55, initials:'JV', since:'sep 2025' },
+    degraded:false,
+    desc:'Silla tipo Eames en blanco, patas de madera. Un arañazo en el asiento, por eso estado aceptable. Estructura perfecta.' },
+  { id:8, title:'Raqueta de tenis Wilson con funda', condition:'like_new', category:'sports', distance:2.1, localidad:'Sarrià',
+    requestCount:4, daysAgo:1, donor:{ score:95, initials:'NF', since:'dic 2024' },
+    degraded:false,
+    desc:'Raqueta Wilson Clash 100 con funda original. Usada tres veces, tamaño grip L2. Perfecta para empezar a jugar.' },
+];
+
+const CATEGORY_LABELS = {
+  furniture:'Muebles', electronics:'Electrónica', clothing:'Ropa',
+  books:'Libros', toys:'Juguetes', kitchen:'Cocina',
+  sports:'Deporte', tools:'Herramientas', other:'Otros',
+};
+const CATEGORIES = [
+  { id:'all',         label:'Todas' },
+  { id:'furniture',   label:'Muebles' },
+  { id:'electronics', label:'Electrónica' },
+  { id:'clothing',    label:'Ropa' },
+  { id:'books',       label:'Libros' },
+  { id:'sports',      label:'Deporte' },
+  { id:'kitchen',     label:'Cocina' },
+  { id:'tools',       label:'Herramientas' },
+  { id:'toys',        label:'Juguetes' },
+  { id:'other',       label:'Otros' },
+];
+
+const CONDITIONS = [
+  { id:'all',      label:'Todos' },
+  { id:'new',      label:'A estrenar' },
+  { id:'like_new', label:'Como nuevo' },
+  { id:'good',     label:'Buen estado' },
+  { id:'fair',     label:'Aceptable' },
+];
+
+/* ── TWEAKS ──────────────────────────────────────────────────── */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "turnosRestantes": 2,
+  "itemId": 4,
+  "requestState": "pending",
+  "itemPausada": false,
+  "modalAbierto": false,
+  "mostrarConfirmacion": false,
+  "contactoReceptor": "WhatsApp: +34 600 123 456",
+  "tab": "solicitudes"
+}/*EDITMODE-END*/;
+
+/* ── ICONS ───────────────────────────────────────────────────── */
+const Ico = ({ sz=16, sw=1.75, children }) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+);
+const IBox    = ({sz=16}) => <Ico sz={sz}><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></Ico>;
+const ISearch = ({sz=16}) => <Ico sz={sz}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></Ico>;
+const IPin    = ({sz=16}) => <Ico sz={sz}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></Ico>;
+const IClose  = ({sz=16}) => <Ico sz={sz} sw={2}><path d="M18 6L6 18M6 6l12 12"/></Ico>;
+const IPlus   = ({sz=16}) => <Ico sz={sz} sw={2.5}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Ico>;
+const IWarn   = ({sz=16}) => <Ico sz={sz}><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></Ico>;
+const IPause  = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></Ico>;
+const ISend   = ({sz=16}) => <Ico sz={sz}><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></Ico>;
+const ICheck  = ({sz=16}) => <Ico sz={sz}><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></Ico>;
+const IClock  = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></Ico>;
+const IImage  = ({sz=16}) => <Ico sz={sz}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></Ico>;
+const IChevL  = ({sz=16}) => <Ico sz={sz}><path d="M15 18l-6-6 6-6"/></Ico>;
+const IChevR  = ({sz=16}) => <Ico sz={sz}><path d="M9 18l6-6-6-6"/></Ico>;
+const IShare  = ({sz=16}) => <Ico sz={sz}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></Ico>;
+const ILink   = ({sz=16}) => <Ico sz={sz}><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></Ico>;
+const IMenu   = ({sz=16}) => <Ico sz={sz} sw={2}><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></Ico>;
+const IPhone  = ({sz=16}) => <Ico sz={sz}><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></Ico>;
+const IMail   = ({sz=16}) => <Ico sz={sz}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></Ico>;
+
+/* ── CONTACT CHANNELS (lo que deja el receptor) ──────────────── */
+const CHANNELS = [
+  { id:'whatsapp', label:'WhatsApp', prefix:'WhatsApp: ', placeholder:'+34 600 123 456' },
+  { id:'telefono', label:'Teléfono', prefix:'Teléfono: ', placeholder:'+34 600 123 456' },
+  { id:'telegram', label:'Telegram', prefix:'Telegram: @', placeholder:'tu_usuario'      },
+  { id:'email',    label:'Email',    prefix:'Email: ',     placeholder:'tu@correo.com'    },
+];
+const channelIcon = (ch) => ch === 'email' ? <IMail sz={15}/> : <IPhone sz={15}/>;
+
+const ISocialWA = ({sz=20}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.116.553 4.103 1.52 5.83L0 24l6.336-1.51A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.66-.5-5.19-1.38l-.37-.22-3.76.9.94-3.67-.24-.38A9.934 9.934 0 012 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/>
+  </svg>
+);
+const ISocialFB = ({sz=20}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </svg>
+);
+const ISocialX  = ({sz=20}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.728-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+);
+
+/* ── SHARE MODAL ─────────────────────────────────────────────── */
+function ShareModal({ title, url, onClose }) {
+  const [copied, setCopied] = React.useState(false);
+  const text = title
+    ? `¡Regalan esto en no lo vendo: ${title}! ¿Lo necesitas?`
+    : 'Descubre no lo vendo: regala y recibe objetos gratis en tu comunidad.';
+  const shareUrl = url || 'https://nolovendo.es';
+  const networks = [
+    { id:'whatsapp', label:'WhatsApp', color:'#25D366', lightBg:'#E8FAF0',
+      icon:<ISocialWA sz={18}/>,
+      href:`https://wa.me/?text=${encodeURIComponent(text + '\n' + shareUrl)}` },
+    { id:'facebook', label:'Facebook', color:'#1877F2', lightBg:'#E7F1FD',
+      icon:<ISocialFB sz={18}/>,
+      href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(text)}` },
+    { id:'twitter', label:'X / Twitter', color:'#0F1419', lightBg:'#F0F0F0',
+      icon:<ISocialX sz={18}/>,
+      href:`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}` },
+  ];
+  const handleCopy = () => {
+    try { navigator.clipboard.writeText(shareUrl); } catch(e) {
+      const ta = document.createElement('textarea');
+      ta.value = shareUrl; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  };
+  return (
+    <div className="fade-in" onClick={e => { if (e.target===e.currentTarget) onClose(); }}
+      style={{ position:'fixed', inset:0, zIndex:600, background:'rgba(20,23,26,0.5)',
+        display:'flex', alignItems:'center', justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:400 }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: title ? 4 : 20 }}>
+          <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg }}>Compartir</div>
+          <button onClick={onClose} style={{ width:32, height:32, borderRadius:'50%',
+            background:C.bgSubtle, border:'none', cursor:'pointer',
+            display:'flex', alignItems:'center', justifyContent:'center', color:C.fgMid }}>
+            <IClose sz={15}/>
+          </button>
+        </div>
+        {title && (
+          <div style={{ fontFamily:FB, fontSize:13, color:C.fgMuted, marginBottom:20,
+            overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{title}</div>
+        )}
+        <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
+          {networks.map(n => (
+            <a key={n.id} href={n.href} target="_blank" rel="noopener noreferrer"
+              style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px',
+                borderRadius:10, textDecoration:'none', background:C.bgPage,
+                border:`1px solid ${C.border}`, color:C.fg, transition:'all 150ms' }}
+              onMouseEnter={e=>{ e.currentTarget.style.background=n.lightBg; e.currentTarget.style.borderColor=n.color+'55'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background=C.bgPage; e.currentTarget.style.borderColor=C.border; }}>
+              <span style={{ color:n.color, display:'flex', flexShrink:0 }}>{n.icon}</span>
+              <span style={{ fontFamily:FB, fontSize:14, fontWeight:500 }}>{n.label}</span>
+            </a>
+          ))}
+        </div>
+        <div style={{ display:'flex', gap:8 }}>
+          <div style={{ flex:1, padding:'10px 14px', borderRadius:8, background:C.bgPage,
+            border:`1px solid ${C.border}`, fontFamily:FM, fontSize:12, color:C.fgMuted,
+            overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap',
+            display:'flex', alignItems:'center' }}>{shareUrl}</div>
+          <button onClick={handleCopy} style={{ padding:'10px 16px', borderRadius:8,
+            cursor:'pointer', border:'none', background: copied ? C.primary : C.bgSubtle,
+            fontFamily:FB, fontSize:13, fontWeight:600, flexShrink:0,
+            color: copied ? '#fff' : C.fg, transition:'all 200ms',
+            display:'flex', alignItems:'center', gap:6 }}>
+            {copied ? <><ICheck sz={13}/> ¡Copiado!</> : <><ILink sz={13}/> Copiar</>}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── LANGUAGE SELECTOR ───────────────────────────────────────── */
+const LANGS = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català'  },
+];
+function LanguageSelector({ dark }) {
+  const [lang, setLang] = React.useState(() => localStorage.getItem('nlv_lang') || 'es');
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  const select = code => { setLang(code); localStorage.setItem('nlv_lang', code); setOpen(false); };
+  return (
+    <div ref={ref} style={{ position:'relative', flexShrink:0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        display:'flex', alignItems:'center', gap:4,
+        background: dark ? 'rgba(255,255,255,0.12)' : '#FFFFFF',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.22)' : '#D5D9DE'}`,
+        borderRadius:8, padding:'5px 10px',
+        fontFamily:FB, fontSize:13, fontWeight:600,
+        color: dark ? 'rgba(255,255,255,0.85)' : '#606A76',
+        cursor:'pointer', transition:'all 150ms', userSelect:'none' }}>
+        {lang.toUpperCase()}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform 150ms' }}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{ position:'absolute', top:'calc(100% + 6px)', right:0,
+          background:'#FFFFFF', border:'1px solid #D5D9DE',
+          borderRadius:10, boxShadow:'0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+          overflow:'hidden', zIndex:1000, minWidth:130 }}>
+          {LANGS.map(({ code, label }) => (
+            <button key={code} onClick={() => select(code)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                width:'100%', padding:'9px 14px', border:'none',
+                background: lang===code ? '#F0F5F2' : 'transparent',
+                color: lang===code ? '#3A7358' : '#14171A',
+                fontFamily:FB, fontSize:13, fontWeight: lang===code ? 600 : 400,
+                cursor:'pointer', textAlign:'left', gap:10, transition:'background 100ms' }}
+              onMouseEnter={e => { if (lang!==code) e.currentTarget.style.background='#E8EAEC'; }}
+              onMouseLeave={e => { if (lang!==code) e.currentTarget.style.background='transparent'; }}>
+              <span>{label}</span>
+              <span style={{ fontFamily:FB, fontSize:11, fontWeight:600,
+                color: lang===code ? '#3A7358' : '#9AA2AD',
+                letterSpacing:'0.05em' }}>{code.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── NAVBAR ──────────────────────────────────────────────────── */
+const NAV_HREFS = {
+  'explorar':    'Explorar v3.html',
+  'mis-objetos': 'Mis objetos.html',
+  'entregas':    'Entregas.html',
+  'perfil':      'Perfil.html',
+};
+function Navbar() {
+  const [hov, setHov] = React.useState(null);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuRef = React.useRef(null);
+  const links = [['explorar','Explorar'],['mis-objetos','Mis objetos'],['entregas','Entregas'],['perfil','Perfil']];
+  React.useEffect(() => {
+    const h = e => { if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  return (
+    <nav style={{ background:C.bgSurface, borderBottom:`1px solid ${C.border}`, height:64,
+      display:'flex', alignItems:'center', justifyContent:'space-between',
+      padding:'0 clamp(16px,4vw,40px)', position:'sticky', top:0, zIndex:100, boxShadow:C.sh1 }}>
+      <a href="Explorar v3.html" style={{ textDecoration:'none' }}>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:700, color:C.primary, letterSpacing:'-0.01em' }}>
+          no lo vendo
+        </div>
+      </a>
+      <div className="nav-links" style={{ display:'flex', gap:2 }}>
+        {links.map(([id,label]) => {
+          const active = id==='explorar';
+          return (
+            <a key={id} href={NAV_HREFS[id]} style={{ textDecoration:'none' }}>
+              <button onMouseEnter={()=>setHov(id)} onMouseLeave={()=>setHov(null)}
+                style={{ background: active ? C.primaryLight : hov===id ? C.bgSubtle : 'none',
+                  border:'none', cursor:'pointer', padding:'8px 14px', borderRadius:8,
+                  fontFamily:FB, fontSize:14, fontWeight: active ? 600 : 400,
+                  color: active ? C.primary : C.fgMid, transition:'all 150ms' }}>
+                {label}
+              </button>
+            </a>
+          );
+        })}
+      </div>
+      <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+        <LanguageSelector />
+        <a href="Mis objetos.html" style={{ textDecoration:'none' }}>
+          <button className="nav-publish" style={{ background:C.primary, color:'#fff', border:'none', borderRadius:8,
+            padding:'8px 14px', fontFamily:FB, fontSize:13, fontWeight:600, cursor:'pointer',
+            display:'flex', alignItems:'center', gap:5 }}>
+            <IPlus sz={13}/> <span className="pub-label">Publicar</span>
+          </button>
+        </a>
+        <a href="Perfil.html" style={{ textDecoration:'none' }}>
+          <div style={{ width:34, height:34, borderRadius:'50%', background:C.primaryLight,
+            border:`1.5px solid ${C.border}`, display:'flex', alignItems:'center',
+            justifyContent:'center', fontFamily:FB, fontSize:12, fontWeight:700, color:C.primary, cursor:'pointer' }}>LS</div>
+        </a>
+        {/* Mobile hamburger */}
+        <div className="nav-hamburger" ref={menuRef} style={{ position:'relative', alignItems:'center' }}>
+          <button onClick={()=>setMenuOpen(o=>!o)} aria-label="Menú"
+            style={{ width:38, height:38, borderRadius:8, cursor:'pointer',
+              background: menuOpen ? C.primaryLight : C.bgSurface,
+              border:`1px solid ${menuOpen ? C.primary : C.border}`,
+              display:'flex', alignItems:'center', justifyContent:'center',
+              color: menuOpen ? C.primary : C.fgMid, transition:'all 150ms' }}>
+            {menuOpen ? <IClose sz={18}/> : <IMenu sz={18}/>}
+          </button>
+          {menuOpen && (
+            <div className="nav-menu-in" style={{ position:'absolute', top:'calc(100% + 10px)', right:0,
+              background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12,
+              boxShadow:C.sh2, overflow:'hidden', zIndex:1000, minWidth:200, padding:6 }}>
+              {links.map(([id,label]) => {
+                const active = id==='explorar';
+                return (
+                  <a key={id} href={NAV_HREFS[id]} style={{ textDecoration:'none', display:'block' }}>
+                    <div style={{ padding:'11px 14px', borderRadius:8, fontFamily:FB, fontSize:15,
+                      fontWeight: active ? 600 : 500, color: active ? C.primary : C.fg,
+                      background: active ? C.primaryLight : 'transparent' }}>
+                      {label}
+                    </div>
+                  </a>
+                );
+              })}
+              <div style={{ height:1, background:C.border, margin:'6px 8px' }}/>
+              <a href="Mis objetos.html" style={{ textDecoration:'none', display:'block' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:8, padding:'11px 14px',
+                  borderRadius:8, fontFamily:FB, fontSize:15, fontWeight:600, color:'#fff',
+                  background:C.primary }}>
+                  <IPlus sz={14}/> Publicar objeto
+                </div>
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ── CHIPS ───────────────────────────────────────────────────── */
+const COND_CFG = {
+  new:      { bg:'#EBF5EE', fg:'#265533', bd:'#9DCCA8' },
+  like_new: { bg:'#F0F5F2', fg:'#224633', bd:'#B5D0C2' },
+  good:     { bg:'#FEF6E7', fg:'#8F5907', bd:'#EDD090' },
+  fair:     { bg:'#E8EAEC', fg:'#606A76', bd:'#D5D9DE' },
+};
+function CategoryChip({ category, large }) {
+  const label = CATEGORY_LABELS[category] || category || '—';
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', fontFamily:FB,
+      fontSize: large ? 12 : 11, fontWeight:500,
+      padding: large ? '3px 10px' : '2px 8px',
+      borderRadius:999, background:'#EDF0F5', color:'#142244', border:'1px solid #A5B5D4' }}>
+      {label}
+    </span>
+  );
+}
+function ConditionChip({ condition, large }) {
+  const s = COND_CFG[condition] || COND_CFG.fair;
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center',
+      fontFamily:FB, fontSize: large ? 12 : 11, fontWeight:500,
+      padding: large ? '3px 10px' : '2px 8px',
+      borderRadius:999, background:s.bg, color:s.fg, border:`1px solid ${s.bd}` }}>
+      {CONDITION_LABELS[condition] || condition}
+    </span>
+  );
+}
+function DistChip({ km, large, localidad }) {
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', gap:4, fontFamily:FB,
+      fontSize: large ? 12 : 11, fontWeight:500, padding: large ? '3px 10px' : '2px 8px',
+      borderRadius:999, background:'#F4F5F6', color:C.fgMuted, border:`1px solid ${C.border}` }}>
+      <IPin sz={large?11:10}/>{km} km{localidad ? ` · ${localidad}` : ''}
+    </span>
+  );
+}
+
+/* ── GRID CARD ───────────────────────────────────────────────── */
+function GridCard({ item, onClick, style }) {
+  const [hov, setHov] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!menuOpen) return;
+    const h = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, [menuOpen]);
+  return (
+    <div onClick={() => { if (!menuOpen) onClick(); }}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      className="card-in"
+      style={{ background:C.bgSurface, border:`1px solid ${hov ? C.borderStr : C.border}`,
+        borderRadius:14, overflow:'hidden', cursor:'pointer',
+        boxShadow: hov ? C.sh2 : C.sh1,
+        transform: hov ? 'translateY(-2px)' : 'none',
+        opacity: item.degraded ? 0.7 : 1,
+        transition:'box-shadow 160ms, transform 160ms, border-color 160ms, opacity 160ms',
+        position:'relative', ...style }}>
+
+      {/* Image area */}
+      <div style={{ aspectRatio:'4/3', background: C.bgSubtle,
+        display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+        gap:6, borderBottom:`1px solid ${C.border}`, position:'relative' }}>
+        <span style={{ color:C.fgDisabled }}><IImage sz={32}/></span>
+        {item.requestCount > 0 && (
+          <div style={{ position:'absolute', top:10, right:10,
+            background:'rgba(20,23,26,0.72)', borderRadius:999,
+            padding:'2px 9px', fontFamily:FB, fontSize:11, fontWeight:500, color:'#fff' }}>
+            {item.requestCount} interesados
+          </div>
+        )}
+        {item.degraded && (
+          <div style={{ position:'absolute', bottom:10, left:10,
+            background:'rgba(20,23,26,0.55)', borderRadius:999,
+            padding:'2px 8px', display:'flex', alignItems:'center', gap:4,
+            fontFamily:FB, fontSize:10, color:'rgba(255,255,255,0.8)' }}>
+            <IClock sz={9}/> lleva tiempo aquí
+          </div>
+        )}
+        {/* Context menu trigger */}
+        <div ref={menuRef} style={{ position:'absolute', bottom:8, right:8 }}>
+          <button onClick={e => { e.stopPropagation(); setMenuOpen(o=>!o); }}
+            style={{ width:28, height:28, borderRadius:'50%',
+              background:'rgba(20,23,26,0.5)', border:'none', cursor:'pointer',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              color:'rgba(255,255,255,0.8)',
+              transition:'all 150ms', opacity: hov ? 1 : 0.5 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="5" r="1.5" fill="currentColor" stroke="none"/>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+              <circle cx="12" cy="19" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+          {/* Dropdown */}
+          {menuOpen && (
+            <div className="rpt-menu-in" onClick={e => e.stopPropagation()}
+              style={{ position:'absolute', right:0, top:'calc(100% + 4px)',
+                background:C.bgSurface, border:`1px solid ${C.border}`,
+                borderRadius:10, boxShadow:C.sh2, zIndex:500,
+                minWidth:170, padding:4, overflow:'hidden' }}>
+              <button onClick={() => { setMenuOpen(false);
+                if (typeof window.__openReport === 'function') {
+                  window.__openReport('objeto', item.title, item.id);
+                }
+              }}
+                style={{ display:'flex', alignItems:'center', gap:8,
+                  width:'100%', padding:'9px 12px', border:'none',
+                  background:'transparent', cursor:'pointer',
+                  fontFamily:FB, fontSize:13, fontWeight:400, color:C.fgMid,
+                  borderRadius:6, textAlign:'left', transition:'background 100ms' }}
+                onMouseEnter={e => e.currentTarget.style.background = C.bgSubtle}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                <span style={{ color:C.fgMuted, flexShrink:0, display:'flex' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="1.75"
+                    strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                    <line x1="4" y1="22" x2="4" y2="15"/>
+                  </svg>
+                </span>
+                Reportar objeto
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Info */}
+      <div style={{ padding:'12px 14px 14px' }}>
+        <div style={{ fontFamily:FB, fontSize:14, fontWeight:500, color:C.fg,
+          lineHeight:1.35, marginBottom:8,
+          display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
+          {item.title}
+        </div>
+        <div style={{ display:'flex', gap:6, flexWrap:'wrap', alignItems:'center', marginBottom:8 }}>
+          <CategoryChip category={item.category}/>
+          <ConditionChip condition={item.condition}/>
+          <DistChip km={item.distance} localidad={item.localidad}/>
+        </div>
+        {/* Donor micro-row */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:7 }}>
+            <div style={{ width:22, height:22, borderRadius:'50%', background:C.primaryLight,
+              border:`1px solid ${C.border}`, display:'flex', alignItems:'center',
+              justifyContent:'center', fontFamily:FD, fontSize:9, fontWeight:700, color:C.primary, flexShrink:0 }}>
+              {item.donor.initials}
+            </div>
+            <span style={{ fontFamily:FM, fontSize:11, fontWeight:500,
+              color: item.donor.score >= 60 ? C.primary : item.donor.score >= 20 ? C.warnFg : C.error }}>
+              {item.donor.score > 0 ? `+${item.donor.score}` : item.donor.score}
+            </span>
+          </div>
+          <span style={{ fontFamily:FB, fontSize:11, color:C.fgDisabled }}>
+            {item.daysAgo === 0 ? 'hoy' : item.daysAgo === 1 ? 'ayer' : `hace ${item.daysAgo}d`}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── DONOR ROW ───────────────────────────────────────────────── */
+function DonorRow({ donor }) {
+  const scoreColor = donor.score >= 60 ? C.primary : donor.score >= 20 ? C.warnFg : C.error;
+  const scoreLabel = donor.score >= 60 ? 'Buen historial' : donor.score >= 20 ? 'Historial regular' : 'Historial bajo';
+  return (
+    <div style={{ display:'flex', gap:12, alignItems:'center', padding:'12px 16px',
+      background:C.bgPage, border:`1px solid ${C.border}`, borderRadius:10 }}>
+      <div style={{ width:40, height:40, borderRadius:'50%', flexShrink:0, background:C.primaryLight,
+        border:`1.5px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'center',
+        fontFamily:FD, fontSize:14, fontWeight:700, color:C.primary }}>
+        {donor.initials}
+      </div>
+      <div style={{ flex:1 }}>
+        <div style={{ fontFamily:FB, fontSize:12, fontWeight:600, color:C.fg, marginBottom:2 }}>Donante</div>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>Miembro desde {donor.since}</div>
+      </div>
+      <div style={{ textAlign:'right' }}>
+        <div style={{ fontFamily:FM, fontSize:16, fontWeight:600, color:scoreColor, lineHeight:1 }}>
+          {donor.score > 0 ? `+${donor.score}` : donor.score}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:10, color:C.fgMuted, marginTop:2 }}>{scoreLabel}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── CTA BLOCK ───────────────────────────────────────────────── */
+function CtaBlock({ turnosRestantes, requestState, itemPausada, onRequest, contactoReceptor, onEdit }) {
+  if (requestState === 'selected') {
+    return (
+      <div style={{ background:'#EBF5EE', border:`1px solid #9DCCA8`, borderRadius:10, padding:'14px 16px' }}>
+        <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:6 }}>
+          <span style={{ color:C.primary }}><ICheck sz={16}/></span>
+          <span style={{ fontFamily:FB, fontSize:14, fontWeight:600, color:C.primary }}>¡Te han elegido!</span>
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:'#2D5C45', marginBottom:10, lineHeight:1.55 }}>
+          El donante te ha seleccionado. Contacta para acordar la entrega:
+        </div>
+        <div style={{ background:C.bgSurface, border:`1.5px solid ${C.primary}`, borderRadius:8, padding:'10px 14px', marginBottom:8 }}>
+          <div style={{ fontFamily:FM, fontSize:13, fontWeight:600, color:C.fg }}>WhatsApp: +34 612 345 678</div>
+        </div>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, display:'flex', alignItems:'center', gap:5 }}>
+          <IClock sz={12}/> Plazo de 7 días · expira el 25 may 2026
+        </div>
+      </div>
+    );
+  }
+  if (requestState === 'pending') {
+    return (
+      <div>
+        <div style={{ background:C.primaryLight, border:`1px solid #B5D0C2`, borderRadius:10, padding:'14px 16px', marginBottom:12 }}>
+          <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:4 }}>
+            <span style={{ color:C.primary }}><ISend sz={14}/></span>
+            <span style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.primary }}>Solicitud enviada</span>
+          </div>
+          <div style={{ fontFamily:FB, fontSize:12, color:'#2D5C45', lineHeight:1.55 }}>
+            Estás en el ranking. Si el donante te elige, le compartiremos tu canal de contacto.
+          </div>
+        </div>
+        {/* Canal de contacto que dejó el receptor */}
+        {contactoReceptor && (
+          <div style={{ background:C.bgSurface, border:`1.5px solid ${C.border}`, borderRadius:10,
+            padding:'11px 14px', marginBottom:12, display:'flex', alignItems:'center', gap:11 }}>
+            <span style={{ color:C.primary, flexShrink:0 }}>{channelIcon(contactoReceptor.toLowerCase().startsWith('email') ? 'email' : 'phone')}</span>
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, fontWeight:500, marginBottom:2 }}>
+                Tu canal de contacto
+              </div>
+              <div style={{ fontFamily:FM, fontSize:13, fontWeight:600, color:C.fg,
+                overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{contactoReceptor}</div>
+            </div>
+            {onEdit && (
+              <button onClick={onEdit}
+                style={{ flexShrink:0, background:'none', border:'none', cursor:'pointer',
+                  fontFamily:FB, fontSize:12, fontWeight:600, color:C.primary, padding:'4px 2px' }}>
+                Editar
+              </button>
+            )}
+          </div>
+        )}
+        <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+          {[['Solicitud enviada','done'],['Esperando decisión','wait'],['Contacto recibido','empty']].map(([l,s])=>(
+            <div key={l} style={{ display:'flex', gap:8, alignItems:'center' }}>
+              <div style={{ width:8, height:8, borderRadius:'50%', flexShrink:0,
+                background: s==='done' ? C.primary : s==='wait' ? C.warnFg : C.border }}/>
+              <span style={{ fontFamily:FB, fontSize:12,
+                color: s==='done' ? C.primary : s==='wait' ? C.fg : C.fgDisabled,
+                fontWeight: s==='wait' ? 500 : 400 }}>{l}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (itemPausada) {
+    return (
+      <div>
+        <div style={{ background:C.bgPage, border:`1px solid ${C.border}`, borderRadius:10,
+          padding:'12px 14px', marginBottom:10 }}>
+          <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:4 }}>
+            <span style={{ color:C.fgMuted }}><IPause sz={14}/></span>
+            <span style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.fgMid }}>Solicitudes pausadas</span>
+          </div>
+          <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, lineHeight:1.55 }}>
+            El donante ha pausado nuevas solicitudes temporalmente.
+          </div>
+        </div>
+        <button disabled style={{ width:'100%', padding:'12px 0', borderRadius:8,
+          background:C.bgSubtle, border:`1px solid ${C.border}`,
+          fontFamily:FB, fontSize:14, fontWeight:600, color:C.fgDisabled, cursor:'not-allowed' }}>
+          Me interesa
+        </button>
+      </div>
+    );
+  }
+  if (turnosRestantes === 0) {
+    return (
+      <div>
+        <div style={{ background:C.warnBg, border:`1px solid ${C.warnBorder}`, borderRadius:10,
+          padding:'12px 14px', marginBottom:10 }}>
+          <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:4 }}>
+            <span style={{ color:C.warnFg }}><IWarn sz={14}/></span>
+            <span style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.warnFg }}>Has agotado tus turnos</span>
+          </div>
+          <div style={{ fontFamily:FB, fontSize:12, color:C.warnFg, lineHeight:1.55 }}>
+            Solo 3 solicitudes cada 30 días. El siguiente se libera el <strong>18 jun 2026</strong>.
+          </div>
+        </div>
+        <button disabled style={{ width:'100%', padding:'12px 0', borderRadius:8,
+          background:C.bgSubtle, border:`1px solid ${C.border}`,
+          fontFamily:FB, fontSize:14, fontWeight:600, color:C.fgDisabled, cursor:'not-allowed' }}>
+          Me interesa
+        </button>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <div style={{ marginBottom:8, fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+        Te quedan <strong style={{ color:C.fg }}>{turnosRestantes}</strong> {turnosRestantes===1?'turno':'turnos'} este mes
+      </div>
+      <button onClick={onRequest}
+        style={{ width:'100%', padding:'12px 0', borderRadius:8, background:C.primary, border:'none',
+          fontFamily:FB, fontSize:14, fontWeight:600, color:'#fff', cursor:'pointer',
+          display:'flex', alignItems:'center', justifyContent:'center', gap:7,
+          transition:'background 150ms' }}>
+        <ISend sz={15}/> Me interesa
+      </button>
+    </div>
+  );
+}
+
+/* ── CONTACT STEP — inline dentro del panel, sin overlay ─────── */
+function ContactStep({ item, turnosRestantes, onConfirm, onBack }) {
+  const [chId, setChId] = React.useState('whatsapp');
+  const [val,  setVal]  = React.useState('');
+  const ch    = CHANNELS.find(c => c.id === chId) || CHANNELS[0];
+  const valid = val.trim().length >= 4;
+  const submit = () => { if (valid) onConfirm(ch.prefix + val.trim()); };
+
+  return (
+    <div className="step-fwd" style={{ padding:'24px 20px', display:'flex', flexDirection:'column', gap:20 }}>
+      {/* Title */}
+      <div>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:6 }}>
+          Deja tu contacto
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65 }}>
+          El donante <strong style={{ color:C.fg }}>solo lo verá si te elige</strong>.
+          No se muestra a nadie más ni aparece en el tablón.
+        </div>
+      </div>
+
+      {/* Channel tabs */}
+      <div>
+        <div style={{ display:'flex', gap:6, marginBottom:10 }}>
+          {CHANNELS.map(c => {
+            const on = c.id === chId;
+            return (
+              <button key={c.id} onClick={() => { setChId(c.id); setVal(''); }}
+                style={{ flex:'1 1 auto', padding:'8px 4px', borderRadius:8, cursor:'pointer',
+                  border:`1.5px solid ${on ? C.primary : C.border}`,
+                  background: on ? C.primaryLight : C.bgSurface,
+                  fontFamily:FB, fontSize:12.5, fontWeight: on ? 600 : 500,
+                  color: on ? C.primary : C.fgMid, transition:'all 150ms' }}>
+                {c.label}
+              </button>
+            );
+          })}
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:8, padding:'0 12px',
+          background:C.bgSurface, border:`1.5px solid ${valid ? C.primary : C.border}`,
+          borderRadius:8, transition:'border-color 150ms' }}>
+          <span style={{ color:C.fgMuted, flexShrink:0 }}>{channelIcon(chId)}</span>
+          <span style={{ fontFamily:FM, fontSize:13, color:C.fgMuted, flexShrink:0 }}>{ch.prefix}</span>
+          <input autoFocus value={val} onChange={e => setVal(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') submit(); }}
+            placeholder={ch.placeholder}
+            style={{ flex:1, border:'none', outline:'none', background:'none',
+              padding:'11px 0', fontFamily:FM, fontSize:14, color:C.fg, minWidth:0 }}/>
+        </div>
+      </div>
+
+      {/* Turnos */}
+      <div style={{ background:C.warnBg, border:`1px solid ${C.warnBorder}`, borderRadius:8, padding:'10px 14px' }}>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.warnFg }}>
+          Usarás <strong>1</strong> de tus <strong>{turnosRestantes}</strong>{' '}
+          {turnosRestantes === 1 ? 'turno restante' : 'turnos restantes'} del mes.
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div style={{ display:'flex', gap:10 }}>
+        <button onClick={onBack}
+          style={{ flex:1, padding:'12px 0', borderRadius:8, background:'none',
+            border:`1.5px solid ${C.border}`, fontFamily:FB, fontSize:14, fontWeight:500,
+            color:C.fgMid, cursor:'pointer' }}>Volver</button>
+        <button onClick={submit} disabled={!valid}
+          style={{ flex:2, padding:'12px 0', borderRadius:8,
+            background: valid ? C.primary : C.bgSubtle,
+            border: valid ? 'none' : `1px solid ${C.border}`,
+            fontFamily:FB, fontSize:14, fontWeight:600,
+            color: valid ? '#fff' : C.fgDisabled,
+            cursor: valid ? 'pointer' : 'not-allowed',
+            display:'flex', alignItems:'center', justifyContent:'center', gap:7,
+            transition:'all 150ms' }}>
+          <ISend sz={14}/> Enviar solicitud
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ── DETAIL PANEL — cajón lateral derecho ────────────────────── */
+function DetailPanel({ item, turnosRestantes, requestState, itemPausada, onConfirm, onClose, onShare, contactoReceptor, startOnContact }) {
+  const [imgIdx,       setImgIdx]       = React.useState(0);
+  const [showContact,  setShowContact]  = React.useState(!!startOnContact);
+  const imgCount = 3;
+
+  // Sync si cambia el tweak desde fuera
+  React.useEffect(() => { setShowContact(!!startOnContact); }, [startOnContact]);
+
+  // Escape: retrocede un paso o cierra
+  React.useEffect(() => {
+    const h = (e) => {
+      if (e.key !== 'Escape') return;
+      if (showContact) setShowContact(false); else onClose();
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [showContact, onClose]);
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div className="fade-in" onClick={onClose}
+        style={{ position:'fixed', inset:0, zIndex:200,
+          background:'rgba(20,23,26,0.35)', cursor:'pointer' }}/>
+
+      {/* Panel */}
+      <div className="detail-panel panel-slide"
+        style={{ position:'fixed', right:0, top:0, bottom:0, zIndex:201,
+          width:480, background:C.bgSurface,
+          boxShadow:'-4px 0 40px rgba(0,0,0,0.13)',
+          display:'flex', flexDirection:'column', overflow:'hidden' }}>
+
+        {/* ── Header ── */}
+        <div style={{ display:'flex', alignItems:'center', gap:10,
+          padding:'14px 16px', borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
+          {showContact && (
+            <button onClick={() => setShowContact(false)}
+              style={{ width:32, height:32, borderRadius:'50%', background:C.bgSubtle,
+                border:'none', cursor:'pointer', display:'flex', alignItems:'center',
+                justifyContent:'center', color:C.fgMid, flexShrink:0 }}>
+              <IChevL sz={16}/>
+            </button>
+          )}
+          <div style={{ flex:1, fontFamily:FD, fontSize:17, fontWeight:600, color:C.fg,
+            lineHeight:1.2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+            {showContact ? 'Confirmar interés' : item.title}
+          </div>
+          <div style={{ display:'flex', gap:6, alignItems:'center', flexShrink:0 }}>
+            {!showContact && (
+              <button onClick={onShare}
+                style={{ height:32, padding:'0 12px', borderRadius:8, background:C.bgSubtle,
+                  border:`1px solid ${C.border}`, cursor:'pointer',
+                  display:'flex', alignItems:'center', gap:5, color:C.fgMid,
+                  fontFamily:FB, fontSize:12, fontWeight:500, transition:'all 150ms' }}
+                onMouseEnter={e => { e.currentTarget.style.background = C.bgPage; e.currentTarget.style.color = C.fg; }}
+                onMouseLeave={e => { e.currentTarget.style.background = C.bgSubtle; e.currentTarget.style.color = C.fgMid; }}>
+                <IShare sz={13}/> Compartir
+              </button>
+            )}
+            <button onClick={onClose}
+              style={{ width:32, height:32, borderRadius:'50%', background:C.bgSubtle,
+                border:'none', cursor:'pointer', display:'flex', alignItems:'center',
+                justifyContent:'center', color:C.fgMid, flexShrink:0 }}>
+              <IClose sz={16}/>
+            </button>
+          </div>
+        </div>
+
+        {/* ── Body — scrollable ── */}
+        <div style={{ flex:1, overflowY:'auto' }}>
+          {showContact ? (
+            <ContactStep
+              item={item}
+              turnosRestantes={turnosRestantes}
+              onConfirm={onConfirm}
+              onBack={() => setShowContact(false)}
+            />
+          ) : (
+            <div className="step-back">
+              {/* Gallery */}
+              <div style={{ position:'relative', aspectRatio:'16/10', background:C.bgSubtle,
+                borderBottom:`1px solid ${C.border}`,
+                display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6, color:C.fgDisabled }}>
+                  <IImage sz={44}/>
+                  <span style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>Foto {imgIdx + 1} de {imgCount}</span>
+                </div>
+                {imgIdx > 0 && (
+                  <button onClick={() => setImgIdx(i => i - 1)}
+                    style={{ position:'absolute', left:10, top:'50%', transform:'translateY(-50%)',
+                      width:30, height:30, borderRadius:'50%', background:'rgba(255,255,255,0.9)',
+                      border:`1px solid ${C.border}`, cursor:'pointer',
+                      display:'flex', alignItems:'center', justifyContent:'center', color:C.fg }}>
+                    <IChevL sz={15}/>
+                  </button>
+                )}
+                {imgIdx < imgCount - 1 && (
+                  <button onClick={() => setImgIdx(i => i + 1)}
+                    style={{ position:'absolute', right:10, top:'50%', transform:'translateY(-50%)',
+                      width:30, height:30, borderRadius:'50%', background:'rgba(255,255,255,0.9)',
+                      border:`1px solid ${C.border}`, cursor:'pointer',
+                      display:'flex', alignItems:'center', justifyContent:'center', color:C.fg }}>
+                    <IChevR sz={15}/>
+                  </button>
+                )}
+              </div>
+
+              {/* Thumbnails */}
+              <div style={{ display:'flex', gap:8, padding:'12px 16px', borderBottom:`1px solid ${C.border}` }}>
+                {Array.from({ length: imgCount }).map((_, i) => (
+                  <button key={i} onClick={() => setImgIdx(i)}
+                    style={{ width:48, height:48, borderRadius:8, flexShrink:0, cursor:'pointer',
+                      background:C.bgSubtle, border:`1.5px solid ${i === imgIdx ? C.primary : C.border}`,
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      color: i === imgIdx ? C.primary : C.fgDisabled, transition:'border 150ms' }}>
+                    <IImage sz={16}/>
+                  </button>
+                ))}
+              </div>
+
+              {/* Info + CTA */}
+              <div style={{ padding:'20px', display:'flex', flexDirection:'column', gap:16 }}>
+                <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+                  <CategoryChip category={item.category} large/>
+                  <ConditionChip condition={item.condition} large/>
+                  <DistChip km={item.distance} large localidad={item.localidad}/>
+                </div>
+                <p style={{ fontFamily:FB, fontSize:14, color:C.fgMid, lineHeight:1.7, margin:0 }}>
+                  {item.desc}
+                </p>
+                <DonorRow donor={item.donor}/>
+                {item.degraded && (
+                  <div style={{ background:C.bgPage, border:`1px solid ${C.border}`, borderRadius:8,
+                    padding:'10px 14px', display:'flex', gap:8, alignItems:'flex-start' }}>
+                    <span style={{ color:C.fgMuted, flexShrink:0 }}><IClock sz={14}/></span>
+                    <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, lineHeight:1.5 }}>
+                      Este objeto lleva un tiempo publicado. El donante aún puede elegir receptor.
+                    </div>
+                  </div>
+                )}
+                <CtaBlock
+                  turnosRestantes={turnosRestantes}
+                  requestState={requestState}
+                  itemPausada={itemPausada}
+                  onRequest={() => setShowContact(true)}
+                  contactoReceptor={contactoReceptor}
+                  onEdit={() => setShowContact(true)}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+/* ── APP ─────────────────────────────────────────────────────── */
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [condition, setCondition] = React.useState('all');
+  const [category, setCategory] = React.useState('all');
+  const [search, setSearch] = React.useState('');
+  const [openId,   setOpenId]   = React.useState(tweaks.modalAbierto ? tweaks.itemId : null);
+  const [shareItem, setShareItem] = React.useState(null);
+
+  React.useEffect(() => {
+    setOpenId(tweaks.modalAbierto ? tweaks.itemId : null);
+  }, [tweaks.modalAbierto, tweaks.itemId]);
+
+  const filteredItems = React.useMemo(() => {
+    let items = [...ALL_ITEMS];
+    if (condition !== 'all') items = items.filter(i => i.condition === condition);
+    if (category !== 'all') items = items.filter(i => i.category === category);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      items = items.filter(i => i.title.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q));
+    }
+    items.sort((a,b) => (a.degraded?1:0) - (b.degraded?1:0));
+    return items;
+  }, [condition, category, search]);
+
+  const openItem = ALL_ITEMS.find(i => i.id === openId) || null;
+
+  const [reportState, setReportState] = React.useState({ open:false, entityType:'objeto', entityName:'', contextId:null });
+
+  const openReport = React.useCallback((entityType, entityName, contextId) => {
+    setReportState({ open:true, entityType, entityName, contextId });
+  }, []);
+
+  React.useEffect(() => {
+    window.__openReport = openReport;
+    return () => { delete window.__openReport; };
+  }, [openReport]);
+
+  const handleOpen    = (item) => { setOpenId(item.id); setTweak({ itemId:item.id, modalAbierto:true }); };
+  const handleClose   = React.useCallback(() => { setOpenId(null); setTweak({ modalAbierto:false }); }, []);
+  const handleConfirm = (channel) => { setTweak({ requestState:'pending', mostrarConfirmacion:false, contactoReceptor:channel }); };
+
+  return (
+    <div style={{ minHeight:'100vh', background:C.bgPage }}>
+      <Navbar/>
+
+      <main style={{ maxWidth:1140, margin:'0 auto', padding:'0 clamp(16px,3vw,40px)' }}>
+        {/* Header */}
+        <div className="page-header" style={{ padding:'28px 0 20px', display:'flex', alignItems:'baseline',
+          justifyContent:'space-between', gap:16, flexWrap:'wrap' }}>
+          <h1 style={{ fontFamily:FD, fontSize:28, fontWeight:600, color:C.fg, letterSpacing:'-0.02em', lineHeight:1.1 }}>
+            Tablón
+          </h1>
+          <div style={{ fontFamily:FB, fontSize:13, color:C.fgMuted }}>
+            {filteredItems.length} {filteredItems.length===1?'objeto':'objetos'} cerca de ti · radio 50 km
+          </div>
+        </div>
+
+        {/* Toolbar */}
+        <div className="toolbar" style={{ marginBottom:24, display:'flex', gap:12, flexWrap:'wrap', alignItems:'center' }}>
+          {/* Search */}
+          <div className="search-box" style={{ flex:'1 1 240px', display:'flex', alignItems:'center', gap:10,
+            background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:10,
+            padding:'9px 16px', boxShadow:C.sh1 }}>
+            <span style={{ color:C.fgMuted, flexShrink:0 }}><ISearch sz={16}/></span>
+            <input value={search} onChange={e=>setSearch(e.target.value)}
+              placeholder="Buscar objetos…"
+              style={{ flex:1, border:'none', outline:'none', background:'none',
+                fontFamily:FB, fontSize:14, color:C.fg }}/>
+            {search && (
+              <button onClick={()=>setSearch('')}
+                style={{ background:'none', border:'none', cursor:'pointer', color:C.fgMuted, display:'flex', padding:0 }}>
+                <IClose sz={14}/>
+              </button>
+            )}
+          </div>
+          {/* Condition chips */}
+          <div className="cond-chips" style={{ display:'flex', gap:8, flexShrink:0 }}>
+            {CONDITIONS.map(cond => {
+              const active = condition === cond.id;
+              return (
+                <button key={cond.id} onClick={()=>setCondition(cond.id)}
+                  style={{ flexShrink:0, padding:'7px 14px', borderRadius:999, cursor:'pointer',
+                    border:`1.5px solid ${active ? C.primary : C.border}`,
+                    background: active ? C.primaryLight : C.bgSurface,
+                    fontFamily:FB, fontSize:13, fontWeight: active ? 600 : 400,
+                    color: active ? C.primary : C.fgMid, transition:'all 150ms',
+                    boxShadow: active ? 'none' : C.sh1 }}>
+                  {cond.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Category filter row */}
+        <div className="cat-row" style={{ display:'flex', gap:8, flexWrap:'nowrap', overflowX:'auto', marginBottom:24, paddingBottom:2, scrollbarWidth:'none' }}>
+          {CATEGORIES.map(cat => {
+            const active = category === cat.id;
+            return (
+              <button key={cat.id} onClick={() => setCategory(cat.id)}
+                style={{ flexShrink:0, padding:'6px 13px', borderRadius:999, cursor:'pointer',
+                  border:`1.5px solid ${active ? '#142244' : C.border}`,
+                  background: active ? '#EDF0F5' : C.bgSurface,
+                  fontFamily:FB, fontSize:12, fontWeight: active ? 600 : 400,
+                  color: active ? '#142244' : C.fgMid, transition:'all 150ms',
+                  boxShadow: active ? 'none' : C.sh1 }}>
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Grid */}
+        {filteredItems.length === 0 ? (
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center',
+            padding:'72px 24px', gap:12, textAlign:'center' }}>
+            <div style={{ width:56, height:56, borderRadius:'50%', background:C.primaryLight,
+              display:'flex', alignItems:'center', justifyContent:'center', color:C.primary }}>
+              <IBox sz={24}/>
+            </div>
+            <div style={{ fontFamily:FB, fontSize:16, fontWeight:600, color:C.fg }}>Nada por aquí todavía</div>
+            <div style={{ fontFamily:FB, fontSize:14, color:C.fgMuted, maxWidth:280, lineHeight:1.65 }}>
+              No hay objetos disponibles con ese filtro cerca de ti.
+            </div>
+          </div>
+        ) : (
+          <div className="item-grid" style={{ display:'grid',
+            gridTemplateColumns:'repeat(auto-fill, minmax(240px, 1fr))',
+            gap:16, paddingBottom:48 }}>
+            {filteredItems.map((item, idx) => (
+              <GridCard key={item.id} item={item}
+                style={{ animationDelay:`${idx * 30}ms` }}
+                onClick={()=>handleOpen(item)}/>
+            ))}
+          </div>
+        )}
+      </main>
+
+      {/* Detail panel */}
+      {openItem && (
+        <DetailPanel
+          key={openItem.id}
+          item={openItem}
+          turnosRestantes={tweaks.turnosRestantes}
+          requestState={tweaks.requestState}
+          itemPausada={tweaks.itemPausada}
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+          onShare={() => setShareItem(openItem)}
+          contactoReceptor={tweaks.contactoReceptor}
+          startOnContact={tweaks.mostrarConfirmacion}
+        />
+      )}
+
+      {/* Share modal */}
+      {shareItem && (
+        <ShareModal
+          title={shareItem.title}
+          url={`https://nolovendo.es/objeto/${shareItem.id}`}
+          onClose={() => setShareItem(null)}
+        />
+      )}
+
+      {/* Report modal */}
+      {reportState.open && (
+        <ReportModal
+          context={reportState.contextId}
+          entityType={reportState.entityType}
+          entityName={reportState.entityName}
+          onClose={() => setReportState({ open:false, entityType:'objeto', entityName:'', contextId:null })}
+        />
+      )}
+
+      {/* Tweaks */}
+      <TweaksPanel>
+        <TweakSection title="Usuario">
+          <TweakSlider id="turnosRestantes" label="Turnos restantes" min={0} max={3} step={1} default={2}/>
+        </TweakSection>
+        <TweakSection title="Modal de detalle">
+          <TweakToggle id="modalAbierto" label="Modal abierto"/>
+          <TweakSelect id="itemId" label="Objeto mostrado"
+            options={ALL_ITEMS.map(i=>({ value:i.id, label:i.title.slice(0,30) }))}/>
+          <TweakSelect id="requestState" label="Estado solicitud"
+            options={[{value:'none',label:'Sin solicitar'},{value:'pending',label:'En espera'},{value:'selected',label:'Seleccionado ✓'}]}/>
+          <TweakToggle id="mostrarConfirmacion" label="Diálogo: dejar contacto"/>
+          <TweakToggle id="itemPausada" label="Solicitudes pausadas"/>
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+
+<style>
+  .site-footer { background:#fff; border-top:1px solid #D5D9DE; font-family:'DM Sans',system-ui,sans-serif; }
+  .site-footer-inner { max-width:1140px; margin:0 auto; padding:0 clamp(16px,4vw,40px); }
+  .footer-main-grid { display:flex; justify-content:space-between; align-items:flex-start; gap:64px; padding:52px 0 44px; }
+  .footer-brand-col { flex:0 0 auto; max-width:220px; }
+  .footer-logo { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; color:#3A7358; text-decoration:none; display:block; margin-bottom:14px; letter-spacing:-0.01em; }
+  .footer-desc { font-size:13px; color:#7C8692; line-height:1.75; margin:0; }
+  .footer-nav-cols { display:flex; gap:52px; flex-shrink:0; align-items:flex-start; }
+  .footer-col-label { font-size:10px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#7C8692; margin-bottom:14px; }
+  .footer-col-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .footer-col-links a { font-size:13px; color:#606A76; text-decoration:none; transition:color 150ms; line-height:1.4; }
+  .footer-col-links a:hover { color:#3A7358; }
+  .footer-col-links a.current { color:#3A7358; font-weight:500; }
+  .footer-bottom { border-top:1px solid #D5D9DE; }
+  .footer-bottom-inner { display:flex; justify-content:space-between; align-items:center; padding:16px 0; gap:16px; flex-wrap:wrap; }
+  .footer-copy { font-size:12px; color:#7C8692; }
+  .footer-motto { font-family:'Playfair Display',Georgia,serif; font-size:13px; font-style:italic; color:#7C8692; opacity:0.8; }
+  .footer-social { margin-top:20px; }
+  .footer-social-row { display:flex; gap:8px; margin-top:10px; }
+  .footer-social-btn { width:36px; height:36px; border-radius:50%; background:#F4F5F6; border:1px solid #D5D9DE; display:flex; align-items:center; justify-content:center; text-decoration:none; color:#606A76; transition:all 150ms; flex-shrink:0; }
+  .footer-social-btn:hover { transform:translateY(-1px); box-shadow:0 2px 8px rgba(0,0,0,0.10); }
+  .footer-social-btn.wa:hover { background:#E8FAF0; border-color:#25D36640; color:#25D366; }
+  .footer-social-btn.fb:hover { background:#E7F1FD; border-color:#1877F240; color:#1877F2; }
+  .footer-social-btn.tw:hover { background:#F0F0F0; border-color:#0F141940; color:#0F1419; }
+  @media(max-width:720px){.footer-main-grid{flex-direction:column;gap:36px;padding:40px 0 32px}.footer-brand-col{max-width:100%}.footer-nav-cols{flex-wrap:wrap;gap:28px 40px}.footer-bottom-inner{flex-direction:column;align-items:flex-start;gap:6px}}
+</style>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+        <div class="footer-social">
+          <div class="footer-col-label">Compartir la app</div>
+          <div class="footer-social-row">
+            <a href="https://wa.me/?text=Descubre%20no%20lo%20vendo%3A%20regala%20y%20recibe%20objetos%20gratis%20en%20tu%20comunidad.%0Ahttps%3A%2F%2Fnolovendo.es" class="footer-social-btn wa" target="_blank" rel="noopener noreferrer" title="Compartir en WhatsApp">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.116.553 4.103 1.52 5.83L0 24l6.336-1.51A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.66-.5-5.19-1.38l-.37-.22-3.76.9.94-3.67-.24-.38A9.934 9.934 0 012 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnolovendo.es&quote=Descubre%20no%20lo%20vendo%3A%20regala%20y%20recibe%20objetos%20gratis%20en%20tu%20comunidad." class="footer-social-btn fb" target="_blank" rel="noopener noreferrer" title="Compartir en Facebook">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://twitter.com/intent/tweet?text=Descubre%20no%20lo%20vendo%3A%20regala%20y%20recibe%20objetos%20gratis%20en%20tu%20comunidad.&url=https%3A%2F%2Fnolovendo.es" class="footer-social-btn tw" target="_blank" rel="noopener noreferrer" title="Compartir en X / Twitter">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.728-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html" class="current">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+@if (open()) {
+  <div
+    class="delivery-session-dialog__backdrop rlg-fade-in"
+    role="presentation"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="delivery-session-dialog__panel rlg-modal-in"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'delivery-confirm-title'"
+      [attr.aria-describedby]="'delivery-confirm-desc'"
+      tabindex="-1"
+      (click)="onPanelClick($event)"
+      *transloco="let t"
+    >
+      <h2 id="delivery-confirm-title" class="delivery-session-dialog__title">
+        {{ t('items.my_objects.confirm_delivery.title') }}
+      </h2>
+      <p id="delivery-confirm-desc" class="delivery-session-dialog__body">
+        {{ t('items.my_objects.confirm_delivery.body_lead') }}
+        <strong>{{
+          isFirstDelivery()
+            ? t('items.my_objects.confirm_delivery.body_points_first')
+            : t('items.my_objects.confirm_delivery.body_points')
+        }}</strong
+        >{{ t('items.my_objects.confirm_delivery.body_tail') }}
+      </p>
+
+      @if (errorKey(); as errKey) {
+        <app-alert-box variant="error" class="delivery-session-dialog__alert">
+          <p class="delivery-session-dialog__error">{{ t(errKey) }}</p>
+        </app-alert-box>
+      }
+
+      <div class="delivery-session-dialog__footer">
+        <app-btn variant="ghost" [disabled]="submitting()" (click)="onDismiss()">
+          {{ t('items.my_objects.confirm_delivery.dismiss') }}
+        </app-btn>
+        <app-btn
+          class="delivery-session-dialog__confirm-btn"
+          variant="primary"
+          [fullWidth]="true"
+          data-testid="confirm-delivery-btn"
+          [disabled]="submitting()"
+          (click)="onConfirm()"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          {{
+            submitting()
+              ? t('items.my_objects.confirm_delivery.confirming')
+              : t('items.my_objects.confirm_delivery.confirm')
+          }}
+        </app-btn>
+      </div>
+    </div>
+  </div>
+}

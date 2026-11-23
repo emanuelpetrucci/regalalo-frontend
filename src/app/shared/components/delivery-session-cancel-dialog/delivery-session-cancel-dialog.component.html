@@ -1,0 +1,90 @@
+@if (open()) {
+  <div
+    class="delivery-session-dialog__backdrop rlg-fade-in"
+    role="presentation"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="delivery-session-dialog__panel rlg-modal-in"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'delivery-cancel-title'"
+      tabindex="-1"
+      (click)="onPanelClick($event)"
+      *transloco="let t"
+    >
+      <h2 id="delivery-cancel-title" class="delivery-session-dialog__title">
+        {{ t('items.my_objects.cancel_session.title') }}
+      </h2>
+      <p class="delivery-session-dialog__body">
+        {{ t('items.my_objects.cancel_session.body') }}
+      </p>
+
+      <label
+        class="delivery-session-dialog__no-show"
+        [class.delivery-session-dialog__no-show--checked]="noShow()"
+        data-testid="delivery-noshow-toggle"
+        (click)="onNoShowLabelClick($event)"
+      >
+        <input
+          type="checkbox"
+          class="delivery-session-dialog__no-show-input"
+          [checked]="noShow()"
+          [disabled]="submitting()"
+          data-testid="delivery-noshow-checkbox"
+          (change)="onNoShowChange($any($event.target).checked)"
+        />
+        <span class="delivery-session-dialog__no-show-box" aria-hidden="true">
+          @if (noShow()) {
+            <svg
+              width="11"
+              height="11"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          }
+        </span>
+        <span class="delivery-session-dialog__no-show-copy">
+          <span class="delivery-session-dialog__no-show-title">
+            {{ t('items.my_objects.cancel_session.no_show_title') }}
+          </span>
+          <span class="delivery-session-dialog__no-show-body">
+            {{ t('items.my_objects.cancel_session.no_show_body') }}
+          </span>
+        </span>
+      </label>
+
+      @if (errorKey(); as errKey) {
+        <app-alert-box variant="error" class="delivery-session-dialog__alert">
+          <p class="delivery-session-dialog__error">{{ t(errKey) }}</p>
+        </app-alert-box>
+      }
+
+      <div class="delivery-session-dialog__footer">
+        <app-btn variant="ghost" [disabled]="submitting()" (click)="onDismiss()">
+          {{ t('items.my_objects.cancel_session.dismiss') }}
+        </app-btn>
+        <app-btn
+          class="delivery-session-dialog__confirm-btn"
+          variant="danger"
+          [fullWidth]="true"
+          [disabled]="submitting()"
+          data-testid="delivery-cancel-confirm-btn"
+          (click)="onConfirm()"
+        >
+          {{
+            submitting()
+              ? t('items.my_objects.cancel_session.confirming')
+              : t(confirmLabelKey())
+          }}
+        </app-btn>
+      </div>
+    </div>
+  </div>
+}

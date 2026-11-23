@@ -1,0 +1,61 @@
+next_id = 1
+[[entry]]
+id = "f1"
+type = "story"
+title = "Regenerar Cliente Openapi Y Architecture V1 3"
+description = "Migrado: 6-f1-regenerar-cliente-openapi-y-architecture-v1-3"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "6-f1-regenerar-cliente-openapi-y-architecture-v1-3"
+
+[[entry]]
+id = "f2"
+type = "story"
+title = "Registro Firstname Lastname Phone Retrofit 1 3"
+description = "Migrado: 6-f2-registro-firstname-lastname-phone-retrofit-1-3"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "6-f2-registro-firstname-lastname-phone-retrofit-1-3"
+
+[[entry]]
+id = "f3"
+type = "story"
+title = "Componente Avatar Regla Presentacion"
+description = "Migrado: 6-f3-componente-avatar-regla-presentacion"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "6-f3-componente-avatar-regla-presentacion"
+
+[[entry]]
+id = "f4"
+type = "story"
+title = "Perfil Privado Y Publico Campos Dlt 003"
+description = "Migrado: 6-f4-perfil-privado-y-publico-campos-dlt-003"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "6-f4-perfil-privado-y-publico-campos-dlt-003"
+
+[[entry]]
+id = "f5"
+type = "story"
+title = "Patch Users Me Configuracion Aviso Postal"
+description = "Migrado: 6-f5-patch-users-me-configuracion-aviso-postal"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "6-f5-patch-users-me-configuracion-aviso-postal"
+

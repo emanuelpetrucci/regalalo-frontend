@@ -1,0 +1,88 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# BMAD — personal config (never committed)
+_bmad/custom/config.user.toml
+
+# BMAD — rendered skill snapshots, keyed by this machine's absolute path
+_bmad/render/
+
+# BMad v6→v7 local migration backups (do not commit)
+.v6-v7-migration-backup-*/
+.tickets-folder-migration-backup-*/
+_bmad.setup-*/
+
+# Vercel
+.vercel
+src/environments/environment.vercel.generated.ts
+playwright-report/
+test-results/
+.codegraph/
+app_dev.log
+.opencode/
+__pycache__/
+
+# --- Apertura pública (AGPL-3.0-or-later): entorno, configuración local y artefactos ---
+
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Configuración local con ruta personal (no es una skill; no publicarla)
+.claude/settings.local.json
+
+# Informes y artefactos de prueba
+coverage/
+blob-report/
+playwright/.cache/
+
+# Claves y almacenes
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore

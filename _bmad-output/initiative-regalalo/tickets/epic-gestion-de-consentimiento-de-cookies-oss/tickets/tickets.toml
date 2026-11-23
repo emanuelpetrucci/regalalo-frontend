@@ -1,0 +1,85 @@
+next_id = 1
+[[entry]]
+id = "1"
+type = "story"
+title = "Integrar Libreria Oss Y Capa De Dominio De Consentimiento"
+description = "Migrado: 9-1-integrar-libreria-oss-y-capa-de-dominio-de-consentimiento"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-1-integrar-libreria-oss-y-capa-de-dominio-de-consentimiento"
+
+[[entry]]
+id = "2"
+type = "story"
+title = "Banner Y Panel De Preferencias Con Categorias"
+description = "Migrado: 9-2-banner-y-panel-de-preferencias-con-categorias"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-2-banner-y-panel-de-preferencias-con-categorias"
+
+[[entry]]
+id = "3"
+type = "story"
+title = "Gating De Scripts No Esenciales"
+description = "Migrado: 9-3-gating-de-scripts-no-esenciales"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-3-gating-de-scripts-no-esenciales"
+
+[[entry]]
+id = "4"
+type = "story"
+title = "Acceso Persistente En Footer Legal Existente"
+description = "Migrado: 9-4-acceso-persistente-en-footer-legal-existente"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-4-acceso-persistente-en-footer-legal-existente"
+
+[[entry]]
+id = "5"
+type = "story"
+title = "Qa Funcional Accesibilidad Y Evidencia De Cumplimiento"
+description = "Migrado: 9-5-qa-funcional-accesibilidad-y-evidencia-de-cumplimiento"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-5-qa-funcional-accesibilidad-y-evidencia-de-cumplimiento"
+
+[[entry]]
+id = "6"
+type = "story"
+title = "Refactor Legal Pages A Estructura Documental Completa"
+description = "Migrado: 9-6-refactor-legal-pages-a-estructura-documental-completa"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-6-refactor-legal-pages-a-estructura-documental-completa"
+
+[[entry]]
+id = "7"
+type = "story"
+title = "Alinear Contenido Legal I18N Con Consentimiento Real"
+description = "Migrado: 9-7-alinear-contenido-legal-i18n-con-consentimiento-real"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "9-7-alinear-contenido-legal-i18n-con-consentimiento-real"
+

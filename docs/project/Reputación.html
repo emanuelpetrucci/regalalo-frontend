@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Cómo funciona tu reputación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary:       #3A7358;
+    --primary-hov:   #2D5C45;
+    --primary-light: #F0F5F2;
+    --accent:        #253F72;
+    --accent-light:  #EDF0F5;
+    --bg-page:       #F4F5F6;
+    --bg-surface:    #FFFFFF;
+    --bg-subtle:     #E8EAEC;
+    --fg:            #14171A;
+    --fg-mid:        #606A76;
+    --fg-muted:      #7C8692;
+    --border:        #D5D9DE;
+    --amber-bg:      #FEF6E7;
+    --amber-fg:      #8F5907;
+    --amber-border:  #F0DCB0;
+    --shadow-1:      0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-2:      0 4px 16px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+    --font-display:  'Playfair Display', Georgia, serif;
+    --font-body:     'DM Sans', system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', monospace;
+  }
+
+  html, body { min-height: 100%; }
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg);
+    background: var(--bg-page);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav.top-nav {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 40px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-1);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700;
+    color: var(--primary); letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2px; }
+  .nav-link {
+    background: none; border: none; cursor: pointer;
+    padding: 8px 14px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 400;
+    color: var(--fg-mid); text-decoration: none;
+    transition: background 150ms, color 150ms; display: block;
+  }
+  .nav-link:hover { background: var(--bg-subtle); color: var(--fg); }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary); color: #fff;
+    border: none; cursor: pointer;
+    padding: 8px 16px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    text-decoration: none; transition: background 150ms, transform 100ms;
+  }
+  .btn-sm:hover { background: var(--primary-hov); }
+  .btn-sm:active { transform: scale(0.97); }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--primary-light); color: var(--primary);
+    font-weight: 600; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--border);
+  }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  /* ── LAYOUT ── */
+  .page-wrap { max-width: 760px; margin: 0 auto; padding: 56px 24px 64px; }
+
+  /* ── HEADER ── */
+  .doc-header { margin-bottom: 44px; }
+  .doc-eyebrow {
+    font-family: var(--font-body); font-size: 12px; font-weight: 500;
+    color: var(--primary); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .doc-title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 5.4vw, 46px); font-weight: 700;
+    color: var(--fg); line-height: 1.12;
+    margin-bottom: 18px; letter-spacing: -0.02em;
+  }
+  .doc-lede {
+    font-size: 18px; color: var(--fg-mid); line-height: 1.65;
+    max-width: 60ch;
+  }
+  .doc-lede strong { color: var(--fg); font-weight: 600; }
+
+  /* ── START BANNER (punto de partida) ── */
+  .start-banner {
+    display: flex; align-items: center; gap: 24px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 26px 28px;
+    box-shadow: var(--shadow-1); margin: 40px 0 8px;
+  }
+  .start-number {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 64px; line-height: 1; color: var(--primary);
+    flex-shrink: 0;
+  }
+  .start-divider { width: 1px; align-self: stretch; background: var(--border); }
+  .start-text { font-size: 15px; color: var(--fg-mid); line-height: 1.7; }
+  .start-text strong { color: var(--fg); font-weight: 600; }
+
+  /* ── SECTION ── */
+  .block { margin-top: 64px; scroll-margin-top: 84px; }
+  .block-head { margin-bottom: 22px; }
+  .block-kicker {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.04em; margin-bottom: 8px; display: inline-block;
+  }
+  .block-kicker.up   { color: var(--primary); }
+  .block-kicker.down { color: var(--amber-fg); }
+  .block-kicker.see  { color: var(--accent); }
+  .block-title {
+    font-family: var(--font-display); font-size: 28px; font-weight: 700;
+    color: var(--fg); line-height: 1.2; letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .block-sub { font-size: 15px; color: var(--fg-mid); line-height: 1.7; max-width: 58ch; }
+  .block-sub strong { color: var(--fg); font-weight: 600; }
+
+  /* ── GAIN CARDS ── */
+  .gain-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-top: 24px;
+  }
+  .gain-card {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px 22px 26px;
+    box-shadow: var(--shadow-1);
+    display: flex; flex-direction: column; gap: 14px;
+    transition: border-color 150ms, box-shadow 150ms, transform 150ms;
+  }
+  .gain-card:hover { border-color: #BFCBC2; box-shadow: var(--shadow-2); transform: translateY(-2px); }
+  .gain-icon {
+    width: 44px; height: 44px; border-radius: 11px;
+    background: var(--primary-light); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gain-value {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 40px; line-height: 1; color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+  .gain-value span { font-size: 17px; font-weight: 600; }
+  .gain-name { font-size: 15px; font-weight: 600; color: var(--fg); }
+  .gain-desc { font-size: 13.5px; color: var(--fg-mid); line-height: 1.6; margin-top: -4px; }
+  .gain-tag {
+    align-self: flex-start; margin-top: 2px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--primary);
+    background: var(--primary-light); padding: 3px 9px; border-radius: 999px;
+  }
+  @media (max-width: 680px) { .gain-grid { grid-template-columns: 1fr; } }
+
+  /* ── LOSE / STAIRCASE ── */
+  .lose-card {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 30px 30px 28px;
+    box-shadow: var(--shadow-1); margin-top: 24px;
+  }
+  .stair {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 14px; align-items: end; margin-bottom: 4px;
+  }
+  .stair-step {
+    background: var(--amber-bg); border: 1px solid var(--amber-border);
+    border-radius: 12px; padding: 18px 16px 16px;
+    display: flex; flex-direction: column; gap: 7px;
+    position: relative;
+  }
+  .stair-step.s1 { margin-bottom: 0; }
+  .stair-step.s2 { padding-top: 30px; }
+  .stair-step.s3 { padding-top: 44px; }
+  .stair-ord {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--amber-fg); opacity: 0.85;
+  }
+  .stair-pts {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 34px; line-height: 1; color: var(--amber-fg);
+  }
+  .stair-note { font-size: 12.5px; color: var(--fg-mid); line-height: 1.45; }
+  .stair-dots {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 24px;
+    color: var(--fg-muted); padding-bottom: 8px;
+  }
+  .lose-first {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding-bottom: 22px; margin-bottom: 22px; border-bottom: 1px dashed var(--border);
+  }
+  .lose-first-pts {
+    font-family: var(--font-display); font-weight: 700; font-size: 30px;
+    color: var(--amber-fg); line-height: 1;
+  }
+  .lose-first-txt { font-size: 15px; color: var(--fg-mid); line-height: 1.6; }
+  .lose-first-txt strong { color: var(--fg); font-weight: 600; }
+
+  .reset-row {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--primary-light); border: 1px solid #CFE0D6;
+    border-radius: 12px; padding: 16px 20px; margin-top: 22px;
+  }
+  .reset-ico {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    background: #fff; color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #CFE0D6;
+  }
+  .reset-txt { font-size: 14px; color: #20402F; line-height: 1.55; }
+  .reset-txt strong { color: var(--primary-hov); font-weight: 600; }
+
+  .stair-caption {
+    font-size: 12.5px; color: var(--fg-muted); text-align: center;
+    margin-top: 14px; font-style: italic;
+  }
+  @media (max-width: 620px) {
+    .stair { grid-template-columns: 1fr; }
+    .stair-step.s2, .stair-step.s3 { padding-top: 18px; }
+    .stair-dots { display: none; }
+  }
+
+  /* ── VISIBILITY (qué pasa si no donas) ── */
+  .vis-track { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+  .vis-stage {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px 26px;
+    box-shadow: var(--shadow-1);
+    display: grid; grid-template-columns: 132px 1fr; gap: 26px; align-items: center;
+  }
+  .vis-when {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-right: 24px; border-right: 1px solid var(--border);
+  }
+  .vis-when-num {
+    font-family: var(--font-display); font-weight: 700; font-size: 38px;
+    line-height: 1; color: var(--accent);
+  }
+  .vis-when-unit { font-size: 13px; color: var(--fg-muted); font-weight: 500; }
+  .vis-body { display: flex; flex-direction: column; gap: 14px; }
+  .vis-headline { font-size: 16px; font-weight: 600; color: var(--fg); }
+  .vis-desc { font-size: 14px; color: var(--fg-mid); line-height: 1.6; }
+
+  /* mini list visualization */
+  .vis-list { display: flex; flex-direction: column; gap: 5px; max-width: 280px; }
+  .vis-row {
+    display: flex; align-items: center; gap: 9px;
+    background: var(--bg-page); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 11px;
+    font-size: 12.5px; color: var(--fg-mid);
+  }
+  .vis-row .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg-muted); flex-shrink: 0; }
+  .vis-row.you {
+    background: var(--accent-light); border-color: #B7C4DC;
+    color: var(--accent); font-weight: 600;
+  }
+  .vis-row.you .dot { background: var(--accent); }
+  .vis-row.dim { opacity: 0.5; }
+  .vis-row.invisible {
+    border-style: dashed; color: var(--fg-muted);
+    background: repeating-linear-gradient(45deg, #fff, #fff 6px, var(--bg-page) 6px, var(--bg-page) 12px);
+  }
+  .vis-row.invisible .dot { background: var(--border); }
+  .vis-rank { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); width: 16px; flex-shrink: 0; }
+  .vis-row.you .vis-rank { color: var(--accent); }
+
+  @media (max-width: 620px) {
+    .vis-stage { grid-template-columns: 1fr; gap: 18px; }
+    .vis-when { flex-direction: row; align-items: baseline; gap: 8px; border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 14px; }
+  }
+
+  /* restore banner */
+  .restore {
+    display: flex; align-items: center; gap: 16px; margin-top: 18px;
+    background: var(--primary-light); border: 1px solid #CFE0D6;
+    border-radius: 14px; padding: 20px 24px;
+  }
+  .restore-ico {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .restore-txt { font-size: 15px; color: #20402F; line-height: 1.6; }
+  .restore-txt strong { color: var(--primary-hov); font-weight: 700; }
+
+  /* ── CLOSING NOTE ── */
+  .closing {
+    margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .closing-quote {
+    font-family: var(--font-display); font-style: italic;
+    font-size: 22px; color: var(--fg); line-height: 1.4; max-width: 46ch;
+    margin: 0 auto 8px;
+  }
+  .closing-sub { font-size: 14px; color: var(--fg-muted); }
+
+  .ico { display: inline-block; vertical-align: middle; }
+
+  /* ── SITE FOOTER ── */
+  .site-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    font-family: var(--font-body);
+    margin-top: 80px;
+  }
+  .site-footer-inner { max-width: 1140px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+  .footer-main-grid {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 64px; padding: 52px 0 44px;
+  }
+  .footer-brand-col { flex: 0 0 auto; max-width: 220px; }
+  .footer-logo {
+    font-family: var(--font-display); font-size: 20px; font-weight: 700;
+    color: var(--primary); text-decoration: none; display: block;
+    margin-bottom: 14px; letter-spacing: -0.01em;
+  }
+  .footer-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.75; margin: 0; }
+  .footer-nav-cols { display: flex; gap: 52px; flex-shrink: 0; align-items: flex-start; }
+  .footer-col-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--fg-muted); margin-bottom: 14px;
+  }
+  .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .footer-col-links a {
+    font-size: 13px; color: var(--fg-mid); text-decoration: none;
+    transition: color 150ms; line-height: 1.4;
+  }
+  .footer-col-links a:hover { color: var(--primary); }
+  .footer-col-links a.current { color: var(--primary); font-weight: 500; }
+  .footer-bottom { border-top: 1px solid var(--border); }
+  .footer-bottom-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 0; gap: 16px; flex-wrap: wrap;
+  }
+  .footer-copy { font-size: 12px; color: var(--fg-muted); }
+  .footer-motto {
+    font-family: var(--font-display); font-size: 13px; font-style: italic;
+    color: var(--fg-muted); opacity: 0.8;
+  }
+  @media (max-width: 720px) {
+    .footer-main-grid { flex-direction: column; gap: 36px; padding: 40px 0 32px; }
+    .footer-brand-col { max-width: 100%; }
+    .footer-nav-cols { flex-wrap: wrap; gap: 28px 40px; }
+    .footer-bottom-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="Explorar v3.html" class="nav-logo">no lo vendo</a>
+  <div class="nav-links">
+    <a href="Explorar v3.html" class="nav-link">Explorar</a>
+    <a href="Mis objetos.html" class="nav-link">Mis objetos</a>
+    <a href="Entregas.html" class="nav-link">Entregas</a>
+    <a href="Perfil.html" class="nav-link">Perfil</a>
+  </div>
+  <div class="nav-actions">
+    <div style="position:relative;flex-shrink:0;" id="nlv-lang-sel">
+      <button onclick="nlvLangToggle()" style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #D5D9DE;border-radius:8px;padding:5px 10px;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:#606A76;cursor:pointer;">
+        <span id="nlv-lang-code">ES</span>
+        <svg id="nlv-lang-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 150ms;"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="nlv-lang-dd" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid #D5D9DE;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06);overflow:hidden;z-index:1000;min-width:130px;">
+        <button data-code="es" onclick="nlvLangSelect('es')" onmouseover="if(nlvLang!=='es')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='es')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Español</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">ES</span></button>
+        <button data-code="en" onclick="nlvLangSelect('en')" onmouseover="if(nlvLang!=='en')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='en')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>English</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">EN</span></button>
+        <button data-code="ca" onclick="nlvLangSelect('ca')" onmouseover="if(nlvLang!=='ca')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='ca')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Català</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">CA</span></button>
+      </div>
+    </div>
+    <a href="Mis objetos.html" class="btn-sm">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Publicar
+    </a>
+    <div class="avatar">LS</div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="doc-header">
+    <div class="doc-eyebrow">Cómo funciona</div>
+    <h1 class="doc-title">Tu reputación</h1>
+    <p class="doc-lede">Tu reputación cuenta lo que aportas a la comunidad. <strong>Cuanto más das, más fácil es recibir.</strong> Aquí te lo explicamos paso a paso: qué hace que suba, qué hace que baje y qué pasa con tu puesto en la lista cuando los donantes eligen a quién regalar.</p>
+  </header>
+
+  <div class="start-banner">
+    <div class="start-number">0</div>
+    <div class="start-divider"></div>
+    <p class="start-text"><strong>Todo el mundo empieza en cero.</strong> No hace falta nada para entrar. A partir de ahí, tu reputación sube cuando participas y puede bajar si te comprometes a recoger algo y no apareces. Puede llegar a ser negativa, pero siempre se recupera dando.</p>
+  </div>
+
+  <!-- GANAR -->
+  <section class="block" id="ganar">
+    <div class="block-head">
+      <span class="block-kicker up">Tu reputación sube</span>
+      <h2 class="block-title">Cómo ganar puntos</h2>
+      <p class="block-sub">Participar es lo que te hace ganar reputación. Hay tres formas de sumar, y dar es siempre la que más cuenta.</p>
+    </div>
+
+    <div class="gain-grid">
+      <div class="gain-card">
+        <div class="gain-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div class="gain-value">+15</div>
+        <div class="gain-name">Tu primera donación</div>
+        <div class="gain-desc">La primera vez que entregas un objeto a alguien, recibes un empujón extra para empezar con buen pie.</div>
+        <span class="gain-tag">Solo la primera vez</span>
+      </div>
+
+      <div class="gain-card">
+        <div class="gain-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3.5-7.1"/><polyline points="21 3 21 9 15 9"/></svg>
+        </div>
+        <div class="gain-value">+10</div>
+        <div class="gain-name">Cada donación siguiente</div>
+        <div class="gain-desc">Cada vez que vuelves a regalar algo y la entrega se completa, tu reputación sube de nuevo.</div>
+        <span class="gain-tag">Cada vez que donas</span>
+      </div>
+
+      <div class="gain-card">
+        <div class="gain-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        </div>
+        <div class="gain-value">+1</div>
+        <div class="gain-name">Recibir un objeto</div>
+        <div class="gain-desc">Cuando recoges algo que te han regalado y la entrega se completa, también sumas un punto.</div>
+        <span class="gain-tag">Cada vez que recibes</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERDER -->
+  <section class="block" id="perder">
+    <div class="block-head">
+      <span class="block-kicker down">Tu reputación baja</span>
+      <h2 class="block-title">Cómo se pierden puntos</h2>
+      <p class="block-sub">Solo hay una cosa que resta: <strong>comprometerte a recoger un objeto y no presentarte.</strong> Cuando alguien aparta algo para ti y no vas, esa persona se queda esperando. Por eso, si vuelve a pasar, baja un poco más cada vez.</p>
+    </div>
+
+    <div class="lose-card">
+      <div class="lose-first">
+        <span class="lose-first-pts">−10</span>
+        <span class="lose-first-txt"><strong>La primera vez que no te presentas</strong> a recoger un objeto, tu reputación baja 10 puntos.</span>
+      </div>
+
+      <div class="stair" aria-hidden="false">
+        <div class="stair-step s1">
+          <span class="stair-ord">1.ª vez</span>
+          <span class="stair-pts">−10</span>
+          <span class="stair-note">No te presentas a recoger.</span>
+        </div>
+        <div class="stair-step s2">
+          <span class="stair-ord">2.ª vez</span>
+          <span class="stair-pts">−20</span>
+          <span class="stair-note">Vuelve a pasar sin haber completado ninguna entrega.</span>
+        </div>
+        <div class="stair-step s3">
+          <span class="stair-ord">3.ª vez</span>
+          <span class="stair-pts">−30</span>
+          <span class="stair-note">Y así, baja un poco más cada vez que se repite.</span>
+        </div>
+      </div>
+      <p class="stair-caption">Si se repite sin que completes ninguna entrega entre medias, cada vez resta un poco más.</p>
+
+      <div class="reset-row">
+        <div class="reset-ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+        </div>
+        <p class="reset-txt"><strong>Completar cualquier entrega lo pone a cero.</strong> En cuanto vuelves a donar o a recibir algo de verdad, ese contador se reinicia y la próxima vez vuelve a empezar en −10.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIBILIDAD -->
+  <section class="block" id="visibilidad">
+    <div class="block-head">
+      <span class="block-kicker see">Tu puesto en la lista</span>
+      <h2 class="block-title">Qué pasa si no donas</h2>
+      <p class="block-sub">No lo vendo funciona porque la gente da y recibe. Si solo pides durante mucho tiempo y nunca regalas nada, poco a poco <strong>los donantes te ven menos</strong> cuando eligen a quién entregar.</p>
+    </div>
+
+    <div class="vis-track">
+      <div class="vis-stage">
+        <div class="vis-when">
+          <span class="vis-when-num">1</span>
+          <span class="vis-when-unit">mes pidiendo<br>sin donar</span>
+        </div>
+        <div class="vis-body">
+          <div class="vis-headline">Apareces más abajo en la lista</div>
+          <p class="vis-desc">Cuando un donante mira quién ha pedido su objeto, sigues ahí, pero más abajo. Las personas que también dan a la comunidad aparecen por delante de ti.</p>
+          <div class="vis-list" aria-hidden="true">
+            <div class="vis-row"><span class="vis-rank">1</span><span class="dot"></span>Reparte y recibe</div>
+            <div class="vis-row"><span class="vis-rank">2</span><span class="dot"></span>Reparte y recibe</div>
+            <div class="vis-row you"><span class="vis-rank">7</span><span class="dot"></span>Tú · más abajo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vis-stage">
+        <div class="vis-when">
+          <span class="vis-when-num">2</span>
+          <span class="vis-when-unit">meses pidiendo<br>sin donar</span>
+        </div>
+        <div class="vis-body">
+          <div class="vis-headline">Los donantes no pueden verte</div>
+          <p class="vis-desc">Si pasan dos meses y sigues sin regalar nada, pasas a ser invisible para los donantes: tu solicitud deja de aparecer en su lista cuando eligen receptor.</p>
+          <div class="vis-list" aria-hidden="true">
+            <div class="vis-row"><span class="vis-rank">1</span><span class="dot"></span>Reparte y recibe</div>
+            <div class="vis-row"><span class="vis-rank">2</span><span class="dot"></span>Reparte y recibe</div>
+            <div class="vis-row invisible"><span class="vis-rank"></span><span class="dot"></span>No apareces para los donantes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="restore">
+      <div class="restore-ico">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <p class="restore-txt"><strong>Completar una sola donación lo arregla al instante.</strong> En cuanto regalas algo, vuelves a aparecer con normalidad para los donantes, sin importar cuánto tiempo llevaras sin asomar.</p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <p class="closing-quote">"No lo vendo, lo regalo."</p>
+    <p class="closing-sub">Da lo que no necesitas y tu reputación cuidará de ti.</p>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html" class="current">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+var nlvLang = localStorage.getItem('nlv_lang') || 'es';
+function nlvLangUpdate() {
+  var c = document.getElementById('nlv-lang-code');
+  if (c) c.textContent = nlvLang.toUpperCase();
+  document.querySelectorAll('#nlv-lang-dd button').forEach(function(btn) {
+    var a = btn.dataset.code === nlvLang;
+    btn.style.background = a ? '#F0F5F2' : 'transparent';
+    btn.style.color = a ? '#3A7358' : '#14171A';
+    btn.style.fontWeight = a ? '600' : '400';
+    var s = btn.querySelector('span:last-child');
+    if (s) s.style.color = a ? '#3A7358' : '#9AA2AD';
+  });
+}
+function nlvLangToggle() {
+  var dd = document.getElementById('nlv-lang-dd');
+  var ch = document.getElementById('nlv-lang-chev');
+  var isOpen = dd.style.display !== 'none';
+  dd.style.display = isOpen ? 'none' : 'block';
+  ch.style.transform = isOpen ? 'none' : 'rotate(180deg)';
+}
+function nlvLangSelect(code) {
+  nlvLang = code;
+  localStorage.setItem('nlv_lang', code);
+  document.getElementById('nlv-lang-dd').style.display = 'none';
+  document.getElementById('nlv-lang-chev').style.transform = 'none';
+  nlvLangUpdate();
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#nlv-lang-sel')) {
+    var dd = document.getElementById('nlv-lang-dd');
+    if (dd) dd.style.display = 'none';
+    var ch = document.getElementById('nlv-lang-chev');
+    if (ch) ch.style.transform = 'none';
+  }
+});
+nlvLangUpdate();
+</script>
+</body>
+</html>

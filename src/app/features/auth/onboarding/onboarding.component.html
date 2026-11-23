@@ -1,0 +1,277 @@
+<div
+  class="onboarding"
+  [class.onboarding--chrome-dark]="isDarkChrome()"
+  [class.onboarding--chrome-light]="!isDarkChrome()"
+  *transloco="let t; prefix: 'onboarding'"
+>
+  <!-- Top chrome -->
+  <header class="onboarding__chrome-top">
+    <div class="onboarding__logo">Regálalo</div>
+
+    <div
+      class="onboarding__progress"
+      role="progressbar"
+      [attr.aria-valuenow]="index() + 1"
+      [attr.aria-valuemin]="1"
+      [attr.aria-valuemax]="slideCount"
+      [attr.aria-label]="t('chrome.progress_aria')"
+    >
+      @for (i of [0, 1, 2, 3, 4]; track i) {
+        <span
+          class="onboarding__progress-seg"
+          [class.onboarding__progress-seg--active]="i <= index()"
+        ></span>
+      }
+    </div>
+
+    @if (showSkip()) {
+      <button type="button" class="onboarding__skip" (click)="finish()">
+        {{ t('chrome.skip') }}
+      </button>
+    }
+
+    <span class="onboarding__counter" aria-hidden="true">
+      {{ index() + 1 }} / {{ slideCount }}
+    </span>
+
+    <app-language-selector [dark]="isDarkChrome()" />
+  </header>
+
+  <!-- Slide viewport (re-mount on slideKey for enter animation) -->
+  @for (k of [slideKey()]; track k) {
+    <div
+      class="onboarding__slide-stage"
+      [class.enter-fwd]="direction() >= 0"
+      [class.enter-back]="direction() < 0"
+      aria-live="polite"
+    >
+      @switch (index()) {
+        @case (0) {
+          <section class="slide slide--concept">
+            <div class="slide__watermark slide__watermark--rlg" aria-hidden="true">rlg</div>
+            <div class="slide__content slide__content--center">
+              <p class="fade-up fade-up-1 slide__kicker">{{ t('slide0.kicker') }}</p>
+              <h1 class="fade-up fade-up-2 slide__title slide__title--hero">
+                {{ t('slide0.title_line1') }}<br />
+                <em>{{ t('slide0.title_em') }}</em>
+              </h1>
+              <p class="fade-up fade-up-3 slide__body slide__body--center">
+                {{ t('slide0.body') }}
+              </p>
+            </div>
+          </section>
+        }
+        @case (1) {
+          <section class="slide slide--roles">
+            <div class="slide__content slide__content--roles">
+              <div class="slide__header-block">
+                <p class="fade-up fade-up-1 slide__kicker slide__kicker--muted">
+                  {{ t('slide1.kicker') }}
+                </p>
+                <h2 class="fade-up fade-up-2 slide__title">
+                  {{ t('slide1.title_line1') }}<br />
+                  <em>{{ t('slide1.title_em') }}</em>
+                </h2>
+              </div>
+              <div class="slide__cards fade-up fade-up-3">
+                <article class="role-card">
+                  <span class="role-card__accent" aria-hidden="true"></span>
+                  <h3 class="role-card__title">{{ t('slide1.donate_title') }}</h3>
+                  <p class="role-card__sub">{{ t('slide1.donate_sub') }}</p>
+                  <ul class="role-card__list">
+                    <li>{{ t('slide1.donate_li1') }}</li>
+                    <li>{{ t('slide1.donate_li2') }}</li>
+                    <li>{{ t('slide1.donate_li3') }}</li>
+                  </ul>
+                </article>
+                <article class="role-card">
+                  <span class="role-card__accent role-card__accent--navy" aria-hidden="true"></span>
+                  <h3 class="role-card__title">{{ t('slide1.receive_title') }}</h3>
+                  <p class="role-card__sub">{{ t('slide1.receive_sub') }}</p>
+                  <ul class="role-card__list">
+                    <li>{{ t('slide1.receive_li1') }}</li>
+                    <li>{{ t('slide1.receive_li2') }}</li>
+                    <li>{{ t('slide1.receive_li3') }}</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </section>
+        }
+        @case (2) {
+          <section class="slide slide--reputation">
+            <div class="slide__watermark slide__watermark--r" aria-hidden="true">R</div>
+            <div class="slide__content slide__content--reputation">
+              <div class="slide__reputation-text">
+                <p class="fade-up fade-up-1 slide__kicker slide__kicker--on-dark">
+                  {{ t('slide2.kicker') }}
+                </p>
+                <h2 class="fade-up fade-up-2 slide__title slide__title--on-dark">
+                  {{ t('slide2.title_line1') }}<br />
+                  <em>{{ t('slide2.title_em') }}</em>
+                </h2>
+                <p class="fade-up fade-up-3 slide__body slide__body--on-dark">
+                  {{ t('slide2.body') }}
+                </p>
+                <div class="slide__deltas">
+                  <div class="fade-up fade-up-3 reputation-delta">
+                    <span class="reputation-delta__badge reputation-delta__badge--plus">+15</span>
+                    <span class="reputation-delta__label">{{ t('slide2.delta_first_donation') }}</span>
+                  </div>
+                  <div class="fade-up fade-up-4 reputation-delta">
+                    <span class="reputation-delta__badge reputation-delta__badge--plus">+10</span>
+                    <span class="reputation-delta__label">{{ t('slide2.delta_next_donation') }}</span>
+                  </div>
+                  <div class="fade-up fade-up-5 reputation-delta">
+                    <span class="reputation-delta__badge reputation-delta__badge--plus">+1</span>
+                    <span class="reputation-delta__label">{{ t('slide2.delta_receive') }}</span>
+                  </div>
+                  <div class="fade-up fade-up-5 reputation-delta">
+                    <span class="reputation-delta__badge reputation-delta__badge--minus">−10</span>
+                    <span class="reputation-delta__label">{{ t('slide2.delta_absent') }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="fade-up fade-up-2 slide__score-widget">
+                <div class="score-ring">
+                  <span class="count-up score-ring__value">0</span>
+                  <span class="score-ring__caption">{{ t('slide2.ring_caption') }}</span>
+                </div>
+                <p class="score-ring__note">{{ t('slide2.ring_note') }}</p>
+              </div>
+            </div>
+          </section>
+        }
+        @case (3) {
+          <section class="slide slide--limits">
+            <div class="slide__watermark slide__watermark--num" aria-hidden="true">3</div>
+            <div class="slide__content slide__content--limits">
+              <p class="fade-up fade-up-1 slide__kicker slide__kicker--muted">
+                {{ t('slide3.kicker') }}
+              </p>
+              <h2 class="fade-up fade-up-2 slide__title">
+                {{ t('slide3.title_prefix') }}
+                <span class="slide__title-accent">{{ t('slide3.title_accent') }}</span><br />
+                {{ t('slide3.title_suffix') }}
+              </h2>
+              <p class="fade-up fade-up-3 slide__body">{{ t('slide3.body') }}</p>
+              <ul class="fade-up fade-up-4 slide__checklist">
+                <li>
+                  <span class="slide__check-icon" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <polyline
+                        points="2,5 4.2,7.2 8,3"
+                        stroke="white"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {{ t('slide3.check1') }}
+                </li>
+                <li>
+                  <span class="slide__check-icon" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <polyline
+                        points="2,5 4.2,7.2 8,3"
+                        stroke="white"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {{ t('slide3.check2') }}
+                </li>
+                <li>
+                  <span class="slide__check-icon" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <polyline
+                        points="2,5 4.2,7.2 8,3"
+                        stroke="white"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {{ t('slide3.check3') }}
+                </li>
+              </ul>
+            </div>
+          </section>
+        }
+        @case (4) {
+          <section class="slide slide--radius">
+            <div class="slide__rings" aria-hidden="true">
+              <span class="slide__ring slide__ring--1"></span>
+              <span class="slide__ring slide__ring--2"></span>
+              <span class="slide__ring slide__ring--3"></span>
+            </div>
+            <div class="slide__content slide__content--radius">
+              <p class="fade-up fade-up-1 slide__kicker slide__kicker--on-green">
+                {{ t('slide4.kicker') }}
+              </p>
+              <h2 class="fade-up fade-up-2 slide__title slide__title--radius">
+                {{ t('slide4.title_line1') }}<br />
+                <span class="slide__title-km">{{ t('slide4.title_km') }}</span>
+              </h2>
+              <p class="fade-up fade-up-3 slide__body slide__body--on-green">
+                {{ t('slide4.body') }}
+              </p>
+              <button type="button" class="fade-up fade-up-4 slide__cta-finish" (click)="finish()">
+                {{ t('slide4.cta') }}
+              </button>
+              <p class="fade-up fade-up-5 slide__cta-note">{{ t('slide4.note') }}</p>
+            </div>
+          </section>
+        }
+      }
+    </div>
+  }
+
+  <!-- Bottom chrome -->
+  <footer class="onboarding__chrome-bottom">
+    <button
+      type="button"
+      class="onboarding__nav-back"
+      [disabled]="isFirst()"
+      (click)="go(-1)"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      {{ t('chrome.prev') }}
+    </button>
+
+    @if (showBottomNext()) {
+      <button type="button" class="onboarding__nav-next" (click)="go(1)">
+        {{ t('chrome.next') }}
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
+    }
+  </footer>
+</div>

@@ -1,0 +1,61 @@
+next_id = 1
+[[entry]]
+id = "1"
+type = "story"
+title = "Ver Detalle De Sesion De Entrega"
+description = "Migrado: 4-1-ver-detalle-de-sesion-de-entrega"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "4-1-ver-detalle-de-sesion-de-entrega"
+
+[[entry]]
+id = "2"
+type = "story"
+title = "Confirmar Entrega Completada"
+description = "Migrado: 4-2-confirmar-entrega-completada"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "4-2-confirmar-entrega-completada"
+
+[[entry]]
+id = "3"
+type = "story"
+title = "Cancelar Sesion Con Declaracion De No Show"
+description = "Migrado: 4-3-cancelar-sesion-con-declaracion-de-no-show"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "4-3-cancelar-sesion-con-declaracion-de-no-show"
+
+[[entry]]
+id = "4"
+type = "story"
+title = "Pantalla Entregas Split Layout"
+description = "Migrado: 4-4-pantalla-entregas-split-layout"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "4-4-pantalla-entregas-split-layout"
+
+[[entry]]
+id = "5"
+type = "story"
+title = "Cancelar Objeto Con Sesion Activa"
+description = "Migrado: 4-5-cancelar-objeto-con-sesion-activa"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "4-5-cancelar-objeto-con-sesion-activa"
+

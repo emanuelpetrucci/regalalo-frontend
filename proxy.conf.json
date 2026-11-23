@@ -1,0 +1,16 @@
+{
+  "/bff": {
+    "target": "http://localhost:3000/api",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/bff": "" },
+    "logLevel": "info"
+  },
+  "/bffd": {
+    "target": "http://localhost:3000/api",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/bffd": "" },
+    "logLevel": "info"
+  }
+}

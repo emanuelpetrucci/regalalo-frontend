@@ -1,0 +1,131 @@
+/* Portado de RequestSheet en docs/project/ItemDetail.jsx */
+.contact-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.contact-sheet__panel {
+  width: 100%;
+  max-width: 468px;
+  padding: 10px 26px calc(26px + env(safe-area-inset-bottom, 0px));
+  border-radius: 20px 20px 0 0;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-3);
+  outline: none;
+}
+
+.contact-sheet__grabber {
+  width: 38px;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--border-default);
+  margin: 0 auto 18px;
+}
+
+.contact-sheet__title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: var(--weight-bold);
+  color: var(--fg-primary);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.contact-sheet__subtitle {
+  margin: 0 0 20px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--fg-secondary);
+  line-height: 1.6;
+}
+
+.contact-sheet__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.contact-sheet__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+  margin-bottom: 7px;
+}
+
+.contact-sheet__input {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--fg-primary);
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  border-radius: 8px;
+  padding: 11px 13px;
+  outline: none;
+  transition: border-color 150ms;
+
+  &::placeholder {
+    color: var(--fg-muted);
+  }
+
+  &:focus {
+    border-color: var(--border-focus);
+  }
+
+  &--error {
+    border-color: var(--border-error);
+
+    &:focus {
+      border-color: var(--border-error);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.contact-sheet__field-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--color-error-500);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+}
+
+.contact-sheet__field-hint {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+.contact-sheet__footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.contact-sheet__submit-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}

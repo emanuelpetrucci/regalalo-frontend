@@ -1,0 +1,76 @@
+<div class="vp" *transloco="let t">
+  @if (alreadyVerified()) {
+    <div class="vp__centered" role="status">
+      <div class="vp__icon-circle vp__icon-circle--success" aria-hidden="true">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <h1 class="vp__title">{{ t('auth.verificationPending.already_verified_title') }}</h1>
+      <p class="vp__subtitle">{{ t('auth.verificationPending.already_verified_lead') }}</p>
+      <app-btn [fullWidth]="true" routerLink="/login">
+        {{ t('auth.verificationPending.already_verified_cta') }}
+      </app-btn>
+    </div>
+  } @else {
+    <div class="vp__icon-circle vp__icon-circle--info" aria-hidden="true">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7" />
+      </svg>
+    </div>
+
+    <h1 class="vp__title" data-testid="verification-pending-title">{{ t('auth.verificationPending.title') }}</h1>
+    <p class="vp__subtitle">{{ t('auth.verificationPending.lead') }}</p>
+
+    <div class="vp__alert" aria-live="polite" aria-atomic="true">
+      @if (bannerError()) {
+        <app-alert-box variant="error">{{ bannerError() }}</app-alert-box>
+      }
+    </div>
+
+    <div class="vp__action">
+      <app-btn
+        [fullWidth]="true"
+        [disabled]="isInCooldown() || submitting()"
+        type="button"
+        (click)="onResend()"
+        data-testid="resend-verification-btn"
+      >
+        @if (isInCooldown()) {
+          {{ t('auth.verificationPending.resend_btn_cooldown', { seconds: cooldownSeconds() }) }}
+        } @else {
+          {{ t('auth.verificationPending.resend_btn') }}
+        }
+      </app-btn>
+      @if (isInCooldown()) {
+        <p class="vp__cooldown-msg" aria-live="polite" data-testid="resend-cooldown-msg">
+          {{ t('auth.verificationPending.resend_btn_cooldown', { seconds: cooldownSeconds() }) }}
+        </p>
+      }
+    </div>
+
+    <p class="vp__footer">
+      <a routerLink="/login" class="vp__link">{{ t('auth.common.back_to_login') }}</a>
+    </p>
+  }
+</div>

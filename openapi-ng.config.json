@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "../backend/openapi/openapi.json",
+  "output": "src/app/core/api/generated",
+  "configuration": "ApiConfiguration",
+  "apiModule": "ApiModule",
+  "services": true,
+  "models": true,
+  "indexFiles": true,
+  "removeStaleFiles": true
+}

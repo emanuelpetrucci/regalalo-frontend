@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  border-bottom: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  transition: background 150ms;
+
+  &:hover {
+    background: var(--color-neutral-50);
+  }
+
+  &.candidate-row--top {
+    background: var(--bg-primary-light);
+
+    &:hover {
+      background: var(--bg-primary-light);
+    }
+  }
+
+  &.candidate-row--last {
+    border-bottom: none;
+  }
+}
+
+.candidate-row__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.candidate-row__profile-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radius-md);
+
+  &:hover {
+    opacity: 0.92;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+.candidate-row__rank {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  background: var(--bg-subtle);
+  color: var(--fg-muted);
+
+  :host.candidate-row--top & {
+    background: var(--color-primary-500);
+    color: #fff;
+  }
+}
+
+.candidate-row__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.candidate-row__score-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.candidate-row__score {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: var(--weight-semibold);
+
+  &--good {
+    color: var(--color-primary-500);
+  }
+
+  &--fair {
+    color: var(--color-warning-700);
+  }
+
+  &--low {
+    color: var(--color-error-500);
+  }
+}
+
+.candidate-row__best {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary-500);
+  background: var(--color-primary-50);
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+
+.candidate-row__meta {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--fg-muted);
+}

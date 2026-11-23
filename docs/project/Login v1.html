@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Acceder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { height: 100%; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F5F6; -webkit-font-smoothing: antialiased; }
+  input, button, textarea, select { font-family: inherit; }
+  ::placeholder { color: #9AA2AD; }
+  @media (max-width: 780px) {
+    .split-grid { grid-template-columns: 1fr !important; }
+    .brand-col { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+
+/* ── Tokens ─────────────────────────────────────────────────────── */
+const C = {
+  primary:      '#3A7358',
+  primaryHov:   '#2D5C45',
+  primaryLight: '#F0F5F2',
+  primaryDark:  '#224633',
+  accent:       '#253F72',
+  accentHov:    '#1C305A',
+  accentLight:  '#EDF0F5',
+  bgPage:       '#F4F5F6',
+  bgSurface:    '#FFFFFF',
+  bgSubtle:     '#E8EAEC',
+  fgPrimary:    '#14171A',
+  fgSecondary:  '#606A76',
+  fgMuted:      '#7C8692',
+  fgDisabled:   '#9AA2AD',
+  border:       '#D5D9DE',
+  borderStrong: '#B8BFC7',
+  error:        '#B33A2A',
+  errorBg:      '#FDECEA',
+  sh1:          '0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)',
+  sh2:          '0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+  sh3:          '0 8px 32px rgba(0,0,0,0.14)',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', system-ui, sans-serif";
+
+/* ── Icons ──────────────────────────────────────────────────────── */
+function IconArrowLeft() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 12H5M12 19l-7-7 7-7"></path>
+    </svg>
+  );
+}
+function IconEye({ off }) {
+  return off ? (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"></path>
+      <line x1="1" y1="1" x2="23" y2="23"></line>
+    </svg>
+  ) : (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
+    </svg>
+  );
+}
+function IconMail() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+      <polyline points="22,6 12,13 2,6"></polyline>
+    </svg>
+  );
+}
+function IconCheck() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+  );
+}
+
+/* ── FieldInput ─────────────────────────────────────────────────── */
+function FieldInput({ label, type='text', placeholder, value, onChange, error, helper, autoComplete }) {
+  const [focused, setFocused] = React.useState(false);
+  const [showPwd, setShowPwd] = React.useState(false);
+  const isPwd = type === 'password';
+  const actualType = isPwd ? (showPwd ? 'text' : 'password') : type;
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
+      <label style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fgPrimary, lineHeight:1 }}>{label}</label>
+      <div style={{ position:'relative' }}>
+        <input
+          type={actualType}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={{
+            fontFamily:FB, fontSize:14, color:C.fgPrimary,
+            background:C.bgSurface, width:'100%',
+            border:`1.5px solid ${error ? C.error : focused ? C.primary : C.border}`,
+            borderRadius:8, padding: isPwd ? '10px 40px 10px 12px' : '10px 12px',
+            outline:'none',
+            boxShadow: focused && !error ? '0 0 0 3px rgba(58,115,88,0.18)' : 'none',
+            transition:'border-color 150ms, box-shadow 150ms',
+          }}
+        />
+        {isPwd && (
+          <button type="button" onClick={() => setShowPwd(v => !v)} tabIndex={-1}
+            style={{ position:'absolute', right:11, top:'50%', transform:'translateY(-50%)',
+              background:'none', border:'none', cursor:'pointer', color:C.fgMuted,
+              display:'flex', alignItems:'center', padding:2 }}>
+            <IconEye off={showPwd} />
+          </button>
+        )}
+      </div>
+      {(error || helper) && (
+        <span style={{ fontFamily:FB, fontSize:12, color:error ? C.error : C.fgMuted, lineHeight:1.4 }}>
+          {error || helper}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/* ── Btn ────────────────────────────────────────────────────────── */
+function Btn({ children, variant='primary', fullWidth, onClick, disabled, type='button' }) {
+  const [hov, setHov] = React.useState(false);
+  const [prs, setPrs] = React.useState(false);
+  const vars = {
+    primary:   { bg: disabled ? C.bgSubtle : hov ? C.primaryHov : C.primary, color: disabled ? C.fgDisabled : '#fff', border:'none' },
+    secondary: { bg: hov && !disabled ? C.primaryLight : C.bgSurface, color: disabled ? C.fgDisabled : C.primary, border:`1.5px solid ${C.primary}` },
+  };
+  const v = vars[variant] || vars.primary;
+  return (
+    <button type={type} onClick={disabled ? undefined : onClick} disabled={disabled}
+      onMouseEnter={() => setHov(true)} onMouseLeave={() => { setHov(false); setPrs(false); }}
+      onMouseDown={() => setPrs(true)} onMouseUp={() => setPrs(false)}
+      style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', gap:6,
+        fontFamily:FB, fontSize:14, fontWeight:500, lineHeight:1,
+        background:v.bg, color:v.color, border:v.border||'none',
+        borderRadius:8, padding:'11px 20px',
+        width: fullWidth ? '100%' : undefined,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.55 : 1,
+        transform: prs && !disabled ? 'scale(0.97)' : 'scale(1)',
+        transition:'background 150ms, transform 150ms', outline:'none' }}>
+      {children}
+    </button>
+  );
+}
+
+/* ── AuthForm ───────────────────────────────────────────────────── */
+function AuthForm({ onSuccess }) {
+  const [tab, setTab]       = React.useState('login');
+  const [mode, setMode]     = React.useState('form');   // form | forgot | sent
+  const [email, setEmail]   = React.useState('');
+  const [pwd, setPwd]       = React.useState('');
+  const [postal, setPostal] = React.useState('');
+  const [errors, setErrors] = React.useState({});
+
+  function clearErr(key) { setErrors(prev => { const e={...prev}; delete e[key]; return e; }); }
+
+  function validate() {
+    const e = {};
+    if (!email.trim()) e.email = 'Introduce tu correo electrónico';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = 'El formato del correo no es válido';
+    if (!pwd.trim()) e.pwd = 'Introduce tu contraseña';
+    else if (tab === 'register' && pwd.length < 8) e.pwd = 'La contraseña debe tener al menos 8 caracteres';
+    if (tab === 'register') {
+      if (!postal.trim()) e.postal = 'Introduce tu código postal';
+      else if (!/^\d{5}$/.test(postal.trim())) e.postal = 'El código postal debe tener 5 dígitos';
+    }
+    return e;
+  }
+
+  function handleSubmit(ev) {
+    ev.preventDefault();
+    if (mode === 'forgot') {
+      if (!email.trim()) { setErrors({ email: 'Introduce tu correo electrónico' }); return; }
+      setMode('sent'); return;
+    }
+    const e = validate();
+    if (Object.keys(e).length) { setErrors(e); return; }
+    onSuccess();
+  }
+
+  function switchTab(t) { setTab(t); setErrors({}); setPwd(''); setPostal(''); }
+
+  /* Forgot */
+  if (mode === 'forgot') return (
+    <div>
+      <button type="button" onClick={() => { setMode('form'); setErrors({}); }}
+        style={{ background:'none', border:'none', cursor:'pointer', display:'flex', alignItems:'center',
+          gap:5, color:C.fgSecondary, fontFamily:FB, fontSize:13, padding:'0 0 20px', marginLeft:-2 }}>
+        <IconArrowLeft /> Volver
+      </button>
+      <div style={{ fontFamily:FD, fontSize:22, fontWeight:600, color:C.fgPrimary, marginBottom:6 }}>Recuperar acceso</div>
+      <p style={{ fontFamily:FB, fontSize:14, color:C.fgSecondary, marginBottom:24, lineHeight:1.65 }}>
+        Introduce tu correo y te enviaremos un enlace para recuperar el acceso.
+      </p>
+      <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:20 }}>
+        <FieldInput label="Correo electrónico" type="email" placeholder="tu@email.es"
+          value={email} onChange={e => { setEmail(e.target.value); clearErr('email'); }}
+          error={errors.email} autoComplete="email" />
+        <Btn type="submit" fullWidth>Enviar enlace</Btn>
+      </form>
+    </div>
+  );
+
+  /* Sent */
+  if (mode === 'sent') return (
+    <div style={{ textAlign:'center', padding:'12px 0' }}>
+      <div style={{ width:52, height:52, borderRadius:'50%', background:C.primaryLight,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        margin:'0 auto 20px', color:C.primary }}>
+        <IconMail />
+      </div>
+      <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fgPrimary, marginBottom:8 }}>
+        Revisa tu bandeja de entrada
+      </div>
+      <p style={{ fontFamily:FB, fontSize:14, color:C.fgMuted, marginBottom:28, lineHeight:1.65 }}>
+        Si ese correo está registrado, recibirás el enlace en breve.
+      </p>
+      <Btn variant="secondary" onClick={() => { setMode('form'); setErrors({}); }}>
+        Volver al inicio
+      </Btn>
+    </div>
+  );
+
+  /* Main form */
+  return (
+    <div>
+      {/* Tabs */}
+      <div style={{ display:'flex', borderBottom:`1px solid ${C.border}`, marginBottom:28 }}>
+        {[['login','Iniciar sesión'],['register','Crear cuenta']].map(([t, lbl]) => (
+          <button key={t} type="button" onClick={() => switchTab(t)}
+            style={{ flex:1, background:'none', border:'none', cursor:'pointer',
+              padding:'8px 0 12px', fontFamily:FB, fontSize:14,
+              fontWeight: tab===t ? 600 : 400,
+              color: tab===t ? C.primary : C.fgMuted,
+              borderBottom:`2px solid ${tab===t ? C.primary : 'transparent'}`,
+              marginBottom:-1, transition:'color 150ms, border-color 150ms' }}>
+            {lbl}
+          </button>
+        ))}
+      </div>
+
+      <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:16 }}>
+        <FieldInput label="Correo electrónico" type="email" placeholder="tu@email.es"
+          value={email} onChange={e => { setEmail(e.target.value); clearErr('email'); }}
+          error={errors.email} autoComplete="email" />
+
+        <FieldInput label="Contraseña" type="password" placeholder="••••••••"
+          value={pwd} onChange={e => { setPwd(e.target.value); clearErr('pwd'); }}
+          error={errors.pwd}
+          autoComplete={tab==='login' ? 'current-password' : 'new-password'} />
+
+        {tab === 'register' && (
+          <FieldInput label="Código postal" placeholder="28001"
+            value={postal} onChange={e => { setPostal(e.target.value); clearErr('postal'); }}
+            error={errors.postal}
+            helper={!errors.postal ? 'Para mostrarte objetos a menos de 50 km' : undefined} />
+        )}
+
+        {tab === 'login' && (
+          <div style={{ textAlign:'right', marginTop:-4 }}>
+            <button type="button" onClick={() => { setMode('forgot'); setErrors({}); }}
+              style={{ background:'none', border:'none', cursor:'pointer',
+                fontFamily:FB, fontSize:12, color:C.primary, padding:0 }}>
+              ¿Olvidaste tu contraseña?
+            </button>
+          </div>
+        )}
+
+        <div style={{ marginTop:6 }}>
+          <Btn type="submit" fullWidth>
+            {tab === 'login' ? 'Entrar' : 'Crear cuenta'}
+          </Btn>
+        </div>
+      </form>
+
+      <div style={{ marginTop:24, textAlign:'center', fontFamily:FB, fontSize:13, color:C.fgMuted }}>
+        {tab === 'login' ? '¿Aún no tienes cuenta? ' : '¿Ya tienes cuenta? '}
+        <button type="button" onClick={() => switchTab(tab==='login' ? 'register' : 'login')}
+          style={{ background:'none', border:'none', cursor:'pointer',
+            fontFamily:FB, fontSize:13, fontWeight:500, color:C.primary, padding:0 }}>
+          {tab === 'login' ? 'Crear cuenta' : 'Iniciar sesión'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─── LANGUAGE SELECTOR ──────────────────────────────────────── */
+const LANGS = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català'  },
+];
+function LanguageSelector() {
+  const [lang, setLang] = React.useState(() => localStorage.getItem('nlv_lang') || 'es');
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  const select = code => { setLang(code); localStorage.setItem('nlv_lang', code); setOpen(false); };
+  return (
+    <div ref={ref} style={{ position:'relative', flexShrink:0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        display:'flex', alignItems:'center', gap:4,
+        background:'#FFFFFF', border:'1px solid #D5D9DE',
+        borderRadius:8, padding:'5px 10px',
+        fontFamily:FB, fontSize:13, fontWeight:600, color:'#606A76',
+        cursor:'pointer', transition:'all 150ms', userSelect:'none' }}>
+        {lang.toUpperCase()}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform 150ms' }}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{ position:'absolute', top:'calc(100% + 6px)', right:0,
+          background:'#FFFFFF', border:'1px solid #D5D9DE',
+          borderRadius:10, boxShadow:'0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+          overflow:'hidden', zIndex:1000, minWidth:130 }}>
+          {LANGS.map(({ code, label }) => (
+            <button key={code} onClick={() => select(code)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                width:'100%', padding:'9px 14px', border:'none',
+                background: lang===code ? '#F0F5F2' : 'transparent',
+                color: lang===code ? '#3A7358' : '#14171A',
+                fontFamily:FB, fontSize:13, fontWeight: lang===code ? 600 : 400,
+                cursor:'pointer', textAlign:'left', gap:10, transition:'background 100ms' }}
+              onMouseEnter={e => { if (lang!==code) e.currentTarget.style.background='#E8EAEC'; }}
+              onMouseLeave={e => { if (lang!==code) e.currentTarget.style.background='transparent'; }}>
+              <span>{label}</span>
+              <span style={{ fontFamily:FB, fontSize:11, fontWeight:600,
+                color: lang===code ? '#3A7358' : '#9AA2AD',
+                letterSpacing:'0.05em' }}>{code.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── BrandPanel ─────────────────────────────────────────────────── */
+function BrandPanel({ theme, showCopy }) {
+  const themes = {
+    verde:  { bg: C.primary,  text:'#fff', sub:'rgba(255,255,255,0.68)', div:'rgba(255,255,255,0.28)', wm:'rgba(255,255,255,0.06)' },
+    marino: { bg: C.accent,   text:'#fff', sub:'rgba(255,255,255,0.68)', div:'rgba(255,255,255,0.28)', wm:'rgba(255,255,255,0.06)' },
+    claro:  { bg: C.bgSurface, text:C.fgPrimary, sub:C.fgSecondary, div:C.border, wm:C.bgSubtle },
+  };
+  const th = themes[theme] || themes.verde;
+
+  return (
+    <div className="brand-col" style={{ background:th.bg, display:'flex', flexDirection:'column',
+      justifyContent:'space-between', padding:'56px 52px', position:'relative', overflow:'hidden',
+      borderRight: theme==='claro' ? `1px solid ${C.border}` : 'none' }}>
+
+      {/* Watermark */}
+      <div style={{ position:'absolute', bottom:-24, right:-12, fontFamily:FD,
+        fontSize:200, fontWeight:700, lineHeight:1, color:th.wm,
+        whiteSpace:'nowrap', userSelect:'none', pointerEvents:'none', letterSpacing:'-0.04em' }}>
+        nlv
+      </div>
+
+      {/* Top content */}
+      <div style={{ position:'relative', zIndex:1 }}>
+        {/* Wordmark */}
+        <div style={{ fontFamily:FD, fontSize:44, fontWeight:700, color:th.text,
+          letterSpacing:'-0.02em', lineHeight:1, marginBottom:22 }}>
+          no lo vendo
+        </div>
+
+        {/* Rule */}
+        <div style={{ width:48, height:1, background:th.div, marginBottom:22 }}></div>
+
+        {/* Tagline */}
+        <div style={{ fontFamily:FD, fontSize:19, fontStyle:'italic', fontWeight:400,
+          color: theme==='claro' ? C.primary : 'rgba(255,255,255,0.9)',
+          lineHeight:1.45, marginBottom: showCopy ? 24 : 0 }}>
+          "No lo vendo, lo regalo."
+        </div>
+
+        {/* Copy */}
+        {showCopy && (
+          <p style={{ fontFamily:FB, fontSize:15, lineHeight:1.75, color:th.sub, maxWidth:320,
+            fontWeight:300 }}>
+            Un sistema comunitario donde los objetos encuentran un nuevo dueño. Sin dinero. Solo reputación.
+          </p>
+        )}
+      </div>
+
+      {/* Bottom note */}
+      <div style={{ position:'relative', zIndex:1 }}>
+        <div style={{ fontFamily:FB, fontSize:12, color:th.sub, letterSpacing:'0.02em' }}>
+          España · MVP 2025
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── FormPanel ──────────────────────────────────────────────────── */
+function FormPanel({ centered, children }) {
+  return (
+    <div style={{ background:C.bgPage, display:'flex', alignItems:'center',
+      justifyContent:'center', padding: centered ? '40px 24px' : '48px 24px',
+      minHeight: centered ? '100vh' : undefined, position:'relative' }}>
+      <div style={{ position:'absolute', top:16, right:20 }}>
+        <LanguageSelector />
+      </div>
+      <div style={{ width:'100%', maxWidth:400 }}>
+        {centered && (
+          <div style={{ textAlign:'center', marginBottom:32 }}>
+            <div style={{ fontFamily:FD, fontSize:30, fontWeight:700, color:C.primary,
+              letterSpacing:'-0.02em', marginBottom:6 }}>no lo vendo</div>
+            <div style={{ fontFamily:FD, fontSize:14, fontStyle:'italic', color:C.fgSecondary }}>
+              No lo vendo, lo regalo.
+            </div>
+          </div>
+        )}
+        <div style={{ background:C.bgSurface, borderRadius:12,
+          border:`1px solid ${C.border}`,
+          boxShadow: centered ? C.sh1 : C.sh2,
+          padding:'28px 28px 24px' }}>
+          {children}
+        </div>
+        <p style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, marginTop:20,
+          textAlign:'center', lineHeight:1.65 }}>
+          El acceso a objetos depende de tu reputación en la comunidad.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── SuccessState ───────────────────────────────────────────────── */
+function SuccessState({ onBack }) {
+  return (
+    <div style={{ minHeight:'100vh', background:C.bgPage, display:'flex',
+      alignItems:'center', justifyContent:'center', flexDirection:'column',
+      gap:16, textAlign:'center', padding:24 }}>
+      <div style={{ width:60, height:60, borderRadius:'50%', background:C.primaryLight,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        margin:'0 auto 8px', color:C.primary }}>
+        <IconCheck />
+      </div>
+      <div style={{ fontFamily:FD, fontSize:28, fontWeight:600, color:C.fgPrimary }}>
+        Bienvenido/a
+      </div>
+      <p style={{ fontFamily:FB, fontSize:14, color:C.fgMuted, maxWidth:280, lineHeight:1.65 }}>
+        Sesión iniciada. Ya puedes explorar objetos disponibles en tu zona.
+      </p>
+      <div style={{ marginTop:8 }}>
+        <Btn variant="secondary" onClick={onBack}>Volver al login</Btn>
+      </div>
+    </div>
+  );
+}
+
+/* ── App ────────────────────────────────────────────────────────── */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "layout": "dividida",
+  "panelTheme": "verde",
+  "showCopy": true
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [success, setSuccess] = React.useState(false);
+
+  if (success) return <SuccessState onBack={() => setSuccess(false)} />;
+
+  const isCentered = t.layout === 'centrada';
+
+  return (
+    <div style={{ height:'100%' }}>
+      {isCentered ? (
+        <FormPanel centered>
+          <AuthForm onSuccess={() => setSuccess(true)} />
+        </FormPanel>
+      ) : (
+        <div className="split-grid" style={{ display:'grid', gridTemplateColumns:'44% 56%', minHeight:'100vh' }}>
+          <BrandPanel theme={t.panelTheme} showCopy={t.showCopy} />
+          <FormPanel>
+            <AuthForm onSuccess={() => setSuccess(true)} />
+          </FormPanel>
+        </div>
+      )}
+
+      <TweaksPanel>
+        <TweakSection label="Diseño" />
+        <TweakRadio label="Disposición" value={t.layout}
+          options={['dividida','centrada']}
+          onChange={v => setTweak('layout', v)} />
+        <TweakSection label="Panel izquierdo" />
+        <TweakRadio label="Color del panel" value={t.panelTheme}
+          options={['verde','marino','claro']}
+          onChange={v => setTweak('panelTheme', v)} />
+        <TweakToggle label="Mostrar descripción" value={t.showCopy}
+          onChange={v => setTweak('showCopy', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

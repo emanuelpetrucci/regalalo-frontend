@@ -1,0 +1,49 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build:vercel",
+  "installCommand": "npm ci",
+  "git": {
+    "deploymentEnabled": {
+      "master": true,
+      "develop": true
+    }
+  },
+  "github": {
+    "autoJobCancelation": false
+  },
+  "ignoreCommand": "node scripts/vercel-should-build.mjs",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/bff/:path*",
+      "destination": "https://api-production.regalalo.org/api/:path*"
+    },
+    {
+      "source": "/bffd/:path*",
+      "destination": "https://api-development.regalalo.org/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
+  ],
+  "functions": {
+    "api/index.mjs": {
+      "includeFiles": "dist/regalalo/**",
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
+}

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Política de privacidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary:       #3A7358;
+    --primary-hov:   #2D5C45;
+    --primary-light: #F0F5F2;
+    --bg-page:       #F4F5F6;
+    --bg-surface:    #FFFFFF;
+    --bg-subtle:     #E8EAEC;
+    --fg:            #14171A;
+    --fg-mid:        #606A76;
+    --fg-muted:      #7C8692;
+    --border:        #D5D9DE;
+    --border-str:    #B8BFC7;
+    --shadow-1:      0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --font-display:  'Playfair Display', Georgia, serif;
+    --font-body:     'DM Sans', system-ui, sans-serif;
+  }
+
+  html, body { min-height: 100%; }
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg);
+    background: var(--bg-page);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav.top-nav {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 40px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-1);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2px;
+  }
+  .nav-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--fg-mid);
+    text-decoration: none;
+    transition: background 150ms, color 150ms;
+    display: block;
+  }
+  .nav-link:hover { background: var(--bg-subtle); color: var(--fg); }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary); color: #fff;
+    border: none; cursor: pointer;
+    padding: 8px 16px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    text-decoration: none; transition: background 150ms, transform 100ms;
+  }
+  .btn-sm:hover { background: var(--primary-hov); }
+  .btn-sm:active { transform: scale(0.97); }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary); font-weight: 600; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--border);
+  }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 64px;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .doc-eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .doc-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .doc-meta {
+    font-size: 13px;
+    color: var(--fg-muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .doc-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+    box-shadow: var(--shadow-1);
+  }
+  .toc-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 14px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .toc li { counter-increment: toc; display: flex; align-items: baseline; gap: 10px; }
+  .toc li::before {
+    content: counter(toc);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-muted);
+    min-width: 18px;
+  }
+  .toc a {
+    font-size: 14px;
+    color: var(--fg-mid);
+    text-decoration: none;
+    transition: color 150ms;
+  }
+  .toc a:hover { color: var(--primary); }
+
+  /* ── CONTENT ── */
+  .doc-section {
+    margin-bottom: 48px;
+    scroll-margin-top: 84px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--fg-muted);
+    flex-shrink: 0;
+    padding-top: 3px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--fg);
+    line-height: 1.25;
+  }
+
+  .doc-section p {
+    font-size: 15px;
+    color: var(--fg-mid);
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  .doc-section p:last-child { margin-bottom: 0; }
+  .doc-section p strong { color: var(--fg); font-weight: 500; }
+
+  .doc-section h3 {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: 0.01em;
+    margin: 24px 0 8px;
+  }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 20px 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-1);
+  }
+  .data-table th {
+    background: var(--bg-subtle);
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    padding: 11px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 12px 16px;
+    color: var(--fg-mid);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td:first-child { color: var(--fg); font-weight: 500; }
+
+  /* ── RIGHTS GRID ── */
+  .rights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .right-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow-1);
+  }
+  .right-card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+  .right-card-desc {
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.55;
+  }
+  .right-card-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--primary-light);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-bottom: 8px;
+  }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: #EDF0F5;
+    border: 1px solid #A5B5D4;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 20px 0;
+  }
+  .info-box-icon { color: #253F72; flex-shrink: 0; padding-top: 1px; }
+  .info-box p { font-size: 14px; color: #1C305A; margin: 0; line-height: 1.6; }
+  .info-box p strong { color: #142244; }
+
+  /* ── CONTACT BOX ── */
+  .contact-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: var(--shadow-1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-row { display: flex; align-items: center; gap: 12px; }
+  .contact-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-label { font-size: 12px; color: var(--fg-muted); margin-bottom: 2px; }
+  .contact-value { font-size: 14px; font-weight: 500; color: var(--fg); }
+
+  /* ── SITE FOOTER ── */
+  /* ── SITE FOOTER ── */
+  .site-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    font-family: var(--font-body);
+    margin-top: 80px;
+  }
+  .site-footer-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 4vw, 40px);
+  }
+  .footer-main-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 64px;
+    padding: 52px 0 44px;
+  }
+  .footer-brand-col { flex: 0 0 auto; max-width: 220px; }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .footer-desc {
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.75;
+    margin: 0;
+  }
+  .footer-nav-cols {
+    display: flex;
+    gap: 52px;
+    flex-shrink: 0;
+    align-items: flex-start;
+  }
+  .footer-col-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 14px;
+  }
+  .footer-col-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .footer-col-links a {
+    font-size: 13px;
+    color: var(--fg-mid);
+    text-decoration: none;
+    transition: color 150ms;
+    line-height: 1.4;
+  }
+  .footer-col-links a:hover { color: var(--primary); }
+  .footer-col-links a.current { color: var(--primary); font-weight: 500; }
+  .footer-bottom { border-top: 1px solid var(--border); }
+  .footer-bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-copy { font-size: 12px; color: var(--fg-muted); }
+  .footer-motto {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--fg-muted);
+    opacity: 0.8;
+  }
+  @media (max-width: 720px) {
+    .footer-main-grid { flex-direction: column; gap: 36px; padding: 40px 0 32px; }
+    .footer-brand-col { max-width: 100%; }
+    .footer-nav-cols { flex-wrap: wrap; gap: 28px 40px; }
+    .footer-bottom-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+
+  /* ── SVG ICONS ── */
+  .ico { display: inline-block; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="Explorar v3.html" class="nav-logo">no lo vendo</a>
+  <div class="nav-links">
+    <a href="Explorar v3.html" class="nav-link">Explorar</a>
+    <a href="Mis objetos.html" class="nav-link">Mis objetos</a>
+    <a href="Entregas.html" class="nav-link">Entregas</a>
+    <a href="Perfil.html" class="nav-link">Perfil</a>
+  </div>
+  <div class="nav-actions">
+    <div style="position:relative;flex-shrink:0;" id="nlv-lang-sel">
+      <button onclick="nlvLangToggle()" style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #D5D9DE;border-radius:8px;padding:5px 10px;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:#606A76;cursor:pointer;">
+        <span id="nlv-lang-code">ES</span>
+        <svg id="nlv-lang-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 150ms;"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="nlv-lang-dd" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid #D5D9DE;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06);overflow:hidden;z-index:1000;min-width:130px;">
+        <button data-code="es" onclick="nlvLangSelect('es')" onmouseover="if(nlvLang!=='es')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='es')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Español</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">ES</span></button>
+        <button data-code="en" onclick="nlvLangSelect('en')" onmouseover="if(nlvLang!=='en')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='en')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>English</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">EN</span></button>
+        <button data-code="ca" onclick="nlvLangSelect('ca')" onmouseover="if(nlvLang!=='ca')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='ca')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Català</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">CA</span></button>
+      </div>
+    </div>
+    <a href="Mis objetos.html" class="btn-sm">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Publicar
+    </a>
+    <div class="avatar">LS</div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="doc-header">
+    <div class="doc-eyebrow">Documentos legales</div>
+    <h1 class="doc-title">Política de privacidad</h1>
+    <div class="doc-meta">
+      <span>
+        <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Última actualización: 18 de mayo de 2026
+      </span>
+      <span>
+        <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Vigente desde el 18 de mayo de 2026
+      </span>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-box-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <p>Esta política explica qué datos personales recoge <strong>no lo vendo</strong>, con qué finalidad, durante cuánto tiempo los conservamos y qué derechos tienes sobre ellos. Nos ajustamos al <strong>Reglamento General de Protección de Datos (RGPD)</strong> y a la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).</p>
+  </div>
+
+  <nav class="toc" aria-label="Índice de contenidos">
+    <div class="toc-title">Contenidos</div>
+    <ol>
+      <li><a href="#responsable">Responsable del tratamiento</a></li>
+      <li><a href="#datos">Datos que recogemos</a></li>
+      <li><a href="#finalidad">Finalidad y base legal</a></li>
+      <li><a href="#conservacion">Conservación de datos</a></li>
+      <li><a href="#destinatarios">Destinatarios y transferencias</a></li>
+      <li><a href="#derechos">Tus derechos</a></li>
+      <li><a href="#menores">Menores de edad</a></li>
+      <li><a href="#cambios">Cambios en esta política</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="doc-section" id="responsable">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Responsable del tratamiento</h2>
+    </div>
+    <div class="contact-box">
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Denominación social</div>
+          <div class="contact-value">No Lo Vendo S.L. (en constitución)</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Domicilio</div>
+          <div class="contact-value">España (MVP — mercado español)</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Correo electrónico de contacto</div>
+          <div class="contact-value">privacidad@nolovendo.es</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="doc-section" id="datos">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Datos que recogemos</h2>
+    </div>
+    <p>Recogemos únicamente los datos necesarios para que la plataforma funcione. A continuación se detallan las categorías de datos y su origen.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Categoría</th>
+          <th>Datos concretos</th>
+          <th>Origen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Identificación</td>
+          <td>Dirección de correo electrónico</td>
+          <td>Proporcionado por el usuario al registrarse</td>
+        </tr>
+        <tr>
+          <td>Localización</td>
+          <td>Código postal</td>
+          <td>Proporcionado por el usuario en el perfil</td>
+        </tr>
+        <tr>
+          <td>Actividad</td>
+          <td>Objetos publicados, solicitudes enviadas, sesiones de entrega, historial de reputación</td>
+          <td>Generado por el uso de la plataforma</td>
+        </tr>
+        <tr>
+          <td>Imágenes</td>
+          <td>Fotos de objetos publicados (máx. 5 por objeto)</td>
+          <td>Subidas por el usuario al publicar un objeto</td>
+        </tr>
+        <tr>
+          <td>Canal de contacto</td>
+          <td>Número de teléfono o email externo para coordinar la entrega</td>
+          <td>Proporcionado por el donante al seleccionar receptor</td>
+        </tr>
+        <tr>
+          <td>Técnicos</td>
+          <td>Dirección IP, tipo de navegador, timestamps de acceso</td>
+          <td>Recogidos automáticamente en cada petición al servidor</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Datos que no recogemos</h3>
+    <p>No pedimos nombre completo, DNI, número de teléfono en el registro, ni ningún dato de categoría especial según el artículo 9 del RGPD (salud, origen étnico, religión, opiniones políticas, etc.).</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="doc-section" id="finalidad">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Finalidad y base legal</h2>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Finalidad</th>
+          <th>Base legal (RGPD art. 6)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gestionar tu cuenta y autenticación</td>
+          <td>Ejecución del contrato (art. 6.1.b)</td>
+        </tr>
+        <tr>
+          <td>Mostrar objetos dentro del radio geográfico de 50 km</td>
+          <td>Ejecución del contrato (art. 6.1.b)</td>
+        </tr>
+        <tr>
+          <td>Calcular el ranking de candidatos y la reputación</td>
+          <td>Ejecución del contrato (art. 6.1.b)</td>
+        </tr>
+        <tr>
+          <td>Enviar notificaciones por email relacionadas con tus objetos o solicitudes</td>
+          <td>Ejecución del contrato (art. 6.1.b)</td>
+        </tr>
+        <tr>
+          <td>Detectar comportamiento pasivo o acaparador para ajustar la visibilidad algorítmica</td>
+          <td>Interés legítimo (art. 6.1.f) — equilibrio del ecosistema</td>
+        </tr>
+        <tr>
+          <td>Prevención de fraude y seguridad técnica</td>
+          <td>Interés legítimo (art. 6.1.f)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>No usamos tus datos para publicidad, perfiles comerciales, ni los cedemos a terceros con fines de marketing.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="doc-section" id="conservacion">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Conservación de datos</h2>
+    </div>
+    <p>Conservamos tus datos el tiempo mínimo necesario para cumplir la finalidad para la que fueron recogidos.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Dato</th>
+          <th>Plazo de conservación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cuenta y datos de perfil</td>
+          <td>Mientras la cuenta esté activa. Tras solicitud de baja: 30 días para poder reactivarla, y eliminación definitiva transcurrido ese plazo</td>
+        </tr>
+        <tr>
+          <td>Imágenes de objetos completados o cancelados</td>
+          <td>30 días desde el cambio de estado, después se eliminan automáticamente</td>
+        </tr>
+        <tr>
+          <td>Canal de contacto de la sesión de entrega</td>
+          <td>Se purga (sobrescrito con NULL) a los 7 días de que la sesión alcance estado completada, cancelada o expirada</td>
+        </tr>
+        <tr>
+          <td>Logs técnicos (IP, timestamps)</td>
+          <td>90 días</td>
+        </tr>
+        <tr>
+          <td>Historial de reputación</td>
+          <td>Asociado a la cuenta activa; se elimina con la cuenta</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5 -->
+  <section class="doc-section" id="destinatarios">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Destinatarios y transferencias</h2>
+    </div>
+    <p>No vendemos tus datos ni los compartimos con terceros con fines comerciales. Podemos compartirlos únicamente con proveedores de servicios que actúan como encargados del tratamiento y con quienes mantenemos los contratos de encargo exigidos por el RGPD.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Proveedor</th>
+          <th>Servicio</th>
+          <th>Ubicación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Proveedor de infraestructura cloud</td>
+          <td>Alojamiento de la aplicación y base de datos</td>
+          <td>Unión Europea</td>
+        </tr>
+        <tr>
+          <td>Proveedor de envío de emails transaccionales</td>
+          <td>Notificaciones de la plataforma</td>
+          <td>Unión Europea o con garantías equivalentes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>No realizamos transferencias internacionales de datos fuera del Espacio Económico Europeo sin las garantías adecuadas previstas en el RGPD (arts. 44 a 49).</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="doc-section" id="derechos">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Tus derechos</h2>
+    </div>
+    <p>Como titular de los datos, puedes ejercer los siguientes derechos en cualquier momento escribiéndonos a <strong>privacidad@nolovendo.es</strong>. Responderemos en el plazo máximo de un mes.</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <div class="right-card-tag">Art. 15</div>
+        <div class="right-card-label">Acceso</div>
+        <div class="right-card-desc">Saber qué datos tuyos tratamos y obtener una copia.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-card-tag">Art. 16</div>
+        <div class="right-card-label">Rectificación</div>
+        <div class="right-card-desc">Corregir datos inexactos o incompletos.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-card-tag">Art. 17</div>
+        <div class="right-card-label">Supresión</div>
+        <div class="right-card-desc">Solicitar que eliminemos tus datos ("derecho al olvido").</div>
+      </div>
+      <div class="right-card">
+        <div class="right-card-tag">Art. 18</div>
+        <div class="right-card-label">Limitación</div>
+        <div class="right-card-desc">Pedir que suspendamos el tratamiento mientras revisamos una reclamación.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-card-tag">Art. 20</div>
+        <div class="right-card-label">Portabilidad</div>
+        <div class="right-card-desc">Recibir tus datos en formato estructurado y legible por máquina.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-card-tag">Art. 21</div>
+        <div class="right-card-label">Oposición</div>
+        <div class="right-card-desc">Oponerte al tratamiento basado en interés legítimo.</div>
+      </div>
+    </div>
+
+    <p>Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong> en <a href="https://www.aepd.es" style="color:var(--primary)">www.aepd.es</a>.</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="doc-section" id="menores">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Menores de edad</h2>
+    </div>
+    <p>La plataforma está dirigida a personas mayores de 18 años. No recogemos conscientemente datos de menores. Si detectamos que un usuario es menor de 18 años, eliminaremos su cuenta y datos asociados.</p>
+    <p>Si eres padre, madre o tutor y crees que un menor ha creado una cuenta, escríbenos a <strong>privacidad@nolovendo.es</strong>.</p>
+  </section>
+
+  <!-- 8 -->
+  <section class="doc-section" id="cambios">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Cambios en esta política</h2>
+    </div>
+    <p>Podemos actualizar esta política cuando sea necesario por cambios normativos o de producto. Si los cambios son relevantes, te lo notificaremos por email con al menos 15 días de antelación. La fecha de "última actualización" en el encabezado refleja siempre la versión vigente.</p>
+    <p>El uso continuado de la plataforma tras la entrada en vigor de los cambios implica su aceptación.</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="doc-section" id="contacto">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Contacto</h2>
+    </div>
+    <p>Para cualquier consulta sobre esta política o para ejercer tus derechos, contacta con nosotros:</p>
+    <div class="contact-box">
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email de privacidad</div>
+          <div class="contact-value">privacidad@nolovendo.es</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Plazo de respuesta</div>
+          <div class="contact-value">Máximo 30 días desde la recepción de tu solicitud</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html" class="current">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+var nlvLang = localStorage.getItem('nlv_lang') || 'es';
+function nlvLangUpdate() {
+  var c = document.getElementById('nlv-lang-code');
+  if (c) c.textContent = nlvLang.toUpperCase();
+  document.querySelectorAll('#nlv-lang-dd button').forEach(function(btn) {
+    var a = btn.dataset.code === nlvLang;
+    btn.style.background = a ? '#F0F5F2' : 'transparent';
+    btn.style.color = a ? '#3A7358' : '#14171A';
+    btn.style.fontWeight = a ? '600' : '400';
+    var s = btn.querySelector('span:last-child');
+    if (s) s.style.color = a ? '#3A7358' : '#9AA2AD';
+  });
+}
+function nlvLangToggle() {
+  var dd = document.getElementById('nlv-lang-dd');
+  var ch = document.getElementById('nlv-lang-chev');
+  var isOpen = dd.style.display !== 'none';
+  dd.style.display = isOpen ? 'none' : 'block';
+  ch.style.transform = isOpen ? 'none' : 'rotate(180deg)';
+}
+function nlvLangSelect(code) {
+  nlvLang = code;
+  localStorage.setItem('nlv_lang', code);
+  document.getElementById('nlv-lang-dd').style.display = 'none';
+  document.getElementById('nlv-lang-chev').style.transform = 'none';
+  nlvLangUpdate();
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#nlv-lang-sel')) {
+    var dd = document.getElementById('nlv-lang-dd');
+    if (dd) dd.style.display = 'none';
+    var ch = document.getElementById('nlv-lang-chev');
+    if (ch) ch.style.transform = 'none';
+  }
+});
+nlvLangUpdate();
+</script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Carlos Ruiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { min-height: 100%; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F5F6; -webkit-font-smoothing: antialiased; }
+  input, button, select, textarea { font-family: inherit; }
+  ::placeholder { color: #9AA2AD; }
+
+  @keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .tab-in { animation: tabIn 220ms cubic-bezier(0.22, 0.68, 0, 1.1) both; }
+
+  @keyframes cardIn  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .fade-up { animation: fadeUp 320ms cubic-bezier(0.22, 0.68, 0, 1.1) both; }
+  @keyframes rptSpin    { to { transform:rotate(360deg); } }
+  @keyframes rptFadeIn  { from { opacity:0; } to { opacity:1; } }
+  @keyframes rptModalIn { from { opacity:0; transform:scale(0.97) translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes rptStepFwd { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }
+  @keyframes rptStepBack{ from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:none; } }
+  .rpt-fade-in  { animation:rptFadeIn  180ms ease both; }
+  .rpt-modal-in { animation:rptModalIn 260ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-step-fwd  { animation:rptStepFwd  220ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-step-back { animation:rptStepBack 220ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D5D9DE; border-radius: 3px; }
+
+  @media (max-width: 640px) {
+    .nav-links  { display: none !important; }
+    .pub-label  { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="report-modal.jsx"></script>
+<script type="text/babel">
+
+/* ── TOKENS ──────────────────────────────────────────────────── */
+const C = {
+  primary:      '#3A7358',
+  primaryHov:   '#2D5C45',
+  primaryLight: '#F0F5F2',
+  accent:       '#253F72',
+  bgPage:       '#F4F5F6',
+  bgSurface:    '#FFFFFF',
+  bgSubtle:     '#E8EAEC',
+  fg:           '#14171A',
+  fgMid:        '#606A76',
+  fgMuted:      '#7C8692',
+  fgDisabled:   '#9AA2AD',
+  border:       '#D5D9DE',
+  borderStr:    '#B8BFC7',
+  error:        '#B33A2A',
+  errorBg:      '#FDECEA',
+  errorBorder:  '#E8A89E',
+  warnBg:       '#FEF6E7',
+  warnBorder:   '#EDD090',
+  warnFg:       '#8F5907',
+  sh1: '0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)',
+  sh2: '0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+  sh3: '0 8px 32px rgba(0,0,0,0.14)',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', system-ui, sans-serif";
+const FM = "'JetBrains Mono', monospace";
+
+/* ── MOCK DATA — perfil público de otro usuario ──────────────── */
+const USER = {
+  name: 'Carlos Ruiz', initials: 'CR', since: 'octubre 2025',
+  location: 'Madrid', score: -30, donated: 1, received: 9,
+  noShows: 5, consecNoShows: 2, cyclesAtLimit: 3,
+  emailVerified: true,
+};
+
+const ITEMS = [
+  { id: 4, title: 'Silla de oficina giratoria', condition: 'aceptable', category: 'furniture', status: 'cancelled', date: '15 ene 2026', requestCount: 0 },
+];
+
+const CATEGORY_LABELS = {
+  furniture:'Muebles', electronics:'Electrónica', clothing:'Ropa',
+  books:'Libros', toys:'Juguetes', kitchen:'Cocina',
+  sports:'Deporte', tools:'Herramientas', other:'Otros',
+};
+function CategoryChip({ category }) {
+  return (
+    <span style={{ fontFamily:FB, fontSize:11, fontWeight:500,
+      display:'inline-flex', padding:'2px 8px', borderRadius:999,
+      background:'#EDF0F5', color:'#142244', border:'1px solid #A5B5D4' }}>
+      {CATEGORY_LABELS[category] || category || '—'}
+    </span>
+  );
+}
+
+const STATUS_CFG = {
+  active:    { bg: '#F0F5F2', fg: '#224633', bd: '#B5D0C2', dot: '#3A7358', label: 'activo' },
+  completed: { bg: '#EBF5EE', fg: '#265533', bd: '#9DCCA8', dot: '#3A7B4A', label: 'completado' },
+  cancelled: { bg: '#FDECEA', fg: '#7D2419', bd: '#E8A89E', dot: '#B33A2A', label: 'cancelado' },
+  reserved:  { bg: '#FEF6E7', fg: '#8F5907', bd: '#EDD090', dot: '#D4870A', label: 'reservado' },
+};
+function Badge({ status }) {
+  const s = STATUS_CFG[status] || STATUS_CFG.active;
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', gap:5,
+      fontFamily:FB, fontSize:11, fontWeight:500, lineHeight:1,
+      padding:'3px 9px', borderRadius:999,
+      background:s.bg, color:s.fg, border:`1px solid ${s.bd}` }}>
+      <span style={{ width:5, height:5, borderRadius:'50%', background:s.dot, flexShrink:0 }}></span>
+      {s.label}
+    </span>
+  );
+}
+
+/* ── ICONS ───────────────────────────────────────────────────── */
+const Ico = ({ sz=16, sw=1.75, children }) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+);
+const IBox      = ({sz=16}) => <Ico sz={sz}><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></Ico>;
+const IChevronR = ({sz=16}) => <Ico sz={sz}><path d="M9 18l6-6-6-6"/></Ico>;
+const IPin      = ({sz=16}) => <Ico sz={sz}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></Ico>;
+
+/* ── LANGUAGE SELECTOR ───────────────────────────────────────── */
+const LANGS = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català'  },
+];
+function LanguageSelector({ dark }) {
+  const [lang, setLang] = React.useState(() => localStorage.getItem('nlv_lang') || 'es');
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  const select = code => { setLang(code); localStorage.setItem('nlv_lang', code); setOpen(false); };
+  return (
+    <div ref={ref} style={{ position:'relative', flexShrink:0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        display:'flex', alignItems:'center', gap:4,
+        background: dark ? 'rgba(255,255,255,0.12)' : '#FFFFFF',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.22)' : '#D5D9DE'}`,
+        borderRadius:8, padding:'5px 10px',
+        fontFamily:FB, fontSize:13, fontWeight:600,
+        color: dark ? 'rgba(255,255,255,0.85)' : '#606A76',
+        cursor:'pointer', transition:'all 150ms', userSelect:'none' }}>
+        {lang.toUpperCase()}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform 150ms' }}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{ position:'absolute', top:'calc(100% + 6px)', right:0,
+          background:'#FFFFFF', border:'1px solid #D5D9DE',
+          borderRadius:10, boxShadow:'0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+          overflow:'hidden', zIndex:1000, minWidth:130 }}>
+          {LANGS.map(({ code, label }) => (
+            <button key={code} onClick={() => select(code)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                width:'100%', padding:'9px 14px', border:'none',
+                background: lang===code ? '#F0F5F2' : 'transparent',
+                color: lang===code ? '#3A7358' : '#14171A',
+                fontFamily:FB, fontSize:13, fontWeight: lang===code ? 600 : 400,
+                cursor:'pointer', textAlign:'left', gap:10, transition:'background 100ms' }}
+              onMouseEnter={e => { if (lang!==code) e.currentTarget.style.background='#E8EAEC'; }}
+              onMouseLeave={e => { if (lang!==code) e.currentTarget.style.background='transparent'; }}>
+              <span>{label}</span>
+              <span style={{ fontFamily:FB, fontSize:11, fontWeight:600,
+                color: lang===code ? '#3A7358' : '#9AA2AD',
+                letterSpacing:'0.05em' }}>{code.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── NAVBAR ──────────────────────────────────────────────────── */
+const NAV_HREFS = {
+  'explorar':    'Explorar v3.html',
+  'mis-objetos': 'Mis objetos.html',
+  'entregas':    'Entregas.html',
+  'perfil':      'Perfil.html',
+};
+function Navbar() {
+  const links = [['explorar','Explorar'],['mis-objetos','Mis objetos'],['entregas','Entregas'],['perfil','Perfil']];
+  const [hov, setHov] = React.useState(null);
+  return (
+    <nav style={{ background: C.bgSurface, borderBottom: `1px solid ${C.border}`, height: 64,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '0 clamp(16px,4vw,40px)', position: 'sticky', top: 0, zIndex: 100, boxShadow: C.sh1 }}>
+      <a href="Explorar v3.html" style={{ textDecoration: 'none' }}>
+        <div style={{ fontFamily: FD, fontSize: 20, fontWeight: 700, color: C.primary, letterSpacing: '-0.01em' }}>
+          no lo vendo
+        </div>
+      </a>
+      <div className="nav-links" style={{ display: 'flex', gap: 2 }}>
+        {links.map(([id, label]) => {
+          const active = id === 'explorar';
+          return (
+            <a key={id} href={NAV_HREFS[id]} style={{ textDecoration: 'none' }}>
+              <button onMouseEnter={() => setHov(id)} onMouseLeave={() => setHov(null)}
+                style={{ background: active ? C.primaryLight : hov === id ? C.bgSubtle : 'none',
+                  border: 'none', cursor: 'pointer', padding: '8px 14px', borderRadius: 8,
+                  fontFamily: FB, fontSize: 14, fontWeight: active ? 600 : 400,
+                  color: active ? C.primary : C.fgMid, transition: 'all 150ms' }}>
+                {label}
+              </button>
+            </a>
+          );
+        })}
+      </div>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <LanguageSelector />
+        <a href="Mis objetos.html" style={{ textDecoration: 'none' }}>
+          <button className="pub-label" style={{ background: C.primary, color: '#fff', border: 'none', borderRadius: 8,
+            padding: '8px 14px', fontFamily: FB, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 5 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg> Publicar
+          </button>
+        </a>
+        <a href="Perfil.html" style={{ textDecoration: 'none' }}>
+          <div style={{ width: 34, height: 34, borderRadius: '50%', background: C.primaryLight,
+            border: `1.5px solid ${C.border}`, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', fontFamily: FB, fontSize: 12, fontWeight: 700,
+            color: C.primary, cursor: 'pointer', letterSpacing: '0.02em' }}>
+            MG
+          </div>
+        </a>
+      </div>
+    </nav>
+  );
+}
+
+/* ── STAT CARD ───────────────────────────────────────────────── */
+function StatCard({ label, value, sub, color }) {
+  return (
+    <div style={{ flex: '1 1 0', minWidth: 72, background: C.bgPage,
+      border: `1px solid ${C.border}`, borderRadius: 10, padding: '11px 13px' }}>
+      <div style={{ fontFamily: FM, fontSize: 22, fontWeight: 600,
+        color: color || C.fg, lineHeight: 1, marginBottom: 4 }}>{value}</div>
+      <div style={{ fontFamily: FB, fontSize: 11, fontWeight: 500,
+        color: C.fgMuted, textTransform: 'uppercase', letterSpacing: '0.06em', lineHeight: 1 }}>
+        {label}
+      </div>
+      {sub && (
+        <div style={{ fontFamily: FB, fontSize: 10, color: C.fgDisabled, marginTop: 3 }}>{sub}</div>
+      )}
+    </div>
+  );
+}
+
+/* ── DONATION CARD ───────────────────────────────────────────── */
+function DonationCard({ item }) {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ display:'flex', alignItems:'center', gap:14,
+        background:C.bgSurface, border:`1px solid ${hov ? C.borderStr : C.border}`,
+        borderRadius:12, padding:'14px 16px',
+        boxShadow: hov ? C.sh2 : C.sh1, transition:'all 180ms', cursor:'pointer' }}>
+      <div style={{ width:56, height:56, borderRadius:8, background:C.bgSubtle,
+        flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center',
+        color:C.fgDisabled }}>
+        <IBox sz={22}/>
+      </div>
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ fontFamily:FB, fontSize:14, fontWeight:500, color:C.fg, marginBottom:6,
+          whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+          {item.title}
+        </div>
+        <div style={{ display:'flex', gap:8, alignItems:'center', flexWrap:'wrap' }}>
+          <Badge status={item.status} />
+          <CategoryChip category={item.category} />
+          <span style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>{item.condition}</span>
+        </div>
+      </div>
+      <span style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, flexShrink:0 }}>{item.date}</span>
+    </div>
+  );
+}
+
+/* ── EMPTY STATE ─────────────────────────────────────────────── */
+function Empty({ Icon, title, sub }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center',
+      padding:'52px 24px', gap:10, textAlign:'center' }}>
+      <div style={{ width:52, height:52, borderRadius:'50%', background:C.primaryLight,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        color:C.primary, marginBottom:4 }}>
+        <Icon sz={22}/>
+      </div>
+      <div style={{ fontFamily:FB, fontSize:15, fontWeight:600, color:C.fg }}>{title}</div>
+      {sub && <div style={{ fontFamily:FB, fontSize:13, color:C.fgMuted, maxWidth:280, lineHeight:1.65 }}>{sub}</div>}
+    </div>
+  );
+}
+
+/* ── PROFILE HEADER (público — sin tabs propias) ────────────── */
+function ProfileHeader({ user, onReport }) {
+  const scoreVal = user.score > 0 ? `+${user.score}` : `${user.score}`;
+  const scoreColor = user.score > 0 ? C.primary : user.score < 0 ? C.error : C.fgMuted;
+
+  return (
+    <div style={{ background: C.bgSurface, border: `1px solid ${C.border}`,
+      borderRadius: 12, boxShadow: C.sh1, overflow: 'hidden' }}>
+      <div style={{ padding: '24px 24px 20px' }}>
+        <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: 18 }}>
+          <div style={{ width: 68, height: 68, borderRadius: '50%', flexShrink: 0,
+            background: C.primaryLight, border: `2px solid ${C.border}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: FD, fontSize: 22, fontWeight: 700, color: C.primary, letterSpacing: '0.02em' }}>
+            {user.initials}
+          </div>
+          <div style={{ flex: 1, minWidth: 180 }}>
+            <div style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, color: C.fg,
+              marginBottom: 5, lineHeight: 1.2 }}>{user.name}</div>
+            <div style={{ fontFamily: FB, fontSize: 13, color: C.fgMuted,
+              display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <span>Miembro desde {user.since}</span>
+              <span style={{ width: 3, height: 3, borderRadius: '50%', background: C.border, flexShrink: 0 }}></span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <IPin sz={12}/> {user.location}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <StatCard label="Reputación" value={scoreVal} color={scoreColor} />
+          <StatCard label="Donados" value={user.donated} />
+          <StatCard label="Recibidos" value={user.received} />
+          <StatCard label="No-shows" value={user.noShows}
+            sub={user.consecNoShows > 0 ? `${user.consecNoShows} consecutivos` : undefined} />
+        </div>
+
+        {/* Report trigger — per §4.3: perfil público de otro usuario */}
+        <button onClick={onReport}
+          style={{
+            display:'inline-flex', alignItems:'center', gap:7,
+            marginTop:16, padding:'4px 0',
+            background:'none', border:'none', cursor:'pointer',
+            fontFamily:FB, fontSize:12.5, color:C.fgMuted,
+            transition:'color 150ms',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = C.error}
+          onMouseLeave={e => e.currentTarget.style.color = C.fgMuted}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="1.75"
+            strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+            <line x1="4" y1="22" x2="4" y2="15"/>
+          </svg>
+          Reportar este usuario
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ── PUBLIC PROFILE SCREEN ───────────────────────────────────── */
+function PublicProfileScreen() {
+  const [reportOpen, setReportOpen] = React.useState(false);
+  const items = ITEMS;
+
+  return (
+    <div style={{ background: C.bgPage, minHeight: '100vh' }}>
+      <Navbar />
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px clamp(16px,4vw,24px) 60px' }}>
+
+        <div className="fade-up">
+          <ProfileHeader user={USER} onReport={() => setReportOpen(true)} />
+        </div>
+        {reportOpen && (
+          <ReportModal
+            context={'user-carlos-ruiz'}
+            entityType="usuario"
+            entityName={USER.name}
+            onClose={() => setReportOpen(false)}
+          />
+        )}
+
+        <div style={{ height: 16 }} />
+
+        {/* Public donations */}
+        <div className="tab-in">
+          <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fgMid,
+            marginBottom:12, display:'flex', alignItems:'center', gap:8 }}>
+            <IBox sz={14}/> Objetos donados
+          </div>
+          {items.length === 0
+            ? <Empty Icon={IBox} title="Este usuario no ha donado ningún objeto todavía" />
+            : <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {items.map(item => <DonationCard key={item.id} item={item} />)}
+              </div>
+          }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── APP ─────────────────────────────────────────────────────── */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "userState": "degradado"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  return (
+    <div>
+      <PublicProfileScreen />
+      <TweaksPanel>
+        <TweakSection label="Vista de perfil público" />
+        <TweakRadio label="Estado de usuario"
+          value={t.userState}
+          options={['activo','degradado','nuevo']}
+          onChange={v => setTweak('userState', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<style>
+  .site-footer { background:#fff; border-top:1px solid #D5D9DE; font-family:'DM Sans',system-ui,sans-serif; }
+  .site-footer-inner { max-width:1140px; margin:0 auto; padding:0 clamp(16px,4vw,40px); flex:1; }
+  .footer-main-grid { display:flex; justify-content:space-between; align-items:flex-start; gap:64px; padding:52px 0 44px; }
+  .footer-brand-col { flex:0 0 auto; max-width:220px; }
+  .footer-logo { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; color:#3A7358; text-decoration:none; display:block; margin-bottom:14px; letter-spacing:-0.01em; }
+  .footer-desc { font-size:13px; color:#7C8692; line-height:1.75; margin:0; }
+  .footer-nav-cols { display:flex; gap:52px; flex-shrink:0; align-items:flex-start; }
+  .footer-col-label { font-size:10px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#7C8692; margin-bottom:14px; }
+  .footer-col-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .footer-col-links a { font-size:13px; color:#606A76; text-decoration:none; transition:color 150ms; line-height:1.4; }
+  .footer-col-links a:hover { color:#3A7358; }
+  .footer-col-links a.current { color:#3A7358; font-weight:500; }
+  .footer-bottom { border-top:1px solid #D5D9DE; }
+  .footer-bottom-inner { display:flex; justify-content:space-between; align-items:center; padding:16px 0; gap:16px; flex-wrap:wrap; }
+  .footer-copy { font-size:12px; color:#7C8692; }
+  .footer-motto { font-family:'Playfair Display',Georgia,serif; font-size:13px; font-style:italic; color:#7C8692; opacity:0.8; }
+  @media(max-width:720px){.footer-main-grid{flex-direction:column;gap:36px;padding:40px 0 32px}.footer-brand-col{max-width:100%}.footer-nav-cols{flex-wrap:wrap;gap:28px 40px}.footer-bottom-inner{flex-direction:column;align-items:flex-start;gap:6px}}
+</style>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">&copy; 2026 No lo vendo &middot; Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

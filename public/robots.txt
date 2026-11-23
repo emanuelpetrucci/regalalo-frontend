@@ -1,0 +1,27 @@
+# Landing pública + explorar + items públicos indexables; auth/privados no indexables.
+# Sitemap servido dinámicamente (ver server.ts) o en producción: /sitemap.xml
+
+User-agent: *
+Allow: /
+Allow: /en
+Allow: /ca
+Allow: /como-funciona/reputacion
+Allow: /ca/com-funciona/reputacio
+Allow: /en/how-it-works/reputation
+Allow: /explorar
+Allow: /items/
+
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verificacion-pendiente
+Disallow: /verificar-email
+Disallow: /onboarding
+Disallow: /reputacion
+Disallow: /mis-objetos
+Disallow: /entregas
+Disallow: /perfil
+Disallow: /users/
+
+Sitemap: https://regalalo.org/sitemap.xml

@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Entregas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { min-height: 100%; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F5F6; -webkit-font-smoothing: antialiased; }
+  input, button, select, textarea { font-family: inherit; }
+  ::placeholder { color: #9AA2AD; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D5D9DE; border-radius: 3px; }
+
+  @keyframes modalIn { from { opacity:0; transform:scale(0.97) translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+  @keyframes slideIn { from { opacity:0; transform:translateX(14px); } to { opacity:1; transform:none; } }
+  .modal-in { animation: modalIn 240ms cubic-bezier(0.16,1,0.3,1) both; }
+  .fade-in  { animation: fadeIn  180ms ease both; }
+  .slide-in { animation: slideIn 220ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  @media (max-width: 860px) {
+    .nav-links  { display: none !important; }
+    .pub-label  { display: none !important; }
+    .split-layout { grid-template-columns: 1fr !important; }
+    .detail-hide  { display: none !important; }
+    /* detail panel becomes a full-screen slide-over on mobile */
+    .detail-wrap {
+      position: fixed !important;
+      inset: 0 !important;
+      top: 64px !important;
+      z-index: 200 !important;
+      overflow-y: auto !important;
+      background: #F4F5F6;
+    }
+    .detail-wrap > div {
+      position: static !important;
+      max-height: none !important;
+      border-radius: 0 !important;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      box-shadow: none !important;
+      min-height: calc(100vh - 64px);
+    }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+
+/* ── TOKENS ───────────────────────────────────────────────────── */
+const C = {
+  primary:      '#3A7358',
+  primaryHov:   '#2D5C45',
+  primaryLight: '#F0F5F2',
+  accent:       '#253F72',
+  bgPage:       '#F4F5F6',
+  bgSurface:    '#FFFFFF',
+  bgSubtle:     '#E8EAEC',
+  fg:           '#14171A',
+  fgMid:        '#606A76',
+  fgMuted:      '#7C8692',
+  fgDisabled:   '#9AA2AD',
+  border:       '#D5D9DE',
+  borderStr:    '#B8BFC7',
+  error:        '#B33A2A',
+  errorBg:      '#FDECEA',
+  errorBd:      '#F4A09A',
+  warnBg:       '#FEF6E7',
+  warnBd:       '#EDD090',
+  warnFg:       '#8F5907',
+  successBg:    '#EBF5EE',
+  successBd:    '#9DCCA8',
+  successFg:    '#265533',
+  sh1: '0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)',
+  sh2: '0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+  sh3: '0 8px 32px rgba(0,0,0,0.14)',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', system-ui, sans-serif";
+const FM = "'JetBrains Mono', monospace";
+
+/* ── DATA ─────────────────────────────────────────────────────── */
+const SESSIONS = {
+  donor: [
+    {
+      id:'d1', role:'donor', status:'active',
+      item:{ title:'Mesa escritorio IKEA ALEX', condition:'like_new', category:'furniture', imageCount:5 },
+      other:{ initials:'AL', score:120, distance:1.2, localidad:'Sants' },
+      contactChannel:'WhatsApp: +34 612 345 678',
+      receiverContactChannel:'Telegram: @almudena_lr',
+      startedAt:'17 may 2026', expiresAt:'24 may 2026', daysLeft:6,
+    },
+    {
+      id:'d2', role:'donor', status:'completed',
+      item:{ title:'Cámara analógica Olympus OM-10', condition:'good', category:'electronics', imageCount:3 },
+      other:{ initials:'NF', score:95, distance:2.1, localidad:'Gràcia' },
+      contactChannel:null,
+      startedAt:'01 may 2026', expiresAt:'08 may 2026', daysLeft:0,
+    },
+  ],
+  receiver: [
+    {
+      id:'r1', role:'receiver', status:'active',
+      item:{ title:'Bicicleta de montaña Scott', condition:'good', category:'sports', imageCount:3 },
+      other:{ initials:'MG', score:85, distance:1.8, localidad:'Eixample' },
+      contactChannel:'WhatsApp: +34 698 765 432',
+      startedAt:'15 may 2026', expiresAt:'22 may 2026', daysLeft:4,
+    },
+    {
+      id:'r2', role:'receiver', status:'active',
+      item:{ title:'Lámpara de pie nórdica', condition:'new', category:'furniture', imageCount:2 },
+      other:{ initials:'LB', score:30, distance:3.2, localidad:'Poblenou' },
+      contactChannel:'Email: laia.b@gmail.com',
+      startedAt:'16 may 2026', expiresAt:'23 may 2026', daysLeft:5,
+    },
+    {
+      id:'r3', role:'receiver', status:'completed',
+      item:{ title:'Pack libros Harari (3 tomos)', condition:'good', category:'books', imageCount:2 },
+      other:{ initials:'RM', score:15, distance:0.4, localidad:'Sarrià' },
+      contactChannel:null,
+      startedAt:'01 may 2026', expiresAt:'08 may 2026', daysLeft:0,
+    },
+    {
+      id:'r4', role:'receiver', status:'expired',
+      item:{ title:'Silla Eames réplica blanca', condition:'fair', category:'furniture', imageCount:1 },
+      other:{ initials:'JV', score:55, distance:4.1 },
+      contactChannel:null,
+      startedAt:'05 may 2026', expiresAt:'12 may 2026', daysLeft:0,
+    },
+  ],
+};
+
+const CONDITION_LABELS = { new:'A estrenar', like_new:'Como nuevo', good:'Buen estado', fair:'Aceptable' };
+const CATEGORY_LABELS = {
+  furniture:'Muebles', electronics:'Electrónica', clothing:'Ropa',
+  books:'Libros', toys:'Juguetes', kitchen:'Cocina',
+  sports:'Deporte', tools:'Herramientas', other:'Otros',
+};
+const COND_CFG = {
+  new:      { bg:'#EBF5EE', fg:'#265533', bd:'#9DCCA8' },
+  like_new: { bg:'#F0F5F2', fg:'#224633', bd:'#B5D0C2' },
+  good:     { bg:'#FEF6E7', fg:'#8F5907', bd:'#EDD090' },
+  fair:     { bg:'#E8EAEC', fg:'#606A76', bd:'#D5D9DE' },
+};
+const STATUS_CFG = {
+  active:    { bg:'#EBF5EE', fg:'#265533', bd:'#9DCCA8',  label:'Activa' },
+  completed: { bg:'#F0F5F2', fg:'#224633', bd:'#B5D0C2',  label:'Completada' },
+  cancelled: { bg:'#FDECEA', fg:'#B33A2A', bd:'#F4A09A',  label:'Cancelada' },
+  expired:   { bg:'#E8EAEC', fg:'#606A76', bd:'#D5D9DE',  label:'Expirada' },
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "role": "receiver",
+  "selectedId": "r1",
+  "userState": "degradado",
+  "itemId": 8,
+  "modalAbierto": true
+}/*EDITMODE-END*/;
+
+/* ── ICONS ────────────────────────────────────────────────────── */
+const Ico = ({sz=16,sw=1.75,children}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+);
+const IBox    = ({sz=16}) => <Ico sz={sz}><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></Ico>;
+const IClose  = ({sz=16}) => <Ico sz={sz} sw={2}><path d="M18 6L6 18M6 6l12 12"/></Ico>;
+const IPlus   = ({sz=16}) => <Ico sz={sz} sw={2.5}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Ico>;
+const IChevR  = ({sz=16}) => <Ico sz={sz}><path d="M9 18l6-6-6-6"/></Ico>;
+const IChevL  = ({sz=16}) => <Ico sz={sz}><path d="M15 18l-6-6 6-6"/></Ico>;
+const IImage  = ({sz=16}) => <Ico sz={sz}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></Ico>;
+const ICheck  = ({sz=16}) => <Ico sz={sz}><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></Ico>;
+const IClock  = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></Ico>;
+const ICircleX = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></Ico>;
+const IWarn   = ({sz=16}) => <Ico sz={sz}><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></Ico>;
+const IStar   = ({sz=16}) => <Ico sz={sz}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></Ico>;
+const IPhone  = ({sz=16}) => <Ico sz={sz}><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.86 9.79 19.79 19.79 0 01.77 1.14 2 2 0 012.76 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.08 6.08l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></Ico>;
+const IMail   = ({sz=16}) => <Ico sz={sz}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></Ico>;
+const IGift   = ({sz=16}) => <Ico sz={sz}><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></Ico>;
+const IArrow  = ({sz=16}) => <Ico sz={sz}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Ico>;
+const ITruck  = ({sz=16}) => <Ico sz={sz}><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></Ico>;
+
+/* ── PRIMITIVES ───────────────────────────────────────────────── */
+function StatusBadge({ status }) {
+  const s = STATUS_CFG[status] || STATUS_CFG.active;
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', fontFamily:FB, fontSize:11,
+      fontWeight:600, padding:'3px 10px', borderRadius:999, whiteSpace:'nowrap',
+      background:s.bg, color:s.fg, border:`1px solid ${s.bd}` }}>
+      {s.label}
+    </span>
+  );
+}
+
+function ConditionChip({ condition }) {
+  const s = COND_CFG[condition] || COND_CFG.fair;
+  return (
+    <span style={{ display:'inline-flex', fontFamily:FB, fontSize:11, fontWeight:500,
+      padding:'2px 8px', borderRadius:999, background:s.bg, color:s.fg, border:`1px solid ${s.bd}` }}>
+      {CONDITION_LABELS[condition]}
+    </span>
+  );
+}
+function CategoryChip({ category }) {
+  return (
+    <span style={{ display:'inline-flex', fontFamily:FB, fontSize:11, fontWeight:500,
+      padding:'2px 8px', borderRadius:999, background:'#EDF0F5', color:'#142244', border:'1px solid #A5B5D4' }}>
+      {CATEGORY_LABELS[category] || category || '—'}
+    </span>
+  );
+}
+
+function Btn({ children, variant='primary', onClick, disabled, fullWidth, size='md', style:sx={} }) {
+  const [hov, setHov] = React.useState(false);
+  const [prs, setPrs] = React.useState(false);
+  const base = {
+    display:'inline-flex', alignItems:'center', justifyContent:'center', gap:6,
+    borderRadius:8, cursor:disabled?'not-allowed':'pointer', border:'none',
+    fontFamily:FB, fontWeight:600, transition:'all 150ms',
+    width:fullWidth?'100%':undefined,
+    padding:size==='sm'?'7px 14px':'11px 20px',
+    fontSize:size==='sm'?13:14,
+    transform:prs&&!disabled?'scale(0.97)':'none',
+    opacity:disabled?0.5:1, ...sx,
+  };
+  const variants = {
+    primary:    { background:hov?C.primaryHov:C.primary, color:'#fff', border:'none' },
+    secondary:  { background:hov?C.primaryLight:C.bgSurface, color:C.primary, border:`1.5px solid ${C.primary}` },
+    ghost:      { background:hov?C.bgSubtle:'transparent', color:C.fgMid, border:`1.5px solid ${C.border}` },
+    danger:     { background:hov?'#9B2D1F':C.error, color:'#fff', border:'none' },
+    dangerGhost:{ background:hov?C.errorBg:'transparent', color:C.error, border:`1.5px solid ${hov?C.errorBd:C.border}` },
+  };
+  return (
+    <button onClick={!disabled?onClick:undefined}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>{ setHov(false); setPrs(false); }}
+      onMouseDown={()=>setPrs(true)} onMouseUp={()=>setPrs(false)}
+      style={{...base,...variants[variant]}}>
+      {children}
+    </button>
+  );
+}
+
+function Avatar({ initials, size=36 }) {
+  return (
+    <div style={{ width:size, height:size, borderRadius:'50%', flexShrink:0,
+      background:C.primaryLight, border:`1.5px solid ${C.border}`,
+      display:'flex', alignItems:'center', justifyContent:'center',
+      fontFamily:FD, fontSize:Math.round(size*0.38), fontWeight:700, color:C.primary }}>
+      {initials}
+    </div>
+  );
+}
+
+function ScoreTag({ score }) {
+  const color = score>=60?C.primary:score>=20?C.warnFg:C.error;
+  return (
+    <span style={{ fontFamily:FM, fontSize:13, fontWeight:600, color }}>
+      {score>0?`+${score}`:score}
+    </span>
+  );
+}
+
+/* ── LANGUAGE SELECTOR ───────────────────────────────────────── */
+const LANGS = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català'  },
+];
+function LanguageSelector({ dark }) {
+  const [lang, setLang] = React.useState(() => localStorage.getItem('nlv_lang') || 'es');
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  const select = code => { setLang(code); localStorage.setItem('nlv_lang', code); setOpen(false); };
+  return (
+    <div ref={ref} style={{ position:'relative', flexShrink:0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        display:'flex', alignItems:'center', gap:4,
+        background: dark ? 'rgba(255,255,255,0.12)' : '#FFFFFF',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.22)' : '#D5D9DE'}`,
+        borderRadius:8, padding:'5px 10px',
+        fontFamily:FB, fontSize:13, fontWeight:600,
+        color: dark ? 'rgba(255,255,255,0.85)' : '#606A76',
+        cursor:'pointer', transition:'all 150ms', userSelect:'none' }}>
+        {lang.toUpperCase()}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform 150ms' }}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{ position:'absolute', top:'calc(100% + 6px)', right:0,
+          background:'#FFFFFF', border:'1px solid #D5D9DE',
+          borderRadius:10, boxShadow:'0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+          overflow:'hidden', zIndex:1000, minWidth:130 }}>
+          {LANGS.map(({ code, label }) => (
+            <button key={code} onClick={() => select(code)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                width:'100%', padding:'9px 14px', border:'none',
+                background: lang===code ? '#F0F5F2' : 'transparent',
+                color: lang===code ? '#3A7358' : '#14171A',
+                fontFamily:FB, fontSize:13, fontWeight: lang===code ? 600 : 400,
+                cursor:'pointer', textAlign:'left', gap:10, transition:'background 100ms' }}
+              onMouseEnter={e => { if (lang!==code) e.currentTarget.style.background='#E8EAEC'; }}
+              onMouseLeave={e => { if (lang!==code) e.currentTarget.style.background='transparent'; }}>
+              <span>{label}</span>
+              <span style={{ fontFamily:FB, fontSize:11, fontWeight:600,
+                color: lang===code ? '#3A7358' : '#9AA2AD',
+                letterSpacing:'0.05em' }}>{code.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── NAVBAR ───────────────────────────────────────────────────── */
+function Navbar() {
+  const [hov, setHov] = React.useState(null);
+  const links = [
+    ['explorar','Explorar','Explorar v3.html'],
+    ['mis-objetos','Mis objetos','Mis objetos.html'],
+    ['entregas','Entregas',''],
+    ['perfil','Perfil','Perfil.html'],
+  ];
+  return (
+    <nav style={{ background:C.bgSurface, borderBottom:`1px solid ${C.border}`, height:64,
+      display:'flex', alignItems:'center', justifyContent:'space-between',
+      padding:'0 clamp(16px,4vw,40px)', position:'sticky', top:0, zIndex:100, boxShadow:C.sh1 }}>
+      <a href="Explorar v3.html" style={{ textDecoration:'none' }}>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:700, color:C.primary, letterSpacing:'-0.01em' }}>
+          no lo vendo
+        </div>
+      </a>
+      <div className="nav-links" style={{ display:'flex', gap:2 }}>
+        {links.map(([id,label,href])=>{
+          const active = id==='entregas';
+          const el = (
+            <button key={id} onMouseEnter={()=>setHov(id)} onMouseLeave={()=>setHov(null)}
+              style={{ background:active?C.primaryLight:hov===id?C.bgSubtle:'none', border:'none',
+                cursor:'pointer', padding:'8px 14px', borderRadius:8,
+                fontFamily:FB, fontSize:14, fontWeight:active?600:400,
+                color:active?C.primary:C.fgMid, transition:'all 150ms' }}>
+              {label}
+            </button>
+          );
+          return href ? <a key={id} href={href} style={{ textDecoration:'none' }}>{el}</a> : el;
+        })}
+      </div>
+      <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+        <LanguageSelector />
+        <a href="Mis objetos.html" style={{ textDecoration:'none' }}>
+          <Btn size="sm"><IPlus sz={13}/><span className="pub-label">Publicar</span></Btn>
+        </a>
+        <Avatar initials="LS" size={34}/>
+      </div>
+    </nav>
+  );
+}
+
+/* ── DEADLINE PILL ────────────────────────────────────────────── */
+function DeadlinePill({ daysLeft, expiresAt }) {
+  const urgent = daysLeft <= 1;
+  const warn   = daysLeft <= 3 && daysLeft > 1;
+  const bg  = urgent ? C.errorBg  : warn ? C.warnBg  : C.successBg;
+  const bd  = urgent ? C.errorBd  : warn ? C.warnBd  : C.successBd;
+  const fg  = urgent ? C.error    : warn ? C.warnFg  : C.successFg;
+  const ico = urgent ? <IWarn sz={13}/> : <IClock sz={13}/>;
+  const label = daysLeft === 0 ? 'Último día' : daysLeft === 1 ? '1 día restante' : `${daysLeft} días restantes`;
+  return (
+    <div style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'5px 12px',
+      borderRadius:999, background:bg, border:`1px solid ${bd}` }}>
+      <span style={{ color:fg }}>{ico}</span>
+      <span style={{ fontFamily:FB, fontSize:12, fontWeight:600, color:fg }}>{label}</span>
+      <span style={{ fontFamily:FB, fontSize:11, color:fg, opacity:0.75 }}>· vence el {expiresAt}</span>
+    </div>
+  );
+}
+
+/* ── SESSION ROW ──────────────────────────────────────────────── */
+function SessionRow({ session, selected, onClick, first, last }) {
+  const [hov, setHov] = React.useState(false);
+  const r = first&&last?12:first?'12px 12px 0 0':last?'0 0 12px 12px':0;
+  const isDonor = session.role === 'donor';
+
+  return (
+    <div onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{ display:'flex', gap:14, alignItems:'center', padding:'14px 16px',
+        background:selected?'#EAF2EE':hov?'#F9FAFB':C.bgSurface,
+        border:`1px solid ${selected?C.primary:C.border}`,
+        borderRadius:r, borderTop:!first?'none':undefined,
+        cursor:'pointer', transition:'background 150ms, border-color 150ms', position:'relative' }}>
+
+      {selected && (
+        <div style={{ position:'absolute', left:0, top:'20%', bottom:'20%',
+          width:3, borderRadius:'0 2px 2px 0', background:C.primary }}/>
+      )}
+
+      {/* Thumb */}
+      <div style={{ width:52, height:52, borderRadius:8, flexShrink:0,
+        background:C.bgSubtle, display:'flex', alignItems:'center',
+        justifyContent:'center', color:C.fgDisabled }}>
+        <IImage sz={20}/>
+      </div>
+
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg,
+          lineHeight:1.3, marginBottom:5,
+          overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+          {session.item.title}
+        </div>
+        <div style={{ display:'flex', gap:8, alignItems:'center', flexWrap:'wrap' }}>
+          <StatusBadge status={session.status}/>
+          {session.status==='active' && (
+            <span style={{ fontFamily:FB, fontSize:11, color:session.daysLeft<=2?C.error:session.daysLeft<=3?C.warnFg:C.fgMuted,
+              display:'flex', alignItems:'center', gap:3 }}>
+              <IClock sz={11}/>
+              {session.daysLeft===0?'Último día':`${session.daysLeft}d`}
+            </span>
+          )}
+          <span style={{ fontFamily:FB, fontSize:11, color:C.fgDisabled }}>
+            {isDonor?`→ ${session.other.initials}`:`← ${session.other.initials}`}
+          </span>
+        </div>
+      </div>
+
+      <div style={{ color:selected?C.primary:C.fgDisabled, flexShrink:0 }}>
+        <IChevR sz={15}/>
+      </div>
+    </div>
+  );
+}
+
+/* ── SESSION LIST ─────────────────────────────────────────────── */
+function SessionList({ sessions, selectedId, onSelect }) {
+  if (sessions.length===0) {
+    return (
+      <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:14,
+        padding:'64px 32px', textAlign:'center', boxShadow:C.sh1 }}>
+        <div style={{ color:C.fgDisabled, marginBottom:16 }}><ITruck sz={40}/></div>
+        <div style={{ fontFamily:FD, fontSize:18, fontWeight:600, color:C.fg, marginBottom:8 }}>
+          Sin entregas aquí
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65, maxWidth:280, margin:'0 auto' }}>
+          Cuando se active una sesión de entrega, aparecerá aquí con toda la información.
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`,
+      borderRadius:14, boxShadow:C.sh1, overflow:'hidden' }}>
+      {sessions.map((s, idx)=>(
+        <SessionRow key={s.id} session={s} selected={s.id===selectedId}
+          onClick={()=>onSelect(s)} first={idx===0} last={idx===sessions.length-1}/>
+      ))}
+    </div>
+  );
+}
+
+/* ── STEP TRAIL ───────────────────────────────────────────────── */
+function StepTrail({ steps }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
+      {steps.map((step, idx)=>(
+        <div key={idx} style={{ display:'flex', gap:12, alignItems:'flex-start', position:'relative' }}>
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', flexShrink:0 }}>
+            <div style={{ width:20, height:20, borderRadius:'50%', zIndex:1,
+              background: step.done ? C.primary : step.current ? C.bgSurface : C.bgSubtle,
+              border: `2px solid ${step.done ? C.primary : step.current ? C.primary : C.border}`,
+              display:'flex', alignItems:'center', justifyContent:'center' }}>
+              {step.done && <ICheck sz={10}/>}
+              {step.current && <div style={{ width:8, height:8, borderRadius:'50%', background:C.primary }}/>}
+            </div>
+            {idx < steps.length-1 && (
+              <div style={{ width:2, height:24, background:step.done?C.primary:C.border, marginTop:2 }}/>
+            )}
+          </div>
+          <div style={{ paddingBottom: idx < steps.length-1 ? 20 : 0 }}>
+            <div style={{ fontFamily:FB, fontSize:13, fontWeight:step.current?600:400,
+              color:step.done?C.fg:step.current?C.fg:C.fgMuted, lineHeight:1.4 }}>
+              {step.label}
+            </div>
+            {step.sub && (
+              <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, marginTop:2 }}>{step.sub}</div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── CHANNEL BLOCK ────────────────────────────────────────────── */
+function ChannelBlock({ channel }) {
+  const isPhone = channel.toLowerCase().startsWith('whatsapp') || channel.toLowerCase().startsWith('teléfono');
+  const isEmail = channel.toLowerCase().startsWith('email');
+  const ico = isPhone ? <IPhone sz={15}/> : isEmail ? <IMail sz={15}/> : <IPhone sz={15}/>;
+  return (
+    <div style={{ padding:'14px 16px', background:C.successBg, border:`1.5px solid ${C.successBd}`,
+      borderRadius:12, display:'flex', gap:12, alignItems:'center' }}>
+      <div style={{ width:36, height:36, borderRadius:8, background:C.primary,
+        display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', flexShrink:0 }}>
+        {ico}
+      </div>
+      <div>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.successFg, fontWeight:500, marginBottom:3 }}>
+          Canal de contacto del donante
+        </div>
+        <div style={{ fontFamily:FM, fontSize:15, fontWeight:600, color:C.fg }}>{channel}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── COORDINATION BLOCK (donor) ───────────────────────────────── */
+function channelIcon(channel) {
+  const c = (channel || '').toLowerCase();
+  if (c.startsWith('whatsapp') || c.startsWith('teléfono') || c.startsWith('telefono') || c.startsWith('telegram') || c.startsWith('signal')) return <IPhone sz={15}/>;
+  if (c.startsWith('email') || c.startsWith('correo') || c.includes('@gmail') || c.includes('@')) return <IMail sz={15}/>;
+  return <IPhone sz={15}/>;
+}
+
+function CoordinationBlock({ shared, receiver }) {
+  return (
+    <div style={{ border:`1px solid ${C.border}`, borderRadius:12, overflow:'hidden', background:C.bgSurface }}>
+      {/* Section header */}
+      <div style={{ padding:'11px 16px', borderBottom:`1px solid ${C.border}`, background:C.bgPage,
+        display:'flex', alignItems:'center', gap:7 }}>
+        <span style={{ color:C.fgMuted }}><IGift sz={13}/></span>
+        <span style={{ fontFamily:FB, fontSize:11, fontWeight:600, color:C.fgMuted,
+          textTransform:'uppercase', letterSpacing:'0.07em' }}>Coordinación</span>
+      </div>
+
+      {/* Shared channel — reference */}
+      {shared && (
+        <div style={{ padding:'13px 16px', borderBottom: receiver ? `1px solid ${C.border}` : 'none' }}>
+          <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, fontWeight:500, marginBottom:4 }}>
+            Tu canal compartido
+          </div>
+          <div style={{ fontFamily:FM, fontSize:14, fontWeight:600, color:C.fgMid }}>{shared}</div>
+          <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, marginTop:4 }}>
+            Lo que el receptor ve para escribirte.
+          </div>
+        </div>
+      )}
+
+      {/* Receiver channel — new, actionable, greater weight */}
+      {receiver && (
+        <div style={{ padding:'15px 16px', background:C.successBg, display:'flex', gap:12, alignItems:'center' }}>
+          <div style={{ width:38, height:38, borderRadius:8, background:C.primary,
+            display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', flexShrink:0 }}>
+            {channelIcon(receiver)}
+          </div>
+          <div style={{ minWidth:0 }}>
+            <div style={{ fontFamily:FB, fontSize:11.5, color:C.successFg, fontWeight:600, marginBottom:3 }}>
+              Cómo contactar al receptor
+            </div>
+            <div style={{ fontFamily:FM, fontSize:15, fontWeight:700, color:C.fg, lineHeight:1.3,
+              overflowWrap:'anywhere' }}>{receiver}</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── DONOR DETAIL ─────────────────────────────────────────────── */
+function DonorDetail({ session, onConfirm, onCancel }) {
+  const steps = [
+    { label:'Receptor seleccionado', sub:session.startedAt, done:true },
+    { label:'Sesión activa — en espera de entrega', current:session.status==='active', done:session.status!=='active' },
+    { label:'Entrega confirmada', done:session.status==='completed' },
+  ];
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+
+      {session.status==='active' && (
+        <DeadlinePill daysLeft={session.daysLeft} expiresAt={session.expiresAt}/>
+      )}
+
+      {/* Receiver info */}
+      <div style={{ padding:'14px 16px', background:C.bgPage, borderRadius:12, border:`1px solid ${C.border}` }}>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, textTransform:'uppercase',
+          letterSpacing:'0.06em', marginBottom:10 }}>Receptor seleccionado</div>
+        <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+          <Avatar initials={session.other.initials} size={40}/>
+          <div>
+            <ScoreTag score={session.other.score}/>
+            <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, marginTop:2 }}>
+              {session.other.distance} km · {session.other.localidad || '—'}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Coordination — donor's shared channel + receiver's channel */}
+      {(session.contactChannel || session.receiverContactChannel) && (
+        <CoordinationBlock shared={session.contactChannel} receiver={session.receiverContactChannel}/>
+      )}
+
+      {/* Trail */}
+      <div>
+        <div style={{ fontFamily:FB, fontSize:12, fontWeight:600, color:C.fgMuted,
+          textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:12 }}>
+          Estado de la sesión
+        </div>
+        <StepTrail steps={steps}/>
+      </div>
+
+      {session.status==='active' && (
+        <>
+          <div style={{ height:1, background:C.border }}/>
+          <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+            <Btn fullWidth onClick={onConfirm}>
+              <ICheck sz={15}/> Confirmar entrega realizada
+            </Btn>
+            <Btn variant="dangerGhost" fullWidth onClick={onCancel}>
+              <ICircleX sz={14}/> Cancelar sesión
+            </Btn>
+          </div>
+        </>
+      )}
+
+      {session.status==='completed' && (
+        <div style={{ display:'flex', gap:8, alignItems:'center', padding:'12px 16px',
+          background:C.successBg, border:`1px solid ${C.successBd}`, borderRadius:10 }}>
+          <span style={{ color:C.successFg }}><IStar sz={16}/></span>
+          <span style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.successFg }}>
+            Entrega completada · <strong>+10 puntos</strong> de reputación
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── RECEIVER DETAIL ──────────────────────────────────────────── */
+function ReceiverDetail({ session }) {
+  const steps = [
+    { label:'Seleccionado por el donante', sub:session.startedAt, done:true },
+    { label:'Contacto recibido — coordina la entrega', current:session.status==='active', done:session.status!=='active' && session.status!=='expired' },
+    { label:'Entrega completada', done:session.status==='completed' },
+  ];
+
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+
+      {session.status==='active' && (
+        <DeadlinePill daysLeft={session.daysLeft} expiresAt={session.expiresAt}/>
+      )}
+
+      {session.status==='expired' && (
+        <div style={{ display:'flex', gap:8, alignItems:'center', padding:'12px 16px',
+          background:C.bgSubtle, border:`1px solid ${C.border}`, borderRadius:10 }}>
+          <span style={{ color:C.fgMuted }}><IWarn sz={15}/></span>
+          <div>
+            <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fgMid }}>Sesión expirada</div>
+            <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+              El plazo venció sin confirmación. El objeto ha vuelto al tablón.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Donor info */}
+      <div style={{ padding:'14px 16px', background:C.bgPage, borderRadius:12, border:`1px solid ${C.border}` }}>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, textTransform:'uppercase',
+          letterSpacing:'0.06em', marginBottom:10 }}>Donante</div>
+        <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+          <Avatar initials={session.other.initials} size={40}/>
+          <div>
+            <ScoreTag score={session.other.score}/>
+            <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, marginTop:2 }}>
+              {session.other.distance} km · {session.other.localidad || '—'}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Channel — only visible when active */}
+      {session.status==='active' && session.contactChannel && (
+        <ChannelBlock channel={session.contactChannel}/>
+      )}
+
+      {/* Trail */}
+      <div>
+        <div style={{ fontFamily:FB, fontSize:12, fontWeight:600, color:C.fgMuted,
+          textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:12 }}>
+          Estado de la sesión
+        </div>
+        <StepTrail steps={steps}/>
+      </div>
+
+      {session.status==='active' && (
+        <div style={{ padding:'12px 16px', background:C.warnBg, border:`1px solid ${C.warnBd}`,
+          borderRadius:10, display:'flex', gap:8, alignItems:'flex-start' }}>
+          <span style={{ color:C.warnFg, flexShrink:0, marginTop:1 }}><IWarn sz={14}/></span>
+          <div style={{ fontFamily:FB, fontSize:12, color:C.warnFg, lineHeight:1.6 }}>
+            El plazo es estricto. Si vence sin confirmación del donante, la sesión expirará automáticamente sin penalización.
+          </div>
+        </div>
+      )}
+
+      {session.status==='completed' && (
+        <div style={{ display:'flex', gap:8, alignItems:'center', padding:'12px 16px',
+          background:C.successBg, border:`1px solid ${C.successBd}`, borderRadius:10 }}>
+          <span style={{ color:C.successFg }}><ICheck sz={16}/></span>
+          <span style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.successFg }}>
+            ¡Entrega completada con éxito!
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── DETAIL PANEL ─────────────────────────────────────────────── */
+function DetailPanel({ session, onClose, onConfirm, onCancel }) {
+  const isDonor = session.role === 'donor';
+  return (
+    <div className="slide-in" style={{ background:C.bgSurface, border:`1px solid ${C.border}`,
+      borderRadius:14, boxShadow:C.sh2, overflow:'hidden',
+      position:'sticky', top:80, maxHeight:'calc(100vh - 100px)', display:'flex', flexDirection:'column' }}>
+
+      {/* Header */}
+      <div style={{ padding:'16px 20px', borderBottom:`1px solid ${C.border}`,
+        display:'flex', alignItems:'flex-start', gap:12, flexShrink:0 }}>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontFamily:FD, fontSize:17, fontWeight:600, color:C.fg,
+            lineHeight:1.3, marginBottom:6 }}>
+            {session.item.title}
+          </div>
+          <div style={{ display:'flex', gap:6, flexWrap:'wrap', alignItems:'center' }}>
+            <StatusBadge status={session.status}/>
+            <ConditionChip condition={session.item.condition}/>
+            <CategoryChip category={session.item.category}/>
+            <span style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, padding:'2px 8px',
+              borderRadius:999, background:C.bgSubtle, border:`1px solid ${C.border}` }}>
+              {isDonor?'Como donante':'Como receptor'}
+            </span>
+          </div>
+        </div>
+        <button onClick={onClose} style={{ width:32, height:32, borderRadius:'50%', flexShrink:0,
+          background:C.bgSubtle, border:'none', cursor:'pointer',
+          display:'flex', alignItems:'center', justifyContent:'center', color:C.fgMid }}>
+          <IClose sz={15}/>
+        </button>
+      </div>
+
+      {/* Scrollable body */}
+      <div style={{ flex:1, overflowY:'auto', padding:'20px' }}>
+
+        {/* Image area */}
+        <div style={{ aspectRatio:'16/9', background:C.bgSubtle, borderRadius:10,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          color:C.fgDisabled, marginBottom:20, position:'relative' }}>
+          <IImage sz={30}/>
+          {session.item.imageCount>1 && (
+            <div style={{ position:'absolute', bottom:10, right:10,
+              background:'rgba(20,23,26,0.6)', borderRadius:999, padding:'2px 10px',
+              fontFamily:FB, fontSize:11, color:'#fff' }}>
+              {session.item.imageCount} fotos
+            </div>
+          )}
+        </div>
+
+        {isDonor
+          ? <DonorDetail session={session} onConfirm={onConfirm} onCancel={onCancel}/>
+          : <ReceiverDetail session={session}/>
+        }
+      </div>
+    </div>
+  );
+}
+
+/* ── CANCEL MODAL ─────────────────────────────────────────────── */
+function CancelModal({ onNoShow, onConfirm, onClose }) {
+  const [noShow, setNoShow] = React.useState(false);
+  return (
+    <div className="fade-in" style={{ position:'fixed', inset:0, zIndex:500,
+      background:'rgba(20,23,26,0.55)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:420 }}>
+
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:8 }}>
+          Cancelar sesión
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65, marginBottom:20 }}>
+          El objeto volverá a estado activo y quedará disponible en el tablón para nuevas solicitudes.
+        </div>
+
+        {/* No-show checkbox */}
+        <div onClick={()=>setNoShow(v=>!v)}
+          style={{ display:'flex', gap:12, alignItems:'flex-start', padding:'14px 16px',
+            background:noShow?C.errorBg:C.bgPage, border:`1.5px solid ${noShow?C.errorBd:C.border}`,
+            borderRadius:10, cursor:'pointer', marginBottom:20, transition:'all 200ms' }}>
+          <div style={{ width:20, height:20, borderRadius:4, flexShrink:0, marginTop:1,
+            background:noShow?C.error:C.bgSurface,
+            border:`2px solid ${noShow?C.error:C.border}`,
+            display:'flex', alignItems:'center', justifyContent:'center',
+            transition:'all 200ms' }}>
+            {noShow && <svg width={11} height={11} viewBox="0 0 24 24" fill="none"
+              stroke="#fff" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>}
+          </div>
+          <div>
+            <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, marginBottom:3 }}>
+              El receptor no se presentó
+            </div>
+            <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, lineHeight:1.5 }}>
+              Declara un no-show. Se aplicará una penalización de reputación al receptor.
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display:'flex', gap:10 }}>
+          <Btn variant="ghost" onClick={onClose}>Volver</Btn>
+          <Btn variant="danger" style={{ flex:1 }} onClick={()=>onConfirm(noShow)}>
+            {noShow?'Declarar no-show y cancelar':'Cancelar sesión'}
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── CONFIRM MODAL ────────────────────────────────────────────── */
+function ConfirmModal({ onConfirm, onClose }) {
+  return (
+    <div className="fade-in" style={{ position:'fixed', inset:0, zIndex:500,
+      background:'rgba(20,23,26,0.55)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:400 }}>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:8 }}>
+          ¿Confirmar entrega?
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65, marginBottom:20 }}>
+          Ambas reputaciones se actualizarán. Recibirás <strong>+10 puntos</strong> de reputación por completar esta donación.
+        </div>
+        <div style={{ display:'flex', gap:10 }}>
+          <Btn variant="ghost" onClick={onClose}>Cancelar</Btn>
+          <Btn style={{ flex:1 }} onClick={onConfirm}>
+            <ICheck sz={14}/> Confirmar entrega
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── ROLE TABS ────────────────────────────────────────────────── */
+function RoleTabs({ role, counts, onChange }) {
+  return (
+    <div style={{ display:'inline-flex', background:C.bgSurface, border:`1px solid ${C.border}`,
+      borderRadius:10, padding:4, gap:2, marginBottom:24 }}>
+      {[['donor','Como donante'],['receiver','Como receptor']].map(([id,label])=>(
+        <button key={id} onClick={()=>onChange(id)}
+          style={{ padding:'8px 16px', borderRadius:8, border:'none', cursor:'pointer',
+            fontFamily:FB, fontSize:13, fontWeight:role===id?600:400,
+            background:role===id?C.primary:'transparent',
+            color:role===id?'#fff':C.fgMid,
+            transition:'all 150ms', display:'flex', alignItems:'center', gap:6 }}>
+          {label}
+          {counts[id]>0 && (
+            <span style={{ fontFamily:FM, fontSize:11, fontWeight:600,
+              background:role===id?'rgba(255,255,255,0.25)':C.bgSubtle,
+              color:role===id?'#fff':C.fgMuted,
+              padding:'0 6px', borderRadius:999 }}>
+              {counts[id]}
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ── APP ──────────────────────────────────────────────────────── */
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [role, setRole] = React.useState(t.role);
+  const [sessions, setSessions] = React.useState(SESSIONS);
+  const [selectedId, setSelectedId] = React.useState(t.selectedId);
+  const [cancelModal, setCancelModal] = React.useState(false);
+  const [confirmModal, setConfirmModal] = React.useState(false);
+
+  const list = sessions[role] || [];
+  const selected = list.find(s=>s.id===selectedId) || null;
+
+  function changeRole(r) { setRole(r); setSelectedId(null); }
+
+  function handleConfirm() {
+    setSessions(prev=>({
+      ...prev,
+      [role]: prev[role].map(s=>s.id===selectedId?{...s,status:'completed',contactChannel:null,receiverContactChannel:null}:s),
+    }));
+    setConfirmModal(false);
+  }
+
+  function handleCancel(noShow) {
+    setSessions(prev=>({
+      ...prev,
+      [role]: prev[role].map(s=>s.id===selectedId?{...s,status:noShow?'cancelled':'cancelled',contactChannel:null,receiverContactChannel:null}:s),
+    }));
+    setCancelModal(false);
+  }
+
+  const counts = {
+    donor:    sessions.donor.filter(s=>s.status==='active').length,
+    receiver: sessions.receiver.filter(s=>s.status==='active').length,
+  };
+  const activeSessions = list.filter(s=>s.status==='active');
+  const otherSessions  = list.filter(s=>s.status!=='active');
+
+  return (
+    <div style={{ minHeight:'100vh', background:C.bgPage }}>
+      <Navbar/>
+
+      {confirmModal && <ConfirmModal onConfirm={handleConfirm} onClose={()=>setConfirmModal(false)}/>}
+      {cancelModal  && <CancelModal  onConfirm={handleCancel}  onClose={()=>setCancelModal(false)}/>}
+
+      <div style={{ maxWidth:1140, margin:'0 auto', padding:'32px clamp(16px,4vw,40px) 80px' }}>
+
+        {/* Header */}
+        <div style={{ marginBottom:28 }}>
+          <h1 style={{ fontFamily:FD, fontSize:28, fontWeight:700, color:C.fg, marginBottom:4, lineHeight:1.2 }}>
+            Entregas
+          </h1>
+          <p style={{ fontFamily:FB, fontSize:14, color:C.fgMid }}>
+            Sigue el estado de tus sesiones de entrega activas e históricas.
+          </p>
+        </div>
+
+        <RoleTabs role={role} counts={counts} onChange={changeRole}/>
+
+        <div className="split-layout" style={{ display:'grid',
+          gridTemplateColumns:selected?'360px 1fr':'1fr', gap:20, alignItems:'start' }}>
+
+          {/* List */}
+          <div>
+            {activeSessions.length>0 && (
+              <>
+                <div style={{ fontFamily:FB, fontSize:11, fontWeight:600, color:C.fgMuted,
+                  textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:8 }}>
+                  Activas
+                </div>
+                <SessionList sessions={activeSessions} selectedId={selectedId}
+                  onSelect={s=>setSelectedId(s.id)}/>
+              </>
+            )}
+
+            {otherSessions.length>0 && (
+              <div style={{ marginTop: activeSessions.length>0 ? 20 : 0 }}>
+                <div style={{ fontFamily:FB, fontSize:11, fontWeight:600, color:C.fgMuted,
+                  textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:8 }}>
+                  Historial
+                </div>
+                <SessionList sessions={otherSessions} selectedId={selectedId}
+                  onSelect={s=>setSelectedId(s.id)}/>
+              </div>
+            )}
+
+            {list.length===0 && (
+              <SessionList sessions={[]} selectedId={null} onSelect={()=>{}}/>
+            )}
+
+            {list.length>0 && (
+              <div style={{ fontFamily:FB, fontSize:12, color:C.fgDisabled,
+                textAlign:'center', marginTop:12 }}>
+                {list.length} {list.length===1?'sesión':'sesiones'}
+              </div>
+            )}
+          </div>
+
+          {/* Detail */}
+          {selected && (
+            <div className="detail-wrap">
+              <DetailPanel
+                session={selected}
+                onClose={()=>setSelectedId(null)}
+                onConfirm={()=>setConfirmModal(true)}
+                onCancel={()=>setCancelModal(true)}/>
+            </div>
+          )}
+        </div>
+
+        {!selected && list.length>0 && (
+          <div style={{ textAlign:'center', marginTop:20 }}>
+            <div style={{ fontFamily:FB, fontSize:13, color:C.fgDisabled,
+              display:'inline-flex', alignItems:'center', gap:6 }}>
+              <IChevR sz={13}/> Selecciona una sesión para ver los detalles
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+
+<style>
+  .site-footer { background:#fff; border-top:1px solid #D5D9DE; font-family:'DM Sans',system-ui,sans-serif; }
+  .site-footer-inner { max-width:1140px; margin:0 auto; padding:0 clamp(16px,4vw,40px); }
+  .footer-main-grid { display:flex; justify-content:space-between; align-items:flex-start; gap:64px; padding:52px 0 44px; }
+  .footer-brand-col { flex:0 0 auto; max-width:220px; }
+  .footer-logo { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; color:#3A7358; text-decoration:none; display:block; margin-bottom:14px; letter-spacing:-0.01em; }
+  .footer-desc { font-size:13px; color:#7C8692; line-height:1.75; margin:0; }
+  .footer-nav-cols { display:flex; gap:52px; flex-shrink:0; align-items:flex-start; }
+  .footer-col-label { font-size:10px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#7C8692; margin-bottom:14px; }
+  .footer-col-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .footer-col-links a { font-size:13px; color:#606A76; text-decoration:none; transition:color 150ms; line-height:1.4; }
+  .footer-col-links a:hover { color:#3A7358; }
+  .footer-col-links a.current { color:#3A7358; font-weight:500; }
+  .footer-bottom { border-top:1px solid #D5D9DE; }
+  .footer-bottom-inner { display:flex; justify-content:space-between; align-items:center; padding:16px 0; gap:16px; flex-wrap:wrap; }
+  .footer-copy { font-size:12px; color:#7C8692; }
+  .footer-motto { font-family:'Playfair Display',Georgia,serif; font-size:13px; font-style:italic; color:#7C8692; opacity:0.8; }
+  @media(max-width:720px){.footer-main-grid{flex-direction:column;gap:36px;padding:40px 0 32px}.footer-brand-col{max-width:100%}.footer-nav-cols{flex-wrap:wrap;gap:28px 40px}.footer-bottom-inner{flex-direction:column;align-items:flex-start;gap:6px}}
+</style>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html" class="current">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

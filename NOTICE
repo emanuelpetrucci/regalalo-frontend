@@ -1,0 +1,48 @@
+NOTICE
+======
+
+Regálalo — componente de interfaz pública (frontend)
+Copyright (c) 2026 Eduardo Emanuel Cabral Petrucci y colaboradores de Regálalo
+
+Autor original y creador de Regálalo
+------------------------------------
+Eduardo Emanuel Cabral Petrucci (GitHub: emanuelpetrucci) es el autor
+original y el creador de Regálalo. Este componente de interfaz pública (frontend) forma parte de ese
+proyecto.
+
+La lista de quienes han contribuido a partir de la apertura se mantiene
+en CONTRIBUTORS.md. Los commits de bots o agentes automáticos no se
+consideran autoría ni colaboración a efectos de ese reconocimiento.
+
+Licencia
+--------
+Este programa es software libre: puede redistribuirse y/o modificarse
+bajo los términos de la GNU Affero General Public License publicada por
+la Free Software Foundation, versión 3 de la licencia, o (a tu
+elección) cualquier versión posterior (AGPL-3.0-or-later).
+
+Este programa se distribuye con la esperanza de que sea útil, pero SIN
+NINGUNA GARANTÍA, ni siquiera la garantía implícita de
+COMERCIABILIDAD o IDONEIDAD PARA UN FIN DETERMINADO. Consulte la GNU
+Affero General Public License para más detalles.
+
+Una copia de la licencia está en el fichero LICENSE. También puede
+consultarse en <https://www.gnu.org/licenses/agpl-3.0.html>.
+
+Identificador SPDX: AGPL-3.0-or-later
+(decisión de Emanuel, 23 de noviembre de 2026).
+
+Oferta de código fuente (GNU AGPL-3.0, §13)
+-------------------------------------------
+Si ejecuta una versión modificada de este programa como servicio en
+red, debe ofrecer a las personas usuarias el código fuente completo
+correspondiente, de forma gratuita y por un canal habitual de copia de
+software. La instancia oficial de Regálalo ofrece el código de la
+versión publicada en el repositorio público de este componente. Un
+servicio derivado tiene que ofrecer el suyo.
+
+Marca y diseño
+--------------
+Los nombres «Regálalo», «No lo vendo» y «No lo vendo, lo regalo», el
+logotipo y el sistema de diseño no se licencian bajo la AGPL. Véanse
+TRADEMARK.md y, en su caso, la licencia específica de esos activos.

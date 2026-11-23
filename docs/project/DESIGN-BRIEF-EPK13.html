@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Brief — Épica 13: Acceso Público · Regálalo</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #F0F2F5; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+    #root { min-height: 100vh; }
+    .canvas { max-width: 1280px; margin: 0 auto; padding: 48px 32px 120px; }
+    .section-block { margin-bottom: 72px; }
+    .section-title {
+      font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+      color: #14171A; margin-bottom: 6px; letter-spacing: -0.02em;
+    }
+    .section-sub {
+      font-family: 'DM Sans', sans-serif; font-size: 13px; color: #606A76;
+      margin-bottom: 28px; line-height: 1.6;
+    }
+    .row { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+    .col { display: flex; flex-direction: column; gap: 10px; }
+    .label-sm {
+      font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #7C8692;
+    }
+    .annotation {
+      font-family: 'DM Sans', sans-serif; font-size: 11px; color: #253F72;
+      background: #EDF0F5; border: 1px solid #A5B5D4; border-radius: 6px;
+      padding: 8px 12px; max-width: 320px; line-height: 1.6;
+    }
+    .annotation.new {
+      color: #2D5C45; background: #F0F5F2; border-color: #B5D0C2;
+    }
+    .annotation.warn {
+      color: #8F5907; background: #FEF6E7; border-color: #EDD090;
+    }
+    .divider { height: 1px; background: #D5D9DE; margin: 56px 0; }
+    .badge-new {
+      display: inline-block; background: #3A7358; color: #fff;
+      font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 2px 7px; border-radius: 4px; margin-left: 8px; vertical-align: middle;
+    }
+    .badge-mod {
+      display: inline-block; background: #253F72; color: #fff;
+      font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 2px 7px; border-radius: 4px; margin-left: 8px; vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Regálalo v1.0
+   Fuente canónica: docs/project/colors_and_type.css
+═══════════════════════════════════════════════════════════════ */
+const C = {
+  primary:       '#3A7358',
+  primaryHover:  '#2D5C45',
+  primaryLight:  '#F0F5F2',
+  primaryLight2: '#DCE9E2',
+  accent:        '#253F72',
+  accentLight:   '#EDF0F5',
+  accentLight2:  '#D3DBEA',
+  fg:            '#14171A',
+  fgMid:         '#606A76',
+  fgMuted:       '#7C8692',
+  fgDisabled:    '#9AA2AD',
+  bgPage:        '#F4F5F6',
+  bgSurface:     '#FFFFFF',
+  bgSubtle:      '#E8EAEC',
+  border:        '#D5D9DE',
+  borderStrong:  '#B8BFC7',
+  shadow1:       '0 1px 3px rgba(20,23,26,0.08), 0 1px 2px rgba(20,23,26,0.04)',
+  shadow2:       '0 4px 12px rgba(20,23,26,0.10), 0 2px 4px rgba(20,23,26,0.06)',
+  shadow3:       '0 12px 32px rgba(20,23,26,0.14), 0 4px 8px rgba(20,23,26,0.08)',
+  error:         '#B33A2A',
+  errorBg:       '#FDECEA',
+  warn:          '#C87D0A',
+  warnBg:        '#FEF6E7',
+  success:       '#3A7B4A',
+  successBg:     '#EBF5EE',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', Arial, Helvetica, sans-serif";
+const FM = "'JetBrains Mono', monospace";
+
+/* ═══════════════════════════════════════════════════════════════
+   SHARED ICONS (Lucide-style SVG inline)
+═══════════════════════════════════════════════════════════════ */
+const Ico = ({ sz=16, sw=1.75, children, style={} }) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" style={style}>
+    {children}
+  </svg>
+);
+const IUser    = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></Ico>;
+const ISearch  = ({sz=16}) => <Ico sz={sz}><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></Ico>;
+const IPlus    = ({sz=16}) => <Ico sz={sz}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Ico>;
+const IBox     = ({sz=16}) => <Ico sz={sz}><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></Ico>;
+const IPin     = ({sz=16}) => <Ico sz={sz}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></Ico>;
+const IClose   = ({sz=16}) => <Ico sz={sz}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></Ico>;
+const ICheck   = ({sz=16}) => <Ico sz={sz}><polyline points="20 6 9 17 4 12"/></Ico>;
+const IChevR   = ({sz=16}) => <Ico sz={sz}><polyline points="9 18 15 12 9 6"/></Ico>;
+const IGift    = ({sz=16}) => <Ico sz={sz}><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></Ico>;
+const IMenu    = ({sz=16}) => <Ico sz={sz}><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></Ico>;
+const IArrowR  = ({sz=16}) => <Ico sz={sz}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Ico>;
+const IStar    = ({sz=16}) => <Ico sz={sz}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></Ico>;
+const IInfo    = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></Ico>;
+const IHeart   = ({sz=16}) => <Ico sz={sz}><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></Ico>;
+const IShare   = ({sz=16}) => <Ico sz={sz}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></Ico>;
+const IMoreV   = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></Ico>;
+
+/* ═══════════════════════════════════════════════════════════════
+   SHARED BASE COMPONENTS
+═══════════════════════════════════════════════════════════════ */
+
+/* Phone frame */
+function Phone({ w=320, children, noframe=false }) {
+  if (noframe) return <div style={{ width:w }}>{children}</div>;
+  return (
+    <div style={{ width:w, background:C.bgPage, borderRadius:20,
+      boxShadow:'0 0 0 8px #30353C, 0 24px 48px rgba(0,0,0,0.32)',
+      overflow:'hidden', position:'relative' }}>
+      {/* Status bar */}
+      <div style={{ background:C.bgSurface, height:32, display:'flex', alignItems:'center',
+        justifyContent:'space-between', padding:'0 16px' }}>
+        <span style={{ fontFamily:FM, fontSize:10, color:C.fgMuted }}>9:41</span>
+        <div style={{ display:'flex', gap:4, alignItems:'center' }}>
+          <div style={{ width:14,height:7,border:`1.5px solid ${C.fgMuted}`,borderRadius:2,position:'relative' }}>
+            <div style={{ position:'absolute',inset:1,right:3,background:C.fgMuted,borderRadius:1 }}/>
+            <div style={{ position:'absolute',top:1,bottom:1,right:0,width:2,background:C.fgMuted,borderRadius:'0 1px 1px 0' }}/>
+          </div>
+        </div>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/* Reputation chip */
+function RepChip({ score }) {
+  const color = score >= 60 ? C.primary : score >= 20 ? C.warn : C.error;
+  const bg    = score >= 60 ? C.primaryLight : score >= 20 ? C.warnBg : C.errorBg;
+  return (
+    <div style={{ background:bg, borderRadius:6, padding:'3px 8px',
+      fontFamily:FM, fontSize:12, fontWeight:600, color, whiteSpace:'nowrap' }}>
+      {score > 0 ? `+${score}` : score}
+    </div>
+  );
+}
+
+/* Status badge */
+function StatusBadge({ status }) {
+  const map = {
+    active:    { bg:'#F0F5F2', fg:'#224633', border:'#B5D0C2', label:'Disponible' },
+    reserved:  { bg:'#FEF6E7', fg:'#8F5907', border:'#EDD090', label:'Reservado' },
+    completed: { bg:'#EBF5EE', fg:'#265533', border:'#9DCCA8', label:'Entregado' },
+    cancelled: { bg:'#FDECEA', fg:'#7D2419', border:'#E8A89E', label:'Cancelado' },
+  };
+  const s = map[status] || map.active;
+  return (
+    <span style={{ background:s.bg, color:s.fg, border:`1px solid ${s.border}`,
+      borderRadius:6, padding:'3px 9px', fontFamily:FB, fontSize:11, fontWeight:600 }}>
+      {s.label}
+    </span>
+  );
+}
+
+/* Condition chip */
+function CondChip({ cond }) {
+  const map = { new:'A estrenar', like_new:'Como nuevo', good:'Buen estado', fair:'Aceptable' };
+  return (
+    <span style={{ background:C.bgSubtle, color:C.fgMid, borderRadius:6,
+      padding:'2px 8px', fontFamily:FB, fontSize:11, fontWeight:500 }}>
+      {map[cond] || cond}
+    </span>
+  );
+}
+
+/* Category chip */
+function CatChip({ cat }) {
+  const map = { furniture:'Muebles', electronics:'Electrónica', clothing:'Ropa',
+    books:'Libros', toys:'Juguetes', kitchen:'Cocina', sports:'Deporte',
+    tools:'Herramientas', other:'Otros' };
+  return (
+    <span style={{ background:C.accentLight, color:C.accent, borderRadius:6,
+      padding:'2px 8px', fontFamily:FB, fontSize:11, fontWeight:500 }}>
+      {map[cat] || cat}
+    </span>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EXISTING COMPONENTS — Estado actual (referencia visual)
+═══════════════════════════════════════════════════════════════ */
+
+/* Navbar — estado AUTENTICADO (existente, referencia) */
+function NavbarAuth() {
+  return (
+    <div style={{ background:C.bgSurface, borderBottom:`1px solid ${C.border}`,
+      padding:'0 16px', height:54, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <span style={{ fontFamily:FD, fontSize:18, fontWeight:700, color:C.fg, letterSpacing:'-0.02em' }}>
+        Regálalo
+      </span>
+      <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+        <a style={{ fontFamily:FB, fontSize:13, color:C.fgMid, textDecoration:'none', padding:'6px 10px' }}>Explorar</a>
+        <button style={{ background:C.primary, color:'#fff', border:'none', borderRadius:8,
+          padding:'7px 12px', fontFamily:FB, fontSize:13, fontWeight:600, cursor:'pointer',
+          display:'flex', alignItems:'center', gap:4 }}>
+          <IPlus sz={13}/> Publicar
+        </button>
+        <div style={{ width:32, height:32, borderRadius:'50%', background:C.primaryLight,
+          border:`1.5px solid ${C.border}`, display:'flex', alignItems:'center',
+          justifyContent:'center', fontFamily:FB, fontSize:12, fontWeight:700, color:C.primary }}>LS</div>
+      </div>
+    </div>
+  );
+}
+
+/* Bottom nav — AUTENTICADO (existente) */
+function BottomNavAuth({ active='explore' }) {
+  const tabs = [
+    { id:'explore', icon:<ISearch sz={20}/>, label:'Explorar' },
+    { id:'donate',  icon:<IBox sz={20}/>,    label:'Publicar'  },
+    { id:'profile', icon:<IUser sz={20}/>,   label:'Perfil'    },
+  ];
+  return (
+    <div style={{ borderTop:`1px solid ${C.border}`, background:C.bgSurface,
+      display:'flex', padding:'6px 0 12px' }}>
+      {tabs.map(t => (
+        <div key={t.id} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
+          <span style={{ color: active===t.id ? C.primary : C.fgMuted }}>{t.icon}</span>
+          <span style={{ fontFamily:FB, fontSize:10, fontWeight: active===t.id ? 600 : 400,
+            color: active===t.id ? C.primary : C.fgMuted }}>{t.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* Item card — AUTENTICADO (existente) */
+function ItemCardAuth({ item }) {
+  return (
+    <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12,
+      overflow:'hidden', boxShadow:C.shadow1 }}>
+      <div style={{ height:140, background:`linear-gradient(135deg, ${C.primaryLight} 0%, ${C.primaryLight2} 100%)`,
+        display:'flex', alignItems:'center', justifyContent:'center', color:C.primary }}>
+        <IBox sz={32}/>
+      </div>
+      <div style={{ padding:'10px 12px' }}>
+        <div style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.fg, marginBottom:6, lineHeight:1.3 }}>
+          {item.title}
+        </div>
+        <div style={{ display:'flex', gap:4, flexWrap:'wrap', marginBottom:8 }}>
+          <CondChip cond={item.condition}/>
+          <CatChip cat={item.category}/>
+        </div>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:4, fontFamily:FB, fontSize:11, color:C.fgMuted }}>
+            <IPin sz={11}/> {item.distance}
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+            <span style={{ fontFamily:FB, fontSize:11, color:C.fgMuted }}>
+              {item.requests} sol.
+            </span>
+            <RepChip score={item.donorScore}/>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Donor row — AUTENTICADO (existente) */
+function DonorRowAuth({ donor }) {
+  const scoreColor = donor.score >= 60 ? C.primary : donor.score >= 20 ? C.warn : C.error;
+  return (
+    <div style={{ display:'flex', gap:12, alignItems:'center', padding:'12px 16px',
+      background:C.bgPage, border:`1px solid ${C.border}`, borderRadius:10 }}>
+      <div style={{ width:40, height:40, borderRadius:'50%', flexShrink:0, background:C.primaryLight,
+        border:`1.5px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'center',
+        fontFamily:FD, fontSize:14, fontWeight:700, color:C.primary }}>
+        {donor.initials}
+      </div>
+      <div style={{ flex:1 }}>
+        <div style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.primary,
+          textDecoration:'underline', textDecorationStyle:'dotted', cursor:'pointer' }}>
+          {donor.name}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted }}>Miembro desde {donor.since}</div>
+      </div>
+      <div style={{ textAlign:'right' }}>
+        <div style={{ fontFamily:FM, fontSize:16, fontWeight:600, color:scoreColor, lineHeight:1 }}>
+          {donor.score > 0 ? `+${donor.score}` : donor.score}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:10, color:C.fgMuted, marginTop:2 }}>reputación</div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NEW COMPONENTS — Épica 13 (diseño propuesto)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── COMPONENTE 1: Navbar VISITANTE ────────────────────────── */
+function NavbarGuest() {
+  return (
+    <div style={{ background:C.bgSurface, borderBottom:`1px solid ${C.border}`,
+      padding:'0 16px', height:54, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <span style={{ fontFamily:FD, fontSize:18, fontWeight:700, color:C.fg, letterSpacing:'-0.02em' }}>
+        Regálalo
+      </span>
+      <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+        <button style={{ background:'none', border:'none', cursor:'pointer',
+          fontFamily:FB, fontSize:13, color:C.fgMid, padding:'6px 10px' }}>
+          Iniciar sesión
+        </button>
+        <button style={{ background:C.primary, color:'#fff', border:'none', borderRadius:8,
+          padding:'7px 14px', fontFamily:FB, fontSize:13, fontWeight:600, cursor:'pointer' }}>
+          Registrarse
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ── COMPONENTE 2: Bottom nav VISITANTE ────────────────────── */
+function BottomNavGuest({ active='explore' }) {
+  const tabs = [
+    { id:'explore', icon:<ISearch sz={20}/>, label:'Explorar' },
+    { id:'publish', icon:<IPlus sz={20}/>,   label:'Publicar'  },
+    { id:'login',   icon:<IUser sz={20}/>,   label:'Entrar'    },
+  ];
+  return (
+    <div style={{ borderTop:`1px solid ${C.border}`, background:C.bgSurface,
+      display:'flex', padding:'6px 0 12px' }}>
+      {tabs.map(t => {
+        const isActive = active===t.id;
+        const isGated  = t.id==='publish';
+        return (
+          <div key={t.id} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
+            <span style={{ color: isActive ? C.primary : isGated ? C.fgDisabled : C.fgMuted,
+              position:'relative' }}>
+              {t.icon}
+              {isGated && (
+                <span style={{ position:'absolute', top:-2, right:-2, width:7, height:7,
+                  borderRadius:'50%', background:C.accent, border:`1.5px solid ${C.bgSurface}` }}/>
+              )}
+            </span>
+            <span style={{ fontFamily:FB, fontSize:10, fontWeight: isActive ? 600 : 400,
+              color: isActive ? C.primary : isGated ? C.fgDisabled : C.fgMuted }}>{t.label}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── COMPONENTE 3: Banner Feed Global ──────────────────────── */
+function FeedGlobalBanner({ dismissed, onDismiss }) {
+  if (dismissed) return null;
+  return (
+    <div style={{ background:C.accentLight, border:`1px solid ${C.accentLight2}`,
+      borderRadius:10, padding:'10px 14px', display:'flex', gap:10,
+      alignItems:'flex-start', marginBottom:16 }}>
+      <span style={{ color:C.accent, flexShrink:0, marginTop:1 }}><IPin sz={15}/></span>
+      <div style={{ flex:1 }}>
+        <span style={{ fontFamily:FB, fontSize:13, color:C.fg, lineHeight:1.5 }}>
+          Ves objetos de toda España.{' '}
+          <button style={{ background:'none', border:'none', cursor:'pointer',
+            fontFamily:FB, fontSize:13, fontWeight:600, color:C.primary, padding:0,
+            textDecoration:'underline', textDecorationStyle:'dotted' }}>
+            Regístrate
+          </button>
+          {' '}para ver solo los de tu zona.
+        </span>
+      </div>
+      <button onClick={onDismiss} style={{ background:'none', border:'none', cursor:'pointer',
+        color:C.fgMuted, padding:0, flexShrink:0, marginTop:1 }}>
+        <IClose sz={14}/>
+      </button>
+    </div>
+  );
+}
+
+/* ── COMPONENTE 4: Item Card VISITANTE ─────────────────────── */
+function ItemCardGuest({ item }) {
+  return (
+    <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12,
+      overflow:'hidden', boxShadow:C.shadow1 }}>
+      <div style={{ height:140, background:`linear-gradient(135deg, ${C.primaryLight} 0%, ${C.primaryLight2} 100%)`,
+        display:'flex', alignItems:'center', justifyContent:'center', color:C.primary }}>
+        <IBox sz={32}/>
+      </div>
+      <div style={{ padding:'10px 12px' }}>
+        <div style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.fg, marginBottom:6, lineHeight:1.3 }}>
+          {item.title}
+        </div>
+        <div style={{ display:'flex', gap:4, flexWrap:'wrap', marginBottom:8 }}>
+          <CondChip cond={item.condition}/>
+          <CatChip cat={item.category}/>
+        </div>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          {/* SIN distancia → "Disponible en España" */}
+          <div style={{ display:'flex', alignItems:'center', gap:4, fontFamily:FB, fontSize:11, color:C.fgDisabled }}>
+            <IPin sz={11}/> Disponible en España
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+            {/* SIN contador de solicitudes */}
+            <RepChip score={item.donorScore}/>
+          </div>
+        </div>
+      </div>
+      {/* SIN menú contextual (···) */}
+    </div>
+  );
+}
+
+/* ── COMPONENTE 5: Donor Row ANONIMIZADO ───────────────────── */
+function DonorRowAnon({ donor }) {
+  const scoreColor = donor.score >= 60 ? C.primary : donor.score >= 20 ? C.warn : C.error;
+  return (
+    <div style={{ display:'flex', gap:12, alignItems:'center', padding:'12px 16px',
+      background:C.bgPage, border:`1px solid ${C.border}`, borderRadius:10 }}>
+      {/* Placeholder genérico — sin iniciales, sin foto */}
+      <div style={{ width:40, height:40, borderRadius:'50%', flexShrink:0, background:C.bgSubtle,
+        border:`1.5px solid ${C.border}`, display:'flex', alignItems:'center',
+        justifyContent:'center', color:C.fgDisabled }}>
+        <IUser sz={18}/>
+      </div>
+      <div style={{ flex:1 }}>
+        {/* Nombre anonimizado — sin enlace clicable */}
+        <div style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.fgMid }}>
+          Donante anónimo
+        </div>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted }}>Miembro desde {donor.since}</div>
+      </div>
+      <div style={{ textAlign:'right' }}>
+        <div style={{ fontFamily:FM, fontSize:16, fontWeight:600, color:scoreColor, lineHeight:1 }}>
+          {donor.score > 0 ? `+${donor.score}` : donor.score}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:10, color:C.fgMuted, marginTop:2 }}>reputación</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── COMPONENTE 6: Conversion Gate Modal ───────────────────── */
+function ConversionModal({ trigger='request_item', onClose }) {
+  const variants = {
+    request_item: {
+      title: '¿Te interesa este objeto?',
+      sub:   'Para pedirlo, crea tu cuenta gratuita. Solo te toma un minuto.',
+    },
+    publish_item: {
+      title: 'Regala lo que ya no necesitas',
+      sub:   'Crea tu cuenta para publicar objetos y que lleguen a quien los necesita.',
+    },
+    view_profile: {
+      title: 'Conoce a la comunidad',
+      sub:   'Con una cuenta puedes ver los perfiles y el historial de los miembros.',
+    },
+  };
+  const v = variants[trigger];
+  return (
+    <div style={{ position:'fixed', inset:0, zIndex:500,
+      background:'rgba(20,23,26,0.55)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:16 }}>
+      <div style={{ background:C.bgSurface, borderRadius:16, boxShadow:C.shadow3,
+        padding:'32px 28px', width:'100%', maxWidth:400, position:'relative', textAlign:'center' }}>
+        {/* Close */}
+        <button onClick={onClose} style={{ position:'absolute', top:16, right:16,
+          background:'none', border:'none', cursor:'pointer', color:C.fgMuted, padding:4 }}>
+          <IClose sz={18}/>
+        </button>
+        {/* Icon */}
+        <div style={{ width:60, height:60, borderRadius:'50%', background:C.primaryLight,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          margin:'0 auto 20px', color:C.primary }}>
+          <IGift sz={28}/>
+        </div>
+        {/* Title */}
+        <div style={{ fontFamily:FD, fontSize:22, fontWeight:700, color:C.fg,
+          letterSpacing:'-0.02em', marginBottom:8, lineHeight:1.25 }}>
+          {v.title}
+        </div>
+        {/* Sub */}
+        <div style={{ fontFamily:FB, fontSize:14, color:C.fgMid, lineHeight:1.65, marginBottom:20 }}>
+          {v.sub}
+        </div>
+        {/* Benefits */}
+        <div style={{ textAlign:'left', background:C.primaryLight, borderRadius:10,
+          padding:'12px 16px', marginBottom:24 }}>
+          {[
+            'Pide objetos que otros ya no usan',
+            'Dona lo que tienes sin usar',
+            'Tu historial te da prioridad en el reparto',
+          ].map((b, i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:10,
+              marginBottom: i<2 ? 8 : 0 }}>
+              <span style={{ color:C.primary, flexShrink:0 }}><ICheck sz={14}/></span>
+              <span style={{ fontFamily:FB, fontSize:13, color:C.fg }}>{b}</span>
+            </div>
+          ))}
+        </div>
+        {/* CTAs */}
+        <button style={{ width:'100%', padding:'14px 0', background:C.primary, color:'#fff',
+          border:'none', borderRadius:10, fontFamily:FB, fontSize:15, fontWeight:600,
+          cursor:'pointer', marginBottom:10, display:'flex', alignItems:'center',
+          justifyContent:'center', gap:8 }}>
+          <IPlus sz={15}/> Crear cuenta gratis
+        </button>
+        <button onClick={onClose} style={{ width:'100%', padding:'13px 0', background:'none',
+          border:`1.5px solid ${C.border}`, borderRadius:10, fontFamily:FB, fontSize:14,
+          fontWeight:500, color:C.fgMid, cursor:'pointer', marginBottom:16 }}>
+          Ya tengo cuenta — Iniciar sesión
+        </button>
+        {/* Tagline */}
+        <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+          Sin tarjeta de crédito · Sin compromisos
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DEMO SCREENS — Pantallas completas con contexto
+═══════════════════════════════════════════════════════════════ */
+
+/* Feed completo VISITANTE */
+function ScreenFeedGuest({ showModal, setModal }) {
+  const [dismissed, setDismissed] = React.useState(false);
+  const items = [
+    { id:1, title:'Sofá 2 plazas gris', condition:'good',     category:'furniture',    donorScore:78, distance:'2.1 km',  requests:3 },
+    { id:2, title:'Batería de cocina completa', condition:'like_new', category:'kitchen', donorScore:45, distance:'0.8 km', requests:1 },
+    { id:3, title:'Bicicleta de montaña 26"', condition:'fair',  category:'sports',   donorScore:92, distance:'3.4 km',  requests:5 },
+  ];
+  return (
+    <Phone w={340}>
+      <NavbarGuest/>
+      <div style={{ padding:'14px 14px', background:C.bgPage, minHeight:480 }}>
+        {/* Search bar */}
+        <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:10,
+          padding:'9px 12px', display:'flex', gap:8, alignItems:'center', marginBottom:12 }}>
+          <ISearch sz={14} style={{ color:C.fgMuted }}/>
+          <span style={{ fontFamily:FB, fontSize:13, color:C.fgDisabled }}>Buscar objetos…</span>
+        </div>
+        {/* Feed Global Banner */}
+        <FeedGlobalBanner dismissed={dismissed} onDismiss={()=>setDismissed(true)}/>
+        {/* Grid */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+          {items.map(item => (
+            <ItemCardGuest key={item.id} item={item}/>
+          ))}
+          <div style={{ background:C.bgSurface, border:`1.5px dashed ${C.border}`, borderRadius:12,
+            display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+            padding:'24px 12px', cursor:'pointer' }} onClick={()=>setModal('publish_item')}>
+            <span style={{ color:C.fgDisabled, marginBottom:6 }}><IPlus sz={22}/></span>
+            <span style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, textAlign:'center' }}>
+              Publicar un objeto
+            </span>
+          </div>
+        </div>
+      </div>
+      <BottomNavGuest active='explore'/>
+    </Phone>
+  );
+}
+
+/* Detalle VISITANTE con donor anonimizado */
+function ScreenDetailGuest({ setModal }) {
+  const item = {
+    title: 'Sofá 2 plazas gris marengo',
+    status: 'active',
+    condition: 'good',
+    category: 'furniture',
+    desc: 'Sofá en buen estado, estructura perfecta. Pequeño desgaste en el reposabrazos derecho, por eso no es como nuevo. Mide 180 cm. Solo puede recogerse en mano.',
+    donor: { initials:'LS', name:'Laura S.', since:'feb 2024', score:78 },
+  };
+  return (
+    <Phone w={340}>
+      <NavbarGuest/>
+      <div style={{ height:160, background:`linear-gradient(135deg, ${C.primaryLight} 0%, ${C.primaryLight2} 100%)`,
+        display:'flex', alignItems:'center', justifyContent:'center', color:C.primary }}>
+        <IBox sz={40}/>
+      </div>
+      <div style={{ padding:'16px 16px', background:C.bgPage, minHeight:360 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:8 }}>
+          <div style={{ fontFamily:FD, fontSize:20, fontWeight:700, color:C.fg,
+            letterSpacing:'-0.02em', lineHeight:1.25, flex:1, marginRight:10 }}>
+            {item.title}
+          </div>
+          <StatusBadge status={item.status}/>
+        </div>
+        <div style={{ display:'flex', gap:6, marginBottom:12 }}>
+          <CondChip cond={item.condition}/>
+          <CatChip cat={item.category}/>
+          <span style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, alignSelf:'center', marginLeft:4 }}>
+            <IPin sz={11}/> España
+          </span>
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.7, marginBottom:14 }}>
+          {item.desc}
+        </div>
+        {/* Botón compartir */}
+        <button style={{ background:'none', border:`1px solid ${C.border}`, borderRadius:8,
+          padding:'7px 12px', fontFamily:FB, fontSize:12, color:C.fgMid, cursor:'pointer',
+          display:'flex', alignItems:'center', gap:6, marginBottom:14 }}>
+          <IShare sz={12}/> Compartir objeto
+        </button>
+        <div style={{ borderTop:`1px solid ${C.border}`, marginBottom:14 }}/>
+        {/* DONOR ROW ANONIMIZADO */}
+        <DonorRowAnon donor={item.donor}/>
+        {/* CTA gateado */}
+        <button onClick={()=>setModal('request_item')} style={{ width:'100%', marginTop:14,
+          padding:'14px 0', background:C.primary, color:'#fff', border:'none', borderRadius:10,
+          fontFamily:FB, fontSize:15, fontWeight:600, cursor:'pointer',
+          display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
+          <IHeart sz={15}/> Me interesa
+        </button>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, textAlign:'center', marginTop:8 }}>
+          Para solicitar este objeto necesitas una cuenta gratuita
+        </div>
+      </div>
+    </Phone>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════════════════════════ */
+function App() {
+  const [modal, setModal]   = React.useState(null);   // null | 'request_item' | 'publish_item' | 'view_profile'
+  const [showComp, setComp] = React.useState('all'); // 'all' | 'navbar' | 'modal' | 'feed'
+
+  return (
+    <div className="canvas">
+
+      {/* ── HEADER DEL BRIEF ── */}
+      <div style={{ marginBottom:52 }}>
+        <div style={{ display:'inline-block', background:C.primary, color:'#fff',
+          fontFamily:FB, fontSize:10, fontWeight:700, letterSpacing:'0.12em',
+          textTransform:'uppercase', padding:'4px 12px', borderRadius:20, marginBottom:16 }}>
+          Design Brief · Regálalo
+        </div>
+        <h1 style={{ fontFamily:FD, fontSize:36, fontWeight:700, color:C.fg,
+          letterSpacing:'-0.03em', lineHeight:1.2, marginBottom:10 }}>
+          Épica 13 — Acceso Público<br/>
+          <em style={{ fontWeight:400, color:C.fgMid }}>y Conversión SEO</em>
+        </h1>
+        <p style={{ fontFamily:FB, fontSize:15, color:C.fgMid, maxWidth:640, lineHeight:1.7, marginBottom:24 }}>
+          Transformar el modelo de acceso de <strong>"walled garden"</strong> a{' '}
+          <strong>"Público para ver, privado para actuar"</strong>. Los visitantes no
+          autenticados pueden explorar el catálogo completo; las acciones de interacción
+          activan un flujo de conversión al registro.
+        </p>
+        <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
+          {[
+            { label:'Sistema de diseño', note:'tokens y componentes base existentes' },
+            { label:'2 componentes nuevos', note:'Banner Feed Global + Modal Conversión' },
+            { label:'3 componentes modificados', note:'Navbar, ItemCard, DonorRow' },
+          ].map(({ label, note }) => (
+            <div key={label} style={{ background:C.bgSurface, border:`1px solid ${C.border}`,
+              borderRadius:10, padding:'10px 14px', boxShadow:C.shadow1 }}>
+              <div style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.fg }}>{label}</div>
+              <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, marginTop:2 }}>{note}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 1: SISTEMA DE DISEÑO (referencia) ══ */}
+      <div className="section-block">
+        <div className="section-title">Sistema de diseño existente — referencia</div>
+        <div className="section-sub">
+          Todos los componentes nuevos deben respetar estos tokens sin excepción.
+          Fuente: <code>docs/project/colors_and_type.css</code>
+        </div>
+        <div className="row" style={{ gap:16 }}>
+          {/* Paleta */}
+          <div className="col">
+            <div className="label-sm">Paleta principal</div>
+            {[
+              { name:'Primary 500',  hex:'#3A7358', var:'--color-primary-500' },
+              { name:'Accent 500',   hex:'#253F72', var:'--color-accent-500' },
+              { name:'Neutral 900',  hex:'#14171A', var:'--color-neutral-900' },
+              { name:'Neutral 600',  hex:'#606A76', var:'--color-neutral-600' },
+              { name:'Neutral 200',  hex:'#D5D9DE', var:'--color-neutral-200' },
+              { name:'Neutral 50',   hex:'#F4F5F6', var:'--bg-page' },
+            ].map(c => (
+              <div key={c.hex} style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <div style={{ width:32, height:32, borderRadius:8, background:c.hex, border:`1px solid ${C.border}` }}/>
+                <div>
+                  <div style={{ fontFamily:FB, fontSize:12, fontWeight:600, color:C.fg }}>{c.name}</div>
+                  <div style={{ fontFamily:FM, fontSize:10, color:C.fgMuted }}>{c.hex}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Tipografía */}
+          <div className="col" style={{ maxWidth:320 }}>
+            <div className="label-sm">Tipografía</div>
+            <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12,
+              padding:'16px', boxShadow:C.shadow1 }}>
+              <div style={{ fontFamily:FD, fontSize:24, fontWeight:700, color:C.fg, marginBottom:4 }}>
+                Playfair Display
+              </div>
+              <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, marginBottom:12 }}>
+                Titulares · peso 400–700 · letra -0.02em
+              </div>
+              <div style={{ fontFamily:FB, fontSize:16, fontWeight:600, color:C.fg, marginBottom:4 }}>
+                DM Sans — 600
+              </div>
+              <div style={{ fontFamily:FB, fontSize:14, color:C.fgMid, marginBottom:4 }}>
+                DM Sans — 400 cuerpo y UI
+              </div>
+              <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+                DM Sans — 400 muted
+              </div>
+              <div style={{ borderTop:`1px solid ${C.border}`, marginTop:12, paddingTop:12 }}>
+                <div style={{ fontFamily:FM, fontSize:13, color:C.primary }}>+78 pts</div>
+                <div style={{ fontFamily:FM, fontSize:10, color:C.fgMuted }}>JetBrains Mono — scores</div>
+              </div>
+            </div>
+          </div>
+          {/* Componentes base */}
+          <div className="col" style={{ maxWidth:280 }}>
+            <div className="label-sm">Componentes base</div>
+            <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+              <StatusBadge status="active"/>
+              <StatusBadge status="reserved"/>
+              <StatusBadge status="completed"/>
+            </div>
+            <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+              <CondChip cond="like_new"/>
+              <CondChip cond="good"/>
+              <CondChip cond="fair"/>
+            </div>
+            <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+              <CatChip cat="furniture"/>
+              <CatChip cat="electronics"/>
+            </div>
+            <div style={{ display:'flex', gap:8 }}>
+              <RepChip score={78}/>
+              <RepChip score={35}/>
+              <RepChip score={-10}/>
+            </div>
+            <button style={{ background:C.primary, color:'#fff', border:'none', borderRadius:8,
+              padding:'10px 16px', fontFamily:FB, fontSize:14, fontWeight:600, cursor:'pointer' }}>
+              Botón primario
+            </button>
+            <button style={{ background:'none', border:`1.5px solid ${C.border}`, borderRadius:8,
+              padding:'9px 16px', fontFamily:FB, fontSize:14, color:C.fgMid, cursor:'pointer' }}>
+              Botón secundario
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 2: NAVBAR VISITANTE vs AUTENTICADO ══ */}
+      <div className="section-block">
+        <div className="section-title">
+          Navbar <span className="badge-mod">MODIFICADO</span>
+        </div>
+        <div className="section-sub">
+          El App Shell detecta si hay sesión activa y renderiza la variante correspondiente.
+          El logo y la estructura son idénticos; cambia únicamente el área de acciones.
+        </div>
+        <div className="row">
+          <div className="col" style={{ flex:1, minWidth:300 }}>
+            <div className="label-sm">Estado actual — Usuario autenticado</div>
+            <div style={{ borderRadius:10, overflow:'hidden', boxShadow:C.shadow1 }}>
+              <NavbarAuth/>
+            </div>
+            <div className="annotation">
+              Avatar con iniciales + botón "Publicar" primario. Enlace "Explorar"
+              en el menú de navegación superior.
+            </div>
+          </div>
+          <div className="col" style={{ flex:1, minWidth:300 }}>
+            <div className="label-sm">Nuevo — Visitante no autenticado</div>
+            <div style={{ borderRadius:10, overflow:'hidden', boxShadow:C.shadow1 }}>
+              <NavbarGuest/>
+            </div>
+            <div className="annotation new">
+              El avatar desaparece. El botón primario pasa a ser "Registrarse" 
+              (→ /registro). El enlace secundario "Iniciar sesión" (→ /login).
+              Sin menú de notificaciones.
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom nav */}
+        <div style={{ marginTop:32 }}>
+          <div className="section-sub" style={{ marginBottom:16 }}>
+            Bottom navigation mobile — comparativa por estado
+          </div>
+          <div className="row">
+            <div className="col" style={{ alignItems:'center' }}>
+              <div className="label-sm" style={{ alignSelf:'flex-start' }}>Autenticado (existente)</div>
+              <div style={{ width:260, background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12, overflow:'hidden', boxShadow:C.shadow1 }}>
+                <BottomNavAuth active='explore'/>
+              </div>
+              <div className="annotation" style={{ maxWidth:260 }}>
+                3 tabs: Explorar · Publicar · Perfil.
+                El tab activo colorea en primary.
+              </div>
+            </div>
+            <div className="col" style={{ alignItems:'center' }}>
+              <div className="label-sm" style={{ alignSelf:'flex-start' }}>Visitante — nuevo</div>
+              <div style={{ width:260, background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12, overflow:'hidden', boxShadow:C.shadow1 }}>
+                <BottomNavGuest active='explore'/>
+              </div>
+              <div className="annotation new" style={{ maxWidth:260 }}>
+                Tab "Publicar" aparece en disabled color con un dot accent
+                (indica que está disponible tras registro). Tab "Perfil" → "Entrar"
+                (→ /login). Clic en "Publicar" abre el Modal de Conversión,
+                no navega.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 3: BANNER FEED GLOBAL ══ */}
+      <div className="section-block">
+        <div className="section-title">
+          Banner "Feed Global" <span className="badge-new">NUEVO</span>
+        </div>
+        <div className="section-sub">
+          Aparece en la parte superior del feed solo para visitantes. Explica por qué ve
+          objetos de toda España (sin filtro de 50 km). Es descartable durante la sesión.
+        </div>
+        <div className="row">
+          <div className="col" style={{ maxWidth:400 }}>
+            <div className="label-sm">Banner visible</div>
+            <div style={{ background:C.bgSurface, padding:'16px', borderRadius:12, boxShadow:C.shadow1 }}>
+              <FeedGlobalBanner dismissed={false} onDismiss={()=>{}}/>
+            </div>
+            <div className="annotation new">
+              Background: accent-50 (#EDF0F5). Border: accent-200 (#A5B5D4).
+              El enlace "Regístrate" está en primary-500 con underline dotted.
+              Botón × cierra y guarda en sessionStorage (no reaparece en la sesión).
+            </div>
+          </div>
+          <div className="col" style={{ maxWidth:400 }}>
+            <div className="label-sm">Banner descartado (estado vacío)</div>
+            <div style={{ background:C.bgSurface, padding:'16px', borderRadius:12,
+              boxShadow:C.shadow1, minHeight:56, display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <span style={{ fontFamily:FB, fontSize:12, color:C.fgDisabled }}>
+                — banner no visible —
+              </span>
+            </div>
+            <div className="annotation">
+              Cuando se descarta, el espacio desaparece completamente;
+              el feed ocupa todo el espacio disponible sin placeholder.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 4: ITEM CARD — COMPARATIVA ══ */}
+      <div className="section-block">
+        <div className="section-title">
+          Tarjeta de objeto <span className="badge-mod">MODIFICADO</span>
+        </div>
+        <div className="section-sub">
+          La tarjeta es visualmente casi idéntica para visitantes. Solo cambian tres
+          elementos: distancia, contador de solicitudes y menú contextual.
+        </div>
+        <div className="row">
+          <div className="col" style={{ maxWidth:220 }}>
+            <div className="label-sm">Autenticado (referencia)</div>
+            <ItemCardAuth item={{ title:'Sofá 2 plazas gris marengo', condition:'good', category:'furniture', donorScore:78, distance:'2.1 km', requests:3 }}/>
+            <div className="annotation">
+              ✓ Distancia en km.<br/>
+              ✓ Contador de solicitudes.<br/>
+              ✓ Menú contextual (···).
+            </div>
+          </div>
+          <div className="col" style={{ maxWidth:220 }}>
+            <div className="label-sm">Visitante — nuevo estado</div>
+            <ItemCardGuest item={{ title:'Sofá 2 plazas gris marengo', condition:'good', category:'furniture', donorScore:78 }}/>
+            <div className="annotation new">
+              ✓ Reputación del donante visible.<br/>
+              ✗ Distancia → "Disponible en España" en neutral-400.<br/>
+              ✗ Contador de solicitudes oculto.<br/>
+              ✗ Menú contextual (···) no renderiza.
+            </div>
+          </div>
+          <div className="col" style={{ maxWidth:280 }}>
+            <div className="annotation warn" style={{ maxWidth:280 }}>
+              <strong>⚠ Criterio de diseño:</strong> el botón de menú (···) no aparece
+              en la tarjeta para visitantes porque no hay acciones disponibles.
+              No usar disabled — directamente no renderizar el control.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 5: DONOR ROW — COMPARATIVA ══ */}
+      <div className="section-block">
+        <div className="section-title">
+          Bloque donante <span className="badge-mod">MODIFICADO</span>
+        </div>
+        <div className="section-sub">
+          En la vista de detalle de objeto, el bloque del donante se anonimiza para
+          visitantes. La reputación se mantiene visible (dato público de comunidad).
+        </div>
+        <div className="row">
+          <div className="col" style={{ maxWidth:340 }}>
+            <div className="label-sm">Autenticado — con identidad (existente)</div>
+            <DonorRowAuth donor={{ initials:'LS', name:'Laura S.', since:'feb 2024', score:78 }}/>
+            <div className="annotation">
+              Avatar con iniciales reales. Nombre real enlazado (→ /usuarios/:id).
+              Score en color semántico.
+            </div>
+          </div>
+          <div className="col" style={{ maxWidth:340 }}>
+            <div className="label-sm">Visitante — anonimizado (nuevo)</div>
+            <DonorRowAnon donor={{ since:'feb 2024', score:78 }}/>
+            <div className="annotation new">
+              Placeholder genérico (icono de persona, fondo neutral-100, sin iniciales).
+              Nombre: "Donante anónimo" en fg-secondary (no enlace, no clicable).
+              Antigüedad: visible. Score: visible (dato no identificativo).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 6: MODAL DE CONVERSIÓN ══ */}
+      <div className="section-block">
+        <div className="section-title">
+          Modal de conversión <span className="badge-new">NUEVO</span>
+        </div>
+        <div className="section-sub">
+          Se activa cuando un visitante intenta realizar una acción que requiere cuenta.
+          Tres variantes según el contexto de disparo. Copy invitador, nunca alarmante.
+        </div>
+        <div className="row" style={{ alignItems:'flex-start' }}>
+          {/* Variante 1 */}
+          <div className="col" style={{ maxWidth:320 }}>
+            <div className="label-sm">Variante A — Solicitar objeto</div>
+            <div style={{ position:'relative', background:'rgba(20,23,26,0.18)',
+              borderRadius:16, padding:20, boxShadow:C.shadow3 }}>
+              <ConversionModal trigger='request_item' onClose={()=>{}}/>
+            </div>
+          </div>
+          {/* Variante 2 */}
+          <div className="col" style={{ maxWidth:320 }}>
+            <div className="label-sm">Variante B — Publicar objeto</div>
+            <div style={{ position:'relative', background:'rgba(20,23,26,0.18)',
+              borderRadius:16, padding:20, boxShadow:C.shadow3 }}>
+              <ConversionModal trigger='publish_item' onClose={()=>{}}/>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop:32 }}>
+          <div className="row">
+            <div className="annotation new" style={{ maxWidth:460 }}>
+              <strong>Puntos de disparo del modal:</strong><br/>
+              (1) Botón "Me interesa" en detalle de objeto → variante A.<br/>
+              (2) Tab "Publicar" en bottom nav → variante B.<br/>
+              (3) Botón "Publicar" en navbar → variante B.<br/>
+              El modal no sustituye la pantalla — aparece encima con overlay.
+              ESC y clic en × lo cierran. Focus trap mientras está activo.
+            </div>
+            <div className="annotation" style={{ maxWidth:380 }}>
+              <strong>CTA primario</strong> → /registro (background primary-500).<br/>
+              <strong>CTA secundario</strong> → /login (borde border-default).<br/>
+              Si hay returnUrl disponible, se añade como query param.<br/>
+              El botón "Crear cuenta gratis" recibe el focus inicial al abrir.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 7: PANTALLAS COMPLETAS ══ */}
+      <div className="section-block">
+        <div className="section-title">Pantallas completas en contexto</div>
+        <div className="section-sub">
+          Integración de todos los componentes en las pantallas de feed y detalle
+          desde la perspectiva del visitante.
+        </div>
+        <div className="row" style={{ alignItems:'flex-start', gap:40 }}>
+          <div className="col">
+            <div className="label-sm">Feed de exploración — visitante</div>
+            <ScreenFeedGuest showModal={modal} setModal={setModal}/>
+            <div className="annotation new" style={{ maxWidth:340 }}>
+              Navbar guest · Banner Feed Global descartable · Grid de tarjetas
+              sin distancia ni contador · Tarjeta "Publicar objeto" que abre
+              el modal de conversión al hacer clic.
+            </div>
+          </div>
+          <div className="col">
+            <div className="label-sm">Detalle de objeto — visitante</div>
+            <ScreenDetailGuest setModal={setModal}/>
+            <div className="annotation new" style={{ maxWidth:340 }}>
+              Donor row anonimizado · "Disponible en España" en lugar de distancia ·
+              Botón "Me interesa" visualmente igual que para usuarios autenticados —
+              la diferencia es solo en el comportamiento (abre el modal).
+              Texto de apoyo bajo el botón explica el motivo de forma no intrusiva.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 8: DEMO INTERACTIVO ══ */}
+      <div className="section-block">
+        <div className="section-title">Demo interactivo — Modal de conversión</div>
+        <div className="section-sub">
+          Pulsa los botones para ver cómo se activa el modal en cada contexto.
+        </div>
+        <div style={{ display:'flex', gap:12, flexWrap:'wrap', marginBottom:24 }}>
+          {[
+            { key:'request_item', label:'Abrir modal "Me interesa"' },
+            { key:'publish_item', label:'Abrir modal "Publicar"' },
+          ].map(({ key, label }) => (
+            <button key={key} onClick={()=>setModal(key)}
+              style={{ background:C.primary, color:'#fff', border:'none', borderRadius:8,
+                padding:'10px 18px', fontFamily:FB, fontSize:13, fontWeight:600, cursor:'pointer' }}>
+              {label}
+            </button>
+          ))}
+          {modal && (
+            <button onClick={()=>setModal(null)}
+              style={{ background:'none', border:`1.5px solid ${C.border}`, borderRadius:8,
+                padding:'9px 18px', fontFamily:FB, fontSize:13, color:C.fgMid, cursor:'pointer' }}>
+              Cerrar modal
+            </button>
+          )}
+        </div>
+        {modal && <ConversionModal trigger={modal} onClose={()=>setModal(null)}/>}
+      </div>
+
+      <div className="divider"/>
+
+      {/* ══ SECCIÓN 9: TABLA RESUMEN ══ */}
+      <div className="section-block">
+        <div className="section-title">Resumen de componentes</div>
+        <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:12,
+          overflow:'hidden', boxShadow:C.shadow1 }}>
+          {[
+            ['Componente', 'Tipo', 'Descripción', 'Prioridad'],
+            ['NavbarComponent', 'Modificado', 'Variante visitante: "Iniciar sesión" + "Registrarse"', 'P0'],
+            ['BottomNavComponent', 'Modificado', 'Tab "Publicar" gateado, tab "Perfil" → "Entrar"', 'P0'],
+            ['FeedGlobalBanner', 'Nuevo', 'Banner dismissible en /explorar para visitantes', 'P0'],
+            ['ItemCardComponent', 'Modificado', 'Ocultar distancia, contador, menú para visitantes', 'P0'],
+            ['DonorRowComponent', 'Modificado', 'Variante anonimizada: placeholder + "Donante anónimo"', 'P0'],
+            ['ConversionGateModal', 'Nuevo', 'Modal de conversión con 3 variantes de trigger', 'P0'],
+            ['UserProfilePublic', 'Modificado', 'SEO meta + acceso sin auth', 'P1'],
+          ].map((row, i) => (
+            <div key={i} style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr 3fr 0.6fr',
+              borderBottom: i < 7 ? `1px solid ${C.border}` : 'none',
+              background: i === 0 ? C.bgPage : 'transparent', alignItems:'center' }}>
+              {row.map((cell, j) => (
+                <div key={j} style={{ padding:'10px 14px', fontFamily:FB,
+                  fontSize: i===0 ? 10 : 12,
+                  fontWeight: i===0 ? 600 : j===0 ? 500 : 400,
+                  color: i===0 ? C.fgMuted : j===3 ? C.error : C.fg,
+                  textTransform: i===0 ? 'uppercase' : 'none',
+                  letterSpacing: i===0 ? '0.06em' : 'normal',
+                  borderRight: j<3 ? `1px solid ${C.border}` : 'none' }}>
+                  {cell}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:24,
+        display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:12 }}>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+          DESIGN-BRIEF-EPK13-FE-01 · Regálalo · 2026-06-15
+        </div>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+          Fuente de verdad: <code>docs/project/colors_and_type.css</code> + prototipos existentes
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

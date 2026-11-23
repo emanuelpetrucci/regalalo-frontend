@@ -1,0 +1,73 @@
+next_id = 1
+[[entry]]
+id = "1"
+type = "story"
+title = "Pipeline De Compresion De Imagenes En Cliente"
+description = "Migrado: 2-1-pipeline-de-compresion-de-imagenes-en-cliente"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "2-1-pipeline-de-compresion-de-imagenes-en-cliente"
+
+[[entry]]
+id = "2"
+type = "story"
+title = "Publicar Objeto Con Formulario E Imagenes"
+description = "Migrado: 2-2-publicar-objeto-con-formulario-e-imagenes"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "2-2-publicar-objeto-con-formulario-e-imagenes"
+
+[[entry]]
+id = "3"
+type = "story"
+title = "Listar Objetos Disponibles Feed Geografico"
+description = "Migrado: 2-3-listar-objetos-disponibles-feed-geografico"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "2-3-listar-objetos-disponibles-feed-geografico"
+
+[[entry]]
+id = "4"
+type = "story"
+title = "Ver Detalle De Objeto"
+description = "Migrado: 2-4-ver-detalle-de-objeto"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "2-4-ver-detalle-de-objeto"
+
+[[entry]]
+id = "5"
+type = "story"
+title = "Cancelar Objeto Propio Sin Sesion Activa"
+description = "Migrado: 2-5-cancelar-objeto-propio-sin-sesion-activa"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "2-5-cancelar-objeto-propio-sin-sesion-activa"
+
+[[entry]]
+id = "6"
+type = "story"
+title = "Pausar Y Reanudar Solicitudes De Un Objeto"
+description = "Migrado: 2-6-pausar-y-reanudar-solicitudes-de-un-objeto"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "2-6-pausar-y-reanudar-solicitudes-de-un-objeto"
+

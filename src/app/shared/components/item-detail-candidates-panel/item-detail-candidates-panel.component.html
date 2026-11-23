@@ -1,0 +1,53 @@
+<div class="item-detail-candidates-panel rlg-card-in" *transloco="let t">
+  <div class="item-detail-candidates-panel__header">
+    <h2 class="item-detail-candidates-panel__title">
+      {{ t('items.detail.candidates_title') }}
+      <span class="item-detail-candidates-panel__count">({{ candidates().length }})</span>
+    </h2>
+    <span class="item-detail-candidates-panel__hint">
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+      </svg>
+      {{ t('items.detail.candidates_ranked_hint') }}
+    </span>
+  </div>
+
+  <div class="item-detail-candidates-panel__body">
+    @if (loading()) {
+      <p class="item-detail-candidates-panel__empty" role="status">
+        {{ t('items.my_objects.candidates_loading') }}
+      </p>
+    } @else if (errorKey(); as key) {
+      <div class="item-detail-candidates-panel__error" role="alert">
+        <p>{{ t(key) }}</p>
+        <app-btn variant="primary" (click)="retry.emit()">
+          {{ t('items.detail.errors.retry') }}
+        </app-btn>
+      </div>
+    } @else if (candidates().length === 0) {
+      <p class="item-detail-candidates-panel__empty">
+        {{ t('items.detail.candidates_empty') }}
+      </p>
+    } @else {
+      <div class="item-detail-candidates-panel__list" role="list" data-testid="candidates-list">
+        @for (candidate of candidates(); track candidate.requestId; let idx = $index; let last = $last) {
+          <app-candidate-row
+            [candidate]="candidate"
+            [rank]="idx + 1"
+            [last]="last"
+            [selectDisabled]="requestsPaused()"
+            (select)="select.emit($event)"
+          />
+        }
+      </div>
+    }
+  </div>
+</div>

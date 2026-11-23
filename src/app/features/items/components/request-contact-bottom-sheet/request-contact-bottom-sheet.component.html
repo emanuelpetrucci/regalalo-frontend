@@ -1,0 +1,96 @@
+@if (open()) {
+  <div
+    class="contact-sheet__backdrop rlg-fade-in"
+    role="presentation"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="contact-sheet__panel rlg-modal-in"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'contact-sheet-title'"
+      tabindex="-1"
+      (click)="onPanelClick($event)"
+      (keydown)="onPanelKeydown($event)"
+      *transloco="let t"
+    >
+      <div class="contact-sheet__grabber" aria-hidden="true"></div>
+
+      <h2 id="contact-sheet-title" class="contact-sheet__title">
+        {{ t('items.request.contact_sheet.title') }}
+      </h2>
+      <p class="contact-sheet__subtitle">
+        {{ t('items.request.contact_sheet.subtitle') }}
+      </p>
+
+      <div class="contact-sheet__field">
+        <label class="contact-sheet__label" for="contact-channel-input">
+          {{ t('items.request.contact_channel.label') }}
+        </label>
+        <input
+          id="contact-channel-input" data-testid="request-contact-channel"
+          class="contact-sheet__input"
+          type="text"
+          [value]="contactChannelValue()"
+          [attr.placeholder]="t('items.request.contact_channel.placeholder')"
+          [attr.aria-describedby]="fieldErrorKey() ? 'contact-channel-error' : 'contact-channel-hint'"
+          [attr.aria-invalid]="!!fieldErrorKey()"
+          [class.contact-sheet__input--error]="!!fieldErrorKey()"
+          [disabled]="submitting()"
+          autocomplete="off"
+          (input)="onInputChange($event)"
+        />
+        @if (fieldErrorKey(); as errKey) {
+          <span
+            id="contact-channel-error"
+            class="contact-sheet__field-error"
+            role="alert"
+          >
+            {{ t(errKey) }}
+          </span>
+        } @else {
+          <span id="contact-channel-hint" class="contact-sheet__field-hint">
+            {{ t('items.request.contact_channel.hint') }}
+          </span>
+        }
+      </div>
+
+      <div class="contact-sheet__footer">
+        <app-btn
+          variant="ghost"
+          [disabled]="submitting()"
+          (click)="onDismiss()"
+        >
+          {{ t('items.request.contact_sheet.cta_cancel') }}
+        </app-btn>
+        <app-btn
+          variant="primary"
+          [fullWidth]="true"
+          [disabled]="!isValid() || submitting()"
+          data-testid="request-submit-btn"
+          (click)="onSubmit()"
+        >
+          @if (submitting()) {
+            {{ t('items.request.confirming') }}
+          } @else {
+            <span class="contact-sheet__submit-inner">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M22 2L11 13" />
+                <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+              </svg>
+              {{ t('items.request.contact_sheet.cta_submit') }}
+            </span>
+          }
+        </app-btn>
+      </div>
+    </div>
+  </div>
+}

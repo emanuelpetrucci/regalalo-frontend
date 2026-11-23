@@ -1,0 +1,1743 @@
+{
+  "common": {
+    "language": {
+      "es": "Español",
+      "ca": "Català",
+      "en": "English"
+    },
+    "user_avatar": {
+      "default_label": "User avatar"
+    }
+  },
+  "landing": {
+    "nav": {
+      "aria_label": "Main navigation",
+      "login": "Sign in",
+      "register": "Create account",
+      "menu_open": "Open menu",
+      "menu_close": "Close menu"
+    },
+    "hero": {
+      "pill": "Community distribution · No money involved",
+      "headline_1": "What you no longer use,",
+      "headline_em": "someone needs it",
+      "lead": "A platform where objects find new hands. Access depends on your community behavior, not your wallet.",
+      "cta_primary": "Join the community",
+      "cta_secondary": "Browse items",
+      "note": "Free. You only need an email and a postal code.",
+      "mock": {
+        "card1_title": "Grey wool jacket",
+        "card1_meta": "Like new · Gràcia, BCN",
+        "card2_title": "IKEA Kallax shelf",
+        "card2_meta": "Good · Eixample, BCN · 2.3 km",
+        "card2_requests": "7 requests",
+        "card3_title": "Folding bike",
+        "card3_meta": "Fair · Poblenou",
+        "badge_active": "active",
+        "badge_reserved": "reserved",
+        "chip_name": "Carlos R.",
+        "chip_reputation": "+92 reputation",
+        "chip_distance": "3.8 km away"
+      }
+    },
+    "stats": {
+      "objects": "items published",
+      "cities": "active cities",
+      "radius": "distribution radius",
+      "cost_label": "always free"
+    },
+    "how": {
+      "label": "How it works",
+      "title": "Three steps. No hassle.",
+      "subtitle": "A simple cycle that keeps objects moving and the community in balance.",
+      "step1_num": "01",
+      "step1_title": "Post what you want to give away",
+      "step1_body": "Take a photo and describe the item you no longer need. It becomes available to people within 50 km. Up to 5 photos per item.",
+      "step2_num": "02",
+      "step2_title": "Request what you need",
+      "step2_body": "Browse items near you. You can request up to 3 per month. The donor picks the best candidate based on reputation and distance.",
+      "step3_num": "03",
+      "step3_title": "Hand off and confirm",
+      "step3_body": "The donor shares their contact channel. You meet in person and confirm the handoff. Each successful handoff improves your reputation."
+    },
+    "system": {
+      "label": "The community",
+      "title_1": "Not a marketplace.",
+      "title_2": "Shared balance.",
+      "subtitle": "Behavior shapes opportunities. Those who give receive more easily. Those who don't show up appear lower on the list.",
+      "value1_title": "Free. Always.",
+      "value1_body": "No item has a price. There are no financial transactions here. What you donate, you give away — no exceptions.",
+      "value2_title": "Your place on the list",
+      "value2_body": "Your delivery history sets your place on the candidate list. When you take part and show up, you move up. If you don't show up, you move down the list.",
+      "value3_title": "50 km radius",
+      "value3_body": "Objects circulate locally. Less footprint, more real community. You only see items that are close to you.",
+      "value4_title": "Privacy from the start",
+      "value4_body": "No internal chat. Contact details are only shared when the donor confirms the handoff. Automatically purged after 7 days."
+    },
+    "reputation": {
+      "label": "Reputation",
+      "title_1": "Your track record",
+      "title_em": "speaks for you",
+      "subtitle": "We order candidates in real time. Proximity, delivery history, and wait time determine who gets there first.",
+      "cta": "Create my profile",
+      "table_label": "Candidates — IKEA Kallax shelf",
+      "example_aria": "Example candidate list",
+      "list_note": "The list updates in real time · ±2 pts variation",
+      "example": {
+        "name1": "Carlos R.",
+        "meta1": "2.3 km · 4 handovers",
+        "name2": "Marta L.",
+        "meta2": "5.1 km · 1 handover",
+        "name3": "Jordi P.",
+        "meta3": "12.8 km · 0 handovers",
+        "rank1": "1st",
+        "rank2": "2nd",
+        "rank3": "3rd"
+      }
+    },
+    "cta_section": {
+      "label": "Start today",
+      "title": "Have something you no longer use?",
+      "subtitle": "Post it and find someone who needs it. Or sign up and explore items near you. No money. No middlemen.",
+      "publish": "Post an item",
+      "explore": "Explore items"
+    },
+    "footer": {
+      "tagline": "Community for redistributing objects. No money, no middlemen.",
+      "col_platform": "Platform",
+      "link_login": "Sign in",
+      "link_register": "Create account",
+      "link_reputation": "How reputation works",
+      "link_how": "How it works",
+      "col_legal": "Legal",
+      "link_legal_notice": "Legal notice",
+      "link_privacy": "Privacy",
+      "link_cookies": "Cookie policy",
+      "copy": "© 2026 Regálalo. All rights reserved.",
+      "made_in": "Made in Spain"
+    },
+    "meta": {
+      "title": "Regálalo — give objects a second life",
+      "description": "A community platform where objects find new hands. Access depends on your community behavior, not your wallet."
+    },
+    "seo": {
+      "faq": {
+        "section_label": "FAQ",
+        "section_title": "Frequently asked questions",
+        "q1": "What is Regálalo?",
+        "a1": "Regálalo is a community where you can give away objects you no longer use and receive what others offer, all without money. The more you participate and contribute, the easier it is to be chosen when you request something. It's not about what's in your wallet, but what you give back.",
+        "q2": "How does Regálalo work?",
+        "a2": "You post items you want to give away, request items near you (up to 3 per month), and the donor chooses who to give them to — usually prioritising whoever has contributed most to the community and lives closest. Handoffs happen in person.",
+        "q3": "Is Regálalo free?",
+        "a3": "Yes. There are no prices or financial transactions. You only need an email and postal code to join.",
+        "q4": "Which cities is Regálalo available in?",
+        "a4": "Regálalo is available throughout Spain. Items are distributed within a 50 km radius, so anyone with a Spanish postal code can participate.",
+        "q5": "How is Regálalo different from other second-hand platforms?",
+        "a5": "Regálalo has no money. You cannot sell or buy: only give and receive. Unlike other platforms where price is everything, here what determines who gets an item is how much you've contributed to the community, not what you're willing to pay.",
+        "q6": "How does reputation work in Regálalo?",
+        "a6": "Every time you hand something over or confirm a pick-up, the community gets to know you a little better. The more you give, the more visible you are and the easier it is for donors to choose you when you request something. If you commit to picking up an item and don't show up, points are deducted: −10 the first time, −20 the second, and −30 the third. Completing a handoff resets the counter. If you keep requesting without donating for months, your candidacy will appear lower — or stop showing to donors — until you complete a donation.",
+        "q7": "Is Regálalo safe? How is my privacy protected?",
+        "a7": "Yes. The donor's contact details are only shared once the handoff is confirmed, and are automatically deleted after 7 days. Before that point, no one sees the other person's personal information. There is no internal messaging: the agreement is finalised at the moment of the handoff.",
+        "q8": "How many items can I request per month?",
+        "a8": "You can request up to 3 items per month. There is no monthly limit for publishing items to give away."
+      }
+    }
+  },
+  "auth": {
+    "layout": {
+      "tagline": "\"I'm not selling it, I'm giving it away.\"",
+      "copy": "A community where objects find a new owner. No money. Just reputation.",
+      "footer": "Spain · MVP 2025",
+      "note": "Access to objects depends on your community reputation."
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Access your account to post and request objects.",
+      "field": {
+        "email": "Email",
+        "email_placeholder": "you@email.com",
+        "password": "Password",
+        "password_placeholder": "••••••••"
+      },
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "forgot_link": "Forgot your password?",
+      "footer": "Don't have an account?",
+      "register_link": "Create account",
+      "session_expired": "Your session has expired. Please sign in again.",
+      "email_verified_success": "Your email has been verified. You can sign in now.",
+      "recaptcha": "Protected by reCAPTCHA",
+      "recaptcha_privacy": "Privacy",
+      "recaptcha_terms": "Terms",
+      "validation": {
+        "email_required": "Enter your email address",
+        "email_format": "Invalid email format",
+        "password_required": "Enter your password"
+      },
+      "error": {
+        "401": "Incorrect email or password.",
+        "422": "We couldn't verify you're human. Please try again.",
+        "connection": "Connection error. Please try again.",
+        "generic": "We couldn't sign you in. Please try again later.",
+        "recaptcha_unavailable": "Security verification is unavailable. Please reload the page."
+      }
+    },
+    "common": {
+      "back_to_login": "Back to sign in"
+    },
+    "forgot": {
+      "title": "Recover access",
+      "subtitle": "Enter your email and we'll send you a link to recover access.",
+      "field": {
+        "email": "Email",
+        "email_placeholder": "you@email.com"
+      },
+      "submit": "Send link",
+      "submitting": "Sending…",
+      "sent": {
+        "title": "Check your inbox",
+        "lead": "If that email is registered, you'll receive the link shortly.",
+        "spam_hint": "Also check your spam folder."
+      },
+      "recaptcha": "Protected by reCAPTCHA",
+      "recaptcha_privacy": "Privacy",
+      "recaptcha_terms": "Terms",
+      "validation": {
+        "email_required": "Enter your email address",
+        "email_format": "Invalid email format"
+      },
+      "error": {
+        "validation": "Please check the email and try again.",
+        "connection": "Connection error. Please try again.",
+        "generic": "We couldn't send the link. Please try again later."
+      }
+    },
+    "reset": {
+      "title": "New password",
+      "subtitle": "Choose a secure password. It must be at least 8 characters.",
+      "field": {
+        "new_password": "New password",
+        "confirm_password": "Confirm password",
+        "password_placeholder": "••••••••"
+      },
+      "submit": "Save password",
+      "submitting": "Saving…",
+      "done": {
+        "title": "Password saved",
+        "subtitle": "Your password has been updated. You can now sign in with your new credentials.",
+        "login_cta": "Sign in"
+      },
+      "invalid": {
+        "title": "Invalid link",
+        "subtitle": "This link has expired or was already used. You can request a new one from sign in.",
+        "request_new": "Request new link"
+      },
+      "validation": {
+        "new_password_required": "Enter your new password",
+        "new_password_min": "Password must be at least 8 characters",
+        "new_password_whitespace": "Password cannot consist of spaces only",
+        "confirm_required": "Confirm your password",
+        "password_mismatch": "Passwords do not match"
+      },
+      "error": {
+        "connection": "Connection error. Please try again.",
+        "generic": "We couldn't save the password. Please try again later."
+      }
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Sign up to post and request objects in your area.",
+      "field": {
+        "first_name": "First name",
+        "first_name_placeholder": "Your first name",
+        "last_name": "Last name",
+        "last_name_placeholder": "Your last name",
+        "email": "Email",
+        "email_placeholder": "you@email.com",
+        "password": "Password",
+        "password_placeholder": "••••••••",
+        "postal_code": "Postal code",
+        "postal_placeholder": "28001",
+        "phone": "Phone (optional)",
+        "phone_placeholder": "+34 600 000 000"
+      },
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "recaptcha": "Protected by reCAPTCHA",
+      "recaptcha_privacy": "Privacy",
+      "recaptcha_terms": "Terms",
+      "footer": "Already have an account?",
+      "login_link": "Sign in",
+      "inline_login_link": "Sign in",
+      "validation": {
+        "first_name_required": "Enter your first name",
+        "first_name_min": "At least 2 characters",
+        "last_name_required": "Enter your last name",
+        "last_name_min": "At least 2 characters",
+        "email_required": "Enter your email address",
+        "email_format": "Invalid email format",
+        "password_required": "Enter your password",
+        "password_min": "At least 8 characters",
+        "postal_required": "Enter your postal code",
+        "postal_format": "Postal code must have 5 digits",
+        "postal_helper": "To show you objects within 50 km"
+      },
+      "error": {
+        "409": "We couldn't create an account with this email. Already have an account?",
+        "422": "We couldn't verify you're human. Please try again.",
+        "connection": "Connection error. Please try again.",
+        "postal_invalid": "Invalid or not found postal code",
+        "form_invalid": "Please check the form data.",
+        "generic": "We couldn't complete the registration. Please try again later.",
+        "field_invalid": "Invalid value",
+        "recaptcha_unavailable": "Security verification is unavailable. Please reload the page."
+      }
+    },
+    "verifyEmail": {
+      "loading_title": "Verifying your email…",
+      "loading_lead": "Please wait while we confirm your link.",
+      "error": {
+        "invalid_title": "Invalid link",
+        "connection_title": "Connection error",
+        "generic_title": "Verification failed",
+        "invalid": "This link is invalid or has expired.",
+        "connection": "Connection error. Please try again.",
+        "generic": "We couldn't verify your email. Please try again later."
+      },
+      "cta_resend": "Request a new link"
+    },
+    "verificationPending": {
+      "title": "Verify your email address",
+      "lead": "We sent you a verification link. Check your inbox (and spam folder).",
+      "resend_btn": "Resend verification email",
+      "resend_btn_cooldown": "Resend email ({{ seconds }}s)",
+      "already_verified_title": "Your email is already verified",
+      "already_verified_lead": "You can now sign in to your account.",
+      "already_verified_cta": "Go to sign in",
+      "error": {
+        "connection": "Connection error. Please try again.",
+        "generic": "We could not send the email. Please try again later."
+      }
+    }
+  },
+  "onboarding": {
+    "chrome": {
+      "progress_aria": "Onboarding progress",
+      "skip": "Skip",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "slide0": {
+      "kicker": "I don't sell it, I give it away",
+      "title_line1": "We're not a marketplace.",
+      "title_em": "We're something different.",
+      "body": "A community for redistributing items where things find a new home with no money, no auctions, no buyers. Just community and reputation."
+    },
+    "slide1": {
+      "kicker": "How you take part",
+      "title_line1": "Two ways to contribute.",
+      "title_em": "No fixed roles.",
+      "donate_title": "Give",
+      "donate_sub": "You have something you no longer use. You post it and choose who takes it.",
+      "donate_li1": "Post with title, description and photos",
+      "donate_li2": "We show candidates ordered by reputation",
+      "donate_li3": "You decide who gets it",
+      "receive_title": "Receive",
+      "receive_sub": "You see something you want. You apply and we weigh your candidacy.",
+      "receive_li1": "Apply for items within 50 km",
+      "receive_li2": "Your reputation and distance affect your place on the list",
+      "receive_li3": "The donor confirms the handover"
+    },
+    "slide2": {
+      "kicker": "Reputation",
+      "title_line1": "Your track record",
+      "title_em": "shapes your place on the list.",
+      "body": "Your place on the list reflects how you take part. The more you contribute to the community, the better your chances. No shortcuts.",
+      "delta_first_donation": "your first completed donation",
+      "delta_next_donation": "each following donation",
+      "delta_receive": "for receiving an item",
+      "delta_absent": "if you don't show up to collect (each time after that takes a bit more off, until you complete a handoff)",
+      "ring_caption": "points at the start",
+      "ring_note": "Points can go below zero, but you can always earn them back by donating or receiving successfully."
+    },
+    "slide3": {
+      "kicker": "Fair limits",
+      "title_prefix": "Up to",
+      "title_accent": "3 requests",
+      "title_suffix": "every 30 days.",
+      "body": "This keeps balance between givers and receivers. Requests are counted over the last 30 days.",
+      "check1": "Frequent givers appear higher on the list",
+      "check2": "If you only receive for a long time, donors will see you less when choosing",
+      "check3": "Balance is kept with limits, not harsh rules"
+    },
+    "slide4": {
+      "kicker": "Local radius",
+      "title_line1": "Items within",
+      "title_km": "50 km",
+      "body": "You'll only see items near your postcode. That keeps the community close to home.",
+      "cta": "Start exploring",
+      "note": "Your postcode was saved when you signed up."
+    }
+  },
+  "items": {
+    "publish": {
+      "step1_title": "What are you giving away?",
+      "step2_title": "Add photos",
+      "step3_title": "Review and publish",
+      "step_indicator": "Step {{current}} of {{total}}",
+      "field_title": "Title",
+      "field_description": "Description",
+      "field_postal_code": "Item postal code",
+      "field_condition": "Condition",
+      "field_category": "Category",
+      "field_weight_range": "Approximate weight",
+      "placeholder_category": "Select a category",
+      "placeholder_weight_range": "Select a range",
+      "placeholder_title": "E.g. Scott mountain bike",
+      "placeholder_description": "Describe condition, size, pickup details...",
+      "placeholder_postal": "28001",
+      "condition_new": "Brand new",
+      "condition_like_new": "Like new",
+      "condition_good": "Good",
+      "condition_fair": "Fair",
+      "photos_intro": "Add up to 5 photos. The first will be the main image. Images are compressed automatically.",
+      "review_notice": "Review the details before publishing. The item will appear on the board immediately.",
+      "review_photos_label": "Photos",
+      "photo_one": "photo",
+      "photo_many": "photos",
+      "success_hint": "After publishing you can pause requests or cancel the item from My items.",
+      "btn_continue": "Continue",
+      "btn_back": "Back",
+      "btn_publish": "Publish item",
+      "btn_publishing": "Publishing…",
+      "validation": {
+        "title_required": "Title is required",
+        "title_max": "Title cannot exceed 100 characters",
+        "description_required": "Description is required",
+        "description_max": "Description cannot exceed 1000 characters",
+        "postal_required": "Enter the item postal code",
+        "postal_format": "Postal code must be 5 digits",
+        "category_required": "Choose a category",
+        "weight_range_required": "Choose a weight range"
+      },
+      "errors": {
+        "photos_required": "Add at least one photo.",
+        "generic": "Could not publish. Check the details and try again.",
+        "connection": "Connection error. Please try again.",
+        "field_invalid": "Invalid value",
+        "field_title": "Check the title",
+        "field_description": "Check the description",
+        "field_condition": "Check the condition",
+        "field_category": "Check the category",
+        "field_weight_range": "Check the weight range",
+        "field_postal_code": "Invalid or not found postal code",
+        "field_images": "Check the images"
+      },
+      "success": {
+        "title": "Item published"
+      },
+      "share": {
+        "title": "Item published!",
+        "subtitle": "It is now visible on the board. Share it with your contacts?",
+        "message": "I just published something to give away on Regálalo: {{title}}",
+        "whatsapp": "Share on WhatsApp",
+        "facebook": "Share on Facebook",
+        "twitter": "Share on X",
+        "go_my_items": "Go to my items"
+      }
+    },
+    "category": {
+      "furniture": "Furniture",
+      "electronics": "Electronics",
+      "clothing": "Clothing and footwear",
+      "books": "Books and educational material",
+      "toys": "Toys",
+      "kitchen": "Kitchen and home",
+      "sports": "Sports and leisure",
+      "tools": "Tools",
+      "other": "Other"
+    },
+    "weight_range": {
+      "lt1": "Less than 1 kg",
+      "1to5": "Between 1 and 5 kg",
+      "5to20": "Between 5 and 20 kg",
+      "gt20": "More than 20 kg"
+    },
+    "explore": {
+      "title": "Board",
+      "subtitle": "{{count}} items near you · 50 km radius",
+      "subtitle_one": "1 item near you · 50 km radius",
+      "search_placeholder": "Search items…",
+      "search_clear": "Clear search",
+      "filters_label": "Filter by condition",
+      "category_filters_label": "Filter by category",
+      "filter_all": "All",
+      "filter_category_all": "All categories",
+      "empty_filter_body": "There are no available items matching that filter near you.",
+      "distance_km": "{{km}} km",
+      "degraded_badge": "been here a while",
+      "empty_title": "Nothing here yet",
+      "empty_body": "There are no available items near you right now.",
+      "empty_cta": "Publish an item",
+      "load_more": "Load more",
+      "loading": "Loading items…",
+      "image_alt": "Photo of {{title}}",
+      "errors": {
+        "load_failed": "Could not load items.",
+        "retry": "Retry"
+      },
+      "meta": {
+        "title": "Explore free objects · Regálalo",
+        "description": "Browse free objects near you. Filter by category and condition, find what you need and request it for free. Community donations in your area."
+      },
+      "seo": {
+        "breadcrumb_home": "Home",
+        "breadcrumb_page": "Explore"
+      }
+    },
+    "detail": {
+      "back": "Back to listing",
+      "close": "Close detail",
+      "section_description": "Description",
+      "section_donor_manage": "Item management",
+      "section_request": "Request item",
+      "share_object": "Share item",
+      "request_item": "Request item",
+      "edit_item": "Edit item",
+      "pause_subtitle": "Pauses new requests",
+      "stat_requests": "Requests",
+      "stat_published": "Posted",
+      "view_candidates": "View candidates ({{count}})",
+      "hide_candidates": "Hide candidates",
+      "candidates_title": "Candidates",
+      "candidates_ranked_hint": "Ordered by reputation",
+      "candidates_empty": "No requests yet.",
+      "receiver_paused_notice": "Requests are temporarily paused by the donor.",
+      "donor_anonymous": "Anonymous donor",
+      "status_active": "Available",
+      "status_reserved": "Reserved",
+      "status_completed": "Completed",
+      "status_cancelled": "Cancelled",
+      "status_degraded": "Listed a while",
+      "status_paused": "Paused",
+      "published_days_ago": "posted {{days}} days ago",
+      "days_ago": "{{days}} days ago",
+      "photo_of": "Photo {{current}} of {{total}}",
+      "gallery_prev": "Previous photo",
+      "gallery_next": "Next photo",
+      "gallery_thumbs": "Photo thumbnails",
+      "gallery_thumb": "Photo {{n}}",
+      "donor_label": "Donor",
+      "manage_in_my_items": "Manage candidates in My items",
+      "reputation_good": "Highly active",
+      "reputation_fair": "Regular participation",
+      "reputation_low": "Still building participation",
+      "degraded_notice": "This item has been listed for a while. The donor can still choose a recipient.",
+      "cta_interested": "I'm interested",
+      "cta_paused_title": "Requests paused",
+      "cta_paused_body": "The donor has temporarily paused new requests.",
+      "cta_unavailable": "Not available to request",
+      "donor_manage_hint": "Manage this item from My items.",
+      "not_found_title": "Item not found",
+      "not_found_body": "It may have been cancelled or is no longer available.",
+      "loading": "Loading item…",
+      "errors": {
+        "load_failed": "Could not load the item.",
+        "retry": "Retry"
+      },
+      "gone": {
+        "title": "This item is no longer available",
+        "body": "The item you're looking for has been permanently removed.",
+        "back_link": "Browse available items"
+      },
+      "meta": {
+        "title_suffix": "· Regálalo"
+      },
+      "seo": {
+        "breadcrumb_home": "Home",
+        "breadcrumb_explore": "Explore"
+      }
+    },
+    "share": {
+      "title": "Share",
+      "open": "Share",
+      "close": "Close",
+      "copy": "Copy",
+      "copied": "Copied",
+      "network_whatsapp": "WhatsApp",
+      "network_facebook": "Facebook",
+      "network_twitter": "X / Twitter",
+      "default_text": "Discover Regálalo: give away and receive free items in your community.",
+      "item_text": "This is being given away on Regálalo: {{title}}. Need it?"
+    },
+    "request": {
+      "contact_sheet": {
+        "title": "How can the donor contact you?",
+        "subtitle": "If selected, the donor will use this to coordinate with you.",
+        "cta_submit": "Send request",
+        "cta_cancel": "Cancel"
+      },
+      "contact_step": {
+        "title": "Leave your contact details",
+        "lead_before": "The donor will ",
+        "lead_emphasis": "only see this if they choose you",
+        "lead_after": ". It is not shown to anyone else or on the board.",
+        "back": "Back",
+        "submit": "Send request"
+      },
+      "contact_channel": {
+        "label": "Your contact channel",
+        "placeholder": "E.g. WhatsApp +34 600 000 000, Telegram @username...",
+        "hint": "You can write anything you prefer: number, username, app, etc.",
+        "error": {
+          "required": "Please enter your contact channel to continue"
+        }
+      },
+      "slots_remaining_lead": "You have ",
+      "slots_remaining_tail": " left this month",
+      "slot_label_one": "turn",
+      "slot_label_other": "turns",
+      "slots_confirm_use": "You will use ",
+      "slots_confirm_of_one": " of your ",
+      "slots_confirm_of_other": " of your ",
+      "slots_confirm_slot_one": "remaining turn this month.",
+      "slots_confirm_slot_other": "remaining turns this month.",
+      "dialog_title": "Confirm interest",
+      "dialog_body": "If the donor chooses you, you will see their contact channel here. We weigh your reputation, proximity, and how long ago you requested.",
+      "confirm": "Confirm interest",
+      "confirming": "Sending…",
+      "dismiss": "Cancel",
+      "pending_title": "Request sent",
+      "pending_body": "You are in the ranking. If the donor chooses you, we will share your contact channel with them.",
+      "pending_contact_label": "Your contact channel",
+      "pending_contact_edit": "Edit",
+      "pending_step_sent": "Request sent",
+      "pending_step_waiting": "Awaiting decision",
+      "pending_step_contact": "Contact received",
+      "limit_title": "You have used all your slots",
+      "errors": {
+        "own_item": "You cannot request your own item",
+        "duplicate": "You already have an active request for this item",
+        "limit_reached": "You have reached the limit of 3 active requests. Wait until one is resolved.",
+        "paused": "The donor has temporarily paused requests for this item",
+        "generic": "Could not send the request. Please try again.",
+        "connection": "Connection error. Check your network."
+      }
+    },
+    "cancel": {
+      "dialog_title": "Cancel item",
+      "dialog_body": "The item will no longer appear on the board. This has no impact on your reputation.",
+      "dialog_title_with_session": "Cancel item and delivery",
+      "dialog_body_with_session": "The delivery in progress will be cancelled and the item will no longer appear on the board. The recipient will be notified. This cannot be undone.",
+      "confirm": "Cancel item",
+      "confirming": "Cancelling…",
+      "dismiss": "Go back",
+      "trigger": "Cancel item",
+      "success": "Item cancelled successfully",
+      "errors": {
+        "forbidden": "You cannot cancel this item",
+        "not_found": "This item is no longer available",
+        "generic": "Could not cancel the item. Please try again.",
+        "connection": "Connection error. Check your network."
+      }
+    },
+    "image_picker": {
+      "add": "Add",
+      "main": "Main",
+      "photo_n": "Photo {{n}}",
+      "remove": "Remove photo",
+      "processing": "Processing…",
+      "format_invalid": "Unsupported format. Use JPG, PNG or WebP.",
+      "too_large": "Image exceeds 2 MB limit after compression.",
+      "max_reached": "Maximum 5 photos per item.",
+      "hint": "Formats: JPG, PNG, WEBP · Max. 2 MB per image · Auto-compressed"
+    },
+    "my_objects": {
+      "subtitle": "Manage everything you have posted to give away.",
+      "publish_cta": "Post item",
+      "loading": "Loading your items…",
+      "tabs_label": "Filter by status",
+      "tabs": {
+        "all": "All",
+        "active": "Active",
+        "reserved": "Reserved",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "status_active": "Active",
+      "status_reserved": "Reserved",
+      "status_completed": "Completed",
+      "status_cancelled": "Cancelled",
+      "status_degraded": "Listed a while",
+      "status_paused": "Paused",
+      "photo_count": "{{count}} photos",
+      "photo_count_one": "1 photo",
+      "empty_title": "Nothing here yet",
+      "empty_body": "When you post an item to give away, it will appear here.",
+      "empty_cta": "Post item",
+      "list_count": "{{count}} items",
+      "list_count_one": "1 item",
+      "select_hint": "Select an item to view candidates and manage delivery",
+      "close_detail": "Close detail",
+      "days_today": "today",
+      "days_yesterday": "yesterday",
+      "days_ago": "{{days}}d ago",
+      "no_requests_yet": "No requests yet",
+      "requests_count_one": "1 request",
+      "requests_count": "{{count}} requests",
+      "session_expires": "Expires {{date}}",
+      "candidates_title": "Candidates",
+      "candidates_loading": "Loading candidates…",
+      "candidates_empty": "No requests yet. The item is visible on the board.",
+      "best_candidate": "Top candidate",
+      "select": "Select",
+      "select_candidate": "Select candidate ranked {{rank}}",
+      "select_disabled_paused": "Selection unavailable: requests paused",
+      "close_modal": "Close",
+      "select_modal_title": "Select receiver",
+      "select_modal_lead": "The receiver will see your contact channel once selected. The 7-day window starts now.",
+      "select_channel_label": "Contact channel",
+      "select_channel_type_whatsapp": "WhatsApp",
+      "select_channel_type_phone": "Phone",
+      "select_channel_type_telegram": "Telegram",
+      "select_channel_type_email": "Email",
+      "select_channel_placeholder_whatsapp": "+34 612 345 678",
+      "select_channel_placeholder_phone": "+34 900 000 000",
+      "select_channel_placeholder_telegram": "your_username",
+      "select_channel_placeholder_email": "you@email.com",
+      "select_channel_required": "Enter a contact channel.",
+      "select_legal_warning": "If you cancel the session before the deadline, the contact channel will not remain visible to the receiver.",
+      "select_confirm": "Confirm selection",
+      "select_confirming": "Confirming…",
+      "select_cancel": "Cancel",
+      "select_score_points": "points",
+      "select_success": "Receiver selected. Session {{sessionId}} · deadline {{date}}.",
+      "select_success_link": "View delivery session",
+      "select_errors": {
+        "validation": "Check the contact channel and try again.",
+        "forbidden": "You do not have permission to select this candidate.",
+        "not_found": "The item or request is no longer available.",
+        "conflict_pending": "This request is no longer pending.",
+        "conflict_active": "The item is no longer active.",
+        "conflict_generic": "Selection could not be completed due to a conflict.",
+        "generic": "Could not select the receiver. Please try again."
+      },
+      "reserved_session_title": "Active delivery session",
+      "reserved_session_body": "7-day window · expires {{date}}",
+      "reserved_session_body_lead": "7-day window · expires ",
+      "reserved_receiver_label": "Selected recipient",
+      "reserved_contact_label": "Contact channel shared with the recipient",
+      "confirm_delivery": {
+        "action": "Confirm delivery completed",
+        "title": "Confirm delivery?",
+        "body_lead": "Once confirmed, the session will close and both reputations will update. You will receive ",
+        "body_points": "+10 points",
+        "body_points_first": "+15 points",
+        "body_tail": ".",
+        "dismiss": "Cancel",
+        "confirm": "Confirm delivery",
+        "confirming": "Confirming…"
+      },
+      "cancel_session": {
+        "action": "Cancel session",
+        "title": "Cancel delivery session",
+        "body": "The item will return to active status and be available on the board for new requests.",
+        "no_show_title": "The recipient did not show up",
+        "no_show_body": "Let us know they did not come to collect. It may affect their place on future lists.",
+        "no_show_confirm": "Confirm absence and cancel",
+        "dismiss": "Go back",
+        "confirm": "Cancel session",
+        "confirming": "Cancelling…"
+      },
+      "delivery_errors": {
+        "generic": "Could not complete the action. Please try again."
+      },
+      "closed_completed_title": "Delivery completed",
+      "closed_completed_body": "Thanks for contributing to the community! Your reputation has increased.",
+      "closed_cancelled_title": "Item cancelled",
+      "closed_cancelled_body": "This item was cancelled and is no longer visible on the board.",
+      "errors": {
+        "load_failed": "Could not load your items.",
+        "candidates_load_failed": "Could not load requests. Please try again.",
+        "candidates_forbidden": "You do not have permission to view requests for this item.",
+        "select_refresh_failed": "Recipient selected, but the view could not be refreshed. Reload the page or try again."
+      }
+    },
+    "pause": {
+      "title": "Pause requests",
+      "subtitle_active": "Accepting new requests",
+      "subtitle_paused": "Not accepting new requests",
+      "banner_paused": "Requests are paused. Re-enable them so new recipients can show interest.",
+      "list_suffix": "· paused",
+      "not_available": "Pause management is not available in this state.",
+      "errors": {
+        "forbidden": "You cannot change the pause status of this item",
+        "not_found": "This item is no longer available",
+        "not_active": "You can only pause active items",
+        "generic": "Could not update pause status. Please try again.",
+        "connection": "Connection error. Check your network."
+      }
+    }
+  },
+  "delivery": {
+    "list": {
+      "title": "Deliveries",
+      "subtitle": "Track your active and past delivery sessions.",
+      "tabs_label": "Delivery role",
+      "tab_donor": "As donor",
+      "tab_receiver": "As recipient",
+      "loading": "Loading sessions…",
+      "section_active": "Active",
+      "section_history": "History",
+      "empty_title": "No deliveries here",
+      "empty_body": "When a delivery session becomes active, it will appear here with all the details.",
+      "select_hint": "Select a session to view details",
+      "close_detail": "Close session details",
+      "count_one": "1 session",
+      "count": "{{count}} sessions",
+      "deadline_last_day": "Last day",
+      "deadline_days": "{{days}}d",
+      "row_as_donor": "{{title}}, donor session",
+      "row_as_receiver": "{{title}}, recipient session",
+      "errors": {
+        "load_failed": "Could not load your delivery sessions."
+      }
+    },
+    "detail": {
+      "back": "Back to deliveries",
+      "loading": "Loading session…",
+      "role_donor": "As donor",
+      "role_receiver": "As recipient",
+      "status_active": "Active",
+      "status_completed": "Completed",
+      "status_cancelled": "Cancelled",
+      "status_expired": "Expired",
+      "deadline_last_day": "Last day",
+      "deadline_one_day": "1 day left",
+      "deadline_days": "{{days}} days left",
+      "deadline_unknown": "Delivery deadline",
+      "deadline_expires": "· expires {{date}}",
+      "other_receiver": "Selected recipient",
+      "other_donor": "Donor",
+      "distance_away": "{{km}} km away",
+      "channel_receiver_label": "Donor contact channel",
+      "channel_shared_label": "Channel shared with recipient",
+      "channel_shared_hint": "Only visible while the session is active.",
+      "receiver_contact_channel_label": "How to contact the recipient",
+      "channel_unavailable": "Channel not available",
+      "expired_title": "Session expired",
+      "expired_body": "The deadline passed without confirmation. The item is back on the board.",
+      "completed_donor": "Delivery completed · +10 reputation points",
+      "completed_donor_lead": "Delivery completed · ",
+      "completed_donor_points": "+10 points",
+      "completed_donor_tail": " reputation",
+      "completed_receiver": "Delivery completed successfully!",
+      "cancelled_no_show_title": "Absence recorded",
+      "cancelled_no_show_body": "If they didn't show up, they may appear lower on future lists.",
+      "receiver_deadline_hint": "The deadline is strict. If it expires without donor confirmation, the session will end automatically without affecting your reputation.",
+      "steps_title": "Session status",
+      "step_donor_selected": "Receiver selected",
+      "step_donor_active": "Active session — awaiting delivery",
+      "step_donor_completed": "Delivery confirmed",
+      "step_receiver_selected": "Selected by donor",
+      "step_receiver_contact": "Contact received — coordinate delivery",
+      "step_receiver_completed": "Delivery completed",
+      "actions": {
+        "confirm": "Confirm delivery completed",
+        "cancel": "Cancel session"
+      },
+      "errors": {
+        "title": "Could not load session",
+        "back": "Go back",
+        "forbidden": "You do not have access to this delivery session.",
+        "not_found": "This session does not exist or is no longer available.",
+        "load_failed": "Could not load the session. Please try again.",
+        "confirm_conflict": "This session is no longer active or delivery was already confirmed.",
+        "cancel_conflict": "This session is no longer active or was already cancelled.",
+        "cancel_invalid": "The cancellation data is not valid.",
+        "action_failed": "Could not complete the action. Please try again."
+      }
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "We use cookies",
+      "description": "We use necessary local storage for the platform to work. If you accept, Google Analytics may use third-party cookies. Sign-up and login may use Google reCAPTCHA."
+    },
+    "actions": {
+      "accept_all": "Accept all",
+      "reject_non_essential": "Reject non-essential",
+      "configure": "Configure",
+      "save_preferences": "Save preferences",
+      "reopen_preferences": "Cookie settings"
+    },
+    "preferences": {
+      "title": "Cookie preferences",
+      "close": "Close cookie preferences panel",
+      "sections": {
+        "necessary": {
+          "title": "Necessary cookies",
+          "description": "Essential local storage (session, language, consent choice). Google reCAPTCHA on access forms."
+        },
+        "analytics": {
+          "title": "Analytics cookies",
+          "description": "Google Analytics 4 (Google). Third-party cookies for aggregate use. Loads only if you accept this category."
+        },
+        "marketing": {
+          "title": "Marketing cookies",
+          "description": "In the current version we do not install marketing cookies or ad pixels."
+        },
+        "preferences": {
+          "title": "Preference cookies",
+          "description": "In the current version there are no additional optional cookies or storage under this category."
+        }
+      }
+    }
+  },
+  "legal": {
+    "common": {
+      "eyebrow": "Legal documents",
+      "contents": "Contents",
+      "meta": {
+        "updated_label": "Last updated:",
+        "updated_date": "28 May 2026",
+        "effective_label": "Effective from",
+        "effective_date": "28 May 2026"
+      },
+      "footer": {
+        "description": "Redistribute what you no longer need. Donation of objects between people, with no money or barter. Spain.",
+        "contact_label": "Contact",
+        "copy": "© 2026 Regálalo · All rights reserved",
+        "motto": "Everything that is given, comes back."
+      },
+      "policy_version": "2026-05-28",
+      "policy_version_label": "Cookie policy version:"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "info": {
+        "part1": "This policy explains what personal data ",
+        "brand": "Regálalo",
+        "part2": " collects, for what purpose, how long we keep it, and what rights you have. We comply with the ",
+        "rgpd": "General Data Protection Regulation (GDPR)",
+        "part3": " and applicable Spanish data protection law (LOPDGDD)."
+      },
+      "toc": {
+        "controller": "Data controller",
+        "data": "Data we collect",
+        "purpose": "Purpose and legal basis",
+        "retention": "Data retention",
+        "recipients": "Recipients and transfers",
+        "rights": "Your rights",
+        "minors": "Minors",
+        "changes": "Changes to this policy",
+        "contact": "Contact"
+      },
+      "sections": {
+        "controller": {
+          "title": "Data controller",
+          "rows": {
+            "company_label": "Legal name",
+            "company_value": "Regálalo S.L. (en constitución)",
+            "address_label": "Address",
+            "address_value": "Spain (MVP — Spanish market)",
+            "email_label": "Contact email",
+            "email_value": "privacidad@regalalo.org"
+          }
+        },
+        "data": {
+          "title": "Data we collect",
+          "intro": "We collect only the data needed for the platform to work. Below are the categories of data and their source.",
+          "table": {
+            "headers": {
+              "0": "Category",
+              "1": "Specific data",
+              "2": "Source"
+            },
+            "rows": {
+              "0": {
+                "0": "Identification",
+                "1": "Email address",
+                "2": "Provided by the user at registration"
+              },
+              "1": {
+                "0": "Location",
+                "1": "Postal code",
+                "2": "Provided by the user in their profile"
+              },
+              "2": {
+                "0": "Activity",
+                "1": "Published items, requests sent, delivery sessions, reputation history",
+                "2": "Generated through use of the platform"
+              },
+              "3": {
+                "0": "Images",
+                "1": "Photos of published items (max. 5 per item)",
+                "2": "Uploaded by the user when publishing"
+              },
+              "4": {
+                "0": "Contact channel",
+                "1": "Phone number or external email to coordinate delivery",
+                "2": "Provided by the donor when selecting a recipient"
+              },
+              "5": {
+                "0": "Technical",
+                "1": "IP address, browser type, access timestamps",
+                "2": "Collected automatically on each server request"
+              }
+            }
+          },
+          "not_collected_title": "Data we do not collect",
+          "not_collected_body": "We do not ask for full name, national ID, phone number at registration, or any special category data under GDPR Article 9 (health, ethnic origin, religion, political opinions, etc.)."
+        },
+        "purpose": {
+          "title": "Purpose and legal basis",
+          "table": {
+            "headers": {
+              "0": "Purpose",
+              "1": "Legal basis (GDPR Art. 6)"
+            },
+            "rows": {
+              "0": {
+                "0": "Manage your account and authentication",
+                "1": "Contract performance (Art. 6.1.b)"
+              },
+              "1": {
+                "0": "Show items within a 50 km geographic radius",
+                "1": "Contract performance (Art. 6.1.b)"
+              },
+              "2": {
+                "0": "Calculate reputation and placement on the candidate list",
+                "1": "Contract performance (Art. 6.1.b)"
+              },
+              "3": {
+                "0": "Send email notifications related to your items or requests",
+                "1": "Contract performance (Art. 6.1.b)"
+              },
+              "4": {
+                "0": "Detect when someone mostly receives without contributing, to adjust their visibility on the list",
+                "1": "Legitimate interest (Art. 6.1.f) — community balance"
+              },
+              "5": {
+                "0": "Fraud prevention and technical security",
+                "1": "Legitimate interest (Art. 6.1.f)"
+              }
+            }
+          },
+          "footer": "We do not use your data for advertising, commercial profiling, or share it with third parties for marketing purposes."
+        },
+        "retention": {
+          "title": "Data retention",
+          "intro": "We keep your data for the minimum time needed to fulfil the purpose for which it was collected.",
+          "table": {
+            "headers": {
+              "0": "Data",
+              "1": "Retention period"
+            },
+            "rows": {
+              "0": {
+                "0": "Account and profile data",
+                "1": "While the account is active. After deletion request: 30 days to reactivate, then permanent deletion"
+              },
+              "1": {
+                "0": "Images of completed or cancelled items",
+                "1": "30 days from status change, then automatically deleted"
+              },
+              "2": {
+                "0": "Delivery session contact channel",
+                "1": "Purged (overwritten with NULL) 7 days after the session reaches completed, cancelled, or expired status"
+              },
+              "3": {
+                "0": "Technical logs (IP, timestamps)",
+                "1": "90 days"
+              },
+              "4": {
+                "0": "Reputation history",
+                "1": "Linked to the active account; deleted with the account"
+              }
+            }
+          }
+        },
+        "recipients": {
+          "title": "Recipients and transfers",
+          "intro": "We do not sell your data or share it with third parties for commercial purposes. We may share it only with service providers acting as processors under GDPR-required agreements.",
+          "table": {
+            "headers": {
+              "0": "Provider",
+              "1": "Service",
+              "2": "Location"
+            },
+            "rows": {
+              "0": {
+                "0": "Cloud infrastructure provider",
+                "1": "Application and database hosting",
+                "2": "European Union"
+              },
+              "1": {
+                "0": "Transactional email provider",
+                "1": "Platform notifications",
+                "2": "European Union or equivalent safeguards"
+              }
+            }
+          },
+          "footer": "We do not transfer data internationally outside the European Economic Area without appropriate GDPR safeguards (Arts. 44–49)."
+        },
+        "rights": {
+          "title": "Your rights",
+          "intro_before": "As the data subject, you may exercise the following rights at any time by writing to ",
+          "intro_email": "privacidad@regalalo.org",
+          "intro_after": ". We will respond within one month.",
+          "cards": {
+            "0": {
+              "tag": "Art. 15",
+              "label": "Access",
+              "desc": "Know what data we process about you and obtain a copy."
+            },
+            "1": {
+              "tag": "Art. 16",
+              "label": "Rectification",
+              "desc": "Correct inaccurate or incomplete data."
+            },
+            "2": {
+              "tag": "Art. 17",
+              "label": "Erasure",
+              "desc": "Request deletion of your data (\"right to be forgotten\")."
+            },
+            "3": {
+              "tag": "Art. 18",
+              "label": "Restriction",
+              "desc": "Ask us to suspend processing while we review a claim."
+            },
+            "4": {
+              "tag": "Art. 20",
+              "label": "Portability",
+              "desc": "Receive your data in a structured, machine-readable format."
+            },
+            "5": {
+              "tag": "Art. 21",
+              "label": "Objection",
+              "desc": "Object to processing based on legitimate interest."
+            }
+          },
+          "aepd_before": "If you believe your data is processed incorrectly, you may file a complaint with the ",
+          "aepd_link": "Spanish Data Protection Agency (AEPD)",
+          "aepd_after": " at www.aepd.es."
+        },
+        "minors": {
+          "title": "Minors",
+          "paragraphs": {
+            "0": "The platform is intended for people aged 18 and over. We do not knowingly collect data from minors. If we detect a user under 18, we will delete their account and associated data.",
+            "1": "If you are a parent or guardian and believe a minor created an account, write to privacidad@regalalo.org."
+          }
+        },
+        "changes": {
+          "title": "Changes to this policy",
+          "paragraphs": {
+            "0": "We may update this policy when required by regulatory or product changes. For material changes, we will notify you by email at least 15 days in advance. The \"last updated\" date in the header always reflects the current version.",
+            "1": "Continued use of the platform after changes take effect implies acceptance."
+          }
+        },
+        "contact": {
+          "title": "Contact",
+          "intro": "For any questions about this policy or to exercise your rights, contact us:",
+          "rows": {
+            "email_label": "Privacy email",
+            "email_value": "privacidad@regalalo.org",
+            "response_label": "Response time",
+            "response_value": "Maximum 30 days from receipt of your request"
+          }
+        }
+      }
+    },
+    "cookies": {
+      "title": "Cookie policy",
+      "info": {
+        "part1": "This policy explains what cookies and similar technologies ",
+        "brand": "Regálalo",
+        "part2": " uses, what they are for, and how you can manage them. We comply with the ",
+        "lssi": "Spanish Information Society Services Act (LSSI)",
+        "part3": " and the GDPR. In the current version we do not set first-party HTTP cookies; we use browser local storage and, where applicable, third-party provider cookies."
+      },
+      "toc": {
+        "what": "What cookies are",
+        "types": "Types of cookies we use",
+        "table": "Cookie table",
+        "consent": "Consent and banner",
+        "manage": "Manage your preferences",
+        "third_party": "Third-party cookies",
+        "changes": "Changes to this policy",
+        "contact": "Contact"
+      },
+      "sections": {
+        "what": {
+          "title": "What cookies are",
+          "paragraphs": {
+            "p0": "Cookies are small files a site may store in your browser. On Regálalo, session and essential settings are stored mainly in localStorage, not via our own named cookies.",
+            "p1_before": "In addition to cookies, we use ",
+            "p1_strong": "local storage (localStorage)",
+            "p1_after": " in the browser. Only integrated third-party services (e.g. Google Analytics or reCAPTCHA) may set cookies on your device when applicable."
+          }
+        },
+        "types": {
+          "title": "Types of cookies we use",
+          "footer": "We do not use our own advertising cookies or cross-site tracking pixels. Optional analytics is provided by Google.",
+          "cards": {
+            "necessary": {
+              "name": "Technical (strictly necessary)",
+              "pill": "Always active",
+              "desc": "Essential local storage (session token, language, cookie consent choice). Google reCAPTCHA loads on sign-up and login (fraud prevention)."
+            },
+            "analytics": {
+              "name": "Analytics",
+              "pill": "Optional",
+              "desc": "Google Analytics 4 (Google). May set third-party cookies (_ga, _gid, etc.) for aggregate usage measurement. The script loads only if you accept this category in the banner."
+            },
+            "marketing": {
+              "name": "Marketing",
+              "pill": "Optional",
+              "desc": "Category available in the preferences panel for future features. In the current version we do not install marketing cookies or ad pixels."
+            },
+            "preferences": {
+              "name": "Preferences",
+              "pill": "Optional",
+              "desc": "Reserved category in the consent panel. In the current version we do not enable additional optional cookies or storage beyond Google analytics."
+            }
+          }
+        },
+        "table": {
+          "title": "Storage technologies and third-party cookies",
+          "intro": "Real elements in the current version. localStorage keys are not HTTP cookies; Google rows apply only when the corresponding service is active.",
+          "headers": {
+            "0": "Name",
+            "1": "Type",
+            "2": "Purpose",
+            "3": "Duration"
+          },
+          "rows": {
+            "0": {
+              "0": "rgl_auth_token",
+              "1": "localStorage (first-party)",
+              "2": "Keeps you signed in (JWT in the browser)",
+              "3": "Until sign-out or token expiry"
+            },
+            "1": {
+              "0": "rgl_cookie_consent_snapshot",
+              "1": "localStorage (first-party)",
+              "2": "Stores your consent choice and avoids showing the banner every visit",
+              "3": "Until you clear site data"
+            },
+            "2": {
+              "0": "rgl_locale",
+              "1": "localStorage (first-party)",
+              "2": "Remembers interface language",
+              "3": "Until you clear site data"
+            },
+            "3": {
+              "0": "_ga / _gid (Google Analytics)",
+              "1": "Third-party cookie",
+              "2": "Aggregate site usage measurement",
+              "3": "Only if you accept analytics; per Google policy"
+            },
+            "4": {
+              "0": "reCAPTCHA (Google)",
+              "1": "Third-party cookie/script",
+              "2": "Fraud prevention on sign-up and login",
+              "3": "Per Google policy when you use those forms"
+            }
+          },
+          "footer": "This table is updated whenever we change the cookies used. The date in the header of this page always reflects the latest version."
+        },
+        "consent": {
+          "title": "Consent and banner",
+          "intro": "On first visit you will see a banner to manage optional analytics (Google Analytics). Essential local storage and reCAPTCHA on access do not depend on that banner.",
+          "preview_label": "Preview",
+          "preview_suffix": "— This is how the banner looks on the platform",
+          "banner_lead": "Privacy and measurement.",
+          "banner_body": " We use necessary local storage for the platform to work. If you accept, we load Google Analytics (third-party cookies). Sign-up and login may use Google reCAPTCHA.",
+          "banner_accept": "Accept all",
+          "banner_basic": "Necessary only",
+          "banner_config": "Configure",
+          "footer_before": "If you click ",
+          "footer_strong": "Configure",
+          "footer_mid": ", you can enable or disable analytics before confirming. Your choice is stored in ",
+          "footer_cookie": "rgl_cookie_consent_snapshot",
+          "footer_after": " (localStorage)."
+        },
+        "manage": {
+          "title": "Manage your preferences",
+          "intro_before": "You can review and change your preferences at any time from the ",
+          "intro_strong": "Privacy",
+          "intro_after": " section in your profile or from the legal footer. Optional categories (analytics, marketing, and preferences) are disabled by default.",
+          "toggles": {
+            "necessary": {
+              "name": "Technical cookies",
+              "desc": "Required for the platform to work. They cannot be disabled.",
+              "aria": "Always active"
+            },
+            "analytics": {
+              "name": "Analytics cookies",
+              "desc": "Anonymous, aggregate measurement of platform usage.",
+              "aria": "Disabled by default"
+            },
+            "marketing": {
+              "name": "Marketing cookies",
+              "desc": "Campaign measurement and promotional content when applicable. In the MVP no marketing cookies are active.",
+              "aria": "Disabled by default"
+            },
+            "preferences": {
+              "name": "Preference cookies",
+              "desc": "Remember your search and display settings between sessions.",
+              "aria": "Disabled by default"
+            }
+          },
+          "browser_title": "From your browser",
+          "browser_intro": "You can also delete or block cookies directly from your browser settings. Note that blocking all cookies may prevent the session from working correctly.",
+          "browser_table": {
+            "headers": {
+              "0": "Browser",
+              "1": "Where to find cookie settings"
+            },
+            "rows": {
+              "0": {
+                "0": "Chrome",
+                "1": "Settings → Privacy and security → Cookies and other site data"
+              },
+              "1": {
+                "0": "Firefox",
+                "1": "Preferences → Privacy & Security → Cookies and Site Data"
+              },
+              "2": {
+                "0": "Safari",
+                "1": "Preferences → Privacy → Manage Website Data"
+              },
+              "3": {
+                "0": "Edge",
+                "1": "Settings → Privacy, search, and services → Cookies and site permissions"
+              }
+            }
+          }
+        },
+        "third_party": {
+          "title": "Third-party cookies",
+          "paragraphs": {
+            "p0_before": "In the current version of the platform ",
+            "p0_strong": "Google Analytics (optional, with your consent) and Google reCAPTCHA v3",
+            "p0_after": " on sign-up and login forms. We do not use Meta Pixel or other ad networks.",
+            "p1": "Fonts are loaded from Google Fonts; they typically do not set tracking cookies. If we add other providers with their own cookies, we will update this policy."
+          }
+        },
+        "changes": {
+          "title": "Changes to this policy",
+          "paragraphs": {
+            "0": "If we change third-party integrations or local storage use, we will update this page. If it affects options you already accepted, we will show the consent banner again."
+          }
+        },
+        "contact": {
+          "title": "Contact",
+          "intro": "If you have questions about cookie use on this platform, write to us:",
+          "rows": {
+            "email_label": "Privacy email",
+            "email_value": "privacidad@regalalo.org",
+            "related_label": "Related policy",
+            "related_link": "View privacy policy →"
+          }
+        }
+      }
+    }
+  },
+  "site_footer": {
+    "description": "Redistribute what you no longer need. Donation of objects between people, with no money or barter. Spain.",
+    "share_label": "Share the app",
+    "share_whatsapp": "Share on WhatsApp",
+    "share_facebook": "Share on Facebook",
+    "share_twitter": "Share on X / Twitter",
+    "platform": {
+      "explore": "Explore objects",
+      "my_items": "My items",
+      "deliveries": "Deliveries",
+      "reputation": "How your reputation works",
+      "profile": "My profile"
+    },
+    "contact_label": "Contact",
+    "copy": "© 2026 Regálalo · All rights reserved",
+    "motto": "Everything that is given, comes back."
+  },
+  "nav": {
+    "explore": "Explore",
+    "my_items": "My items",
+    "deliveries": "Deliveries",
+    "profile": "Profile",
+    "publish": "Post",
+    "publish_object": "Post item",
+    "menu": "Menu",
+    "logout": "Sign out",
+    "login": "Sign in",
+    "register": "Sign up",
+    "publish_gated_aria": "Post — registration required"
+  },
+  "language_selector": {
+    "aria_label": "Select language"
+  },
+  "reputation_guide": {
+    "header": {
+      "eyebrow": "How it works",
+      "title": "Your reputation",
+      "lede_before": "Your reputation reflects what you contribute to the community. ",
+      "lede_strong": "The more you give, the easier it is to receive.",
+      "lede_after": " Here we explain step by step what adds points, what takes points off, and what happens to your place on the list when donors choose who to give to."
+    },
+    "start": {
+      "strong": "Everyone starts at zero.",
+      "body": " You don't need anything to join. Your reputation rises when you take part. If you commit to pick something up and don't go, points can go down —even below zero—, but you can always earn them back by giving or completing handoffs."
+    },
+    "gain": {
+      "kicker": "Your reputation goes up",
+      "title": "How to earn points",
+      "sub": "Taking part is what builds your reputation. There are three ways to add points, and giving always counts the most.",
+      "cards": {
+        "first": {
+          "points": "+15",
+          "name": "Your first donation",
+          "desc": "The first time you hand an item to someone, you get an extra boost to start on the right foot.",
+          "tag": "First time only"
+        },
+        "next": {
+          "points": "+10",
+          "name": "Each donation after that",
+          "desc": "Every time you give something again and the handoff is completed, your reputation goes up again.",
+          "tag": "Every time you give"
+        },
+        "receive": {
+          "points": "+1",
+          "name": "Receiving an item",
+          "desc": "When you pick up something you've been given and the handoff is completed, you also gain one point.",
+          "tag": "Every time you receive"
+        }
+      }
+    },
+    "lose": {
+      "kicker": "When points go down",
+      "title": "When points go down",
+      "sub_before": "It only happens in one situation: ",
+      "sub_strong": "committing to pick up an item and not showing up.",
+      "sub_after": " When someone sets something aside for you and you don't go, they're left waiting. If it happens again without a handoff in between, a few more points come off each time.",
+      "first": {
+        "points": "−10",
+        "strong": "The first time you don't show up",
+        "body": " to pick up an item, 10 points come off."
+      },
+      "stairs": {
+        "caption": "If it happens again before you complete a handoff, a little more comes off each time.",
+        "first": {
+          "order": "1st time",
+          "points": "−10",
+          "note": "You don't show up to pick up."
+        },
+        "second": {
+          "order": "2nd time",
+          "points": "−20",
+          "note": "It happens again without completing any handoff."
+        },
+        "third": {
+          "order": "3rd time",
+          "points": "−30",
+          "note": "And so on — a bit more with each repeat, until you complete a handoff."
+        }
+      },
+      "reset": {
+        "strong": "A completed handoff resets the counter.",
+        "body": " When you give or receive again and the handoff is confirmed, you start fresh. If you don't show up next time, you lose 10 points —same as the first time—, not more until you complete another handoff."
+      }
+    },
+    "visibility": {
+      "kicker": "Your place on the list",
+      "title": "What happens if you don't give",
+      "sub_before": "Regálalo works because people give and receive. If you only ask for a long time and never give anything, gradually ",
+      "sub_strong": "donors see you less",
+      "sub_after": " when they choose who to deliver to.",
+      "stages": {
+        "one_month": {
+          "months": "1",
+          "unit": "month asking\nwithout giving",
+          "headline": "You appear lower on the list",
+          "desc": "When a donor looks at who requested their item, you're still there, but lower down. People who also give to the community appear ahead of you."
+        },
+        "two_months": {
+          "months": "2",
+          "unit": "months asking\nwithout giving",
+          "headline": "Your request isn't shown to donors",
+          "desc": "If two months pass and you still haven't given anything, your request stops appearing on donors' lists when they choose a recipient."
+        }
+      },
+      "list": {
+        "giver": "Gives and receives",
+        "you_lower": "You · lower down",
+        "invisible": "Not on the donor's list"
+      },
+      "restore": {
+        "strong": "A single donation brings you back right away.",
+        "body": " As soon as you give something, you appear normally to donors again, no matter how long you hadn't given anything."
+      }
+    },
+    "closing": {
+      "quote": "\"No lo vendo, lo regalo.\"",
+      "sub": "Give what you don't need and your reputation will take care of you."
+    },
+    "meta": {
+      "title": "Your reputation on Regálalo — Points system",
+      "description": "Learn how reputation works on Regálalo: earn points by donating, find out what happens if you don't show up, and how your history affects your position in the list."
+    },
+    "seo": {
+      "breadcrumb_home": "Home",
+      "breadcrumb_page": "Your reputation",
+      "faq": {
+        "q1": "How do you earn reputation on Regálalo?",
+        "a1": "You earn +15 points for your first donation, +10 points for each subsequent completed donation, and +1 point each time you receive an item and complete the pick-up. Giving always counts for more than receiving.",
+        "q2": "When do reputation points go down on Regálalo?",
+        "a2": "Points go down if you commit to picking up an item and don't show up: −10 the first time, −20 the second, −30 the third and beyond. Completing a handoff resets the counter.",
+        "q3": "What happens if I only request items but never donate anything?",
+        "a3": "After a month of requesting without donating, you appear lower on the list. After two months, your request stops showing to donors. A single completed donation brings you back to normal instantly."
+      }
+    }
+  },
+  "profile": {
+    "title": "My profile",
+    "loading": "Loading profile…",
+    "member_since": "Member since {{date}}",
+    "stats": {
+      "aria_label": "Profile metrics",
+      "reputation": "Reputation",
+      "donated": "Donated",
+      "received": "Received",
+      "no_shows": "Didn't collect",
+      "consecutive": "{{n}} in a row without a handover in between"
+    },
+    "tabs": {
+      "aria_label": "Profile sections",
+      "donations": "Donations",
+      "requests": "Requests",
+      "reputation": "Reputation",
+      "settings": "Settings",
+      "coming_soon_donations": "Coming soon — donation history",
+      "coming_soon_requests": "Coming soon — request history",
+      "coming_soon_reputation": "Coming soon — reputation history"
+    },
+    "account": {
+      "title": "Account",
+      "email_label": "Email address",
+      "postal_label": "Postal code",
+      "phone_label": "Phone",
+      "phone_empty": "Not provided",
+      "language_label": "Preferred language",
+      "language": {
+        "es": "Spanish",
+        "ca": "Catalan",
+        "en": "English"
+      },
+      "email_verified_label": "Email verified",
+      "email_verified_yes": "Verified",
+      "email_verified_no": "Pending verification"
+    },
+    "settings": {
+      "first_name_label": "First name",
+      "last_name_label": "Last name",
+      "avatar_url_label": "Avatar URL",
+      "avatar_url_helper": "Public link to your image. Leave empty to use initials.",
+      "phone_label": "Phone",
+      "postal_label": "Postal code",
+      "language_label": "Preferred language",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "success": "Profile updated",
+      "postal_warning": "Changing your postal code will update your location and sign you out. You will need to sign in again.",
+      "error": {
+        "postal_invalid": "Invalid or non-geocodable postal code",
+        "generic": "Could not save. Please try again.",
+        "field_invalid": "Invalid value"
+      },
+      "validation": {
+        "first_name_min": "Minimum 2 characters",
+        "last_name_min": "Minimum 2 characters",
+        "postal_format": "Enter 5 digits"
+      }
+    },
+    "banners": {
+      "degraded_title": "You appear lower on the lists",
+      "degraded_body": "Donors see you less when choosing. Giving and completing a handoff helps you move up the list.",
+      "new_user_title": "Welcome to the community",
+      "new_user_body": "You start with 0 points. Giving and completing handoffs helps you gain visibility on the list."
+    },
+    "errors": {
+      "load": "Could not load your profile. Please try again.",
+      "retry": "Retry"
+    },
+    "reputation": {
+      "total_score": "Participation points",
+      "earned": "+{{value}} added",
+      "lost": "{{value}} off",
+      "event_delivery": "Delivery completed",
+      "event_no_show": "Did not collect",
+      "start_of_history": "Start of history",
+      "empty_title": "No activity recorded yet",
+      "empty_sub": "Complete your first handoff to start adding points.",
+      "error_load": "Could not load reputation history.",
+      "retry": "Retry"
+    },
+    "donations": {
+      "empty_title": "You haven't donated any items yet",
+      "empty_sub": "When you post something, it will appear here with its status and request history.",
+      "empty_cta": "Post an item",
+      "empty_filter": "No items in this status.",
+      "error_load": "Could not load your donations.",
+      "retry": "Retry",
+      "load_more": "Load more",
+      "degraded_badge": "been here a while"
+    },
+    "requests": {
+      "quota_label": "Requests this period",
+      "quota_used": "{{count}} of 3 used",
+      "quota_exhausted": "Quota used up",
+      "empty_title": "No recent requests",
+      "empty_sub": "Your item requests will appear here. You can make up to 3 per 30-day period.",
+      "empty_cta": "Browse items",
+      "empty_filter": "No requests in this status.",
+      "error_load": "Could not load your requests.",
+      "retry": "Retry",
+      "load_more": "Load more",
+      "filters_aria": "Filter requests by status",
+      "filters": {
+        "all": "All",
+        "pending": "Pending",
+        "selected": "Selected",
+        "rejected": "Not selected",
+        "cancelled": "Cancelled"
+      },
+      "status": {
+        "pending": "pending",
+        "selected": "selected",
+        "completed": "completed",
+        "rejected": "not selected",
+        "cancelled": "cancelled"
+      },
+      "delivery_link_aria": "View delivery for {{title}}"
+    },
+    "public": {
+      "title": "User profile",
+      "display_name_aria": "Profile of {{name}}",
+      "anonymous_user": "Anonymous user",
+      "member_since": "Member since {{date}}",
+      "back": "Back",
+      "loading": "Loading profile…",
+      "privacy_note": "Only public information is shown. Contact details and detailed history are not displayed.",
+      "stats": {
+        "aria_label": "Public metrics",
+        "commitment": "Commitment",
+        "given": "Given away",
+        "received": "Received"
+      },
+      "errors": {
+        "invalid_id": "Invalid user identifier.",
+        "not_found": "We could not find this user.",
+        "load": "Could not load the profile. Please try again.",
+        "retry": "Retry",
+        "back_explore": "Browse items"
+      }
+    }
+  },
+  "reports": {
+    "modal": {
+      "title_item": "Report item",
+      "title_user": "Report user",
+      "step1": {
+        "instruction": "What type of problem do you want to report?"
+      },
+      "step2": {
+        "title": "Add context (optional)",
+        "reason_label": "Selected reason",
+        "reason_change": "Change",
+        "textarea_label": "Additional description",
+        "textarea_optional": "optional",
+        "textarea_placeholder": "Add any details that may help in the review.",
+        "privacy_note": "Your identity will not be revealed to the reported user."
+      },
+      "step3": {
+        "title": "Report sent",
+        "body": "We have received your report. We will review it as soon as possible and will let you know by email when we have made a decision."
+      },
+      "btn": {
+        "next": "Next",
+        "back": "Back",
+        "cancel": "Cancel",
+        "submit": "Send report",
+        "submitting": "Sending...",
+        "close": "Close"
+      },
+      "reasons": {
+        "contenido_inadecuado": "Inappropriate or offensive content",
+        "contenido_inadecuado_sub": "Images or text that are not appropriate",
+        "fraude_o_enganio": "Fraud or deception",
+        "fraude_o_enganio_sub": "The item doesn't exist, is in worse condition than stated, etc.",
+        "spam": "Spam or advertising",
+        "spam_sub": "Post with commercial purposes",
+        "objeto_ilegal": "Illegal item",
+        "objeto_ilegal_sub": "Prohibited or illegally sold product",
+        "objeto_peligroso": "Dangerous item",
+        "objeto_peligroso_sub": "Can cause physical harm",
+        "información_falsa": "False or misleading information",
+        "información_falsa_sub": "Incorrect details about the item or user",
+        "comportamiento_abusivo": "Abusive behaviour",
+        "comportamiento_abusivo_sub": "Messages, harassment or intimidation",
+        "otro": "Other reason"
+      }
+    },
+    "error": {
+      "already_pending": "You already have a pending report under review for this content.",
+      "not_reportable": "This content cannot be reported at this time.",
+      "recaptcha_failed": "We could not verify your request. Please try again.",
+      "rate_limit_entity": "You have submitted too many reports about this content recently. Please try again later.",
+      "rate_limit_total": "You have reached the report limit. Please try again in a few days.",
+      "generic": "An unexpected error occurred. Please try again in a moment."
+    },
+    "trigger": {
+      "report_item": "Report item",
+      "report_item_full": "Report this item",
+      "report_user": "Report this user",
+      "menu_aria": "Item options"
+    }
+  },
+  "guest": {
+    "banner": {
+      "text": "You are seeing items from all of Spain.",
+      "register_cta": "Sign up",
+      "register_cta_suffix": "to see items near you.",
+      "dismiss": "Dismiss banner"
+    },
+    "item_card": {
+      "available_in_spain": "Available in Spain"
+    },
+    "donor_row": {
+      "anonymous_name": "Anonymous donor"
+    },
+    "conversion_modal": {
+      "close": "Close",
+      "tagline": "No credit card · No commitments",
+      "benefit_1": "Request items others no longer need",
+      "benefit_2": "Donate what you have unused",
+      "benefit_3": "Your history gives you priority",
+      "cta_register": "Create free account",
+      "cta_login": "Already have an account — Sign in",
+      "request_item": {
+        "title": "Interested in this item?",
+        "subtitle": "To request it, create your free account. It only takes a minute."
+      },
+      "publish_item": {
+        "title": "Give away what you no longer need",
+        "subtitle": "Create your account to post items and let them reach people who need them."
+      },
+      "view_profile": {
+        "title": "Meet the community",
+        "subtitle": "With an account you can see profiles and the history of members."
+      }
+    }
+  }
+}

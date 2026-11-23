@@ -1,0 +1,20 @@
+# Regálalo
+
+> Regálalo es una plataforma comunitaria gratuita de redistribución de objetos en España. Los usuarios pueden donar objetos que ya no necesitan y solicitar los que otros ofrecen, dentro de un radio de 50 km. El acceso depende del comportamiento en la comunidad, no del dinero.
+
+## Contenido público
+
+- [Inicio (ES)](https://regalalo.org/): Presentación de la plataforma, cómo funciona y preguntas frecuentes
+- [Cómo funciona la reputación](https://regalalo.org/como-funciona/reputacion): Documentación completa del sistema de puntos — cómo ganar reputación, cuándo se restan puntos y qué pasa con la visibilidad
+- [Inicio (EN)](https://regalalo.org/en): Versión en inglés de la plataforma
+- [Inicio (CA)](https://regalalo.org/ca): Versió en català de la plataforma
+
+## Opcional
+
+- [Política de privacidad](https://regalalo.org/politica-privacidad): Tratamiento de datos personales
+- [Política de cookies](https://regalalo.org/politica-cookies): Uso de cookies y almacenamiento local
+
+## Aplicación (no indexar)
+
+Las siguientes rutas requieren autenticación y no deben indexarse:
+/login, /register, /explorar, /items/, /mis-objetos, /entregas, /perfil, /users/

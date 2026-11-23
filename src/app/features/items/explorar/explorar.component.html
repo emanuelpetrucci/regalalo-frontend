@@ -1,0 +1,163 @@
+<div class="explorar" *transloco="let t">
+  <header class="explorar__header">
+    <h1 class="explorar__title">{{ t('items.explore.title') }}</h1>
+    @if (!loading()) {
+      <p class="explorar__subtitle">
+        @if (total() === 1) {
+          {{ t('items.explore.subtitle_one') }}
+        } @else {
+          {{ t('items.explore.subtitle', { count: total() }) }}
+        }
+      </p>
+    }
+  </header>
+
+  <div class="explorar__toolbar">
+    <div class="explorar__search">
+      <span class="explorar__search-icon" aria-hidden="true">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="M21 21l-4.35-4.35" />
+        </svg>
+      </span>
+      <input
+        type="search"
+        class="explorar__search-input"
+        [placeholder]="t('items.explore.search_placeholder')"
+        [ngModel]="search()"
+        (ngModelChange)="search.set($event)"
+        [attr.aria-label]="t('items.explore.search_placeholder')"
+      />
+      @if (search()) {
+        <button
+          type="button"
+          class="explorar__search-clear"
+          (click)="search.set('')"
+          [attr.aria-label]="t('items.explore.search_clear')"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      }
+    </div>
+    <div class="explorar__cond-chips" role="group" [attr.aria-label]="t('items.explore.filters_label')">
+      @for (cond of conditionFilters; track cond) {
+        <button
+          type="button"
+          class="explorar__cond-chip"
+          [class.explorar__cond-chip--active]="conditionFilter() === cond"
+          (click)="setConditionFilter(cond)"
+        >
+          {{ t(conditionLabelKey(cond)) }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div
+    class="explorar__cat-row"
+    role="group"
+    [attr.aria-label]="t('items.explore.category_filters_label')"
+  >
+    @for (category of categoryFilters; track category) {
+      <button
+        type="button"
+        class="explorar__cat-chip"
+        [class.explorar__cat-chip--active]="categoryFilter() === category"
+        [attr.aria-pressed]="categoryFilter() === category"
+        (click)="setCategoryFilter(category)"
+      >
+        {{ t(categoryLabelKey(category)) }}
+      </button>
+    }
+  </div>
+
+  @if (isGuest()) {
+    <app-feed-global-banner />
+  }
+
+  <div class="explorar__alerts" aria-live="assertive" aria-atomic="true">
+    @if (errorKey()) {
+      <app-alert-box variant="error">
+        <p class="explorar__error-text">{{ errorMessage() }}</p>
+        <app-btn variant="secondary" (click)="retry()">
+          {{ t('items.explore.errors.retry') }}
+        </app-btn>
+      </app-alert-box>
+    }
+  </div>
+
+  @if (loading()) {
+    <p class="explorar__loading" role="status">{{ t('items.explore.loading') }}</p>
+  } @else if (showEmpty()) {
+    <div class="explorar__empty">
+      <div class="explorar__empty-icon" aria-hidden="true">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+          />
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+          <line x1="12" y1="22.08" x2="12" y2="12" />
+        </svg>
+      </div>
+      <h2 class="explorar__empty-title">{{ t('items.explore.empty_title') }}</h2>
+      <p class="explorar__empty-body">{{ t('items.explore.empty_filter_body') }}</p>
+      <app-btn variant="primary" (click)="goPublish()">
+        {{ t('items.explore.empty_cta') }}
+      </app-btn>
+    </div>
+  } @else if (showGrid()) {
+    <div class="explorar__grid">
+      @for (item of filteredItems(); track item.id; let idx = $index) {
+        <app-item-feed-card
+          class="rlg-card-in"
+          [style.animation-delay.ms]="idx * 30"
+          [item]="item"
+          [openInModal]="true"
+          (open)="openDetail($event)"
+        />
+      }
+    </div>
+    @if (hasMore()) {
+      <div class="explorar__load-more">
+        <app-btn
+          variant="secondary"
+          [disabled]="loadingMore()"
+          [attr.aria-busy]="loadingMore()"
+          (click)="loadMore()"
+        >
+          {{ t('items.explore.load_more') }}
+        </app-btn>
+      </div>
+    }
+  }
+
+  @if (detailItemId(); as openId) {
+    <app-item-detail-modal [itemId]="openId" (closed)="closeDetail()" />
+  }
+</div>

@@ -1,0 +1,83 @@
+<div class="item-detail-donor-controls" *transloco="let t">
+  <div class="item-detail-donor-controls__stats">
+    <div class="item-detail-donor-controls__stat">
+      <div class="item-detail-donor-controls__stat-value">{{ requestCount() }}</div>
+      <div class="item-detail-donor-controls__stat-label">
+        {{ t('items.detail.stat_requests') }}
+      </div>
+    </div>
+    <div class="item-detail-donor-controls__stat">
+      <div class="item-detail-donor-controls__stat-value">{{ publishedDaysShort() }}</div>
+      <div class="item-detail-donor-controls__stat-label">
+        {{ t('items.detail.stat_published') }}
+      </div>
+    </div>
+  </div>
+
+  @if (canManagePause()) {
+    <div class="item-detail-donor-controls__pause">
+      <div class="item-detail-donor-controls__pause-copy">
+        <div class="item-detail-donor-controls__pause-title" [id]="pauseTitleId()">
+          {{ t('items.pause.title') }}
+        </div>
+        <div class="item-detail-donor-controls__pause-subtitle">
+          {{ t('items.detail.pause_subtitle') }}
+        </div>
+      </div>
+      <app-toggle-switch
+        [checked]="requestsPaused()"
+        [disabled]="pausing()"
+        [labelId]="pauseTitleId()"
+        (checkedChange)="onPauseToggle($event)"
+        testId="item-pause-toggle"
+      />
+    </div>
+
+    @if (pauseErrorKey()) {
+      <p class="item-detail-donor-controls__pause-error" role="alert">
+        {{ pauseErrorMessage() }}
+      </p>
+    }
+
+    <app-btn variant="secondary" [fullWidth]="true" (click)="toggleCandidates.emit()">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+        <path d="M23 21v-2a4 4 0 00-3-3.87" />
+        <path d="M16 3.13a4 4 0 010 7.75" />
+      </svg>
+      {{ candidatesLabel() }}
+    </app-btn>
+  }
+
+  @if (canCancel()) {
+    <div class="item-detail-donor-controls__actions">
+      <button
+        type="button"
+        class="item-detail-donor-controls__cancel-icon"
+        [attr.aria-label]="t('items.cancel.trigger')"
+        data-testid="item-cancel-btn"
+        (click)="cancel.emit($event)"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          aria-hidden="true"
+        >
+          <path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2" />
+        </svg>
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,71 @@
+<div class="login" *transloco="let t">
+  <h1 class="login__title">{{ t('auth.login.title') }}</h1>
+  <p class="login__subtitle">{{ t('auth.login.subtitle') }}</p>
+
+  @if (emailVerifiedSuccess()) {
+    <div class="login__alert" aria-live="polite" data-testid="verify-email-success">
+      <app-alert-box variant="success">{{ t('auth.login.email_verified_success') }}</app-alert-box>
+    </div>
+  }
+
+  @if (sessionExpired()) {
+    <div class="login__alert" aria-live="polite">
+      <app-alert-box variant="warning">{{ t('auth.login.session_expired') }}</app-alert-box>
+    </div>
+  }
+
+  @if (bannerError()) {
+    <div class="login__alert" aria-live="assertive" data-testid="login-error">
+      <app-alert-box variant="error">{{ bannerError() }}</app-alert-box>
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="login__form">
+    <app-field-input
+      formControlName="email"
+      type="email"
+      [label]="t('auth.login.field.email')"
+      [placeholder]="t('auth.login.field.email_placeholder')"
+      autocomplete="email"
+      [error]="fieldError('email')"
+      testId="login-email"
+    />
+    <app-field-input
+      formControlName="password"
+      type="password"
+      [label]="t('auth.login.field.password')"
+      [placeholder]="t('auth.login.field.password_placeholder')"
+      autocomplete="current-password"
+      [error]="fieldError('password')"
+      testId="login-password"
+    />
+    <a routerLink="/forgot-password" class="login__forgot">
+      {{ t('auth.login.forgot_link') }}
+    </a>
+    <div class="login__submit">
+      <app-btn type="submit" [fullWidth]="true" [disabled]="submitting()" data-testid="login-submit">
+        {{ submitting() ? t('auth.login.submitting') : t('auth.login.submit') }}
+      </app-btn>
+    </div>
+  </form>
+
+  <p class="login__recaptcha">
+    {{ t('auth.login.recaptcha') }}
+    <a
+      href="https://policies.google.com/privacy"
+      target="_blank"
+      rel="noopener noreferrer"
+    >{{ t('auth.login.recaptcha_privacy') }}</a>
+    ·
+    <a
+      href="https://policies.google.com/terms"
+      target="_blank"
+      rel="noopener noreferrer"
+    >{{ t('auth.login.recaptcha_terms') }}</a>
+  </p>
+
+  <p class="login__footer">
+    {{ t('auth.login.footer') }}
+    <a routerLink="/register" class="login__link">{{ t('auth.login.register_link') }}</a>
+  </p>
+</div>

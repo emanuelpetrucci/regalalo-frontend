@@ -1,0 +1,97 @@
+<div class="register" *transloco="let t">
+  <h1 class="register__title text-h1">{{ t('auth.register.title') }}</h1>
+  <p class="register__subtitle">{{ t('auth.register.subtitle') }}</p>
+
+  <div class="register__alert" aria-live="assertive" aria-atomic="true">
+    @if (bannerError()) {
+      <app-alert-box variant="error">
+        {{ bannerError() }}
+        @if (showLoginLink()) {
+          <a routerLink="/login" class="register__inline-link">{{ t('auth.register.inline_login_link') }}</a>
+        }
+      </app-alert-box>
+    }
+  </div>
+
+  <form class="register__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <app-field-input
+      [label]="t('auth.register.field.first_name')"
+      [placeholder]="t('auth.register.field.first_name_placeholder')"
+      autocomplete="given-name"
+      formControlName="firstName"
+      [error]="fieldError('firstName')"
+      testId="register-first-name"
+    />
+
+    <app-field-input
+      [label]="t('auth.register.field.last_name')"
+      [placeholder]="t('auth.register.field.last_name_placeholder')"
+      autocomplete="family-name"
+      formControlName="lastName"
+      [error]="fieldError('lastName')"
+      testId="register-last-name"
+    />
+
+    <app-field-input
+      [label]="t('auth.register.field.email')"
+      type="email"
+      [placeholder]="t('auth.register.field.email_placeholder')"
+      autocomplete="email"
+      formControlName="email"
+      [error]="fieldError('email')"
+      testId="register-email"
+    />
+
+    <app-field-input
+      [label]="t('auth.register.field.password')"
+      type="password"
+      [placeholder]="t('auth.register.field.password_placeholder')"
+      autocomplete="new-password"
+      formControlName="password"
+      [error]="fieldError('password')"
+      testId="register-password"
+    />
+
+    <app-field-input
+      [label]="t('auth.register.field.postal_code')"
+      [placeholder]="t('auth.register.field.postal_placeholder')"
+      autocomplete="postal-code"
+      formControlName="postalCode"
+      [error]="fieldError('postalCode')"
+      [helper]="postalHelper()"
+      testId="register-postal-code"
+    />
+
+    <app-field-input
+      [label]="t('auth.register.field.phone')"
+      type="tel"
+      [placeholder]="t('auth.register.field.phone_placeholder')"
+      autocomplete="tel"
+      formControlName="phone"
+      [error]="fieldError('phone')"
+      testId="register-phone"
+    />
+
+    <div class="register__submit">
+      <app-btn type="submit" [fullWidth]="true" [disabled]="submitting()" data-testid="register-submit">
+        {{ submitting() ? t('auth.register.submitting') : t('auth.register.submit') }}
+      </app-btn>
+    </div>
+  </form>
+
+  <p class="register__recaptcha">
+    {{ t('auth.register.recaptcha') }} ·
+    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
+      >{{ t('auth.register.recaptcha_privacy') }}</a
+    >
+    ·
+    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer"
+      >{{ t('auth.register.recaptcha_terms') }}</a
+    >
+  </p>
+
+  <p class="register__footer">
+    {{ t('auth.register.footer') }}
+    <a routerLink="/login" class="register__link">{{ t('auth.register.login_link') }}</a>
+  </p>
+</div>

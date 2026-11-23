@@ -1,0 +1,45 @@
+/* Portado de ConditionChip en docs/project/Mis objetos.html */
+.item-condition-chip {
+  display: inline-flex;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.item-condition-chip--new {
+  background: #ebf5ee;
+  color: #265533;
+  border-color: #9dcca8;
+}
+
+.item-condition-chip--like-new {
+  background: #f0f5f2;
+  color: #224633;
+  border-color: #b5d0c2;
+}
+
+.item-condition-chip--good {
+  background: #fef6e7;
+  color: #8f5907;
+  border-color: #edd090;
+}
+
+.item-condition-chip--fair {
+  background: #e8eaec;
+  color: #606a76;
+  border-color: #d5d9de;
+}
+
+.item-condition-chip--muted {
+  background: var(--bg-subtle);
+  color: var(--fg-secondary);
+  border: 1px solid var(--border-default);
+}
+
+.item-condition-chip--large {
+  font-size: 12px;
+  padding: 3px 10px;
+}

@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Mis objetos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { min-height: 100%; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F5F6; -webkit-font-smoothing: antialiased; }
+  input, button, select, textarea { font-family: inherit; }
+  ::placeholder { color: #9AA2AD; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D5D9DE; border-radius: 3px; }
+
+  @keyframes modalIn  { from { opacity:0; transform:scale(0.97) translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+  @keyframes slideIn  { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:none; } }
+  .modal-in  { animation: modalIn  240ms cubic-bezier(0.16,1,0.3,1) both; }
+  .fade-in   { animation: fadeIn   180ms ease both; }
+  .slide-in  { animation: slideIn  220ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  @media (max-width: 780px) {
+    .nav-links   { display: none !important; }
+    .pub-label   { display: none !important; }
+    .split-layout { grid-template-columns: 1fr !important; }
+    /* detail panel becomes a full-screen slide-over on mobile */
+    .detail-wrap {
+      position: fixed !important;
+      inset: 0 !important;
+      top: 64px !important;
+      z-index: 200 !important;
+      overflow-y: auto !important;
+      background: #F4F5F6;
+    }
+    .detail-wrap > div {
+      position: static !important;
+      max-height: none !important;
+      border-radius: 0 !important;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      box-shadow: none !important;
+      min-height: calc(100vh - 64px);
+    }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+
+/* ── TOKENS ───────────────────────────────────────────────────── */
+const C = {
+  primary:      '#3A7358',
+  primaryHov:   '#2D5C45',
+  primaryLight: '#F0F5F2',
+  accent:       '#253F72',
+  bgPage:       '#F4F5F6',
+  bgSurface:    '#FFFFFF',
+  bgSubtle:     '#E8EAEC',
+  fg:           '#14171A',
+  fgMid:        '#606A76',
+  fgMuted:      '#7C8692',
+  fgDisabled:   '#9AA2AD',
+  border:       '#D5D9DE',
+  borderStr:    '#B8BFC7',
+  error:        '#B33A2A',
+  errorBg:      '#FDECEA',
+  errorBorder:  '#F4A09A',
+  warnBg:       '#FEF6E7',
+  warnBorder:   '#EDD090',
+  warnFg:       '#8F5907',
+  successBg:    '#EBF5EE',
+  successBd:    '#9DCCA8',
+  successFg:    '#265533',
+  sh1: '0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)',
+  sh2: '0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+  sh3: '0 8px 32px rgba(0,0,0,0.14)',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', system-ui, sans-serif";
+const FM = "'JetBrains Mono', monospace";
+
+/* ── DATA ─────────────────────────────────────────────────────── */
+const INITIAL_ITEMS = [
+  { id:1, title:'Bicicleta de montaña Scott', condition:'good', category:'sports', status:'active',
+    requestCount:7, daysAgo:3, requestsPaused:false, degraded:false, imageCount:3,
+    desc:'Bicicleta de montaña 26" en buen estado. Se nota el uso pero funciona perfectamente. Incluye casco y bomba de aire. Recogida en Sant Gervasi, a convenir horario.' },
+  { id:2, title:'Sofá de dos plazas gris', condition:'fair', category:'furniture', status:'active',
+    requestCount:2, daysAgo:1, requestsPaused:true, degraded:false, imageCount:2,
+    desc:'Sofá de tela gris marengo. Tiene alguna mancha que no sale. Estructura y cojines en buen estado. Hay que buscarse la vida para el transporte.' },
+  { id:3, title:'Mesa escritorio IKEA ALEX', condition:'like_new', category:'furniture', status:'reserved',
+    requestCount:12, daysAgo:9, requestsPaused:false, degraded:true, imageCount:5,
+    sessionExpires:'24 may 2026', contactChannel:'WhatsApp: +34 612 345 678',
+    selectedCandidate:{ initials:'AL', score:120, distance:1.2, localidad:'Sants' },
+    desc:'Mesa de escritorio IKEA modelo ALEX, blanca, 131×60 cm. Sin golpes ni manchas. Desmontada y con los tornillos.' },
+  { id:4, title:'Cámara analógica Olympus OM-10', condition:'good', category:'electronics', status:'completed',
+    requestCount:5, daysAgo:18, imageCount:3,
+    desc:'Cámara analógica Olympus OM-10. Funciona, varios carretes sin problema. Incluye objetivo 50mm f/1.8, funda y correa.' },
+  { id:5, title:'Silla de oficina ergonómica', condition:'good', category:'furniture', status:'cancelled',
+    requestCount:3, daysAgo:12, imageCount:1,
+    desc:'Silla de oficina con soporte lumbar ajustable. Ruedas en perfecto estado. Color negro.' },
+];
+
+const CANDIDATES = [
+  { id:'c1', initials:'AL', score:120, distance:1.2, daysAgo:3, localidad:'Sants' },
+  { id:'c2', initials:'MP', score:85,  distance:2.1, daysAgo:5, localidad:'Gràcia' },
+  { id:'c3', initials:'JG', score:42,  distance:3.8, daysAgo:2, localidad:'Eixample' },
+  { id:'c4', initials:'CR', score:18,  distance:4.5, daysAgo:1, localidad:'Poblenou' },
+  { id:'c5', initials:'RM', score:-5,  distance:6.2, daysAgo:7, localidad:'Nou Barris' },
+];
+
+const CONDITION_LABELS = { new:'A estrenar', like_new:'Como nuevo', good:'Buen estado', fair:'Aceptable' };
+const CATEGORY_LABELS = {
+  furniture:'Muebles', electronics:'Electrónica', clothing:'Ropa',
+  books:'Libros', toys:'Juguetes', kitchen:'Cocina',
+  sports:'Deporte', tools:'Herramientas', other:'Otros',
+};
+const CATEGORIES = [
+  {id:'furniture',label:'Muebles'},{id:'electronics',label:'Electrónica'},
+  {id:'clothing',label:'Ropa'},{id:'books',label:'Libros'},
+  {id:'toys',label:'Juguetes'},{id:'kitchen',label:'Cocina'},
+  {id:'sports',label:'Deporte'},{id:'tools',label:'Herramientas'},
+  {id:'other',label:'Otros'},
+];
+const COND_CFG = {
+  new:      { bg:'#EBF5EE', fg:'#265533', bd:'#9DCCA8' },
+  like_new: { bg:'#F0F5F2', fg:'#224633', bd:'#B5D0C2' },
+  good:     { bg:'#FEF6E7', fg:'#8F5907', bd:'#EDD090' },
+  fair:     { bg:'#E8EAEC', fg:'#606A76', bd:'#D5D9DE' },
+};
+const STATUS_CFG = {
+  active:    { bg:'#EBF5EE', fg:'#265533', bd:'#9DCCA8',  label:'Activo' },
+  reserved:  { bg:'#FEF6E7', fg:'#8F5907', bd:'#EDD090',  label:'Reservado' },
+  completed: { bg:'#F0F5F2', fg:'#224633', bd:'#B5D0C2',  label:'Completado' },
+  cancelled: { bg:'#FDECEA', fg:'#B33A2A', bd:'#F4A09A',  label:'Cancelado' },
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "tab": "active",
+  "selectedId": 1,
+  "emptyState": false,
+  "itemId": 2,
+  "modalAbierto": false,
+  "requestState": "pending"
+}/*EDITMODE-END*/;
+
+/* ── ICONS ────────────────────────────────────────────────────── */
+const Ico = ({ sz=16, sw=1.75, children }) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+);
+const IBox    = ({sz=16}) => <Ico sz={sz}><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></Ico>;
+const IClose  = ({sz=16}) => <Ico sz={sz} sw={2}><path d="M18 6L6 18M6 6l12 12"/></Ico>;
+const IPlus   = ({sz=16}) => <Ico sz={sz} sw={2.5}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Ico>;
+const IChevR  = ({sz=16}) => <Ico sz={sz}><path d="M9 18l6-6-6-6"/></Ico>;
+const IChevL  = ({sz=16}) => <Ico sz={sz}><path d="M15 18l-6-6 6-6"/></Ico>;
+const IImage  = ({sz=16}) => <Ico sz={sz}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></Ico>;
+const ICheck  = ({sz=16}) => <Ico sz={sz}><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></Ico>;
+const IClock  = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></Ico>;
+const IPause  = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></Ico>;
+const IUser   = ({sz=16}) => <Ico sz={sz}><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></Ico>;
+const ICircleX = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></Ico>;
+const IGift   = ({sz=16}) => <Ico sz={sz}><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></Ico>;
+const IWarn   = ({sz=16}) => <Ico sz={sz}><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></Ico>;
+const IStar   = ({sz=16}) => <Ico sz={sz}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></Ico>;
+const IShare  = ({sz=16}) => <Ico sz={sz}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></Ico>;
+const ILink   = ({sz=16}) => <Ico sz={sz}><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></Ico>;
+
+const ISocialWA = ({sz=20}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.116.553 4.103 1.52 5.83L0 24l6.336-1.51A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.66-.5-5.19-1.38l-.37-.22-3.76.9.94-3.67-.24-.38A9.934 9.934 0 012 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/>
+  </svg>
+);
+const ISocialFB = ({sz=20}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </svg>
+);
+const ISocialX  = ({sz=20}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.728-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+);
+
+/* ── SHARE MODAL ──────────────────────────────────────────────── */
+function ShareModal({ title, url, onClose }) {
+  const [copied, setCopied] = React.useState(false);
+  const text = title
+    ? `¡Regalan esto en no lo vendo: ${title}! ¿Lo necesitas?`
+    : 'Descubre no lo vendo: regala y recibe objetos gratis en tu comunidad.';
+  const shareUrl = url || 'https://nolovendo.es';
+  const networks = [
+    { id:'whatsapp', label:'WhatsApp', color:'#25D366', lightBg:'#E8FAF0',
+      icon:<ISocialWA sz={18}/>,
+      href:`https://wa.me/?text=${encodeURIComponent(text + '\n' + shareUrl)}` },
+    { id:'facebook', label:'Facebook', color:'#1877F2', lightBg:'#E7F1FD',
+      icon:<ISocialFB sz={18}/>,
+      href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(text)}` },
+    { id:'twitter', label:'X / Twitter', color:'#0F1419', lightBg:'#F0F0F0',
+      icon:<ISocialX sz={18}/>,
+      href:`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}` },
+  ];
+  const handleCopy = () => {
+    try { navigator.clipboard.writeText(shareUrl); } catch(e) {
+      const ta = document.createElement('textarea');
+      ta.value = shareUrl; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  };
+  return (
+    <div className="fade-in" onClick={e => { if (e.target===e.currentTarget) onClose(); }}
+      style={{ position:'fixed', inset:0, zIndex:600, background:'rgba(20,23,26,0.5)',
+        display:'flex', alignItems:'center', justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:400 }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: title ? 4 : 20 }}>
+          <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg }}>Compartir</div>
+          <button onClick={onClose} style={{ width:32, height:32, borderRadius:'50%',
+            background:C.bgSubtle, border:'none', cursor:'pointer',
+            display:'flex', alignItems:'center', justifyContent:'center', color:C.fgMid }}>
+            <IClose sz={15}/>
+          </button>
+        </div>
+        {title && (
+          <div style={{ fontFamily:FB, fontSize:13, color:C.fgMuted, marginBottom:20,
+            overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{title}</div>
+        )}
+        <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
+          {networks.map(n => (
+            <a key={n.id} href={n.href} target="_blank" rel="noopener noreferrer"
+              style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px',
+                borderRadius:10, textDecoration:'none', background:C.bgPage,
+                border:`1px solid ${C.border}`, color:C.fg, transition:'all 150ms' }}
+              onMouseEnter={e=>{ e.currentTarget.style.background=n.lightBg; e.currentTarget.style.borderColor=n.color+'55'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background=C.bgPage; e.currentTarget.style.borderColor=C.border; }}>
+              <span style={{ color:n.color, display:'flex', flexShrink:0 }}>{n.icon}</span>
+              <span style={{ fontFamily:FB, fontSize:14, fontWeight:500 }}>{n.label}</span>
+            </a>
+          ))}
+        </div>
+        <div style={{ display:'flex', gap:8 }}>
+          <div style={{ flex:1, padding:'10px 14px', borderRadius:8, background:C.bgPage,
+            border:`1px solid ${C.border}`, fontFamily:FM, fontSize:12, color:C.fgMuted,
+            overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap',
+            display:'flex', alignItems:'center' }}>{shareUrl}</div>
+          <button onClick={handleCopy} style={{ padding:'10px 16px', borderRadius:8,
+            cursor:'pointer', border:'none', background: copied ? C.primary : C.bgSubtle,
+            fontFamily:FB, fontSize:13, fontWeight:600, flexShrink:0,
+            color: copied ? '#fff' : C.fg, transition:'all 200ms',
+            display:'flex', alignItems:'center', gap:6 }}>
+            {copied ? <><ICheck sz={13}/> ¡Copiado!</> : <><ILink sz={13}/> Copiar</>}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── PRIMITIVES ───────────────────────────────────────────────── */
+function StatusBadge({ status }) {
+  const s = STATUS_CFG[status] || STATUS_CFG.active;
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', fontFamily:FB, fontSize:11,
+      fontWeight:600, padding:'3px 10px', borderRadius:999,
+      background:s.bg, color:s.fg, border:`1px solid ${s.bd}`, whiteSpace:'nowrap', flexShrink:0 }}>
+      {s.label}
+    </span>
+  );
+}
+
+function ConditionChip({ condition }) {
+  const s = COND_CFG[condition] || COND_CFG.fair;
+  return (
+    <span style={{ display:'inline-flex', fontFamily:FB, fontSize:11, fontWeight:500,
+      padding:'2px 8px', borderRadius:999, background:s.bg, color:s.fg, border:`1px solid ${s.bd}` }}>
+      {CONDITION_LABELS[condition] || condition}
+    </span>
+  );
+}
+function CategoryChip({ category }) {
+  const label = CATEGORY_LABELS[category] || category || '—';
+  return (
+    <span style={{ display:'inline-flex', fontFamily:FB, fontSize:11, fontWeight:500,
+      padding:'2px 8px', borderRadius:999, background:'#EDF0F5', color:'#142244', border:'1px solid #A5B5D4' }}>
+      {label}
+    </span>
+  );
+}
+
+function Toggle({ active, onChange }) {
+  return (
+    <div onClick={onChange} style={{ width:40, height:22, borderRadius:99, flexShrink:0,
+      background: active ? C.primary : C.border, position:'relative', cursor:'pointer',
+      transition:'background 200ms' }}>
+      <div style={{ position:'absolute', top:3, left: active ? 21 : 3, width:16, height:16,
+        borderRadius:'50%', background:'#fff', transition:'left 200ms',
+        boxShadow:'0 1px 3px rgba(0,0,0,0.2)' }} />
+    </div>
+  );
+}
+
+function Btn({ children, variant='primary', onClick, disabled, fullWidth, size='md', style:sx={} }) {
+  const [hov, setHov] = React.useState(false);
+  const [prs, setPrs] = React.useState(false);
+  const base = {
+    display:'inline-flex', alignItems:'center', justifyContent:'center', gap:6,
+    borderRadius:8, cursor: disabled ? 'not-allowed' : 'pointer', border:'none',
+    fontFamily:FB, fontWeight:600, transition:'all 150ms',
+    width: fullWidth ? '100%' : undefined,
+    padding: size==='sm' ? '7px 14px' : '11px 20px',
+    fontSize: size==='sm' ? 13 : 14,
+    transform: prs && !disabled ? 'scale(0.97)' : 'none',
+    opacity: disabled ? 0.5 : 1,
+    ...sx,
+  };
+  const variants = {
+    primary:   { background: hov ? C.primaryHov : C.primary, color:'#fff', border:'none' },
+    secondary: { background: hov ? C.primaryLight : C.bgSurface, color:C.primary, border:`1.5px solid ${C.primary}` },
+    ghost:     { background: hov ? C.bgSubtle : 'transparent', color:C.fgMid, border:`1.5px solid ${C.border}` },
+    danger:    { background: hov ? '#9B2D1F' : C.error, color:'#fff', border:'none' },
+    dangerGhost:{ background: hov ? C.errorBg : 'transparent', color:C.error, border:`1.5px solid ${hov ? C.errorBorder : C.border}` },
+  };
+  return (
+    <button
+      onClick={!disabled ? onClick : undefined}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>{ setHov(false); setPrs(false); }}
+      onMouseDown={()=>setPrs(true)} onMouseUp={()=>setPrs(false)}
+      style={{ ...base, ...variants[variant] }}>
+      {children}
+    </button>
+  );
+}
+
+/* ── LANGUAGE SELECTOR ───────────────────────────────────────── */
+const LANGS = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català'  },
+];
+function LanguageSelector({ dark }) {
+  const [lang, setLang] = React.useState(() => localStorage.getItem('nlv_lang') || 'es');
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  const select = code => { setLang(code); localStorage.setItem('nlv_lang', code); setOpen(false); };
+  return (
+    <div ref={ref} style={{ position:'relative', flexShrink:0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        display:'flex', alignItems:'center', gap:4,
+        background: dark ? 'rgba(255,255,255,0.12)' : '#FFFFFF',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.22)' : '#D5D9DE'}`,
+        borderRadius:8, padding:'5px 10px',
+        fontFamily:FB, fontSize:13, fontWeight:600,
+        color: dark ? 'rgba(255,255,255,0.85)' : '#606A76',
+        cursor:'pointer', transition:'all 150ms', userSelect:'none' }}>
+        {lang.toUpperCase()}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform 150ms' }}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{ position:'absolute', top:'calc(100% + 6px)', right:0,
+          background:'#FFFFFF', border:'1px solid #D5D9DE',
+          borderRadius:10, boxShadow:'0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+          overflow:'hidden', zIndex:1000, minWidth:130 }}>
+          {LANGS.map(({ code, label }) => (
+            <button key={code} onClick={() => select(code)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                width:'100%', padding:'9px 14px', border:'none',
+                background: lang===code ? '#F0F5F2' : 'transparent',
+                color: lang===code ? '#3A7358' : '#14171A',
+                fontFamily:FB, fontSize:13, fontWeight: lang===code ? 600 : 400,
+                cursor:'pointer', textAlign:'left', gap:10, transition:'background 100ms' }}
+              onMouseEnter={e => { if (lang!==code) e.currentTarget.style.background='#E8EAEC'; }}
+              onMouseLeave={e => { if (lang!==code) e.currentTarget.style.background='transparent'; }}>
+              <span>{label}</span>
+              <span style={{ fontFamily:FB, fontSize:11, fontWeight:600,
+                color: lang===code ? '#3A7358' : '#9AA2AD',
+                letterSpacing:'0.05em' }}>{code.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── NAVBAR ───────────────────────────────────────────────────── */
+function Navbar({ onPublish }) {
+  const [hov, setHov] = React.useState(null);
+  const links = [['explorar','Explorar','Explorar v3.html'],['mis-objetos','Mis objetos',''],['entregas','Entregas','Entregas.html'],['perfil','Perfil','Perfil.html']];
+  return (
+    <nav style={{ background:C.bgSurface, borderBottom:`1px solid ${C.border}`, height:64,
+      display:'flex', alignItems:'center', justifyContent:'space-between',
+      padding:'0 clamp(16px,4vw,40px)', position:'sticky', top:0, zIndex:100, boxShadow:C.sh1 }}>
+      <a href="Explorar v3.html" style={{ textDecoration:'none' }}>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:700, color:C.primary, letterSpacing:'-0.01em' }}>
+          no lo vendo
+        </div>
+      </a>
+      <div className="nav-links" style={{ display:'flex', gap:2 }}>
+        {links.map(([id,label,href]) => {
+          const active = id==='mis-objetos';
+          return href ? (
+            <a key={id} href={href} style={{ textDecoration:'none' }}>
+              <button onMouseEnter={()=>setHov(id)} onMouseLeave={()=>setHov(null)}
+                style={{ background: active ? C.primaryLight : hov===id ? C.bgSubtle : 'none',
+                  border:'none', cursor:'pointer', padding:'8px 14px', borderRadius:8,
+                  fontFamily:FB, fontSize:14, fontWeight: active ? 600 : 400,
+                  color: active ? C.primary : C.fgMid, transition:'all 150ms' }}>
+                {label}
+              </button>
+            </a>
+          ) : (
+            <button key={id} onMouseEnter={()=>setHov(id)} onMouseLeave={()=>setHov(null)}
+              style={{ background: active ? C.primaryLight : hov===id ? C.bgSubtle : 'none',
+                border:'none', cursor:'pointer', padding:'8px 14px', borderRadius:8,
+                fontFamily:FB, fontSize:14, fontWeight: active ? 600 : 400,
+                color: active ? C.primary : C.fgMid, transition:'all 150ms' }}>
+              {label}
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+        <LanguageSelector />
+        <Btn onClick={onPublish} size="sm" style={{ gap:5 }}>
+          <IPlus sz={13}/> <span className="pub-label">Publicar</span>
+        </Btn>
+        <div style={{ width:34, height:34, borderRadius:'50%', background:C.primaryLight,
+          border:`1.5px solid ${C.border}`, display:'flex', alignItems:'center',
+          justifyContent:'center', fontFamily:FB, fontSize:12, fontWeight:700, color:C.primary }}>
+          LS
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ── ITEM ROW ─────────────────────────────────────────────────── */
+function ItemRow({ item, selected, onClick, first, last }) {
+  const [hov, setHov] = React.useState(false);
+  const r = first && last ? 12 : first ? '12px 12px 0 0' : last ? '0 0 12px 12px' : 0;
+  const daysLabel = item.daysAgo === 0 ? 'hoy' : item.daysAgo === 1 ? 'ayer' : `hace ${item.daysAgo}d`;
+  return (
+    <div onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{ display:'flex', gap:14, alignItems:'center', padding:'14px 16px',
+        background: selected ? '#EAF2EE' : hov ? '#F9FAFB' : C.bgSurface,
+        border:`1px solid ${selected ? C.primary : C.border}`,
+        borderRadius:r, borderTop: !first ? 'none' : undefined,
+        cursor:'pointer', transition:'background 150ms, border-color 150ms', position:'relative' }}>
+
+      {selected && <div style={{ position:'absolute', left:0, top:'20%', bottom:'20%',
+        width:3, borderRadius:'0 2px 2px 0', background:C.primary }} />}
+
+      {/* Thumbnail */}
+      <div style={{ width:54, height:54, borderRadius:8, flexShrink:0,
+        background:C.bgSubtle, display:'flex', alignItems:'center',
+        justifyContent:'center', color:C.fgDisabled }}>
+        <IImage sz={20}/>
+      </div>
+
+      {/* Info */}
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ display:'flex', alignItems:'flex-start', gap:6, marginBottom:5, flexWrap:'wrap' }}>
+          <span style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg,
+            lineHeight:1.3, flex:1, minWidth:0 }}>
+            {item.title}
+          </span>
+          <StatusBadge status={item.status} />
+        </div>
+        <div style={{ display:'flex', gap:10, flexWrap:'wrap', alignItems:'center' }}>
+          {item.status === 'active' && item.requestCount > 0 && (
+            <span style={{ fontFamily:FB, fontSize:12, color:C.primary, fontWeight:500 }}>
+              <IUser sz={11}/> {item.requestCount} {item.requestCount===1?'solicitud':'solicitudes'}
+              {item.requestsPaused && <span style={{ color:C.fgMuted }}> · pausadas</span>}
+            </span>
+          )}
+          {item.status === 'active' && item.requestCount === 0 && (
+            <span style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>Sin solicitudes aún</span>
+          )}
+          {item.status === 'reserved' && (
+            <span style={{ fontFamily:FB, fontSize:12, color:C.warnFg, display:'flex', alignItems:'center', gap:4 }}>
+              <IClock sz={11}/> Expira el {item.sessionExpires}
+            </span>
+          )}
+          <span style={{ fontFamily:FB, fontSize:11, color:C.fgDisabled }}>{daysLabel}</span>
+        </div>
+      </div>
+
+      <div style={{ color: selected ? C.primary : C.fgDisabled, flexShrink:0 }}>
+        <IChevR sz={15}/>
+      </div>
+    </div>
+  );
+}
+
+/* ── ITEM LIST ────────────────────────────────────────────────── */
+function ItemList({ items, selectedId, onSelect, onPublish, hasDetail }) {
+  if (items.length === 0) {
+    return (
+      <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`, borderRadius:14,
+        padding:'64px 32px', textAlign:'center', boxShadow:C.sh1 }}>
+        <div style={{ color:C.fgDisabled, marginBottom:16 }}><IBox sz={40}/></div>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:8 }}>
+          Nada aquí de momento
+        </div>
+        <div style={{ fontFamily:FB, fontSize:14, color:C.fgMid, marginBottom:24, lineHeight:1.6 }}>
+          Cuando publiques un objeto para regalar, aparecerá aquí.
+        </div>
+        <Btn onClick={onPublish}><IPlus sz={14}/> Publicar objeto</Btn>
+      </div>
+    );
+  }
+  return (
+    <div style={{ background:C.bgSurface, border:`1px solid ${C.border}`,
+      borderRadius:14, boxShadow:C.sh1, overflow:'hidden' }}>
+      {items.map((item, idx) => (
+        <ItemRow key={item.id} item={item} selected={item.id === selectedId}
+          onClick={()=>onSelect(item)} first={idx===0} last={idx===items.length-1}/>
+      ))}
+    </div>
+  );
+}
+
+/* ── CANDIDATE ROW ────────────────────────────────────────────── */
+function CandidateRow({ candidate, rank, last, onSelect }) {
+  const [hov, setHov] = React.useState(false);
+  const scoreColor = candidate.score >= 60 ? C.primary : candidate.score >= 20 ? C.warnFg : C.error;
+  return (
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 16px',
+        borderBottom: last ? 'none' : `1px solid ${C.border}`,
+        background: rank===1 ? '#F6FBF8' : hov ? C.bgPage : C.bgSurface,
+        transition:'background 150ms' }}>
+
+      {/* Rank badge */}
+      <div style={{ width:26, height:26, borderRadius:'50%', flexShrink:0,
+        background: rank===1 ? C.primary : C.bgSubtle,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        fontFamily:FM, fontSize:11, fontWeight:700,
+        color: rank===1 ? '#fff' : C.fgMuted }}>
+        {rank}
+      </div>
+
+      {/* Avatar */}
+      <div style={{ width:34, height:34, borderRadius:'50%', flexShrink:0,
+        background:C.primaryLight, border:`1px solid ${C.border}`,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        fontFamily:FD, fontSize:13, fontWeight:700, color:C.primary }}>
+        {candidate.initials}
+      </div>
+
+      {/* Info */}
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:2, flexWrap:'wrap' }}>
+          <span style={{ fontFamily:FM, fontSize:13, fontWeight:600, color:scoreColor }}>
+            {candidate.score > 0 ? `+${candidate.score}` : candidate.score}
+          </span>
+          {rank===1 && (
+            <span style={{ fontFamily:FB, fontSize:10, fontWeight:600, color:C.primary,
+              background:C.primaryLight, padding:'1px 7px', borderRadius:999 }}>
+              Mejor candidato
+            </span>
+          )}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, display:'flex', gap:8 }}>
+          <span>{candidate.distance} km{candidate.localidad ? ` · ${candidate.localidad}` : ''}</span>
+          <span>hace {candidate.daysAgo}d</span>
+        </div>
+      </div>
+
+      {/* Select */}
+      <Btn variant={rank===1?'primary':'ghost'} size="sm" onClick={()=>onSelect(candidate)}>
+        Seleccionar
+      </Btn>
+    </div>
+  );
+}
+
+/* ── ACTIVE CONTENT ───────────────────────────────────────────── */
+function ActiveContent({ item, onPause, onSelect, onCancel }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+
+      {/* Pause toggle */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+        padding:'13px 16px', background:C.bgPage, borderRadius:10,
+        border:`1px solid ${C.border}` }}>
+        <div>
+          <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, marginBottom:2 }}>
+            Pausar solicitudes
+          </div>
+          <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+            {item.requestsPaused ? 'No se admiten nuevas solicitudes' : 'Aceptando nuevas solicitudes'}
+          </div>
+        </div>
+        <Toggle active={item.requestsPaused} onChange={onPause}/>
+      </div>
+
+      {item.requestsPaused && (
+        <div style={{ display:'flex', gap:8, alignItems:'center', padding:'10px 14px',
+          background:C.warnBg, border:`1px solid ${C.warnBorder}`, borderRadius:8 }}>
+          <span style={{ color:C.warnFg, flexShrink:0 }}><IPause sz={14}/></span>
+          <span style={{ fontFamily:FB, fontSize:12, color:C.warnFg, lineHeight:1.5 }}>
+            Las solicitudes están pausadas. Reactívalas para que nuevos receptores puedan interesarse.
+          </span>
+        </div>
+      )}
+
+      {/* Candidates */}
+      <div>
+        <div style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.fg, marginBottom:10,
+          display:'flex', alignItems:'center', gap:6 }}>
+          <IUser sz={14}/> Candidatos
+          <span style={{ fontFamily:FM, fontSize:12, color:C.fgMuted, fontWeight:400 }}>
+            ({CANDIDATES.length})
+          </span>
+        </div>
+        {CANDIDATES.length > 0 ? (
+          <div style={{ border:`1px solid ${C.border}`, borderRadius:10, overflow:'hidden' }}>
+            {CANDIDATES.map((c, idx) => (
+              <CandidateRow key={c.id} candidate={c} rank={idx+1}
+                last={idx===CANDIDATES.length-1} onSelect={onSelect}/>
+            ))}
+          </div>
+        ) : (
+          <div style={{ padding:'28px 16px', textAlign:'center', background:C.bgPage,
+            borderRadius:10, border:`1px solid ${C.border}` }}>
+            <div style={{ fontFamily:FB, fontSize:13, color:C.fgMuted, lineHeight:1.6 }}>
+              Todavía no hay solicitudes. El objeto es visible en el tablón.
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Cancel */}
+      <Btn variant="dangerGhost" fullWidth onClick={onCancel}>
+        <ICircleX sz={14}/> Cancelar objeto
+      </Btn>
+    </div>
+  );
+}
+
+/* ── RESERVED CONTENT ─────────────────────────────────────────── */
+function ReservedContent({ item, onConfirmDelivery, onCancelSession }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+
+      {/* Session countdown */}
+      <div style={{ background:C.warnBg, border:`1px solid ${C.warnBorder}`, borderRadius:10, padding:'14px 16px' }}>
+        <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:4 }}>
+          <span style={{ color:C.warnFg }}><IClock sz={15}/></span>
+          <span style={{ fontFamily:FB, fontSize:13, fontWeight:600, color:C.warnFg }}>Sesión de entrega activa</span>
+        </div>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.warnFg, lineHeight:1.6 }}>
+          Plazo de 7 días · expira el <strong>{item.sessionExpires}</strong>
+        </div>
+      </div>
+
+      {/* Selected candidate */}
+      <div style={{ padding:'14px 16px', background:C.bgPage, border:`1px solid ${C.border}`, borderRadius:10 }}>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, textTransform:'uppercase',
+          letterSpacing:'0.06em', marginBottom:10 }}>Receptor seleccionado</div>
+        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ width:36, height:36, borderRadius:'50%', background:C.primaryLight,
+            border:`1px solid ${C.border}`, display:'flex', alignItems:'center',
+            justifyContent:'center', fontFamily:FD, fontSize:13, fontWeight:700, color:C.primary }}>
+            {item.selectedCandidate.initials}
+          </div>
+          <div>
+            <span style={{ fontFamily:FM, fontSize:14, fontWeight:600,
+              color: item.selectedCandidate.score>=60 ? C.primary : C.warnFg }}>
+              +{item.selectedCandidate.score}
+            </span>
+            <span style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, marginLeft:8 }}>
+              {item.selectedCandidate.distance} km{item.selectedCandidate.localidad ? ` · ${item.selectedCandidate.localidad}` : ''}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Contact channel */}
+      <div style={{ padding:'14px 16px', background:C.successBg, border:`1px solid ${C.successBd}`, borderRadius:10 }}>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.successFg, marginBottom:6, fontWeight:500 }}>
+          Canal de contacto facilitado al receptor
+        </div>
+        <div style={{ fontFamily:FM, fontSize:14, fontWeight:600, color:C.fg }}>
+          {item.contactChannel}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+        <Btn fullWidth onClick={onConfirmDelivery}>
+          <ICheck sz={15}/> Confirmar entrega realizada
+        </Btn>
+        <Btn variant="dangerGhost" fullWidth onClick={onCancelSession}>
+          <ICircleX sz={14}/> Cancelar sesión
+        </Btn>
+      </div>
+    </div>
+  );
+}
+
+/* ── CLOSED CONTENT ───────────────────────────────────────────── */
+function ClosedContent({ item }) {
+  const done = item.status === 'completed';
+  return (
+    <div style={{ padding:'32px 16px', textAlign:'center' }}>
+      <div style={{ color: done ? C.primary : C.fgMuted, marginBottom:14 }}>
+        {done ? <ICheck sz={36}/> : <ICircleX sz={36}/>}
+      </div>
+      <div style={{ fontFamily:FD, fontSize:18, fontWeight:600, color:C.fg, marginBottom:8 }}>
+        {done ? 'Entrega completada' : 'Objeto cancelado'}
+      </div>
+      <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.7, maxWidth:280, margin:'0 auto' }}>
+        {done
+          ? '¡Gracias por contribuir a la comunidad! Tu reputación ha aumentado.'
+          : 'Este objeto fue cancelado y ya no es visible en el tablón.'}
+      </div>
+      {done && (
+        <div style={{ display:'inline-flex', alignItems:'center', gap:6, marginTop:16,
+          fontFamily:FM, fontSize:14, fontWeight:600, color:C.primary }}>
+          <IStar sz={14}/> +10 puntos de reputación
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── DETAIL PANEL ─────────────────────────────────────────────── */
+function DetailPanel({ item, onClose, onPause, onSelect, onCancel, onConfirmDelivery, onCancelSession, onShare }) {
+  return (
+    <div className="slide-in" style={{ background:C.bgSurface, border:`1px solid ${C.border}`,
+      borderRadius:14, boxShadow:C.sh2, overflow:'hidden',
+      position:'sticky', top:80, maxHeight:'calc(100vh - 100px)', display:'flex', flexDirection:'column' }}>
+
+      {/* Header */}
+      <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between',
+        padding:'16px 20px', borderBottom:`1px solid ${C.border}`, flexShrink:0, gap:12 }}>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontFamily:FD, fontSize:17, fontWeight:600, color:C.fg,
+            lineHeight:1.3, marginBottom:6 }}>
+            {item.title}
+          </div>
+          <div style={{ display:'flex', gap:6, flexWrap:'wrap', alignItems:'center' }}>
+            <StatusBadge status={item.status}/>
+            <ConditionChip condition={item.condition}/>
+            <CategoryChip category={item.category}/>
+          </div>
+        </div>
+        <div style={{ display:'flex', gap:6, alignItems:'center', flexShrink:0 }}>
+          <button onClick={onShare}
+            style={{ height:32, padding:'0 12px', borderRadius:8, background:C.bgSubtle,
+              border:`1px solid ${C.border}`, cursor:'pointer',
+              display:'flex', alignItems:'center', gap:5, color:C.fgMid,
+              fontFamily:FB, fontSize:12, fontWeight:500, transition:'all 150ms' }}
+            onMouseEnter={e=>{ e.currentTarget.style.background=C.bgPage; e.currentTarget.style.color=C.fg; }}
+            onMouseLeave={e=>{ e.currentTarget.style.background=C.bgSubtle; e.currentTarget.style.color=C.fgMid; }}>
+            <IShare sz={13}/> Compartir
+          </button>
+          <button onClick={onClose} style={{ width:32, height:32, borderRadius:'50%',
+            background:C.bgSubtle, border:'none', cursor:'pointer', flexShrink:0,
+            display:'flex', alignItems:'center', justifyContent:'center', color:C.fgMid }}>
+            <IClose sz={15}/>
+          </button>
+        </div>
+      </div>
+
+      {/* Scrollable body */}
+      <div style={{ flex:1, overflowY:'auto', padding:'20px' }}>
+
+        {/* Image strip */}
+        <div style={{ aspectRatio:'16/9', background:C.bgSubtle, borderRadius:10, marginBottom:14,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          color:C.fgDisabled, position:'relative', overflow:'hidden' }}>
+          <IImage sz={32}/>
+          {item.imageCount > 1 && (
+            <div style={{ position:'absolute', bottom:10, right:10,
+              background:'rgba(20,23,26,0.6)', borderRadius:999, padding:'2px 10px',
+              fontFamily:FB, fontSize:11, color:'#fff' }}>
+              {item.imageCount} fotos
+            </div>
+          )}
+        </div>
+
+        {/* Description */}
+        <p style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.7, marginBottom:20 }}>
+          {item.desc}
+        </p>
+
+        <div style={{ height:1, background:C.border, marginBottom:20 }}/>
+
+        {item.status === 'active' && (
+          <ActiveContent item={item} onPause={onPause} onSelect={onSelect} onCancel={onCancel}/>
+        )}
+        {item.status === 'reserved' && (
+          <ReservedContent item={item} onConfirmDelivery={onConfirmDelivery} onCancelSession={onCancelSession}/>
+        )}
+        {(item.status === 'completed' || item.status === 'cancelled') && (
+          <ClosedContent item={item}/>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── PUBLISH MODAL ────────────────────────────────────────────── */
+function Step1({ form, setForm, errors }) {
+  const conds = [{id:'new',l:'A estrenar'},{id:'like_new',l:'Como nuevo'},{id:'good',l:'Buen estado'},{id:'fair',l:'Aceptable'}];
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+      <div>
+        <label style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, display:'block', marginBottom:6 }}>
+          Título <span style={{ color:C.error }}>*</span>
+        </label>
+        <input type="text" value={form.title} maxLength={80}
+          onChange={e=>setForm({...form, title:e.target.value})}
+          placeholder="Ej: Bicicleta de montaña Scott"
+          style={{ width:'100%', padding:'11px 14px', borderRadius:8,
+            border:`1.5px solid ${errors.title?C.error:C.border}`,
+            fontFamily:FB, fontSize:14, color:C.fg, background:C.bgPage,
+            outline:'none', transition:'border-color 150ms' }}/>
+        {errors.title && <div style={{ fontFamily:FB, fontSize:12, color:C.error, marginTop:4 }}>{errors.title}</div>}
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgDisabled, marginTop:3, textAlign:'right' }}>
+          {form.title.length}/80
+        </div>
+      </div>
+      <div>
+        <label style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, display:'block', marginBottom:6 }}>
+          Descripción <span style={{ color:C.error }}>*</span>
+        </label>
+        <textarea value={form.desc} rows={4} maxLength={500}
+          onChange={e=>setForm({...form, desc:e.target.value})}
+          placeholder="Describe el estado, tamaño, cómo se recoge..."
+          style={{ width:'100%', padding:'11px 14px', borderRadius:8,
+            border:`1.5px solid ${errors.desc?C.error:C.border}`,
+            fontFamily:FB, fontSize:13, color:C.fg, background:C.bgPage,
+            outline:'none', resize:'vertical', minHeight:100, lineHeight:1.6 }}/>
+        {errors.desc && <div style={{ fontFamily:FB, fontSize:12, color:C.error, marginTop:4 }}>{errors.desc}</div>}
+      </div>
+      <div>
+        <label style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, display:'block', marginBottom:8 }}>Condición</label>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+          {conds.map(c=>(
+            <button key={c.id} onClick={()=>setForm({...form, condition:c.id})}
+              style={{ padding:'10px 14px', borderRadius:8, cursor:'pointer', textAlign:'left',
+                background: form.condition===c.id ? C.primaryLight : C.bgPage,
+                border:`1.5px solid ${form.condition===c.id ? C.primary : C.border}`,
+                fontFamily:FB, fontSize:13, fontWeight:form.condition===c.id ? 600 : 400,
+                color: form.condition===c.id ? C.primary : C.fg, transition:'all 150ms' }}>
+              {c.l}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, display:'block', marginBottom:8 }}>Categoría</label>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+          {CATEGORIES.map(cat=>(
+            <button key={cat.id} onClick={()=>setForm({...form, category:cat.id})}
+              style={{ padding:'7px 13px', borderRadius:999, cursor:'pointer',
+                background: form.category===cat.id ? '#EDF0F5' : C.bgPage,
+                border:`1.5px solid ${form.category===cat.id ? '#142244' : C.border}`,
+                fontFamily:FB, fontSize:12, fontWeight:form.category===cat.id ? 600 : 400,
+                color: form.category===cat.id ? '#142244' : C.fgMid, transition:'all 150ms' }}>
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step2({ form, setForm, errors }) {
+  const slots = [0,1,2,3,4];
+  return (
+    <div>
+      <p style={{ fontFamily:FB, fontSize:13, color:C.fgMid, marginBottom:20, lineHeight:1.65 }}>
+        Añade hasta 5 fotos. La primera será la principal. Las imágenes se comprimen automáticamente.
+      </p>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:10, marginBottom:14 }}>
+        {slots.map(i=>{
+          const filled = i < form.photoCount;
+          return (
+            <div key={i}
+              onClick={()=>{ if(!filled && form.photoCount < 5) setForm({...form, photoCount:form.photoCount+1}); }}
+              style={{ aspectRatio:'4/3', borderRadius:10, cursor:filled?'default':'pointer',
+                background: filled ? '#D6EDE1' : C.bgSubtle,
+                border:`2px dashed ${filled?C.primary:errors.photos?C.error:C.border}`,
+                display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+                gap:4, transition:'all 150ms', color:filled?C.primary:C.fgDisabled }}>
+              {filled
+                ? <><IImage sz={20}/><span style={{ fontFamily:FB, fontSize:10 }}>{i===0?'Principal':`Foto ${i+1}`}</span></>
+                : <><IPlus sz={18}/><span style={{ fontFamily:FB, fontSize:10 }}>{i===0?'Principal':'Añadir'}</span></>
+              }
+            </div>
+          );
+        })}
+      </div>
+      {errors.photos && <div style={{ fontFamily:FB, fontSize:12, color:C.error, marginBottom:10 }}>{errors.photos}</div>}
+      {form.photoCount > 0 && (
+        <button onClick={()=>setForm({...form, photoCount:Math.max(0,form.photoCount-1)})}
+          style={{ background:'none', border:'none', fontFamily:FB, fontSize:12,
+            color:C.fgMuted, cursor:'pointer', padding:'2px 0', marginBottom:10 }}>
+          Quitar última foto
+        </button>
+      )}
+      <div style={{ padding:'10px 14px', background:C.bgPage, borderRadius:8, border:`1px solid ${C.border}` }}>
+        <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, lineHeight:1.7 }}>
+          Formatos: JPG, PNG, WEBP · Máx. 2 MB por imagen · Se comprimen automáticamente
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step3({ form }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+      <p style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65 }}>
+        Revisa los datos antes de publicar. El objeto será visible en el tablón inmediatamente.
+      </p>
+      <div style={{ background:C.bgPage, borderRadius:12, padding:16, border:`1px solid ${C.border}` }}>
+        <div style={{ aspectRatio:'16/9', background:C.bgSubtle, borderRadius:8, marginBottom:12,
+          display:'flex', alignItems:'center', justifyContent:'center', color:C.fgDisabled }}>
+          <IImage sz={26}/>
+          {form.photoCount>0 && <span style={{ fontFamily:FB, fontSize:11, color:C.primary, marginLeft:8 }}>
+            {form.photoCount} {form.photoCount===1?'foto':'fotos'}
+          </span>}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:14, fontWeight:500, color:C.fg, marginBottom:8 }}>{form.title||'—'}</div>
+        <div style={{ marginBottom:8 }}><ConditionChip condition={form.condition}/></div>
+        <div style={{ fontFamily:FB, fontSize:12, color:C.fgMid, lineHeight:1.6 }}>{form.desc||'—'}</div>
+      </div>
+      <div style={{ border:`1px solid ${C.border}`, borderRadius:10, overflow:'hidden' }}>
+        {[['Condición', CONDITION_LABELS[form.condition]],['Categoría', CATEGORY_LABELS[form.category] || '—'],['Fotos',`${form.photoCount} imagen${form.photoCount!==1?'es':''}`]].map(([k,v],i,a)=>(
+          <div key={k} style={{ display:'flex', justifyContent:'space-between', padding:'11px 16px',
+            borderBottom:i<a.length-1?`1px solid ${C.border}`:'none', background:C.bgSurface }}>
+            <span style={{ fontFamily:FB, fontSize:13, color:C.fgMuted }}>{k}</span>
+            <span style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg }}>{v}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ display:'flex', gap:8, alignItems:'flex-start', padding:'10px 14px',
+        background:C.successBg, border:`1px solid ${C.successBd}`, borderRadius:8 }}>
+        <span style={{ color:C.primary, flexShrink:0, marginTop:1 }}><ICheck sz={14}/></span>
+        <span style={{ fontFamily:FB, fontSize:12, color:C.successFg, lineHeight:1.6 }}>
+          Después de publicar puedes pausar solicitudes o cancelar el objeto desde Mis objetos.
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function Step4({ form }) {
+  const shareNetworks = [
+    { id:'whatsapp', label:'Compartir en WhatsApp', color:'#25D366', lightBg:'#E8FAF0',
+      icon:<ISocialWA sz={17}/>,
+      href:`https://wa.me/?text=${encodeURIComponent('Acabo de publicar algo para regalar en no lo vendo: ' + form.title + '\nhttps://nolovendo.es/objeto/nuevo')}` },
+    { id:'facebook', label:'Compartir en Facebook', color:'#1877F2', lightBg:'#E7F1FD',
+      icon:<ISocialFB sz={17}/>,
+      href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://nolovendo.es/objeto/nuevo')}&quote=${encodeURIComponent('Acabo de publicar algo para regalar: ' + form.title)}` },
+    { id:'twitter', label:'Compartir en X', color:'#0F1419', lightBg:'#F0F0F0',
+      icon:<ISocialX sz={17}/>,
+      href:`https://twitter.com/intent/tweet?text=${encodeURIComponent('Acabo de publicar algo para regalar en @nolovendo: ' + form.title)}&url=${encodeURIComponent('https://nolovendo.es/objeto/nuevo')}` },
+  ];
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap:12, padding:'8px 0 4px' }}>
+        <div style={{ width:56, height:56, borderRadius:'50%', background:'#EBF5EE',
+          border:'1.5px solid #9DCCA8', display:'flex', alignItems:'center', justifyContent:'center', color:'#3A7358' }}>
+          <ICheck sz={24}/>
+        </div>
+        <div>
+          <div style={{ fontFamily:FD, fontSize:19, fontWeight:600, color:C.fg, marginBottom:5 }}>¡Objeto publicado!</div>
+          <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65 }}>
+            Ya es visible en el tablón. ¿Lo compartes con tus contactos?
+          </div>
+        </div>
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+        {shareNetworks.map(n => (
+          <a key={n.id} href={n.href} target="_blank" rel="noopener noreferrer"
+            style={{ display:'flex', alignItems:'center', gap:12, padding:'11px 16px',
+              borderRadius:10, textDecoration:'none', background:C.bgPage,
+              border:`1px solid ${C.border}`, color:C.fg, transition:'all 150ms' }}
+            onMouseEnter={e=>{ e.currentTarget.style.background=n.lightBg; e.currentTarget.style.borderColor=n.color+'55'; }}
+            onMouseLeave={e=>{ e.currentTarget.style.background=C.bgPage; e.currentTarget.style.borderColor=C.border; }}>
+            <span style={{ color:n.color, display:'flex', flexShrink:0 }}>{n.icon}</span>
+            <span style={{ fontFamily:FB, fontSize:13, fontWeight:500 }}>{n.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PublishModal({ onClose, onPublish }) {
+  const [step, setStep] = React.useState(1);
+  const [form, setForm] = React.useState({ title:'', desc:'', condition:'good', category:'other', photoCount:0 });
+  const [errors, setErrors] = React.useState({});
+
+  function next() {
+    if (step===1) {
+      const e = {};
+      if (!form.title.trim()) e.title='El título es obligatorio.';
+      if (!form.desc.trim()) e.desc='La descripción es obligatoria.';
+      if (Object.keys(e).length) { setErrors(e); return; }
+    }
+    if (step===2 && form.photoCount===0) { setErrors({photos:'Añade al menos una foto.'}); return; }
+    setErrors({});
+    setStep(s=>s+1);
+  }
+
+  function handlePublish() {
+    onPublish(form);
+    setStep(4);
+  }
+
+  const TITLES = ['¿Qué regalas?','Añade fotos','Revisa y publica','¡Publicado!'];
+
+  return (
+    <div className="fade-in" style={{ position:'fixed', inset:0, zIndex:400,
+      background:'rgba(20,23,26,0.5)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:'clamp(12px,3vw,40px)' }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16, boxShadow:C.sh3,
+        width:'100%', maxWidth:520, maxHeight:'90vh',
+        display:'flex', flexDirection:'column', overflow:'hidden' }}>
+
+        <div style={{ padding:'18px 22px', borderBottom:`1px solid ${C.border}`,
+          display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+          <div>
+            <div style={{ fontFamily:FD, fontSize:18, fontWeight:600, color:C.fg }}>{TITLES[step-1]}</div>
+            <div style={{ fontFamily:FB, fontSize:11, color:C.fgMuted, marginTop:2 }}>{step < 4 ? `Paso ${step} de 3` : '¡Listo!'}</div>
+          </div>
+          <button onClick={onClose} style={{ width:32, height:32, borderRadius:'50%',
+            background:C.bgSubtle, border:'none', cursor:'pointer',
+            display:'flex', alignItems:'center', justifyContent:'center', color:C.fgMid }}>
+            <IClose sz={15}/>
+          </button>
+        </div>
+
+        {/* Progress */}
+        <div style={{ height:3, background:C.bgSubtle, flexShrink:0 }}>
+          <div style={{ height:'100%', background:C.primary, width:`${Math.min((step/3)*100, 100)}%`, transition:'width 300ms ease' }}/>
+        </div>
+
+        <div style={{ flex:1, overflowY:'auto', padding:'24px 22px' }}>
+          {step===1 && <Step1 form={form} setForm={setForm} errors={errors}/>}
+          {step===2 && <Step2 form={form} setForm={setForm} errors={errors}/>}
+          {step===3 && <Step3 form={form}/>}
+          {step===4 && <Step4 form={form}/>}
+        </div>
+
+        <div style={{ padding:'16px 22px', borderTop:`1px solid ${C.border}`, flexShrink:0,
+          display:'flex', gap:10 }}>
+          {step > 1 && step < 4 && (
+            <Btn variant="ghost" onClick={()=>setStep(s=>s-1)}>
+              <IChevL sz={14}/> Atrás
+            </Btn>
+          )}
+          {step === 4
+            ? <Btn fullWidth onClick={onClose}>Ir a mis objetos</Btn>
+            : step < 3
+              ? <Btn fullWidth={step===1} style={{ flex:2 }} onClick={next}>Continuar <IChevR sz={14}/></Btn>
+              : <Btn style={{ flex:2 }} onClick={handlePublish}><ICheck sz={15}/> Publicar objeto</Btn>
+          }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── SELECT MODAL ─────────────────────────────────────────────── */
+function SelectModal({ candidate, onConfirm, onClose }) {
+  const [channel, setChannel] = React.useState('');
+  const [type, setType] = React.useState('whatsapp');
+  const [error, setError] = React.useState('');
+  const scoreColor = candidate.score>=60?C.primary:candidate.score>=20?C.warnFg:C.error;
+
+  function confirm() {
+    if (!channel.trim()) { setError('Introduce un canal de contacto.'); return; }
+    const prefix = {whatsapp:'WhatsApp: ',email:'Email: ',phone:'Teléfono: '}[type];
+    onConfirm(candidate, prefix+channel);
+  }
+
+  return (
+    <div className="fade-in" style={{ position:'fixed', inset:0, zIndex:500,
+      background:'rgba(20,23,26,0.55)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:440 }}>
+
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:6 }}>
+          Seleccionar receptor
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65, marginBottom:20 }}>
+          El receptor verá tu canal de contacto al ser seleccionado. Empieza el plazo de 7 días.
+        </div>
+
+        {/* Candidate summary */}
+        <div style={{ display:'flex', gap:12, alignItems:'center', padding:'12px 16px',
+          background:C.primaryLight, border:`1px solid #B5D0C2`, borderRadius:10, marginBottom:20 }}>
+          <div style={{ width:38, height:38, borderRadius:'50%', background:C.bgSurface,
+            border:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'center',
+            fontFamily:FD, fontSize:14, fontWeight:700, color:C.primary }}>
+            {candidate.initials}
+          </div>
+          <div>
+            <div style={{ fontFamily:FM, fontSize:14, fontWeight:600, color:scoreColor }}>
+              {candidate.score>0?`+${candidate.score}`:candidate.score} puntos
+            </div>
+            <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted }}>
+              {candidate.distance} km{candidate.localidad ? ` · ${candidate.localidad}` : ''} · hace {candidate.daysAgo}d
+            </div>
+          </div>
+        </div>
+
+        {/* Channel type */}
+        <div style={{ marginBottom:16 }}>
+          <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, marginBottom:8 }}>
+            Canal de contacto <span style={{ color:C.error }}>*</span>
+          </div>
+          <div style={{ display:'flex', gap:6, marginBottom:10 }}>
+            {[['whatsapp','WhatsApp'],['email','Email'],['phone','Teléfono']].map(([id,l])=>(
+              <button key={id} onClick={()=>{ setType(id); setError(''); }}
+                style={{ padding:'6px 12px', borderRadius:8, cursor:'pointer',
+                  background: type===id ? C.primary : C.bgPage,
+                  border:`1px solid ${type===id ? C.primary : C.border}`,
+                  fontFamily:FB, fontSize:12, fontWeight:type===id?600:400,
+                  color:type===id?'#fff':C.fgMid, transition:'all 150ms' }}>
+                {l}
+              </button>
+            ))}
+          </div>
+          <input type="text" value={channel}
+            onChange={e=>{ setChannel(e.target.value); setError(''); }}
+            placeholder={type==='whatsapp'?'+34 612 345 678':type==='email'?'tu@email.com':'+34 900 000 000'}
+            style={{ width:'100%', padding:'11px 14px', borderRadius:8,
+              border:`1.5px solid ${error?C.error:C.border}`,
+              fontFamily:FB, fontSize:14, color:C.fg, background:C.bgPage, outline:'none' }}/>
+          {error && <div style={{ fontFamily:FB, fontSize:12, color:C.error, marginTop:4 }}>{error}</div>}
+        </div>
+
+        <div style={{ display:'flex', gap:8, alignItems:'flex-start', padding:'10px 14px',
+          background:C.warnBg, border:`1px solid ${C.warnBorder}`, borderRadius:8, marginBottom:20 }}>
+          <span style={{ color:C.warnFg, flexShrink:0, marginTop:1 }}><IWarn sz={13}/></span>
+          <span style={{ fontFamily:FB, fontSize:12, color:C.warnFg, lineHeight:1.6 }}>
+            Si cancelas la sesión antes del plazo, el canal de contacto no quedará visible para el receptor.
+          </span>
+        </div>
+
+        <div style={{ display:'flex', gap:10 }}>
+          <Btn variant="ghost" onClick={onClose}>Cancelar</Btn>
+          <Btn style={{ flex:1 }} onClick={confirm}>
+            <ICheck sz={14}/> Confirmar selección
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── CANCEL MODAL ─────────────────────────────────────────────── */
+function CancelModal({ mode, onNoShow, onConfirm, onClose }) {
+  const isSession = mode === 'session';
+  return (
+    <div className="fade-in" style={{ position:'fixed', inset:0, zIndex:500,
+      background:'rgba(20,23,26,0.55)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:400 }}>
+
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:8 }}>
+          {isSession ? 'Cancelar sesión de entrega' : 'Cancelar objeto'}
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65, marginBottom:20 }}>
+          {isSession
+            ? 'El objeto volverá a estado activo y podrá recibir nuevas solicitudes.'
+            : 'El objeto dejará de aparecer en el tablón. No tiene consecuencias en tu reputación.'}
+        </div>
+
+        {isSession && (
+          <div style={{ border:`1px solid ${C.border}`, borderRadius:10, overflow:'hidden', marginBottom:20 }}>
+            <div style={{ padding:'12px 16px', borderBottom:`1px solid ${C.border}` }}>
+              <div style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:C.fg, marginBottom:2 }}>
+                ¿El receptor no se presentó?
+              </div>
+              <div style={{ fontFamily:FB, fontSize:12, color:C.fgMuted, lineHeight:1.5 }}>
+                Declara un no-show para registrarlo. Esto penaliza la reputación del receptor.
+              </div>
+            </div>
+            <button onClick={onNoShow}
+              style={{ width:'100%', padding:'12px 16px', background:C.errorBg, border:'none',
+                fontFamily:FB, fontSize:13, fontWeight:600, color:C.error, cursor:'pointer',
+                display:'flex', alignItems:'center', gap:8 }}>
+              <IWarn sz={14}/> Declarar no-show y cancelar
+            </button>
+          </div>
+        )}
+
+        <div style={{ display:'flex', gap:10 }}>
+          <Btn variant="ghost" onClick={onClose}>Volver</Btn>
+          <Btn variant="danger" onClick={onConfirm}>
+            {isSession ? 'Cancelar sesión' : 'Cancelar objeto'}
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── FILTER TABS ──────────────────────────────────────────────── */
+function FilterTabs({ tabs, active, onChange }) {
+  return (
+    <div style={{ display:'flex', gap:4, marginBottom:24, flexWrap:'wrap' }}>
+      {tabs.map(tab=>(
+        <button key={tab.id} onClick={()=>onChange(tab.id)}
+          style={{ padding:'7px 14px', borderRadius:8, cursor:'pointer',
+            background: active===tab.id ? C.primary : C.bgSurface,
+            border:`1px solid ${active===tab.id ? C.primary : C.border}`,
+            fontFamily:FB, fontSize:13, fontWeight:active===tab.id?600:400,
+            color:active===tab.id?'#fff':C.fgMid, transition:'all 150ms',
+            display:'flex', alignItems:'center', gap:6 }}>
+          {tab.label}
+          {tab.count > 0 && (
+            <span style={{ fontFamily:FM, fontSize:11, fontWeight:600,
+              background:active===tab.id?'rgba(255,255,255,0.25)':C.bgSubtle,
+              color:active===tab.id?'#fff':C.fgMuted,
+              padding:'0 6px', borderRadius:999 }}>
+              {tab.count}
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ── CONFIRM DELIVERY MODAL ───────────────────────────────────── */
+function ConfirmDeliveryModal({ onConfirm, onClose }) {
+  return (
+    <div className="fade-in" style={{ position:'fixed', inset:0, zIndex:500,
+      background:'rgba(20,23,26,0.55)', display:'flex', alignItems:'center',
+      justifyContent:'center', padding:24 }}>
+      <div className="modal-in" style={{ background:C.bgSurface, borderRadius:16,
+        boxShadow:C.sh3, padding:'28px 26px', width:'100%', maxWidth:400 }}>
+        <div style={{ fontFamily:FD, fontSize:20, fontWeight:600, color:C.fg, marginBottom:8 }}>
+          ¿Confirmar entrega?
+        </div>
+        <div style={{ fontFamily:FB, fontSize:13, color:C.fgMid, lineHeight:1.65, marginBottom:20 }}>
+          Al confirmar, la sesión se cerrará y ambas reputaciones se actualizarán. Tú recibirás <strong>+10 puntos</strong>.
+        </div>
+        <div style={{ display:'flex', gap:10 }}>
+          <Btn variant="ghost" onClick={onClose}>Cancelar</Btn>
+          <Btn style={{ flex:1 }} onClick={onConfirm}>
+            <ICheck sz={14}/> Confirmar entrega
+          </Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── APP ──────────────────────────────────────────────────────── */
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [items, setItems] = React.useState(INITIAL_ITEMS);
+  const [tab, setTab] = React.useState(t.tab);
+  const [selectedId, setSelectedId] = React.useState(t.emptyState ? null : t.selectedId);
+  const [publishOpen, setPublishOpen] = React.useState(false);
+  const [selectModal, setSelectModal] = React.useState(null);
+  const [cancelModal, setCancelModal] = React.useState(null); // 'item' | 'session'
+  const [confirmDelivery, setConfirmDelivery] = React.useState(false);
+  const [mobileView, setMobileView] = React.useState('list');
+  const [shareItem, setShareItem] = React.useState(null);
+
+  const displayItems = t.emptyState ? [] : items;
+  const filtered = displayItems.filter(i => {
+    if (tab==='all') return true;
+    return i.status === tab;
+  });
+  const selectedItem = items.find(i => i.id === selectedId) || null;
+
+  const TABS = [
+    { id:'all',       label:'Todos',       count:displayItems.length },
+    { id:'active',    label:'Activos',     count:displayItems.filter(i=>i.status==='active').length },
+    { id:'reserved',  label:'Reservados',  count:displayItems.filter(i=>i.status==='reserved').length },
+    { id:'completed', label:'Completados', count:displayItems.filter(i=>i.status==='completed').length },
+    { id:'cancelled', label:'Cancelados',  count:displayItems.filter(i=>i.status==='cancelled').length },
+  ];
+
+  function selectItem(item) {
+    setSelectedId(item.id);
+    setMobileView('detail');
+  }
+  function closeDetail() { setSelectedId(null); setMobileView('list'); }
+  function changeTab(newTab) { setTab(newTab); setSelectedId(null); }
+
+  function handlePause() {
+    setItems(items.map(i => i.id===selectedId ? {...i, requestsPaused:!i.requestsPaused} : i));
+  }
+  function handleSelect(candidate) { setSelectModal(candidate); }
+  function handleConfirmSelect(candidate, contactChannel) {
+    setItems(items.map(i => i.id===selectedId ? {
+      ...i, status:'reserved',
+      selectedCandidate: candidate,
+      contactChannel,
+      sessionExpires:'24 may 2026',
+    } : i));
+    setSelectModal(null);
+  }
+  function handleCancel() { setCancelModal('item'); }
+  function handleCancelSession() { setCancelModal('session'); }
+  function handleConfirmCancel() {
+    const mode = cancelModal;
+    setItems(items.map(i => i.id===selectedId ? {
+      ...i, status: mode==='session' ? 'active' : 'cancelled',
+      selectedCandidate:undefined, contactChannel:undefined, sessionExpires:undefined
+    } : i));
+    setCancelModal(null);
+    if (mode==='item') setSelectedId(null);
+  }
+  function handleNoShow() {
+    setItems(items.map(i => i.id===selectedId ? {
+      ...i, status:'active',
+      selectedCandidate:undefined, contactChannel:undefined, sessionExpires:undefined
+    } : i));
+    setCancelModal(null);
+  }
+  function handleConfirmDelivery() {
+    setItems(items.map(i => i.id===selectedId ? {...i, status:'completed'} : i));
+    setConfirmDelivery(false);
+  }
+  function handlePublish(form) {
+    const newItem = {
+      id: Date.now(), title:form.title, condition:form.condition, category:form.category, status:'active',
+      requestCount:0, daysAgo:0, requestsPaused:false, degraded:false,
+      imageCount:form.photoCount, desc:form.desc,
+    };
+    setItems(prev => [newItem, ...prev]);
+    setSelectedId(newItem.id);
+    setTab('active');
+    // modal stays open to show share step
+  }
+
+  const hasDetail = !!selectedItem;
+
+  return (
+    <div style={{ minHeight:'100vh', background:C.bgPage }}>
+      <Navbar onPublish={()=>setPublishOpen(true)}/>
+
+      {/* Modals */}
+      {publishOpen && <PublishModal onClose={()=>setPublishOpen(false)} onPublish={handlePublish}/>}
+      {shareItem && <ShareModal title={shareItem.title} url={`https://nolovendo.es/objeto/${shareItem.id}`} onClose={()=>setShareItem(null)}/>}
+      {selectModal && <SelectModal candidate={selectModal} onConfirm={handleConfirmSelect} onClose={()=>setSelectModal(null)}/>}
+      {cancelModal && <CancelModal mode={cancelModal} onNoShow={handleNoShow} onConfirm={handleConfirmCancel} onClose={()=>setCancelModal(null)}/>}
+      {confirmDelivery && <ConfirmDeliveryModal onConfirm={handleConfirmDelivery} onClose={()=>setConfirmDelivery(false)}/>}
+
+      <div style={{ maxWidth:1140, margin:'0 auto', padding:'32px clamp(16px,4vw,40px) 80px' }}>
+
+        {/* Page header */}
+        <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between',
+          marginBottom:28, flexWrap:'wrap', gap:12 }}>
+          <div>
+            <h1 style={{ fontFamily:FD, fontSize:28, fontWeight:700, color:C.fg, marginBottom:4, lineHeight:1.2 }}>
+              Mis objetos
+            </h1>
+            <p style={{ fontFamily:FB, fontSize:14, color:C.fgMid }}>
+              Gestiona todo lo que has publicado para regalar.
+            </p>
+          </div>
+          <Btn onClick={()=>setPublishOpen(true)}>
+            <IGift sz={15}/> Publicar objeto
+          </Btn>
+        </div>
+
+        <FilterTabs tabs={TABS} active={tab} onChange={changeTab}/>
+
+        {/* Main content */}
+        <div className="split-layout"
+          style={{ display:'grid', gridTemplateColumns: hasDetail ? '360px 1fr' : '1fr', gap:20, alignItems:'start' }}>
+
+          {/* List */}
+          <div className="list-col">
+            <ItemList items={filtered} selectedId={selectedId}
+              onSelect={selectItem} onPublish={()=>setPublishOpen(true)} hasDetail={hasDetail}/>
+            {filtered.length > 0 && (
+              <div style={{ fontFamily:FB, fontSize:12, color:C.fgDisabled, textAlign:'center', marginTop:12 }}>
+                {filtered.length} {filtered.length===1?'objeto':'objetos'}
+              </div>
+            )}
+          </div>
+
+          {/* Detail */}
+          {hasDetail && (
+            <div className="detail-wrap">
+              <DetailPanel
+                item={selectedItem}
+                onClose={closeDetail}
+                onPause={handlePause}
+                onSelect={handleSelect}
+                onCancel={handleCancel}
+                onConfirmDelivery={()=>setConfirmDelivery(true)}
+                onCancelSession={handleCancelSession}
+                onShare={() => setShareItem(selectedItem)}/>
+            </div>
+          )}
+
+          {/* Empty prompt when no item selected and there are items */}
+          {!hasDetail && filtered.length > 0 && (
+            <div style={{ display:'none' }} />
+          )}
+        </div>
+
+        {/* No item selected hint — only when list is visible and items exist */}
+        {!hasDetail && filtered.length > 0 && (
+          <div style={{ textAlign:'center', marginTop:20 }}>
+            <div style={{ fontFamily:FB, fontSize:13, color:C.fgDisabled, display:'inline-flex',
+              alignItems:'center', gap:6 }}>
+              <IChevR sz={13}/> Selecciona un objeto para ver los candidatos y gestionar la entrega
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── TWEAKS ───────────────────────────────────────────────────── */
+function AppWithTweaks() {
+  const tweaksCfg = [
+    { id:'tab', kind:'text-options', title:'Tab activo',
+      options:['all','active','reserved','completed','cancelled'] },
+    { id:'selectedId', kind:'text-options', title:'Objeto seleccionado',
+      options:['none',1,2,3,4,5] },
+    { id:'emptyState', kind:'text-options', title:'Estado vacío',
+      options:['Sí','No'] },
+  ];
+  return <App/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+
+<style>
+  .site-footer { background:#fff; border-top:1px solid #D5D9DE; font-family:'DM Sans',system-ui,sans-serif; }
+  .site-footer-inner { max-width:1140px; margin:0 auto; padding:0 clamp(16px,4vw,40px); }
+  .footer-main-grid { display:flex; justify-content:space-between; align-items:flex-start; gap:64px; padding:52px 0 44px; }
+  .footer-brand-col { flex:0 0 auto; max-width:220px; }
+  .footer-logo { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; color:#3A7358; text-decoration:none; display:block; margin-bottom:14px; letter-spacing:-0.01em; }
+  .footer-desc { font-size:13px; color:#7C8692; line-height:1.75; margin:0; }
+  .footer-nav-cols { display:flex; gap:52px; flex-shrink:0; align-items:flex-start; }
+  .footer-col-label { font-size:10px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#7C8692; margin-bottom:14px; }
+  .footer-col-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .footer-col-links a { font-size:13px; color:#606A76; text-decoration:none; transition:color 150ms; line-height:1.4; }
+  .footer-col-links a:hover { color:#3A7358; }
+  .footer-col-links a.current { color:#3A7358; font-weight:500; }
+  .footer-bottom { border-top:1px solid #D5D9DE; }
+  .footer-bottom-inner { display:flex; justify-content:space-between; align-items:center; padding:16px 0; gap:16px; flex-wrap:wrap; }
+  .footer-copy { font-size:12px; color:#7C8692; }
+  .footer-motto { font-family:'Playfair Display',Georgia,serif; font-size:13px; font-style:italic; color:#7C8692; opacity:0.8; }
+  .footer-social { margin-top:20px; }
+  .footer-social-row { display:flex; gap:8px; margin-top:10px; }
+  .footer-social-btn { width:36px; height:36px; border-radius:50%; background:#F4F5F6; border:1px solid #D5D9DE; display:flex; align-items:center; justify-content:center; text-decoration:none; color:#606A76; transition:all 150ms; flex-shrink:0; }
+  .footer-social-btn:hover { transform:translateY(-1px); box-shadow:0 2px 8px rgba(0,0,0,0.10); }
+  .footer-social-btn.wa:hover { background:#E8FAF0; border-color:#25D36640; color:#25D366; }
+  .footer-social-btn.fb:hover { background:#E7F1FD; border-color:#1877F240; color:#1877F2; }
+  .footer-social-btn.tw:hover { background:#F0F0F0; border-color:#0F141940; color:#0F1419; }
+  @media(max-width:720px){.footer-main-grid{flex-direction:column;gap:36px;padding:40px 0 32px}.footer-brand-col{max-width:100%}.footer-nav-cols{flex-wrap:wrap;gap:28px 40px}.footer-bottom-inner{flex-direction:column;align-items:flex-start;gap:6px}}
+</style>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+        <div class="footer-social">
+          <div class="footer-col-label">Compartir la app</div>
+          <div class="footer-social-row">
+            <a href="https://wa.me/?text=Descubre%20no%20lo%20vendo%3A%20regala%20y%20recibe%20objetos%20gratis%20en%20tu%20comunidad.%0Ahttps%3A%2F%2Fnolovendo.es" class="footer-social-btn wa" target="_blank" rel="noopener noreferrer" title="Compartir en WhatsApp">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.116.553 4.103 1.52 5.83L0 24l6.336-1.51A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.66-.5-5.19-1.38l-.37-.22-3.76.9.94-3.67-.24-.38A9.934 9.934 0 012 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnolovendo.es&quote=Descubre%20no%20lo%20vendo%3A%20regala%20y%20recibe%20objetos%20gratis%20en%20tu%20comunidad." class="footer-social-btn fb" target="_blank" rel="noopener noreferrer" title="Compartir en Facebook">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://twitter.com/intent/tweet?text=Descubre%20no%20lo%20vendo%3A%20regala%20y%20recibe%20objetos%20gratis%20en%20tu%20comunidad.&url=https%3A%2F%2Fnolovendo.es" class="footer-social-btn tw" target="_blank" rel="noopener noreferrer" title="Compartir en X / Twitter">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.728-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html" class="current">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

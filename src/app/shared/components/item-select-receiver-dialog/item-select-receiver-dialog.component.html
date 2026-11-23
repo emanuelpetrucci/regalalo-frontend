@@ -1,0 +1,115 @@
+@if (open()) {
+  <div
+    class="item-select-receiver-dialog__backdrop rlg-fade-in"
+    role="presentation"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="item-select-receiver-dialog__panel rlg-modal-in"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'select-receiver-dialog-title'"
+      tabindex="-1"
+      (click)="onPanelClick($event)"
+      (keydown)="onPanelKeydown($event)"
+      *transloco="let t"
+    >
+      <h2 id="select-receiver-dialog-title" class="item-select-receiver-dialog__title">
+        {{ t('items.my_objects.select_modal_title') }}
+      </h2>
+      <p class="item-select-receiver-dialog__lead">
+        {{ t('items.my_objects.select_modal_lead') }}
+      </p>
+
+      <div class="item-select-receiver-dialog__summary">
+        <app-user-avatar
+          [userId]="candidate().userId"
+          [firstName]="candidate().firstName"
+          [lastName]="candidate().lastName"
+          size="md"
+          [decorative]="true"
+        />
+        <div>
+          <div
+            class="item-select-receiver-dialog__score"
+            [class]="'item-select-receiver-dialog__score--' + scoreTone()"
+          >
+            {{ scoreDisplay() }}
+            {{ t('items.my_objects.select_score_points') }}
+          </div>
+          <div class="item-select-receiver-dialog__meta">
+            {{ t('items.explore.distance_km', { km: distanceKm() }) }}
+            <span aria-hidden="true"> · </span>
+            {{ t(requestAgoKey(), requestAgoParams()) }}
+          </div>
+        </div>
+      </div>
+
+      <form (submit)="onFormSubmit($event)" novalidate>
+        <div class="item-select-receiver-dialog__field">
+          <app-contact-channel-field
+            inputId="select-channel-value"
+            appearance="donor"
+            [disabled]="submitting()"
+          />
+        </div>
+
+        <div class="item-select-receiver-dialog__legal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <p>{{ t('items.my_objects.select_legal_warning') }}</p>
+        </div>
+
+        @if (errorKey(); as errKey) {
+          <div class="item-select-receiver-dialog__api-error-box">
+            <app-alert-box variant="error">
+              <p class="item-select-receiver-dialog__api-error">{{ t(errKey) }}</p>
+            </app-alert-box>
+          </div>
+        }
+
+        <div class="item-select-receiver-dialog__footer">
+          <app-btn
+            class="item-select-receiver-dialog__dismiss"
+            variant="ghost"
+            type="button"
+            [disabled]="submitting()"
+            (click)="onDismiss()"
+          >
+            {{ t('items.my_objects.select_cancel') }}
+          </app-btn>
+          <app-btn
+            class="item-select-receiver-dialog__confirm"
+            variant="primary"
+            type="submit"
+            data-testid="select-receiver-confirm"
+            [disabled]="submitting()"
+          >
+            @if (submitting()) {
+              {{ t('items.my_objects.select_confirming') }}
+            } @else {
+              <span class="item-select-receiver-dialog__confirm-inner">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                {{ t('items.my_objects.select_confirm') }}
+              </span>
+            }
+          </app-btn>
+        </div>
+      </form>
+    </div>
+  </div>
+}

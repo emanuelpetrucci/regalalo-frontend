@@ -1,0 +1,73 @@
+next_id = 1
+[[entry]]
+id = "1"
+type = "story"
+title = "Estructura Del Proyecto Layout Y Routing Base"
+description = "Migrado: 1-1-estructura-del-proyecto-layout-y-routing-base"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "1-1-estructura-del-proyecto-layout-y-routing-base"
+
+[[entry]]
+id = "2"
+type = "story"
+title = "Servicios Core Modelos E Interceptores Http"
+description = "Migrado: 1-2-servicios-core-modelos-e-interceptores-http"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "1-2-servicios-core-modelos-e-interceptores-http"
+
+[[entry]]
+id = "3"
+type = "story"
+title = "Registro De Usuario"
+description = "Migrado: 1-3-registro-de-usuario"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "1-3-registro-de-usuario"
+
+[[entry]]
+id = "4"
+type = "story"
+title = "Internacionalizacion Es Ca En"
+description = "Migrado: 1-4-internacionalizacion-es-ca-en"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "1-4-internacionalizacion-es-ca-en"
+
+[[entry]]
+id = "5"
+type = "story"
+title = "Login Y Cierre De Sesion"
+description = "Migrado: 1-5-login-y-cierre-de-sesion"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "1-5-login-y-cierre-de-sesion"
+
+[[entry]]
+id = "6"
+type = "story"
+title = "Recuperacion Y Reset De Contrasena"
+description = "Migrado: 1-6-recuperacion-y-reset-de-contrasena"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "1-6-recuperacion-y-reset-de-contrasena"
+

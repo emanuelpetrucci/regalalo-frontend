@@ -1,0 +1,72 @@
+<div class="picker" *transloco="let t">
+  <input
+    #fileInput
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    multiple
+    class="picker__hidden-input"
+    aria-hidden="true"
+    tabindex="-1"
+    (change)="onFilesSelected($event)"
+    data-testid="publish-images"
+  />
+
+  <div class="picker__grid">
+    @for (i of slotIndices; track i) {
+      @let isFilled = slots()[i] !== null;
+      @let isLoading = loading()[i];
+      @let preview = previewUrls()[i];
+      @let hasSlotError = slotErrors()[i];
+
+      @if (isFilled && preview !== null) {
+        <div class="picker__slot picker__slot--filled">
+          <img
+            [src]="preview"
+            [alt]="i === 0 ? t('items.image_picker.main') : t('items.image_picker.photo_n', { n: i + 1 })"
+            class="picker__slot-img"
+          />
+          <span class="picker__slot-caption" aria-hidden="true">
+            {{ i === 0 ? t('items.image_picker.main') : t('items.image_picker.photo_n', { n: i + 1 }) }}
+          </span>
+          <button
+            type="button"
+            class="picker__slot-remove"
+            [attr.aria-label]="t('items.image_picker.remove')"
+            (click)="removeSlot($event, i)"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      } @else if (isLoading) {
+        <div class="picker__slot picker__slot--loading" aria-busy="true">
+          <span class="picker__spinner" aria-hidden="true"></span>
+          <span class="picker__slot-label">{{ t('items.image_picker.processing') }}</span>
+        </div>
+      } @else {
+        <div
+          class="picker__slot picker__slot--empty"
+          [class.picker__slot--error]="hasSlotError"
+          role="button"
+          [attr.tabindex]="allSlotsFull() ? -1 : 0"
+          [attr.aria-disabled]="allSlotsFull()"
+          [attr.aria-label]="i === 0 ? t('items.image_picker.main') : t('items.image_picker.add')"
+          (click)="onSlotClick(i)"
+          (keydown)="onSlotKeydown($event, i)"
+        >
+          <span class="picker__slot-icon" aria-hidden="true">+</span>
+          <span class="picker__slot-label">
+            {{ i === 0 ? t('items.image_picker.main') : t('items.image_picker.add') }}
+          </span>
+        </div>
+      }
+    }
+  </div>
+
+  <div class="picker__errors" role="alert" aria-live="assertive" aria-atomic="true">
+    @for (errKey of errors(); track errKey) {
+      <p class="picker__error">{{ t(errKey) }}</p>
+    }
+  </div>
+
+  <div class="picker__hint">{{ t('items.image_picker.hint') }}</div>
+</div>

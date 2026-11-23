@@ -1,0 +1,72 @@
+<div class="request-contact-step rlg-step-fwd" *transloco="let t">
+  <div class="request-contact-step__intro">
+    <h3 class="request-contact-step__title">{{ t('items.request.contact_step.title') }}</h3>
+    <p class="request-contact-step__lead">
+      {{ t('items.request.contact_step.lead_before') }}
+      <strong>{{ t('items.request.contact_step.lead_emphasis') }}</strong>{{ t('items.request.contact_step.lead_after') }}
+    </p>
+  </div>
+
+  <app-contact-channel-field
+    inputId="request-contact-channel-value"
+    [showLabel]="false"
+    [disabled]="submitting()"
+  />
+
+  @if (remainingSlots() !== null && remainingSlots()! > 0) {
+    <div class="request-contact-step__slots" role="note">
+      <p>
+        {{ t('items.request.slots_confirm_use') }}<strong>1</strong>
+        {{
+          remainingSlots() === 1
+            ? t('items.request.slots_confirm_of_one')
+            : t('items.request.slots_confirm_of_other')
+        }}<strong>{{ remainingSlots() }}</strong>
+        {{
+          remainingSlots() === 1
+            ? t('items.request.slots_confirm_slot_one')
+            : t('items.request.slots_confirm_slot_other')
+        }}
+      </p>
+    </div>
+  }
+
+  <div class="request-contact-step__actions">
+    <app-btn
+      class="request-contact-step__back"
+      variant="ghost"
+      type="button"
+      [disabled]="submitting()"
+      (click)="onBack()"
+    >
+      {{ t('items.request.contact_step.back') }}
+    </app-btn>
+    <app-btn
+      class="request-contact-step__submit"
+      variant="primary"
+      type="button"
+      [disabled]="submitting()"
+      (click)="onSubmit()"
+    >
+      @if (submitting()) {
+        {{ t('items.request.confirming') }}
+      } @else {
+        <span class="request-contact-step__submit-inner">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M22 2L11 13" />
+            <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+          {{ t('items.request.contact_step.submit') }}
+        </span>
+      }
+    </app-btn>
+  </div>
+</div>

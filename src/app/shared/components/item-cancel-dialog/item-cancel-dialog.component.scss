@@ -1,0 +1,62 @@
+.cancel-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(20, 23, 26, 0.55);
+}
+
+.cancel-dialog__panel {
+  width: 100%;
+  max-width: 400px;
+  padding: 28px 26px;
+  border-radius: 16px;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-3);
+  outline: none;
+}
+
+.cancel-dialog__title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+  line-height: 1.2;
+}
+
+.cancel-dialog__body {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--fg-mid);
+  line-height: 1.65;
+}
+
+.cancel-dialog__item-name {
+  margin: 0 0 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+  line-height: 1.4;
+}
+
+.cancel-dialog__error {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+.cancel-dialog__footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+
+  app-btn {
+    flex: 1;
+  }
+}

@@ -1,0 +1,304 @@
+<ng-container *transloco="let t">
+
+  <app-landing-nav />
+
+  <main>
+
+  <!-- ── Hero ── -->
+  <section class="hero" aria-labelledby="hero-headline">
+    <div class="container">
+      <div class="hero-inner">
+
+        <!-- Left: copy -->
+        <div class="hero-copy">
+          <div class="pill-label">
+            <span class="pill-dot" aria-hidden="true"></span>
+            {{ t('landing.hero.pill') }}
+          </div>
+          <h1 class="hero-h1" id="hero-headline">
+            {{ t('landing.hero.headline_1') }}<br>
+            <em>{{ t('landing.hero.headline_em') }}</em>
+          </h1>
+          <p class="hero-p">{{ t('landing.hero.lead') }}</p>
+          <div class="hero-actions">
+            <a routerLink="/register" class="btn btn-primary btn-lg">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+              {{ t('landing.hero.cta_primary') }}
+            </a>
+            <a routerLink="/explorar" class="btn btn-secondary btn-lg">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              {{ t('landing.hero.cta_secondary') }}
+            </a>
+          </div>
+          <p class="hero-note">{{ t('landing.hero.note') }}</p>
+        </div>
+
+        <!-- Right: hero visual (decorative) -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="mock-card card-1">
+            <div class="mock-card-img mock-card-img--green">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#84B09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </div>
+            <div class="mock-card-title">{{ t('landing.hero.mock.card1_title') }}</div>
+            <div class="mock-card-meta">{{ t('landing.hero.mock.card1_meta') }}</div>
+            <span class="mock-badge mock-badge--active">{{ t('landing.hero.mock.badge_active') }}</span>
+          </div>
+
+          <div class="mock-card card-2">
+            <div class="mock-card-img mock-card-img--blue">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7089B6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="mock-card-title">{{ t('landing.hero.mock.card2_title') }}</div>
+            <div class="mock-card-meta">{{ t('landing.hero.mock.card2_meta') }}</div>
+            <div class="mock-card-footer">
+              <span class="mock-badge mock-badge--active">{{ t('landing.hero.mock.badge_active') }}</span>
+              <span class="mock-card-requests">{{ t('landing.hero.mock.card2_requests') }}</span>
+            </div>
+          </div>
+
+          <div class="mock-card card-3">
+            <div class="mock-card-img mock-card-img--amber">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#D4870A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="mock-card-title">{{ t('landing.hero.mock.card3_title') }}</div>
+            <div class="mock-card-meta">{{ t('landing.hero.mock.card3_meta') }}</div>
+            <span class="mock-badge mock-badge--reserved">{{ t('landing.hero.mock.badge_reserved') }}</span>
+          </div>
+
+          <div class="float-chip chip-rep">
+            <div class="rep-chip-avatar">C</div>
+            <div>
+              <div class="chip-name">{{ t('landing.hero.mock.chip_name') }}</div>
+              <div class="chip-rep-score">{{ t('landing.hero.mock.chip_reputation') }}</div>
+            </div>
+          </div>
+
+          <div class="float-chip chip-dist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#253F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="chip-dist-text">{{ t('landing.hero.mock.chip_distance') }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Stats strip -->
+      <!-- <div class="stats-strip" id="stats-strip">
+        <div class="stat-item">
+          <div class="stat-num" id="stat-objects">2.400+</div>
+          <div class="stat-label">{{ t('landing.stats.objects') }}</div>
+        </div>
+        <div class="stat-div" aria-hidden="true"></div>
+        <div class="stat-item">
+          <div class="stat-num" id="stat-cities">18</div>
+          <div class="stat-label">{{ t('landing.stats.cities') }}</div>
+        </div>
+        <div class="stat-div" aria-hidden="true"></div>
+        <div class="stat-item">
+          <div class="stat-num">50 km</div>
+          <div class="stat-label">{{ t('landing.stats.radius') }}</div>
+        </div>
+        <div class="stat-div" aria-hidden="true"></div>
+        <div class="stat-item">
+          <div class="stat-num">€0</div>
+          <div class="stat-label">{{ t('landing.stats.cost_label') }}</div>
+        </div>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- ── Cómo funciona ── -->
+  <section class="section section--surface" id="como-funciona" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">{{ t('landing.how.label') }}</span>
+        <h2 class="section-title" id="how-title">{{ t('landing.how.title') }}</h2>
+        <p class="section-sub">{{ t('landing.how.subtitle') }}</p>
+      </div>
+      <div class="steps-grid">
+
+        <div class="step-card reveal" data-delay="0">
+          <span class="step-num" aria-hidden="true">{{ t('landing.how.step1_num') }}</span>
+          <div class="step-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <h3 class="step-title">{{ t('landing.how.step1_title') }}</h3>
+          <p class="step-body">{{ t('landing.how.step1_body') }}</p>
+        </div>
+
+        <div class="step-card reveal" data-delay="130">
+          <span class="step-num" aria-hidden="true">{{ t('landing.how.step2_num') }}</span>
+          <div class="step-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3 class="step-title">{{ t('landing.how.step2_title') }}</h3>
+          <p class="step-body">{{ t('landing.how.step2_body') }}</p>
+        </div>
+
+        <div class="step-card reveal" data-delay="260">
+          <span class="step-num" aria-hidden="true">{{ t('landing.how.step3_num') }}</span>
+          <div class="step-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <h3 class="step-title">{{ t('landing.how.step3_title') }}</h3>
+          <p class="step-body">{{ t('landing.how.step3_body') }}</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── La comunidad ── -->
+  <section class="section" aria-labelledby="system-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">{{ t('landing.system.label') }}</span>
+        <h2 class="section-title" id="system-title">{{ t('landing.system.title_1') }}<br>{{ t('landing.system.title_2') }}</h2>
+        <p class="section-sub">{{ t('landing.system.subtitle') }}</p>
+      </div>
+      <div class="values-grid">
+
+        <div class="value-card reveal" data-delay="0">
+          <div class="value-icon value-icon--green" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div>
+            <h3 class="value-title">{{ t('landing.system.value1_title') }}</h3>
+            <p class="value-body">{{ t('landing.system.value1_body') }}</p>
+          </div>
+        </div>
+
+        <div class="value-card reveal" data-delay="120">
+          <div class="value-icon value-icon--accent" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#253F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <h3 class="value-title">{{ t('landing.system.value2_title') }}</h3>
+            <p class="value-body">{{ t('landing.system.value2_body') }}</p>
+          </div>
+        </div>
+
+        <div class="value-card reveal" data-delay="240">
+          <div class="value-icon value-icon--green" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <h3 class="value-title">{{ t('landing.system.value3_title') }}</h3>
+            <p class="value-body">{{ t('landing.system.value3_body') }}</p>
+          </div>
+        </div>
+
+        <div class="value-card reveal" data-delay="360">
+          <div class="value-icon value-icon--neutral" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#606A76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div>
+            <h3 class="value-title">{{ t('landing.system.value4_title') }}</h3>
+            <p class="value-body">{{ t('landing.system.value4_body') }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Reputación ── -->
+  <section class="rep-section" aria-labelledby="rep-title">
+    <div class="container">
+      <div class="rep-inner">
+        <div>
+          <span class="section-label section-label--light">{{ t('landing.reputation.label') }}</span>
+          <h2 class="section-title section-title--white" id="rep-title">
+            {{ t('landing.reputation.title_1') }}<br>
+            <em class="rep-title-em">{{ t('landing.reputation.title_em') }}</em>
+          </h2>
+          <p class="section-sub section-sub--dim">{{ t('landing.reputation.subtitle') }}</p>
+          <a routerLink="/register" class="btn btn-primary btn-md">{{ t('landing.reputation.cta') }}</a>
+        </div>
+        <div class="rep-example" [attr.aria-label]="t('landing.reputation.example_aria')">
+          <div class="rep-table-label" aria-hidden="true">{{ t('landing.reputation.table_label') }}</div>
+
+          <div class="rep-row rep-row--first reveal" data-delay="0">
+            <div class="rep-row-av rep-row-av--first" aria-hidden="true">C</div>
+            <div class="rep-row-content">
+              <div class="rep-row-name">{{ t('landing.reputation.example.name1') }}</div>
+              <div class="rep-row-meta">{{ t('landing.reputation.example.meta1') }}</div>
+            </div>
+            <span class="rep-row-score rep-row-score--first">+92</span>
+            <span class="rep-row-badge rep-row-badge--first">{{ t('landing.reputation.example.rank1') }}</span>
+          </div>
+
+          <div class="rep-row reveal" data-delay="130">
+            <div class="rep-row-av rep-row-av--dim" aria-hidden="true">M</div>
+            <div class="rep-row-content">
+              <div class="rep-row-name rep-row-name--dim">{{ t('landing.reputation.example.name2') }}</div>
+              <div class="rep-row-meta rep-row-meta--dimmer">{{ t('landing.reputation.example.meta2') }}</div>
+            </div>
+            <span class="rep-row-score rep-row-score--dim">+41</span>
+            <span class="rep-row-badge">{{ t('landing.reputation.example.rank2') }}</span>
+          </div>
+
+          <div class="rep-row rep-row--faded reveal" data-delay="260">
+            <div class="rep-row-av rep-row-av--faded" aria-hidden="true">J</div>
+            <div class="rep-row-content">
+              <div class="rep-row-name rep-row-name--faded">{{ t('landing.reputation.example.name3') }}</div>
+              <div class="rep-row-meta rep-row-meta--faded">{{ t('landing.reputation.example.meta3') }}</div>
+            </div>
+            <span class="rep-row-score rep-row-score--faded">+18</span>
+            <span class="rep-row-badge">{{ t('landing.reputation.example.rank3') }}</span>
+          </div>
+
+          <div class="rep-ranking-note" aria-hidden="true">{{ t('landing.reputation.list_note') }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA band ── -->
+  <section class="cta-section" aria-labelledby="cta-title">
+    <div class="container">
+      <span class="section-label section-label--ghost">{{ t('landing.cta_section.label') }}</span>
+      <h2 class="section-title section-title--white cta-title" id="cta-title">{{ t('landing.cta_section.title') }}</h2>
+      <p class="section-sub section-sub--dim70">{{ t('landing.cta_section.subtitle') }}</p>
+      <div class="cta-actions">
+        <a routerLink="/register" class="btn btn-white btn-lg">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          {{ t('landing.cta_section.publish') }}
+        </a>
+        <a routerLink="/explorar" class="btn btn-ghost-white btn-lg">
+          {{ t('landing.cta_section.explore') }}
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="section section--surface faq-section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">{{ t('landing.seo.faq.section_label') }}</span>
+        <h2 class="section-title" id="faq-title">{{ t('landing.seo.faq.section_title') }}</h2>
+      </div>
+      <dl class="faq-list reveal" data-delay="100">
+        @for (item of faqKeys; track item.q; let idx = $index) {
+          <div class="faq-item" [class.faq-open]="openFaqItems().has(idx)">
+            <dt class="faq-question">
+              <button type="button" (click)="toggleFaq(idx)" [attr.aria-expanded]="openFaqItems().has(idx)" [attr.aria-controls]="'faq-a-' + idx">
+                <span>{{ t(item.q) }}</span>
+                <svg class="faq-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+            </dt>
+            <dd class="faq-answer" [id]="'faq-a-' + idx">{{ t(item.a) }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+  </section>
+
+  </main>
+
+  <app-landing-footer />
+
+</ng-container>

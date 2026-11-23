@@ -1,0 +1,468 @@
+<ng-container *transloco="let t">
+  @if (publicMode()) {
+    <app-landing-nav />
+  }
+  <main class="page-wrap">
+    <header class="doc-header">
+      <div class="doc-eyebrow">{{ t('legal.common.eyebrow') }}</div>
+      <h1 class="doc-title">
+        @if (pageType() === 'privacy') {
+          {{ t('legal.privacy.title') }}
+        } @else {
+          {{ t('legal.cookies.title') }}
+        }
+      </h1>
+      <div class="doc-meta">
+        <span>
+          <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          {{ t('legal.common.meta.updated_label') }} {{ t('legal.common.meta.updated_date') }}
+        </span>
+        <span>
+          <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+          {{ t('legal.common.meta.effective_label') }} {{ t('legal.common.meta.effective_date') }}
+        </span>
+        @if (pageType() === 'cookies') {
+          <span>
+            <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            {{ t('legal.common.policy_version_label') }} {{ t('legal.common.policy_version') }}
+          </span>
+        }
+      </div>
+    </header>
+
+  @if (pageType() === 'privacy') {
+    <div class="info-box">
+      <div class="info-box-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      </div>
+      <p>
+        {{ t('legal.privacy.info.part1') }}<strong>{{ t('legal.privacy.info.brand') }}</strong>{{ t('legal.privacy.info.part2') }}<strong>{{ t('legal.privacy.info.rgpd') }}</strong>{{ t('legal.privacy.info.part3') }}
+      </p>
+    </div>
+
+    <nav class="toc" [attr.aria-label]="t('legal.common.contents')">
+      <div class="toc-title">{{ t('legal.common.contents') }}</div>
+      <ol>
+        @for (item of privacyToc; track item.anchor) {
+          <li><a [href]="'#' + item.anchor">{{ t(item.labelKey) }}</a></li>
+        }
+      </ol>
+    </nav>
+
+    @for (section of privacySections; track section.id) {
+      <section class="doc-section" [id]="section.id">
+        <div class="section-header">
+          <span class="section-num">{{ section.num }}</span>
+          <h2 class="section-title">{{ t(section.titleKey) }}</h2>
+        </div>
+
+        @switch (section.id) {
+          @case ('responsable') {
+            <div class="contact-box">
+              @for (row of privacyControllerRows; track row.labelKey) {
+                <div class="contact-row">
+                  <div class="contact-icon" aria-hidden="true">
+                    @switch (row.icon) {
+                      @case ('company') {
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                          <polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                      }
+                      @case ('location') {
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                          <circle cx="12" cy="10" r="3" />
+                        </svg>
+                      }
+                      @case ('email') {
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                          <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                      }
+                    }
+                  </div>
+                  <div>
+                    <div class="contact-label">{{ t(row.labelKey) }}</div>
+                    <div class="contact-value">{{ t(row.valueKey) }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+          @case ('datos') {
+            <p>{{ t('legal.privacy.sections.data.intro') }}</p>
+            <table class="data-table data-table--privacy">
+              <thead>
+                <tr>
+                  @for (header of ['0', '1', '2']; track header) {
+                    <th scope="col">{{ t('legal.privacy.sections.data.table.headers.' + header) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (rowIndex of privacyDataRows; track rowIndex) {
+                  <tr>
+                    @for (col of ['0', '1', '2']; track col) {
+                      <td>{{ t('legal.privacy.sections.data.table.rows.' + rowIndex + '.' + col) }}</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+            <h3>{{ t('legal.privacy.sections.data.not_collected_title') }}</h3>
+            <p>{{ t('legal.privacy.sections.data.not_collected_body') }}</p>
+          }
+          @case ('finalidad') {
+            <table class="data-table data-table--privacy">
+              <thead>
+                <tr>
+                  @for (header of ['0', '1']; track header) {
+                    <th scope="col">{{ t('legal.privacy.sections.purpose.table.headers.' + header) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (rowIndex of privacyPurposeRows; track rowIndex) {
+                  <tr>
+                    <td>{{ t('legal.privacy.sections.purpose.table.rows.' + rowIndex + '.0') }}</td>
+                    <td>{{ t('legal.privacy.sections.purpose.table.rows.' + rowIndex + '.1') }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            <p>{{ t('legal.privacy.sections.purpose.footer') }}</p>
+          }
+          @case ('conservacion') {
+            <p>{{ t('legal.privacy.sections.retention.intro') }}</p>
+            <table class="data-table data-table--privacy">
+              <thead>
+                <tr>
+                  @for (header of ['0', '1']; track header) {
+                    <th scope="col">{{ t('legal.privacy.sections.retention.table.headers.' + header) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (rowIndex of privacyRetentionRows; track rowIndex) {
+                  <tr>
+                    <td>{{ t('legal.privacy.sections.retention.table.rows.' + rowIndex + '.0') }}</td>
+                    <td>{{ t('legal.privacy.sections.retention.table.rows.' + rowIndex + '.1') }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+          @case ('destinatarios') {
+            <p>{{ t('legal.privacy.sections.recipients.intro') }}</p>
+            <table class="data-table data-table--privacy">
+              <thead>
+                <tr>
+                  @for (header of ['0', '1', '2']; track header) {
+                    <th scope="col">{{ t('legal.privacy.sections.recipients.table.headers.' + header) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (rowIndex of privacyRecipientsRows; track rowIndex) {
+                  <tr>
+                    @for (col of ['0', '1', '2']; track col) {
+                      <td>{{ t('legal.privacy.sections.recipients.table.rows.' + rowIndex + '.' + col) }}</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+            <p>{{ t('legal.privacy.sections.recipients.footer') }}</p>
+          }
+          @case ('derechos') {
+            <p>
+              {{ t('legal.privacy.sections.rights.intro_before') }}<strong>{{ t('legal.privacy.sections.rights.intro_email') }}</strong>{{ t('legal.privacy.sections.rights.intro_after') }}
+            </p>
+            <div class="rights-grid">
+              @for (cardKey of privacyRightsCards; track cardKey) {
+                <div class="right-card">
+                  <div class="right-card-tag">{{ t(cardKey + '.tag') }}</div>
+                  <div class="right-card-label">{{ t(cardKey + '.label') }}</div>
+                  <div class="right-card-desc">{{ t(cardKey + '.desc') }}</div>
+                </div>
+              }
+            </div>
+            <p>
+              {{ t('legal.privacy.sections.rights.aepd_before') }}
+              <a class="aepd-link" href="https://www.aepd.es" rel="noopener noreferrer" target="_blank">{{ t('legal.privacy.sections.rights.aepd_link') }}</a>{{ t('legal.privacy.sections.rights.aepd_after') }}
+            </p>
+          }
+          @case ('menores') {
+            @for (paraKey of privacyMinorsParagraphs; track paraKey) {
+              <p>{{ t(paraKey) }}</p>
+            }
+          }
+          @case ('cambios') {
+            @for (paraKey of privacyChangesParagraphs; track paraKey) {
+              <p>{{ t(paraKey) }}</p>
+            }
+          }
+          @case ('contacto') {
+            <p>{{ t('legal.privacy.sections.contact.intro') }}</p>
+            <div class="contact-box">
+              @for (row of privacyContactRows; track row.labelKey) {
+                <div class="contact-row">
+                  <div class="contact-icon" aria-hidden="true">
+                    @if (row.icon === 'email') {
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                      </svg>
+                    } @else {
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4l3 3" />
+                      </svg>
+                    }
+                  </div>
+                  <div>
+                    <div class="contact-label">{{ t(row.labelKey) }}</div>
+                    <div class="contact-value">{{ t(row.valueKey) }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        }
+      </section>
+    }
+  } @else {
+    <div class="info-box">
+      <div class="info-box-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      </div>
+      <p>
+        {{ t('legal.cookies.info.part1') }}<strong>{{ t('legal.cookies.info.brand') }}</strong>{{ t('legal.cookies.info.part2') }}<strong>{{ t('legal.cookies.info.lssi') }}</strong>{{ t('legal.cookies.info.part3') }}
+      </p>
+    </div>
+
+    <nav class="toc" [attr.aria-label]="t('legal.common.contents')">
+      <div class="toc-title">{{ t('legal.common.contents') }}</div>
+      <ol>
+        @for (item of cookiesToc; track item.anchor) {
+          <li><a [href]="'#' + item.anchor">{{ t(item.labelKey) }}</a></li>
+        }
+      </ol>
+    </nav>
+
+    @for (section of cookiesSections; track section.id) {
+      <section class="doc-section" [id]="section.id">
+        <div class="section-header">
+          <span class="section-num">{{ section.num }}</span>
+          <h2 class="section-title">{{ t(section.titleKey) }}</h2>
+        </div>
+
+        @switch (section.id) {
+          @case ('que-son') {
+            <p>{{ t('legal.cookies.sections.what.paragraphs.p0') }}</p>
+            <p>
+              {{ t('legal.cookies.sections.what.paragraphs.p1_before') }}<strong>{{ t('legal.cookies.sections.what.paragraphs.p1_strong') }}</strong>{{ t('legal.cookies.sections.what.paragraphs.p1_after') }}
+            </p>
+          }
+          @case ('tipos') {
+            <div class="cookie-types">
+              @for (card of cookieTypeCards; track card.variant) {
+                <div class="cookie-card">
+                  <div class="cookie-card-badge" [class]="card.variant">
+                    @switch (card.variant) {
+                      @case ('necessary') {
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                      }
+                      @case ('analytics') {
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <line x1="18" y1="20" x2="18" y2="10" />
+                          <line x1="12" y1="20" x2="12" y2="4" />
+                          <line x1="6" y1="20" x2="6" y2="14" />
+                        </svg>
+                      }
+                      @case ('marketing') {
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      }
+                      @case ('preferences') {
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      }
+                    }
+                  </div>
+                  <div class="cookie-card-name">
+                    {{ t(card.nameKey) }}
+                    <span [class]="card.pillClass">{{ t(card.pillKey) }}</span>
+                  </div>
+                  <div class="cookie-card-desc">{{ t(card.descKey) }}</div>
+                </div>
+              }
+            </div>
+            <p>{{ t('legal.cookies.sections.types.footer') }}</p>
+          }
+          @case ('tabla') {
+            <p>{{ t('legal.cookies.sections.table.intro') }}</p>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  @for (header of ['0', '1', '2', '3']; track header) {
+                    <th scope="col">{{ t('legal.cookies.sections.table.headers.' + header) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (rowIndex of cookiesTableRows; track rowIndex) {
+                  <tr>
+                    <td class="mono">{{ t('legal.cookies.sections.table.rows.' + rowIndex + '.0') }}</td>
+                    <td>{{ t('legal.cookies.sections.table.rows.' + rowIndex + '.1') }}</td>
+                    <td>{{ t('legal.cookies.sections.table.rows.' + rowIndex + '.2') }}</td>
+                    <td class="duration">{{ t('legal.cookies.sections.table.rows.' + rowIndex + '.3') }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            <p>{{ t('legal.cookies.sections.table.footer') }}</p>
+          }
+          @case ('consentimiento') {
+            <p>{{ t('legal.cookies.sections.consent.intro') }}</p>
+            <div class="banner-preview" aria-hidden="true">
+              <div class="banner-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+                <span class="banner-label-accent">{{ t('legal.cookies.sections.consent.preview_label') }}</span>
+                {{ t('legal.cookies.sections.consent.preview_suffix') }}
+              </div>
+              <div class="banner-inner">
+                <p class="banner-text">
+                  <strong>{{ t('legal.cookies.sections.consent.banner_lead') }}</strong>{{ t('legal.cookies.sections.consent.banner_body') }}
+                </p>
+                <div class="banner-actions">
+                  <span class="banner-btn-accept">{{ t('legal.cookies.sections.consent.banner_accept') }}</span>
+                  <span class="banner-btn-basic">{{ t('legal.cookies.sections.consent.banner_basic') }}</span>
+                  <span class="banner-btn-config">{{ t('legal.cookies.sections.consent.banner_config') }}</span>
+                </div>
+              </div>
+            </div>
+            <p>
+              {{ t('legal.cookies.sections.consent.footer_before') }}<strong>{{ t('legal.cookies.sections.consent.footer_strong') }}</strong>{{ t('legal.cookies.sections.consent.footer_mid') }}<code class="inline-code">{{ t('legal.cookies.sections.consent.footer_cookie') }}</code>{{ t('legal.cookies.sections.consent.footer_after') }}
+            </p>
+          }
+          @case ('gestion') {
+            <p>
+              {{ t('legal.cookies.sections.manage.intro_before') }}<strong>{{ t('legal.cookies.sections.manage.intro_strong') }}</strong>{{ t('legal.cookies.sections.manage.intro_after') }}
+            </p>
+            <div class="toggle-table" aria-hidden="true">
+              @for (toggle of cookieTogglePreview; track toggle.nameKey) {
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <div class="toggle-name">{{ t(toggle.nameKey) }}</div>
+                    <div class="toggle-desc">{{ t(toggle.descKey) }}</div>
+                  </div>
+                  <div class="toggle-switch" [class]="toggle.state" [attr.aria-label]="t(toggle.ariaLabelKey)"></div>
+                </div>
+              }
+            </div>
+            <h3>{{ t('legal.cookies.sections.manage.browser_title') }}</h3>
+            <p>{{ t('legal.cookies.sections.manage.browser_intro') }}</p>
+            <table class="data-table data-table--privacy">
+              <thead>
+                <tr>
+                  @for (header of ['0', '1']; track header) {
+                    <th scope="col">{{ t('legal.cookies.sections.manage.browser_table.headers.' + header) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (rowIndex of cookiesBrowserRows; track rowIndex) {
+                  <tr>
+                    <td>{{ t('legal.cookies.sections.manage.browser_table.rows.' + rowIndex + '.0') }}</td>
+                    <td>{{ t('legal.cookies.sections.manage.browser_table.rows.' + rowIndex + '.1') }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+          @case ('terceros') {
+            <p>
+              {{ t('legal.cookies.sections.third_party.paragraphs.p0_before') }}<strong>{{ t('legal.cookies.sections.third_party.paragraphs.p0_strong') }}</strong>{{ t('legal.cookies.sections.third_party.paragraphs.p0_after') }}
+            </p>
+            <p>{{ t('legal.cookies.sections.third_party.paragraphs.p1') }}</p>
+          }
+          @case ('cambios') {
+            @for (paraKey of cookiesChangesParagraphs; track paraKey) {
+              <p>{{ t(paraKey) }}</p>
+            }
+          }
+          @case ('contacto') {
+            <p>{{ t('legal.cookies.sections.contact.intro') }}</p>
+            <div class="contact-box">
+              @for (row of cookiesContactRows; track row.labelKey) {
+                <div class="contact-row">
+                  <div class="contact-icon" aria-hidden="true">
+                    @if (row.icon === 'email') {
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                      </svg>
+                    } @else {
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                      </svg>
+                    }
+                  </div>
+                  <div>
+                    <div class="contact-label">{{ t(row.labelKey) }}</div>
+                    <div class="contact-value">
+                      @if (row.routerLink) {
+                        <a class="contact-link" [routerLink]="row.routerLink">{{ t(row.valueKey) }}</a>
+                      } @else {
+                        {{ t(row.valueKey) }}
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        }
+      </section>
+    }
+  }
+  </main>
+
+  @if (publicMode()) {
+    <app-landing-footer />
+  } @else {
+    <app-site-footer [currentLegal]="pageType()" />
+  }
+</ng-container>

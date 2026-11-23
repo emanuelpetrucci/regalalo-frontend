@@ -1,0 +1,174 @@
+<div class="perfil-publico" *transloco="let t">
+  <header class="perfil-publico__toolbar">
+    <button
+      type="button"
+      class="perfil-publico__back"
+      (click)="goBack()"
+      [attr.aria-label]="t('profile.public.back')"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      <span>{{ t('profile.public.back') }}</span>
+    </button>
+  </header>
+
+  @if (loading()) {
+    <div
+      class="perfil-publico__skeleton"
+      role="status"
+      [attr.aria-label]="t('profile.public.loading')"
+    >
+      <div class="perfil-publico__skeleton-header">
+        <div class="perfil-publico__skeleton-avatar"></div>
+        <div class="perfil-publico__skeleton-lines">
+          <div
+            class="perfil-publico__skeleton-line perfil-publico__skeleton-line--wide"
+          ></div>
+          <div
+            class="perfil-publico__skeleton-line perfil-publico__skeleton-line--short"
+          ></div>
+        </div>
+      </div>
+      <div class="perfil-publico__skeleton-stats">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="perfil-publico__skeleton-stat"></div>
+        }
+      </div>
+    </div>
+  } @else if (errorKey(); as key) {
+    <div class="perfil-publico__error" role="alert">
+      <p class="perfil-publico__error-msg">{{ t(key) }}</p>
+      @if (key === 'profile.public.errors.load') {
+        <button type="button" class="perfil-publico__retry-btn" (click)="retry()">
+          {{ t('profile.public.errors.retry') }}
+        </button>
+      } @else {
+        <button type="button" class="perfil-publico__retry-btn" (click)="goBack()">
+          {{ t('profile.public.back') }}
+        </button>
+        @if (
+          key === 'profile.public.errors.not_found' ||
+          key === 'profile.public.errors.invalid_id'
+        ) {
+          <button
+            type="button"
+            class="perfil-publico__secondary-btn"
+            (click)="goExplore()"
+          >
+            {{ t('profile.public.errors.back_explore') }}
+          </button>
+        }
+      }
+    </div>
+  } @else if (profile(); as p) {
+    <div class="perfil-publico__card">
+      <div class="perfil-publico__user-row">
+        <app-user-avatar
+          size="lg"
+          [avatarUrl]="p.avatarUrl"
+          [firstName]="p.firstName"
+          [lastName]="p.lastName"
+          [userId]="p.id"
+          [ariaLabel]="displayName() || t('profile.public.anonymous_user')"
+        />
+        <div class="perfil-publico__user-meta">
+          <h1
+            class="perfil-publico__title"
+            data-testid="public-profile-name"
+            [attr.aria-label]="
+              displayName()
+                ? t('profile.public.display_name_aria', { name: displayName() })
+                : null
+            "
+          >
+            {{ displayName() || t('profile.public.anonymous_user') }}
+          </h1>
+          <p class="perfil-publico__member-since">
+            {{ t('profile.public.member_since', { date: memberSince() }) }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="perfil-publico__stats"
+        role="list"
+        [attr.aria-label]="t('profile.public.stats.aria_label')"
+      >
+        <div class="perfil-publico__stat-card" role="listitem">
+          <div
+            class="perfil-publico__stat-value"
+            [class.perfil-publico__stat-value--good]="scoreTone() === 'good'"
+            [class.perfil-publico__stat-value--muted]="scoreTone() === 'muted'"
+            [class.perfil-publico__stat-value--low]="scoreTone() === 'low'"
+          >
+            {{ scoreDisplay() }}
+          </div>
+          <div class="perfil-publico__stat-label">
+            {{ t('profile.public.stats.commitment') }}
+          </div>
+        </div>
+        <div class="perfil-publico__stat-card" role="listitem">
+          <div class="perfil-publico__stat-value">{{ p.totalDonated }}</div>
+          <div class="perfil-publico__stat-label">
+            {{ t('profile.public.stats.given') }}
+          </div>
+        </div>
+        <div class="perfil-publico__stat-card" role="listitem">
+          <div class="perfil-publico__stat-value">{{ p.totalReceived }}</div>
+          <div class="perfil-publico__stat-label">
+            {{ t('profile.public.stats.received') }}
+          </div>
+        </div>
+      </div>
+
+      @if (canReport()) {
+        <div class="perfil-publico__report-trigger">
+          <button
+            type="button"
+            class="perfil-publico__report-link"
+            (click)="openReportModal($event)"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+              <line x1="4" y1="22" x2="4" y2="15"/>
+            </svg>
+            {{ t('reports.trigger.report_user') }}
+          </button>
+        </div>
+      }
+    </div>
+
+    @if (reportModalOpen()) {
+      <app-report-modal
+        [context]="{ entityType: 'user', entityId: p.id, entityDisplayName: displayName() }"
+        (closed)="onReportClosed()"
+        (submitted)="onReportSubmitted()"
+      />
+    }
+
+    <p class="perfil-publico__privacy-note">
+      {{ t('profile.public.privacy_note') }}
+    </p>
+  }
+</div>

@@ -1,0 +1,37 @@
+next_id = 1
+[[entry]]
+id = "1"
+type = "story"
+title = "Solicitar Un Objeto Desde El Detalle"
+description = "Migrado: 3-1-solicitar-un-objeto-desde-el-detalle"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "3-1-solicitar-un-objeto-desde-el-detalle"
+
+[[entry]]
+id = "2"
+type = "story"
+title = "Ver Candidatos Rankeados Vista Donante"
+description = "Migrado: 3-2-ver-candidatos-rankeados-vista-donante"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "3-2-ver-candidatos-rankeados-vista-donante"
+
+[[entry]]
+id = "3"
+type = "story"
+title = "Seleccionar Receptor Con Canal De Contacto"
+description = "Migrado: 3-3-seleccionar-receptor-con-canal-de-contacto"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "3-3-seleccionar-receptor-con-canal-de-contacto"
+

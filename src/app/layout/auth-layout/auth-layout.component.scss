@@ -1,0 +1,133 @@
+.auth-layout {
+  display: grid;
+  grid-template-columns: 44% 56%;
+  min-height: 100vh;
+}
+
+.brand-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 56px 52px;
+  overflow: hidden;
+  background: var(--color-primary-500);
+  color: var(--fg-on-primary);
+}
+
+.brand-col__watermark {
+  position: absolute;
+  right: -12px;
+  bottom: -24px;
+  font-family: var(--font-display);
+  font-size: 200px;
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: rgba(255, 255, 255, 0.06);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.brand-col__content {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-col__title {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.brand-col__divider {
+  width: 48px;
+  height: 1px;
+  margin-bottom: 22px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.brand-col__tagline {
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.brand-col__copy {
+  max-width: 320px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: var(--weight-light);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.brand-col__footer {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.form-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 24px;
+  background: var(--bg-page);
+}
+
+.form-panel__lang {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+}
+
+.form-panel__inner {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-panel__card {
+  padding: 28px 28px 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+}
+
+.form-panel__note {
+  margin: 20px 0 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.65;
+  text-align: center;
+  color: var(--fg-muted);
+}
+
+@media (max-width: 767px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-col {
+    display: none;
+  }
+
+  .form-panel {
+    align-items: flex-start;
+    padding-top: 80px;
+  }
+}

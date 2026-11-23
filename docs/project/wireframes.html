@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wireframes — No lo vendo, lo regalo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f5f3ef; font-family: 'Space Mono', monospace; }
+</style>
+</head>
+<body>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS — wireframe aesthetic
+───────────────────────────────────────────── */
+const T = {
+  bg:      '#faf9f6',
+  bg2:     '#f0ede6',
+  line:    '#1a1a1a',
+  dim:     '#888',
+  ghost:   '#ccc',
+  accent:  '#d4622a',
+  accentL: '#f5e6dc',
+  white:   '#fff',
+  font:    "'Space Mono', monospace",
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "showAnnotations": true,
+  "showDesktopHints": true,
+  "accentColor": "#d4622a",
+  "mobileWidth": 390
+}/*EDITMODE-END*/;
+
+/* ─────────────────────────────────────────────
+   PRIMITIVES
+───────────────────────────────────────────── */
+const wBox = (extra={}) => ({
+  background: T.white,
+  border: `1.5px solid ${T.line}`,
+  fontFamily: T.font,
+  ...extra,
+});
+
+const wLabel = (extra={}) => ({
+  fontFamily: T.font,
+  fontSize: 9,
+  color: T.dim,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  ...extra,
+});
+
+function Rect({ w, h, label, sub, fill, style={} }) {
+  return (
+    <div style={{ width: w, height: h, background: fill||T.bg2, border:`1.5px solid ${T.ghost}`,
+      display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+      gap:2, flexShrink:0, ...style }}>
+      {label && <span style={{ fontFamily:T.font, fontSize:9, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>{label}</span>}
+      {sub && <span style={{ fontFamily:T.font, fontSize:8, color:T.ghost }}>{sub}</span>}
+    </div>
+  );
+}
+
+function Chip({ label, accent, small }) {
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', padding: small ? '1px 5px' : '2px 7px',
+      border:`1.5px solid ${accent ? T.accent : T.line}`, borderRadius:2,
+      fontFamily:T.font, fontSize: small ? 8 : 9, color: accent ? T.accent : T.line,
+      background: accent ? T.accentL : 'transparent', flexShrink:0 }}>
+      {label}
+    </span>
+  );
+}
+
+function Tag({ label, muted }) {
+  return (
+    <span style={{ display:'inline-flex', padding:'1px 5px',
+      background: muted ? T.bg2 : T.line, border:`1.5px solid ${muted?T.ghost:T.line}`,
+      fontFamily:T.font, fontSize:8, color: muted ? T.dim : T.white,
+      borderRadius:1, flexShrink:0 }}>
+      {label}
+    </span>
+  );
+}
+
+function Divider({ my=8 }) {
+  return <div style={{ height:1, background:T.ghost, margin:`${my}px 0` }} />;
+}
+
+function Annotation({ children, right }) {
+  return (
+    <div style={{ position:'absolute', [right?'right':'left']:-8, top:'50%', transform:'translateY(-50%)',
+      background:T.accentL, border:`1px solid ${T.accent}`, borderRadius:2,
+      padding:'3px 7px', fontFamily:T.font, fontSize:8, color:T.accent,
+      whiteSpace:'nowrap', pointerEvents:'none', zIndex:10,
+      [right?'marginRight':'marginLeft']: 12 }}>
+      ← {children}
+    </div>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, letterSpacing:'0.12em',
+      textTransform:'uppercase', marginBottom:12, display:'flex', alignItems:'center', gap:8 }}>
+      <div style={{ flex:1, height:1, background:T.ghost }} />
+      {children}
+      <div style={{ flex:1, height:1, background:T.ghost }} />
+    </div>
+  );
+}
+
+function VariantLabel({ letter, title, desc }) {
+  return (
+    <div style={{ marginBottom:10 }}>
+      <div style={{ display:'flex', alignItems:'baseline', gap:6 }}>
+        <span style={{ fontFamily:T.font, fontSize:11, fontWeight:700, color:T.accent }}>#{letter}</span>
+        <span style={{ fontFamily:T.font, fontSize:11, fontWeight:700, color:T.line }}>{title}</span>
+      </div>
+      {desc && <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, marginTop:2 }}>{desc}</div>}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   PHONE SHELL
+───────────────────────────────────────────── */
+function Phone({ children, label, w=390, scale=1 }) {
+  const sw = w * scale;
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
+      <div style={{ width: sw, transform:`scale(${scale})`, transformOrigin:'top center',
+        background: T.bg, border:`2px solid ${T.line}`, borderRadius:8, overflow:'hidden',
+        boxShadow:'3px 3px 0 '+T.line, fontFamily:T.font }}>
+        {/* status bar */}
+        <div style={{ background:T.line, padding:'6px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <span style={{ color:T.white, fontSize:9, fontFamily:T.font }}>09:41</span>
+          <span style={{ color:T.white, fontSize:9, fontFamily:T.font }}>▐▐▐ ◉</span>
+        </div>
+        {children}
+      </div>
+      {label && <span style={{ fontFamily:T.font, fontSize:9, color:T.dim, letterSpacing:'0.08em', textTransform:'uppercase' }}>{label}</span>}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   BOTTOM NAV — 3 patterns
+───────────────────────────────────────────── */
+function BottomNavA({ active='explore' }) {
+  const items = [
+    { id:'explore', icon:'◎', label:'Explorar' },
+    { id:'donate', icon:'+', label:'Regalar' },
+    { id:'profile', icon:'○', label:'Yo' },
+  ];
+  return (
+    <div style={{ borderTop:`1.5px solid ${T.line}`, display:'flex', background:T.white }}>
+      {items.map(i=>(
+        <div key={i.id} style={{ flex:1, padding:'8px 0 10px', display:'flex', flexDirection:'column',
+          alignItems:'center', gap:2 }}>
+          <span style={{ fontSize:16, color: i.id===active ? T.accent : T.ghost }}>{i.icon}</span>
+          <span style={{ fontFamily:T.font, fontSize:8, color: i.id===active ? T.accent : T.dim,
+            fontWeight: i.id===active ? 700 : 400 }}>{i.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BottomNavB({ active='explore' }) {
+  const items = [
+    { id:'explore', icon:'⊞', label:'Inicio' },
+    { id:'requests', icon:'⊙', label:'Solicitudes' },
+    { id:'donate', icon:'+', label:'Publicar' },
+    { id:'sessions', icon:'◈', label:'Entregas' },
+    { id:'profile', icon:'◯', label:'Yo' },
+  ];
+  return (
+    <div style={{ borderTop:`1.5px solid ${T.line}`, display:'flex', background:T.white }}>
+      {items.map(i=>(
+        <div key={i.id} style={{ flex:1, padding:'6px 0 10px', display:'flex', flexDirection:'column',
+          alignItems:'center', gap:1 }}>
+          <span style={{ fontSize:14, color: i.id===active ? T.accent : T.ghost }}>{i.icon}</span>
+          <span style={{ fontFamily:T.font, fontSize:7, color: i.id===active ? T.accent : T.dim,
+            fontWeight: i.id===active ? 700 : 400 }}>{i.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BottomNavC({ active='explore' }) {
+  // FAB central style
+  const items = [
+    { id:'explore', icon:'⊞', label:'Explorar' },
+    { id:'profile', icon:'◯', label:'Perfil' },
+  ];
+  return (
+    <div style={{ borderTop:`1.5px solid ${T.line}`, display:'flex', background:T.white, position:'relative' }}>
+      {/* left */}
+      <div style={{ flex:1, padding:'8px 0 10px', display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+        <span style={{ fontSize:14, color: active==='explore' ? T.accent : T.ghost }}>⊞</span>
+        <span style={{ fontFamily:T.font, fontSize:7, color: active==='explore' ? T.accent : T.dim }}>Explorar</span>
+      </div>
+      {/* FAB */}
+      <div style={{ flex:0, width:56, position:'relative', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ position:'absolute', top:-20, width:44, height:44, borderRadius:'50%',
+          background:T.line, border:`2px solid ${T.line}`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <span style={{ color:T.white, fontSize:20, lineHeight:1 }}>+</span>
+        </div>
+      </div>
+      {/* right */}
+      <div style={{ flex:1, padding:'8px 0 10px', display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+        <span style={{ fontSize:14, color: active==='profile' ? T.accent : T.ghost }}>◯</span>
+        <span style={{ fontFamily:T.font, fontSize:7, color: active==='profile' ? T.accent : T.dim }}>Perfil</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 0 — NAVEGACIÓN GLOBAL (Variante A)
+───────────────────────────────────────────── */
+function NavSectionA({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>0 — Navegación Global · Variante A</SectionLabel>
+      <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, marginBottom:4 }}>
+        3 tabs: Explorar / Regalar / Yo. Interesado-first. Mínima carga cognitiva en onboarding.
+      </div>
+      <div style={{ display:'flex', gap:40, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* Shell con Explorar activo */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>Tab: Explorar</div>
+          <Phone w={280} scale={1}>
+            <div style={{ padding:'12px 14px', background:T.bg }}>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700, marginBottom:10 }}>Tablón</div>
+              <div style={{ ...wBox(), padding:'8px 10px', marginBottom:8, display:'flex', gap:6, alignItems:'center' }}>
+                <span style={{ fontSize:10, color:T.dim }}>⊕</span>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.ghost }}>Cerca de ti…</span>
+              </div>
+              <Rect w="100%" h={160} label="feed de objetos" />
+            </div>
+            <BottomNavA active='explore' />
+          </Phone>
+        </div>
+
+        {/* Shell con Publicar activo */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>Tab: Publicar</div>
+          <Phone w={280} scale={1}>
+            <div style={{ padding:'12px 14px', background:T.bg }}>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700, marginBottom:10 }}>Regalar algo</div>
+              <Rect w="100%" h={160} label="formulario de publicación" />
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* Shell con Perfil activo */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>Tab: Perfil</div>
+          <Phone w={280} scale={1}>
+            <div style={{ padding:'12px 14px', background:T.bg }}>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700, marginBottom:10 }}>Mi cuenta</div>
+              <Rect w="100%" h={160} label="reputación + historial" />
+            </div>
+            <BottomNavA active='profile' />
+          </Phone>
+        </div>
+
+        {/* Anotaciones arquitectura */}
+        <div style={{ display:'flex', flexDirection:'column', gap:10, maxWidth:300 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>Arquitectura de pantallas</div>
+          {[
+            ['Explorar', 'Tablón → Detalle → Me interesa'],
+            ['Regalar', 'Formulario → Fotos → Publicado → Mis regalos → Interesados → Acuerdo'],
+            ['Yo', 'Stats → Mis regalos / Mis turnos / Historial'],
+          ].map(([tab, screens]) => (
+            <div key={tab} style={{ ...wBox(), padding:'10px 12px' }}>
+              <div style={{ fontFamily:T.font, fontSize:10, fontWeight:700, marginBottom:4 }}>{tab}</div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, lineHeight:1.7 }}>{screens}</div>
+            </div>
+          ))}
+          {tweaks.showDesktopHints && (
+            <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'8px 10px' }}>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:3, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop</div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+                Top nav: logo izq · Explorar · Publicar objeto (CTA) · Perfil der. Bottom nav desaparece. Feed → grid 3 cols.
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 1 — LISTADO (3 variaciones)
+───────────────────────────────────────────── */
+function ItemCard({ title, condition, dist, degraded, img=true }) {
+  return (
+    <div style={{ ...wBox(), marginBottom:8, display:'flex', gap:10, padding:10, position:'relative' }}>
+      {img && <Rect w={60} h={60} label="img" style={{ flexShrink:0, borderRadius:2 }} />}
+      <div style={{ flex:1, display:'flex', flexDirection:'column', gap:4 }}>
+        <div style={{ display:'flex', alignItems:'flex-start', gap:4, flexWrap:'wrap' }}>
+          <span style={{ fontFamily:T.font, fontSize:11, fontWeight:700, lineHeight:1.3 }}>{title}</span>
+          {degraded && <Tag label="Lleva tiempo aquí" muted />}
+        </div>
+        <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
+          <Chip label={condition} small />
+          <Chip label={dist} small />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ItemCardGrid({ title, condition, dist }) {
+  return (
+    <div style={{ ...wBox(), display:'flex', flexDirection:'column', overflow:'hidden', borderRadius:2 }}>
+      <Rect w="100%" h={90} label="imagen" />
+      <div style={{ padding:'8px 8px 10px', display:'flex', flexDirection:'column', gap:4 }}>
+        <span style={{ fontFamily:T.font, fontSize:10, fontWeight:700 }}>{title}</span>
+        <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
+          <Chip label={condition} small />
+          <Chip label={dist} small />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ListSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>1 — Listado de Objetos</SectionLabel>
+
+      <div style={{ display:'flex', gap:32, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* VAR A — Lista vertical */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <VariantLabel letter="A" title="Lista vertical" desc="Una columna. Más info por ítem. Escaneado rápido." />
+          <Phone w={320} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:0 }}>
+              {/* search */}
+              <div style={{ ...wBox(), padding:'8px 10px', marginBottom:10, display:'flex', alignItems:'center', gap:6 }}>
+                <span style={{ fontSize:10, color:T.dim }}>⊕</span>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.ghost }}>¿Qué necesitas hoy?</span>
+              </div>
+              {/* filters */}
+              <div style={{ display:'flex', gap:6, marginBottom:10, overflow:'hidden' }}>
+                <Chip label="Todos" accent />
+                <Chip label="Electrónica" />
+                <Chip label="Ropa" />
+                <Chip label="Hogar" />
+              </div>
+              {/* items */}
+              <ItemCard title="Bicicleta de montaña" condition="Buen estado" dist="1.2 km" />
+              <ItemCard title="Sofá 3 plazas gris" condition="Usado" dist="3.4 km" />
+              <ItemCard title="Mesa escritorio" condition="Como nuevo" dist="0.8 km" degraded />
+              <ItemCard title="Cámara analógica" condition="Buen estado" dist="4.1 km" />
+            </div>
+            <BottomNavA />
+          </Phone>
+        </div>
+
+        {/* VAR B — Grid 2 cols */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <VariantLabel letter="B" title="Grid 2 columnas" desc="Imagen grande. Más impacto visual. Similar a marketplace." />
+          <Phone w={320} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:0 }}>
+              <div style={{ ...wBox(), padding:'8px 10px', marginBottom:10, display:'flex', alignItems:'center', gap:6 }}>
+                <span style={{ fontSize:10, color:T.dim }}>⊕</span>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.ghost }}>Cerca de ti…</span>
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+                <ItemCardGrid title="Bicicleta" condition="Buen estado" dist="1.2 km" />
+                <ItemCardGrid title="Sofá 3 plazas" condition="Usado" dist="3.4 km" />
+                <ItemCardGrid title="Mesa escritorio" condition="Como nuevo" dist="0.8 km" />
+                <ItemCardGrid title="Cámara" condition="Buen estado" dist="4.1 km" />
+              </div>
+            </div>
+            <BottomNavA />
+          </Phone>
+          {tweaks.showAnnotations && (
+            <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, background:T.bg2,
+              border:`1px solid ${T.ghost}`, borderRadius:2, padding:'4px 8px', maxWidth:320 }}>
+              ↑ Riesgo: menos contexto por ítem; la condición y distancia compiten con la imagen
+            </div>
+          )}
+        </div>
+
+        {/* VAR C — Lista + mapa toggle */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <VariantLabel letter="C" title="Lista + mapa" desc="Toggle entre feed y mapa. Relevante para radio 50km." />
+          <Phone w={320} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:0 }}>
+              {/* search */}
+              <div style={{ ...wBox(), padding:'8px 10px', marginBottom:10, display:'flex', alignItems:'center', gap:6 }}>
+                <span style={{ fontSize:10, color:T.dim }}>⊕</span>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.ghost }}>¿Qué necesitas hoy?</span>
+              </div>
+              {/* toggle */}
+              <div style={{ display:'flex', border:`1.5px solid ${T.line}`, borderRadius:3, marginBottom:10, overflow:'hidden' }}>
+                <div style={{ flex:1, padding:'5px 0', textAlign:'center', background:T.line }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.white, fontWeight:700 }}>≡ Lista</span>
+                </div>
+                <div style={{ flex:1, padding:'5px 0', textAlign:'center', background:T.white }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>⊕ Mapa</span>
+                </div>
+              </div>
+              <ItemCard title="Bicicleta de montaña" condition="Buen estado" dist="1.2 km" />
+              <ItemCard title="Sofá 3 plazas gris" condition="Usado" dist="3.4 km" />
+              <ItemCard title="Mesa escritorio" condition="Como nuevo" dist="0.8 km" degraded />
+            </div>
+            <BottomNavA />
+          </Phone>
+          {tweaks.showAnnotations && (
+            <div style={{ fontFamily:T.font, fontSize:9, color:T.accent, background:T.accentL,
+              border:`1px solid ${T.accent}`, borderRadius:2, padding:'4px 8px', maxWidth:320 }}>
+              ↑ Útil: la distancia es criterio clave del sistema (50km). El mapa hace eso tangible.
+            </div>
+          )}
+        </div>
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px' }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            En desktop: Var A pasa a 2 cols; Var B a 3–4 cols; Var C: sidebar con lista + mapa 70% derecha. Filtros en barra superior horizontal.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 2 — DETALLE (2 variaciones)
+───────────────────────────────────────────── */
+function DetailSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>2 — Detalle de Objeto</SectionLabel>
+      <div style={{ display:'flex', gap:32, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* VAR A — imagen arriba, CTA fijo abajo */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <VariantLabel letter="A" title="Hero image + CTA sticky" desc="Imagen ocupa 40% superior. Botón 'Solicitar' fijo abajo." />
+          <Phone w={320} scale={1}>
+            {/* hero img */}
+            <Rect w="100%" h={160} label="imagen principal" sub="← → 4 más" style={{ borderRadius:0, border:'none', borderBottom:`1.5px solid ${T.line}` }} />
+            <div style={{ padding:'14px 14px 0', display:'flex', flexDirection:'column', gap:10 }}>
+              {/* back + title */}
+              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.dim }}>← Volver</span>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:14, fontWeight:700, lineHeight:1.3 }}>Bicicleta de montaña</div>
+              <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+                <Chip label="Buen estado" accent />
+                <Chip label="1.2 km" />
+                <Tag label="activo" />
+              </div>
+              <Divider my={4} />
+              {/* donor */}
+              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                <Rect w={32} h={32} label="◯" style={{ borderRadius:'50%', border:`1.5px solid ${T.line}` }} />
+                <div>
+                  <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Donante</div>
+                  <div style={{ fontFamily:T.font, fontSize:10, fontWeight:700 }}>Reputación: 40 pts</div>
+                </div>
+              </div>
+              <Divider my={4} />
+              {/* desc */}
+              <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, lineHeight:1.6 }}>
+                Bicicleta de montaña 26" en buen estado. Se nota el uso pero funciona perfectamente. Incluye casco.
+              </div>
+              <div style={{ height:60 }} />
+            </div>
+            {/* sticky CTA */}
+            <div style={{ position:'sticky', bottom:0, borderTop:`1.5px solid ${T.line}`, background:T.white, padding:'10px 14px', display:'flex', gap:8 }}>
+              <div style={{ flex:1, padding:'10px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:11, color:T.white, fontWeight:700 }}>Me interesa</span>
+              </div>
+            </div>
+            <BottomNavA />
+          </Phone>
+          {tweaks.showAnnotations && (
+            <div style={{ fontFamily:T.font, fontSize:9, color:T.accent, background:T.accentL,
+              border:`1px solid ${T.accent}`, borderRadius:2, padding:'4px 8px', maxWidth:320 }}>
+              ↑ CTA sticky: siempre visible sin scroll. Patrón sólido para conversión.
+            </div>
+          )}
+        </div>
+
+        {/* VAR B — sheet modal desde listado */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <VariantLabel letter="B" title="Bottom sheet" desc="Detalle emerge desde abajo sobre el feed. Sin cambio de ruta." />
+          <Phone w={320} scale={1}>
+            {/* feed debajo */}
+            <div style={{ padding:'12px 14px', filter:'blur(1px)', opacity:0.4 }}>
+              <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700, marginBottom:8 }}>Explorar</div>
+              <ItemCard title="Bicicleta de montaña" condition="Buen estado" dist="1.2 km" />
+              <ItemCard title="Sofá 3 plazas" condition="Usado" dist="3.4 km" />
+            </div>
+            {/* bottom sheet */}
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, background:T.white,
+              borderTop:`2px solid ${T.line}`, borderRadius:'8px 8px 0 0', padding:'14px 14px 0' }}>
+              <div style={{ width:40, height:4, background:T.ghost, borderRadius:2, margin:'0 auto 12px' }} />
+              <div style={{ display:'flex', gap:8, marginBottom:10 }}>
+                <Rect w={80} h={80} label="img" style={{ borderRadius:2 }} />
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700, marginBottom:4 }}>Bicicleta de montaña</div>
+                  <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
+                    <Chip label="Buen estado" accent small />
+                    <Chip label="1.2 km" small />
+                  </div>
+                  <div style={{ marginTop:4 }}>
+                    <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Donante: 40 pts reputación</span>
+                  </div>
+                </div>
+              </div>
+              <Divider my={4} />
+              <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, lineHeight:1.6, marginBottom:10 }}>
+                Bicicleta de montaña 26". Funciona perfectamente. Incluye casco.
+              </div>
+              <div style={{ padding:'10px 0', background:T.line, textAlign:'center', borderRadius:2, marginBottom:14 }}>
+                <span style={{ fontFamily:T.font, fontSize:11, color:T.white, fontWeight:700 }}>Me interesa</span>
+              </div>
+            </div>
+          </Phone>
+          {tweaks.showAnnotations && (
+            <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, background:T.bg2,
+              border:`1px solid ${T.ghost}`, borderRadius:2, padding:'4px 8px', maxWidth:320 }}>
+              ↑ Más fluido pero limita espacio para descripción larga y galería de imágenes.
+            </div>
+          )}
+        </div>
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px' }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            En desktop: Var A pasa a 2 columnas — galería izq, info + CTA der (sticky). Var B no aplica en desktop; usar siempre página completa.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 3 — FLUJO SOLICITUD RECEPTOR
+───────────────────────────────────────────── */
+function RequestFlowSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>3 — Flujo Solicitud (Receptor)</SectionLabel>
+      <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, marginBottom:4 }}>
+        Pantallas en secuencia. Estados: confirmación → espera → seleccionado (sesión activa).
+      </div>
+      <div style={{ display:'flex', gap:24, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* PASO 1 — CTA en detalle */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            paso 1 — detalle del objeto
+          </div>
+          <Phone w={280} scale={1}>
+            <Rect w="100%" h={120} label="imagen" style={{ border:'none', borderBottom:`1.5px solid ${T.line}` }} />
+            <div style={{ padding:'12px 12px 0', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700 }}>Bicicleta de montaña</div>
+              <div style={{ display:'flex', gap:4 }}>
+                <Chip label="Buen estado" accent small />
+                <Chip label="1.2 km" small />
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, lineHeight:1.6 }}>
+                Incluye casco. Recogida en Sant Gervasi.
+              </div>
+              <Divider />
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+                <span style={{ fontWeight:700, color:T.line }}>Anfitrión</span> · Compromiso: 40 pts
+              </div>
+              <div style={{ height:16 }} />
+            </div>
+            {/* CTA area */}
+            <div style={{ borderTop:`1.5px solid ${T.line}`, padding:'10px 12px 4px', background:T.white }}>
+              <div style={{ padding:'10px 0', background:T.line, textAlign:'center', borderRadius:2, marginBottom:6 }}>
+                <span style={{ fontFamily:T.font, fontSize:11, color:T.white, fontWeight:700 }}>Me interesa</span>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, textAlign:'center', paddingBottom:8 }}>
+                Te queda 1 turno este mes
+              </div>
+            </div>
+            <BottomNavA />
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 2 — Confirmación modal */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            paso 2 — confirmación
+          </div>
+          <Phone w={280} scale={1}>
+            <div style={{ padding:'12px 12px', filter:'blur(1px)', opacity:0.35 }}>
+              <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700, marginBottom:8 }}>Bicicleta de montaña</div>
+              <Rect w="100%" h={60} label="..." />
+            </div>
+            {/* modal overlay */}
+            <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.55)', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
+              <div style={{ background:T.white, border:`2px solid ${T.line}`, borderRadius:4, padding:'20px 16px', width:'100%' }}>
+                <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700, marginBottom:6 }}>¿Confirmar interés?</div>
+                <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, lineHeight:1.6, marginBottom:12 }}>
+                  Si el anfitrión te elige, recibirás aquí sus datos de contacto. El sistema valora tu compromiso y cercanía.
+                </div>
+                <div style={{ background:T.accentL, border:`1px solid ${T.accent}`, borderRadius:2, padding:'6px 10px', marginBottom:12 }}>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.accent }}>
+                    Usarás 1 de tus 3 turnos del mes.
+                  </div>
+                </div>
+                <div style={{ display:'flex', gap:8 }}>
+                  <div style={{ flex:1, padding:'8px 0', border:`1.5px solid ${T.line}`, textAlign:'center', borderRadius:2 }}>
+                    <span style={{ fontFamily:T.font, fontSize:10 }}>Cancelar</span>
+                  </div>
+                  <div style={{ flex:1, padding:'8px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                    <span style={{ fontFamily:T.font, fontSize:10, color:T.white, fontWeight:700 }}>Me interesa</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 3 — en espera */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            paso 3 — en espera
+          </div>
+          <Phone w={280} scale={1}>
+            <Rect w="100%" h={120} label="imagen" style={{ border:'none', borderBottom:`1.5px solid ${T.line}` }} />
+            <div style={{ padding:'12px 12px', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700 }}>Bicicleta de montaña</div>
+              <Chip label="✓ Ya solicitado" accent />
+              <Divider my={4} />
+              <div style={{ background:T.bg2, border:`1.5px solid ${T.ghost}`, borderRadius:3, padding:'10px 10px' }}>
+                <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700, marginBottom:4 }}>Estado de tu solicitud</div>
+                <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>⊙ Solicitud enviada · hace 2h</div>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.ghost }}>○ Esperando decisión del donante</div>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.ghost }}>○ Contacto recibido</div>
+                </div>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, lineHeight:1.6, textAlign:'center' }}>
+                Si eres seleccionado, verás aquí el canal de contacto del donante.
+              </div>
+            </div>
+            <BottomNavA />
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 4 — seleccionado, sesión activa */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            paso 4 — seleccionado 🎉
+          </div>
+          <Phone w={280} scale={1}>
+            <Rect w="100%" h={120} label="imagen" style={{ border:'none', borderBottom:`1.5px solid ${T.line}` }} />
+            <div style={{ padding:'12px 12px', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700 }}>Bicicleta de montaña</div>
+              <div style={{ display:'flex', gap:4 }}>
+                <Tag label="reservado" />
+              </div>
+              <Divider my={4} />
+              {/* sesión activa */}
+              <div style={{ background:T.accentL, border:`1.5px solid ${T.accent}`, borderRadius:3, padding:'10px 10px' }}>
+                <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700, color:T.accent, marginBottom:6 }}>¡Te han elegido!</div>
+                <div style={{ fontFamily:T.font, fontSize:9, color:T.line, marginBottom:6 }}>
+                  Contacta al anfitrión para acordar la entrega:
+                </div>
+                <div style={{ background:T.white, border:`1.5px solid ${T.accent}`, borderRadius:2, padding:'6px 8px', marginBottom:6 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>WhatsApp: +34 612 345 678</span>
+                </div>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>
+                  Plazo: 7 días · expira 11 mayo 2026
+                </div>
+              </div>
+              <Divider my={4} />
+              <div style={{ background:T.bg2, border:`1.5px solid ${T.ghost}`, borderRadius:2, padding:'6px 8px' }}>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, lineHeight:1.5 }}>
+                  Si no te presentas, el anfitrión puede registrar un plantón. Cada plantón afecta a tu nivel de compromiso de forma acumulativa.
+                </div>
+              </div>
+            </div>
+            <BottomNavA />
+          </Phone>
+          {tweaks.showAnnotations && (
+            <div style={{ fontFamily:T.font, fontSize:9, color:T.accent, background:T.accentL,
+              border:`1px solid ${T.accent}`, borderRadius:2, padding:'4px 8px', maxWidth:280 }}>
+              ↑ Contact channel: visible solo en sesión activa (SEC-002). Nunca en historial.
+            </div>
+          )}
+        </div>
+
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px', marginTop:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            Pasos 1–2: en desktop la confirmación es un modal centrado. Pasos 3–4: panel lateral derecho dentro de la página de detalle, sin modal.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 4 — ESTADO DEGRADADO + LÍMITE
+───────────────────────────────────────────── */
+function SystemStatesSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>4 — Estados del sistema visibles al interesado</SectionLabel>
+      <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, marginBottom:4 }}>
+        Cómo el sistema comunica restricciones sin revelar el algoritmo exacto.
+      </div>
+      <div style={{ display:'flex', gap:24, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* Objeto degradado en listado */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            objeto que lleva tiempo aquí
+          </div>
+          <div style={{ width:280 }}>
+            <ItemCard title="Mesa escritorio ikea" condition="Como nuevo" dist="0.8 km" degraded />
+            {tweaks.showAnnotations && (
+              <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginTop:4, padding:'0 2px', lineHeight:1.5 }}>
+                ↑ "poco activo" = degraded_at IS NOT NULL. Aparece al final del feed. El receptor no sabe cuándo expirará.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Límite de solicitudes */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            límite de solicitudes alcanzado
+          </div>
+          <div style={{ width:280 }}>
+            <div style={{ ...wBox(), padding:'14px 14px' }}>
+              <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700, marginBottom:6 }}>Me interesa</div>
+              <div style={{ background:'#fef2ed', border:`1.5px solid ${T.accent}`, borderRadius:3, padding:'10px 10px', marginBottom:10 }}>
+                <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700, color:T.accent, marginBottom:3 }}>Has agotado tus turnos</div>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, lineHeight:1.6 }}>
+                  Este recurso es compartido: solo 3 turnos cada 30 días. El siguiente se libera el 18 mayo.
+                </div>
+              </div>
+              <div style={{ padding:'10px 0', background:T.ghost, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:11, color:T.white, fontWeight:700 }}>Me interesa</span>
+              </div>
+            </div>
+            {tweaks.showAnnotations && (
+              <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginTop:4, lineHeight:1.5 }}>
+                ↑ Se muestra la fecha del próximo turno (ventana deslizante 720h). Botón deshabilitado.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Solicitudes pausadas */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            solicitudes pausadas por donante
+          </div>
+          <div style={{ width:280 }}>
+            <div style={{ ...wBox(), padding:'14px 14px' }}>
+              <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700, marginBottom:6 }}>Me interesa</div>
+              <div style={{ background:T.bg2, border:`1.5px solid ${T.ghost}`, borderRadius:3, padding:'10px 10px', marginBottom:10 }}>
+                <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700, color:T.dim, marginBottom:3 }}>Solicitudes pausadas temporalmente</div>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, lineHeight:1.6 }}>
+                  El donante ha pausado nuevas solicitudes. Puedes volver más tarde.
+                </div>
+              </div>
+              <div style={{ padding:'10px 0', background:T.ghost, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:11, color:T.white, fontWeight:700 }}>Me interesa</span>
+              </div>
+            </div>
+            {tweaks.showAnnotations && (
+              <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginTop:4, lineHeight:1.5 }}>
+                ↑ requestsPaused (delta v1.2). Error 409 con código diferenciado. No se revela el motivo real.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Reputación baja */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>
+            indicador de reputación baja
+          </div>
+          <Phone w={280} scale={1}>
+            <div style={{ padding:'14px 12px', display:'flex', flexDirection:'column', gap:10 }}>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Mi perfil</div>
+              <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+                <Rect w={44} h={44} label="◯" style={{ borderRadius:'50%' }} />
+                <div>
+                  <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700 }}>usuario@mail.com</div>
+                  <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Miembro desde ene 2025</div>
+                </div>
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8 }}>
+                <div style={{ ...wBox(), padding:'8px 6px', textAlign:'center' }}>
+                  <div style={{ fontFamily:T.font, fontSize:16, fontWeight:700, color:T.accent }}>-20</div>
+                  <div style={{ fontFamily:T.font, fontSize:7, color:T.dim }}>Compromiso</div>
+                </div>
+                <div style={{ ...wBox(), padding:'8px 6px', textAlign:'center' }}>
+                  <div style={{ fontFamily:T.font, fontSize:16, fontWeight:700 }}>4</div>
+                  <div style={{ fontFamily:T.font, fontSize:7, color:T.dim }}>Has aprovechado</div>
+                </div>
+                <div style={{ ...wBox(), padding:'8px 6px', textAlign:'center' }}>
+                  <div style={{ fontFamily:T.font, fontSize:16, fontWeight:700 }}>0</div>
+                  <div style={{ fontFamily:T.font, fontSize:7, color:T.dim }}>Has regalado</div>
+                </div>
+              </div>
+              <div style={{ background:'#fef2ed', border:`1.5px solid ${T.accent}`, borderRadius:3, padding:'8px 10px' }}>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.accent, lineHeight:1.6 }}>
+                  Tu nivel de compromiso es bajo. Tus posibilidades en el tablón son menores.
+                </div>
+              </div>
+            </div>
+            <BottomNavA active='profile' />
+          </Phone>
+          {tweaks.showAnnotations && (
+            <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginTop:4, lineHeight:1.5, maxWidth:280 }}>
+              ↑ Score puede ser negativo sin límite (por diseño del PRD). UI debe soportarlo. No revelar ranking exacto.
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 5 — FLUJO DONANTE: PUBLICAR OBJETO
+───────────────────────────────────────────── */
+function FieldRow({ label, placeholder, textarea }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:3, marginBottom:8 }}>
+      <span style={{ fontFamily:T.font, fontSize:8, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>{label}</span>
+      <div style={{ ...wBox(), padding: textarea ? '8px 10px' : '7px 10px',
+        minHeight: textarea ? 56 : 'auto', alignItems:'flex-start',
+        display:'flex', borderRadius:2 }}>
+        <span style={{ fontFamily:T.font, fontSize:10, color:T.ghost }}>{placeholder}</span>
+      </div>
+    </div>
+  );
+}
+
+function PublishSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>5 — Flujo Donante: Publicar Objeto</SectionLabel>
+      <div style={{ display:'flex', gap:32, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* PASO 1 — formulario */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 1 — formulario</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.dim }}>← Volver</span>
+                <span style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Regalar algo</span>
+              </div>
+              <FieldRow label="Título" placeholder="Ej: Bicicleta de montaña 26&quot;" />
+              <FieldRow label="Descripción" placeholder="Describe el estado, uso, qué incluye…" textarea />
+              <div style={{ display:'flex', flexDirection:'column', gap:3, marginBottom:8 }}>
+                <span style={{ fontFamily:T.font, fontSize:8, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>Condición</span>
+                <div style={{ display:'flex', gap:6 }}>
+                  {['Como nuevo','Buen estado','Usado'].map(c => (
+                    <div key={c} style={{ flex:1, padding:'5px 4px', border:`1.5px solid ${c==='Buen estado'?T.accent:T.ghost}`,
+                      background:c==='Buen estado'?T.accentL:'transparent',
+                      textAlign:'center', borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:8, color:c==='Buen estado'?T.accent:T.dim }}>{c}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <FieldRow label="Código postal del objeto" placeholder="08001 — puede diferir del tuyo" />
+            </div>
+            <div style={{ borderTop:`1.5px solid ${T.line}`, padding:'10px 14px', background:T.white }}>
+              <div style={{ padding:'10px 0', background:T.bg2, border:`1.5px solid ${T.ghost}`,
+                textAlign:'center', borderRadius:2, marginBottom:6 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.dim }}>Siguiente: añadir fotos →</span>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 2 — fotos */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 2 — añadir fotos</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.dim }}>← Volver</span>
+                <span style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Fotos</span>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, marginBottom:10, lineHeight:1.6 }}>
+                Hasta 5 fotos. Se comprimen automáticamente a WebP.
+              </div>
+              {/* image grid */}
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:6, marginBottom:10 }}>
+                <Rect w="100%" h={80} label="foto 1" fill={T.bg2} style={{ position:'relative' }}>
+                </Rect>
+                <Rect w="100%" h={80} label="foto 2" fill={T.bg2} />
+                <div style={{ height:80, border:`1.5px dashed ${T.ghost}`, display:'flex',
+                  alignItems:'center', justifyContent:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:20, color:T.ghost }}>+</span>
+                </div>
+                <div style={{ height:80, border:`1.5px dashed ${T.ghost}`, display:'flex',
+                  alignItems:'center', justifyContent:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:20, color:T.ghost }}>+</span>
+                </div>
+                <div style={{ height:80, border:`1.5px dashed ${T.ghost}`, display:'flex',
+                  alignItems:'center', justifyContent:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:20, color:T.ghost }}>+</span>
+                </div>
+              </div>
+              {tweaks.showAnnotations && (
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginBottom:8, lineHeight:1.5 }}>
+                  ↑ Máx. 5 imágenes · 2MB/img tras compresión · WebP · 1200px
+                </div>
+              )}
+            </div>
+            <div style={{ borderTop:`1.5px solid ${T.line}`, padding:'10px 14px', background:T.white }}>
+              <div style={{ padding:'10px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:11, color:T.white, fontWeight:700 }}>Publicar objeto</span>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 3 — publicado */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 3 — publicado ✓</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'20px 14px', display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
+              <div style={{ width:48, height:48, border:`2px solid ${T.accent}`, borderRadius:'50%',
+                display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <span style={{ fontFamily:T.font, fontSize:22, color:T.accent }}>✓</span>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:13, fontWeight:700, textAlign:'center' }}>Objeto publicado</div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, textAlign:'center', lineHeight:1.6 }}>
+                Recibirás un email cuando alguien lo solicite. Puedes pausar nuevas solicitudes en cualquier momento.
+              </div>
+              <div style={{ width:'100%', ...wBox(), padding:10, display:'flex', gap:8 }}>
+                <Rect w={48} h={48} label="img" style={{ flexShrink:0, borderRadius:2 }} />
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:T.font, fontSize:10, fontWeight:700 }}>Bicicleta de montaña</div>
+                  <div style={{ display:'flex', gap:4, marginTop:3 }}>
+                    <Chip label="Buen estado" accent small />
+                    <Tag label="activo" />
+                  </div>
+                </div>
+              </div>
+              <div style={{ display:'flex', gap:8, width:'100%' }}>
+                <div style={{ flex:1, padding:'8px 0', border:`1.5px solid ${T.line}`, textAlign:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9 }}>Ver objeto</span>
+                </div>
+                <div style={{ flex:1, padding:'8px 0', border:`1.5px solid ${T.ghost}`, textAlign:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Explorar</span>
+                </div>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* PASO 4 — mis objetos (gestión) */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 4 — gestión de objeto</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Mis objetos</div>
+              {/* objeto activo con controles */}
+              <div style={{ ...wBox(), padding:10 }}>
+                <div style={{ display:'flex', gap:8, marginBottom:8 }}>
+                  <Rect w={48} h={48} label="img" style={{ flexShrink:0, borderRadius:2 }} />
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontFamily:T.font, fontSize:10, fontWeight:700, marginBottom:3 }}>Bicicleta de montaña</div>
+                    <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
+                      <Tag label="activo" />
+                      <Tag label="2 solicitudes" muted />
+                    </div>
+                  </div>
+                </div>
+                <Divider my={6} />
+                {/* toggle pausar */}
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:8 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Pausar solicitudes</span>
+                  <div style={{ width:32, height:18, border:`1.5px solid ${T.ghost}`, borderRadius:999,
+                    background:T.bg2, position:'relative' }}>
+                    <div style={{ position:'absolute', top:2, left:2, width:12, height:12,
+                      background:T.ghost, borderRadius:'50%' }} />
+                  </div>
+                </div>
+                <div style={{ display:'flex', gap:6 }}>
+                  <div style={{ flex:1, padding:'6px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                    <span style={{ fontFamily:T.font, fontSize:9, color:T.white }}>Ver interesados</span>
+                  </div>
+                  <div style={{ flex:1, padding:'6px 0', border:`1.5px solid ${T.ghost}`, textAlign:'center', borderRadius:2 }}>
+                    <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Cancelar</span>
+                  </div>
+                </div>
+              </div>
+              {tweaks.showAnnotations && (
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.accent, background:T.accentL,
+                  border:`1px solid ${T.accent}`, borderRadius:2, padding:'4px 8px' }}>
+                  ↑ PATCH /items/:id/pause — toggle requestsPaused (delta v1.2)
+                </div>
+              )}
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px', marginTop:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            En desktop: formulario + fotos en una sola página de 2 columnas. Panel izq: campos texto. Panel der: drop zone de imágenes con preview. CTA fijo en footer de la columna derecha.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 6 — FLUJO DONANTE: CANDIDATOS + SELECCIÓN
+───────────────────────────────────────────── */
+function CandidateRow({ rank, score, dist, date, isTop }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:8, padding:'8px 10px',
+      background: isTop ? T.accentL : T.white,
+      border:`1.5px solid ${isTop ? T.accent : T.ghost}`,
+      borderRadius:2, marginBottom:6 }}>
+      <span style={{ fontFamily:T.font, fontSize:10, fontWeight:700,
+        color: isTop ? T.accent : T.dim, width:16, textAlign:'center' }}>#{rank}</span>
+      <Rect w={28} h={28} label="◯" style={{ borderRadius:'50%', border:`1.5px solid ${isTop?T.accent:T.ghost}`, flexShrink:0 }} />
+      <div style={{ flex:1, display:'flex', flexDirection:'column', gap:2 }}>
+        <div style={{ display:'flex', gap:6, alignItems:'center' }}>
+          <span style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>Compromiso: {score} pts</span>
+          <Chip label={dist} small />
+        </div>
+        <span style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Solicitó {date}</span>
+      </div>
+      {isTop && (
+        <div style={{ padding:'4px 8px', background:T.line, borderRadius:2 }}>
+          <span style={{ fontFamily:T.font, fontSize:8, color:T.white }}>Elegir</span>
+        </div>
+      )}
+      {!isTop && (
+        <div style={{ padding:'4px 8px', border:`1.5px solid ${T.ghost}`, borderRadius:2 }}>
+          <span style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Elegir</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CandidatesSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>6 — Flujo Donante: Candidatos y Selección</SectionLabel>
+      <div style={{ display:'flex', gap:32, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* PASO 1 — lista de candidatos */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 1 — candidatos rankeados</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:6 }}>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700, marginBottom:2 }}>Interesados</div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, marginBottom:2 }}>
+                Bicicleta de montaña · 4 interesados
+              </div>
+              {tweaks.showAnnotations && (
+                <div style={{ background:T.bg2, border:`1px solid ${T.ghost}`, borderRadius:2, padding:'4px 8px', marginBottom:4 }}>
+                  <span style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>
+                    Orden: reputación → distancia → antigüedad · ±2pts aleatoriedad
+                  </span>
+                </div>
+              )}
+              <CandidateRow rank={1} score={85} dist="0.8 km" date="hace 1h" isTop={true} />
+              <CandidateRow rank={2} score={60} dist="2.1 km" date="hace 3h" isTop={false} />
+              <CandidateRow rank={3} score={40} dist="1.5 km" date="hace 5h" isTop={false} />
+              <CandidateRow rank={4} score={-10} dist="3.2 km" date="hace 8h" isTop={false} />
+              {tweaks.showAnnotations && (
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginTop:2, lineHeight:1.5 }}>
+                  ↑ Reputación negativa visible. Usuarios pasivos excluidos (no aparecen).
+                </div>
+              )}
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 2 — confirmar selección + canal contacto */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 2 — canal de contacto</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:0, position:'relative' }}>
+              <div style={{ filter:'blur(1px)', opacity:0.3 }}>
+                <CandidateRow rank={1} score={85} dist="0.8 km" date="hace 1h" isTop={true} />
+                <CandidateRow rank={2} score={60} dist="2.1 km" date="hace 3h" isTop={false} />
+              </div>
+              {/* modal */}
+              <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center',
+                padding:16, background:'rgba(0,0,0,0.5)' }}>
+                <div style={{ background:T.white, border:`2px solid ${T.line}`, borderRadius:4,
+                  padding:'18px 14px', width:'100%' }}>
+                  <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700, marginBottom:6 }}>
+                    Elegir interesado #1
+                  </div>
+                  <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, marginBottom:10, lineHeight:1.6 }}>
+                    Introduce cómo contactarte. Solo el interesado elegido podrá verlo mientras el acuerdo esté activo.
+                  </div>
+                  <div style={{ display:'flex', flexDirection:'column', gap:3, marginBottom:10 }}>
+                    <span style={{ fontFamily:T.font, fontSize:8, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>Canal de contacto</span>
+                    <div style={{ ...wBox(), padding:'7px 10px', borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:10, color:T.ghost }}>Ej: WhatsApp +34 612…</span>
+                    </div>
+                  </div>
+                  {tweaks.showAnnotations && (
+                    <div style={{ background:T.accentL, border:`1px solid ${T.accent}`,
+                      borderRadius:2, padding:'5px 8px', marginBottom:10 }}>
+                      <span style={{ fontFamily:T.font, fontSize:8, color:T.accent }}>
+                        Se purga a los 7 días de cierre de sesión (SEC-002)
+                      </span>
+                    </div>
+                  )}
+                  <div style={{ display:'flex', gap:8 }}>
+                    <div style={{ flex:1, padding:'7px 0', border:`1.5px solid ${T.line}`, textAlign:'center', borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:9 }}>Cancelar</span>
+                    </div>
+                    <div style={{ flex:1, padding:'7px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:9, color:T.white, fontWeight:700 }}>Confirmar</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* flecha */}
+        <div style={{ display:'flex', alignItems:'center', paddingTop:80, fontSize:20, color:T.ghost }}>→</div>
+
+        {/* PASO 3 — sesión activa (vista donante) */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>paso 3 — sesión activa (donante)</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'12px 14px', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Acuerdo de entrega</div>
+              <div style={{ ...wBox(), padding:10, display:'flex', gap:8 }}>
+                <Rect w={40} h={40} label="img" style={{ borderRadius:2, flexShrink:0 }} />
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:T.font, fontSize:10, fontWeight:700 }}>Bicicleta de montaña</div>
+                  <div style={{ display:'flex', gap:4, marginTop:3 }}>
+                    <Tag label="reservado" />
+                  </div>
+                </div>
+              </div>
+              <div style={{ background:T.bg2, border:`1.5px solid ${T.ghost}`, borderRadius:3, padding:'8px 10px' }}>
+                <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700, marginBottom:4 }}>Estado de la sesión</div>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginBottom:2 }}>⊙ Activa · expira en 6 días</div>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Receptor notificado por email</div>
+              </div>
+              <div style={{ display:'flex', gap:8 }}>
+                <div style={{ flex:1, padding:'8px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.white }}>Confirmar entrega</span>
+                </div>
+                <div style={{ flex:1, padding:'8px 0', border:`1.5px solid ${T.ghost}`, textAlign:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Cancelar</span>
+                </div>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px', marginTop:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            En desktop: candidatos en tabla con columnas Rep / Distancia / Fecha. Modal de selección como dialog centrado. Sesión activa: panel de 2 cols con info del objeto izq y acciones der.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 7 — SESIÓN DE ENTREGA (TODOS LOS ESTADOS)
+───────────────────────────────────────────── */
+function DeliverySection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>7 — Sesión de Entrega: Estados</SectionLabel>
+      <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, marginBottom:4 }}>
+        Cuatro estados de sesión desde la perspectiva del donante.
+      </div>
+      <div style={{ display:'flex', gap:24, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* ACTIVA */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <Tag label="activa" />
+          <Phone w={270} scale={1}>
+            <div style={{ padding:'12px 12px', display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700 }}>Acuerdo de entrega</div>
+              <div style={{ ...wBox(), padding:8, display:'flex', gap:6 }}>
+                <Rect w={36} h={36} label="img" style={{ borderRadius:2, flexShrink:0 }} />
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>Bicicleta de montaña</div>
+                  <Tag label="reservado" />
+                </div>
+              </div>
+              <div style={{ background:T.accentL, border:`1.5px solid ${T.accent}`, borderRadius:3, padding:'8px 8px' }}>
+                <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700, color:T.accent, marginBottom:3 }}>Acuerdo de entrega activo</div>
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Fecha límite: 11 mayo 2026 · 6 días</div>
+              </div>
+              <div style={{ display:'flex', gap:6 }}>
+                <div style={{ flex:1, padding:'7px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:8, color:T.white, fontWeight:700 }}>✓ Confirmar entrega</span>
+                </div>
+              </div>
+              <div style={{ padding:'7px 0', border:`1.5px solid ${T.ghost}`, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Cancelar sesión</span>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* CANCELAR + NO-SHOW */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <Tag label="cancelando" />
+          <Phone w={270} scale={1}>
+            <div style={{ padding:'12px 12px', display:'flex', flexDirection:'column', gap:8, position:'relative' }}>
+              <div style={{ opacity:0.3, fontFamily:T.font, fontSize:11, fontWeight:700 }}>Sesión de entrega</div>
+              {/* modal cancelar */}
+              <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.55)',
+                display:'flex', alignItems:'center', padding:12 }}>
+                <div style={{ background:T.white, border:`2px solid ${T.line}`, borderRadius:4, padding:'14px 12px', width:'100%' }}>
+                  <div style={{ fontFamily:T.font, fontSize:10, fontWeight:700, marginBottom:6 }}>Cancelar acuerdo</div>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, marginBottom:10, lineHeight:1.6 }}>
+                    ¿Te han dado un plantón o el interesado no responde?
+                  </div>
+                  {/* no-show toggle */}
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                    padding:'8px 10px', border:`1.5px solid ${T.ghost}`, borderRadius:2, marginBottom:10 }}>
+                    <div>
+                      <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>Registrar plantón</div>
+                      <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Afecta al compromiso del interesado</div>
+                    </div>
+                    <div style={{ width:32, height:18, background:T.line, borderRadius:999, position:'relative' }}>
+                      <div style={{ position:'absolute', top:2, right:2, width:12, height:12,
+                        background:T.white, borderRadius:'50%' }} />
+                    </div>
+                  </div>
+                  {tweaks.showAnnotations && (
+                    <div style={{ background:T.accentL, border:`1px solid ${T.accent}`,
+                      borderRadius:2, padding:'4px 8px', marginBottom:8 }}>
+                      <span style={{ fontFamily:T.font, fontSize:8, color:T.accent }}>
+                        Plantón #1: -20pts · #2: -40pts · acumulativo
+                      </span>
+                    </div>
+                  )}
+                  <div style={{ display:'flex', gap:6 }}>
+                    <div style={{ flex:1, padding:'7px 0', border:`1.5px solid ${T.ghost}`, textAlign:'center', borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:8 }}>Volver</span>
+                    </div>
+                    <div style={{ flex:1, padding:'7px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:8, color:T.white }}>Confirmar</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* COMPLETADA */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <Tag label="completada" />
+          <Phone w={270} scale={1}>
+            <div style={{ padding:'16px 12px', display:'flex', flexDirection:'column', gap:10, alignItems:'center' }}>
+              <div style={{ width:44, height:44, border:`2px solid ${T.accent}`, borderRadius:'50%',
+                display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <span style={{ fontSize:20, color:T.accent }}>✓</span>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>¡Entrega completada!</div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, textAlign:'center', lineHeight:1.6 }}>
+                +10 puntos de compromiso. ¡Gracias por mantener vivo el sistema con tu generosidad!
+              </div>
+              <div style={{ display:'flex', gap:16, width:'100%', justifyContent:'center' }}>
+                <div style={{ textAlign:'center' }}>
+                  <div style={{ fontFamily:T.font, fontSize:16, fontWeight:700, color:T.accent }}>+10</div>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Compromiso</div>
+                </div>
+                <div style={{ textAlign:'center' }}>
+                  <div style={{ fontFamily:T.font, fontSize:16, fontWeight:700 }}>3</div>
+                  <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>Donados</div>
+                </div>
+              </div>
+              <div style={{ width:'100%', padding:'8px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.white }}>Ver mi perfil</span>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+
+        {/* EXPIRADA */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <Tag label="expirada" muted />
+          <Phone w={270} scale={1}>
+            <div style={{ padding:'16px 12px', display:'flex', flexDirection:'column', gap:10, alignItems:'center' }}>
+              <div style={{ width:44, height:44, border:`2px solid ${T.ghost}`, borderRadius:'50%',
+                display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <span style={{ fontSize:20, color:T.dim }}>⏱</span>
+              </div>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Acuerdo caducado</div>
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, textAlign:'center', lineHeight:1.6 }}>
+                El plazo de 7 días pasó sin confirmar. El objeto vuelve al tablón. Sin consecuencias para nadie.
+              </div>
+              {tweaks.showAnnotations && (
+                <div style={{ background:T.bg2, border:`1px solid ${T.ghost}`, borderRadius:2,
+                  padding:'5px 8px', width:'100%' }}>
+                  <span style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>
+                    Job pg_cron (c/ hora) · email al donante · objeto → active
+                  </span>
+                </div>
+              )}
+              <div style={{ width:'100%', padding:'8px 0', background:T.line, textAlign:'center', borderRadius:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.white }}>Ver objeto (activo)</span>
+              </div>
+            </div>
+            <BottomNavA active='donate' />
+          </Phone>
+        </div>
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px', marginTop:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            En desktop: página de sesión con layout 2 cols. Izq: info del objeto + receptor. Der: acciones (confirmar/cancelar) + estado + countdown. Modal de cancelación como dialog.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SECTION 8 — PERFIL
+───────────────────────────────────────────── */
+function ProfileSection({ tweaks }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
+      <SectionLabel>8 — Perfil de Usuario</SectionLabel>
+      <div style={{ display:'flex', gap:32, flexWrap:'wrap', alignItems:'flex-start' }}>
+
+        {/* Perfil propio */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>mi perfil</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'14px 14px', display:'flex', flexDirection:'column', gap:10 }}>
+              {/* header */}
+              <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+                <Rect w={48} h={48} label="◯" style={{ borderRadius:'50%', flexShrink:0 }} />
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700 }}>usuario@mail.com</div>
+                  <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Miembro desde ene 2025</div>
+                </div>
+              </div>
+              {/* stats */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:6 }}>
+                {[['65','Compromiso',false],['7','Has regalado',false],['4','Has aprovechado',false]].map(([v,l,warn])=>(
+                  <div key={l} style={{ ...wBox(), padding:'8px 6px', textAlign:'center' }}>
+                    <div style={{ fontFamily:T.font, fontSize:15, fontWeight:700, color:warn?T.accent:T.line }}>{v}</div>
+                    <div style={{ fontFamily:T.font, fontSize:7, color:T.dim }}>{l}</div>
+                  </div>
+                ))}
+              </div>
+              <Divider my={4} />
+              {/* tabs */}
+              <div style={{ display:'flex', borderBottom:`1.5px solid ${T.ghost}` }}>
+                {['Mis regalos','Mis turnos','Historial'].map((tab,i)=>(
+                  <div key={tab} style={{ flex:1, padding:'6px 0', textAlign:'center',
+                    borderBottom: i===0 ? `2px solid ${T.accent}` : 'none' }}>
+                    <span style={{ fontFamily:T.font, fontSize:8,
+                      color: i===0 ? T.accent : T.dim, fontWeight: i===0 ? 700 : 400 }}>{tab}</span>
+                  </div>
+                ))}
+              </div>
+              {/* mis objetos tab */}
+              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+                {[
+                  { title:'Bicicleta de montaña', status:'activo', tag:false },
+                  { title:'Sofá 3 plazas', status:'completado', tag:true },
+                  { title:'Mesa escritorio', status:'cancelado', tag:true },
+                ].map((obj,i)=>(
+                  <div key={i} style={{ ...wBox(), padding:'8px 10px', display:'flex', gap:8, alignItems:'center' }}>
+                    <Rect w={36} h={36} label="img" style={{ borderRadius:2, flexShrink:0 }} />
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>{obj.title}</div>
+                      <Tag label={obj.status} muted={obj.tag} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <BottomNavA active='profile' />
+          </Phone>
+        </div>
+
+        {/* Tab Solicitudes */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>tab solicitudes</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'14px 14px', display:'flex', flexDirection:'column', gap:10 }}>
+              <div style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Mis turnos</div>
+              {/* solicitudes limit indicator */}
+              <div style={{ background:T.bg2, border:`1.5px solid ${T.ghost}`, borderRadius:3, padding:'8px 10px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
+                  <span style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Turnos este mes</span>
+                  <span style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>2 / 3</span>
+                </div>
+                <div style={{ height:4, background:T.ghost, borderRadius:2, overflow:'hidden' }}>
+                  <div style={{ width:'66%', height:'100%', background:T.accent }} />
+                </div>
+              </div>
+              {/* lista */}
+              {[
+                { title:'Cámara analógica', status:'elegido', accent:true },
+                { title:'Altavoz bluetooth', status:'en espera', accent:false },
+                { title:'Chaqueta de lana', status:'no elegido', accent:false },
+              ].map((r,i)=>(
+                <div key={i} style={{ ...wBox(), padding:'8px 10px', display:'flex', gap:8, alignItems:'center' }}>
+                  <Rect w={36} h={36} label="img" style={{ borderRadius:2, flexShrink:0 }} />
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>{r.title}</div>
+                    <Tag label={r.status} muted={!r.accent} />
+                  </div>
+                  {r.accent && (
+                    <div style={{ padding:'3px 6px', background:T.line, borderRadius:2 }}>
+                      <span style={{ fontFamily:T.font, fontSize:7, color:T.white }}>Ver sesión</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+              {tweaks.showAnnotations && (
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, lineHeight:1.5 }}>
+                  ↑ Barra de progreso: ventana deslizante 720h. "Seleccionado" lleva a la sesión activa.
+                </div>
+              )}
+            </div>
+            <BottomNavA active='profile' />
+          </Phone>
+        </div>
+
+        {/* Tab Historial reputación */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>tab historial reputación</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'14px 14px', display:'flex', flexDirection:'column', gap:10 }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline' }}>
+                <span style={{ fontFamily:T.font, fontSize:12, fontWeight:700 }}>Historial</span>
+                <span style={{ fontFamily:T.font, fontSize:10, fontWeight:700, color:T.accent }}>Compromiso: 65</span>
+              </div>
+              {[
+                { type:'delivery_completed', delta:'+10', label:'Entrega completada', date:'hace 2 días', pos:true },
+                { type:'delivery_completed', delta:'+10', label:'Entrega completada', date:'hace 1 semana', pos:true },
+                { type:'no_show', delta:'-20', label:'Plantón registrado', date:'hace 2 semanas', pos:false },
+                { type:'delivery_completed', delta:'+10', label:'Entrega completada', date:'hace 1 mes', pos:true },
+                { type:'no_show', delta:'-40', label:'Cita no atendida (#2)', date:'hace 6 semanas', pos:false },
+              ].map((ev,i)=>(
+                <div key={i} style={{ display:'flex', alignItems:'center', gap:8,
+                  padding:'7px 10px', background: ev.pos ? '#f0f7f0' : '#fef2ed',
+                  border:`1.5px solid ${ev.pos ? '#b5d6b5' : T.accent}`,
+                  borderRadius:2 }}>
+                  <span style={{ fontFamily:T.font, fontSize:11, color: ev.pos ? '#2d7a2d' : T.accent }}>
+                    {ev.pos ? '▲' : '▼'}
+                  </span>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontFamily:T.font, fontSize:9, fontWeight:700 }}>{ev.label}</div>
+                    <div style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>{ev.date}</div>
+                  </div>
+                  <span style={{ fontFamily:T.font, fontSize:11, fontWeight:700,
+                    color: ev.pos ? '#2d7a2d' : T.accent }}>{ev.delta}</span>
+                </div>
+              ))}
+              {tweaks.showAnnotations && (
+                <div style={{ fontFamily:T.font, fontSize:8, color:T.dim, lineHeight:1.5 }}>
+                  ↑ GET /users/me/reputation-history · Sin recalculo desde historial · Solo auditoría.
+                </div>
+              )}
+            </div>
+            <BottomNavA active='profile' />
+          </Phone>
+        </div>
+
+        {/* Perfil público */}
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:10, color:T.dim, textTransform:'uppercase', letterSpacing:'0.08em' }}>perfil público (otro usuario)</div>
+          <Phone w={300} scale={1}>
+            <div style={{ padding:'14px 14px', display:'flex', flexDirection:'column', gap:10 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:2 }}>
+                <span style={{ fontFamily:T.font, fontSize:10, color:T.dim }}>← Volver</span>
+              </div>
+              <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+                <Rect w={48} h={48} label="◯" style={{ borderRadius:'50%', flexShrink:0 }} />
+                <div>
+                  <div style={{ fontFamily:T.font, fontSize:11, fontWeight:700 }}>Usuario anónimo</div>
+                  <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>Miembro desde mar 2024</div>
+                </div>
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:6 }}>
+                {[['42','Compromiso'],['5','Ha regalado'],['3','Ha aprovechado']].map(([v,l])=>(
+                  <div key={l} style={{ ...wBox(), padding:'8px 6px', textAlign:'center' }}>
+                    <div style={{ fontFamily:T.font, fontSize:15, fontWeight:700 }}>{v}</div>
+                    <div style={{ fontFamily:T.font, fontSize:7, color:T.dim }}>{l}</div>
+                  </div>
+                ))}
+              </div>
+              {tweaks.showAnnotations && (
+                <div style={{ background:T.bg2, border:`1px solid ${T.ghost}`, borderRadius:2,
+                  padding:'5px 8px' }}>
+                  <span style={{ fontFamily:T.font, fontSize:8, color:T.dim }}>
+                    GET /users/:id — sin email, sin consecutiveNoShows, sin requestsPaused
+                  </span>
+                </div>
+              )}
+              <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, lineHeight:1.6 }}>
+                Solo información pública visible. No se muestran datos de contacto ni historial detallado.
+              </div>
+            </div>
+            <BottomNavA active='profile' />
+          </Phone>
+        </div>
+      </div>
+
+      {tweaks.showDesktopHints && (
+        <div style={{ background:T.bg2, border:`1.5px dashed ${T.ghost}`, borderRadius:4, padding:'10px 14px', marginTop:8 }}>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim, fontWeight:700, marginBottom:4, textTransform:'uppercase', letterSpacing:'0.1em' }}>Desktop hint</div>
+          <div style={{ fontFamily:T.font, fontSize:9, color:T.dim }}>
+            En desktop: perfil con sidebar izq (avatar + stats) y contenido principal der con tabs. Historial en tabla con columnas Evento / Delta / Fecha.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   MAIN APP
+───────────────────────────────────────────── */
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  return (
+    <div style={{ minHeight:'100vh', background:T.bg }}>
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Anotaciones" />
+        <TweakToggle label="Mostrar anotaciones" value={tweaks.showAnnotations}
+          onChange={(v) => setTweak('showAnnotations', v)} />
+        <TweakToggle label="Hints de desktop" value={tweaks.showDesktopHints}
+          onChange={(v) => setTweak('showDesktopHints', v)} />
+        <TweakSection label="Color de acento" />
+        <TweakColor label="Acento" value={tweaks.accentColor}
+          onChange={(v) => setTweak('accentColor', v)} />
+      </TweaksPanel>
+      <DesignCanvas>
+        <DCSection id="nav" title="Navegación Global — Variante A">
+          <DCArtboard id="nav-a" label="3 tabs: Explorar · Publicar · Perfil" width={900} height={560}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <NavSectionA tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="list" title="Listado de Objetos">
+          <DCArtboard id="list-vars" label="Var A · B · C" width={1200} height={780}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <ListSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="detail" title="Detalle de Objeto">
+          <DCArtboard id="detail-vars" label="Var A · B" width={900} height={780}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <DetailSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="request" title="Flujo Solicitud (Receptor)">
+          <DCArtboard id="request-flow" label="4 pasos en secuencia" width={1600} height={720}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <RequestFlowSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="states" title="Estados del Sistema">
+          <DCArtboard id="system-states" label="Degradado · Límite · Pausado · Reputación baja" width={1400} height={680}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <SystemStatesSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="publish" title="Donante: Publicar Objeto">
+          <DCArtboard id="publish-flow" label="4 pasos: formulario → fotos → publicado → gestión" width={1400} height={740}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <PublishSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="candidates" title="Donante: Candidatos y Selección">
+          <DCArtboard id="candidates-flow" label="3 pasos: ranking → canal contacto → sesión activa" width={1200} height={740}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <CandidatesSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="delivery" title="Sesión de Entrega">
+          <DCArtboard id="delivery-states" label="Activa · Cancelar+No-show · Completada · Expirada" width={1300} height={720}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <DeliverySection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="profile" title="Perfil de Usuario">
+          <DCArtboard id="profile-screens" label="Mi perfil · Solicitudes · Historial · Perfil público" width={1500} height={780}>
+            <div style={{ padding:'28px 28px', background:T.bg, minHeight:'100%' }}>
+              <ProfileSection tweaks={tweaks} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<div id="root"></div>
+</body>
+</html>

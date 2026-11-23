@@ -1,0 +1,224 @@
+<div
+  class="report-modal__backdrop rlg-fade-in"
+  role="presentation"
+  (click)="onBackdropClick()"
+>
+  <div
+    class="report-modal__panel rlg-modal-in"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="currentTitleId()"
+    tabindex="-1"
+    (click)="onPanelClick($event)"
+    (keydown)="onPanelKeydown($event)"
+    *transloco="let t"
+  >
+    <!-- Header -->
+    <div class="report-modal__header" [class.report-modal__header--end]="step() === 'STEP_3_CONFIRMATION'">
+      @switch (step()) {
+        @case ('STEP_1_REASON') {
+          <div class="report-modal__header-text">
+            <h2 id="report-modal-title-step1" class="report-modal__title">
+              {{
+                context().entityType === 'item'
+                  ? t('reports.modal.title_item')
+                  : t('reports.modal.title_user')
+              }}
+            </h2>
+            <p class="report-modal__subtitle">{{ context().entityDisplayName }}</p>
+          </div>
+        }
+        @case ('STEP_2_DESCRIPTION') {
+          <h2 id="report-modal-title-step2" class="report-modal__title">
+            {{ t('reports.modal.step2.title') }}
+          </h2>
+        }
+        @case ('SUBMITTING') {
+          <h2 id="report-modal-title-step2" class="report-modal__title">
+            {{ t('reports.modal.step2.title') }}
+          </h2>
+        }
+        @default {
+          <!-- step 3: no title in header -->
+        }
+      }
+
+      <button
+        class="report-modal__close"
+        type="button"
+        [disabled]="isSubmitting()"
+        [attr.aria-label]="t('reports.modal.btn.close')"
+        (click)="onClose()"
+      >
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M15 9l-6 6M9 9l6 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Paso 1: Selección de motivo -->
+    @if (step() === 'STEP_1_REASON') {
+      <div class="report-modal__body rlg-step-back">
+        <p class="report-modal__instruction">{{ t('reports.modal.step1.instruction') }}</p>
+
+        <ul class="report-modal__reasons" role="listbox" [attr.aria-label]="t('reports.modal.step1.instruction')">
+          @for (option of reasonOptions; track option.value; let idx = $index) {
+            <li
+              class="report-modal__reason-item"
+              [class.report-modal__reason-item--selected]="selectedReason() === option.value"
+              role="option"
+              [attr.aria-selected]="selectedReason() === option.value"
+              (click)="onSelectReason(option.value)"
+              (keydown.enter)="onSelectReason(option.value)"
+              (keydown.space)="onSelectReason(option.value)"
+              (keydown)="onReasonItemKeydown($event, idx)"
+              tabindex="0"
+            >
+              <span class="report-modal__reason-label">{{ t(option.labelKey) }}</span>
+              @if (option.subLabelKey) {
+                <span class="report-modal__reason-sublabel">{{ t(option.subLabelKey) }}</span>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="report-modal__footer">
+        <button
+          class="report-modal__btn report-modal__btn--text"
+          type="button"
+          (click)="onClose()"
+        >
+          {{ t('reports.modal.btn.cancel') }}
+        </button>
+        <button
+          class="report-modal__btn report-modal__btn--primary"
+          type="button"
+          [disabled]="selectedReason() === null"
+          (click)="onNext()"
+        >
+          {{ t('reports.modal.btn.next') }}
+        </button>
+      </div>
+    }
+
+    <!-- Paso 2: Descripción + submit (visible también en SUBMITTING) -->
+    @if (step() === 'STEP_2_DESCRIPTION' || step() === 'SUBMITTING') {
+      <div class="report-modal__body rlg-step-fwd">
+        <!-- Motivo seleccionado (solo lectura) -->
+        <div class="report-modal__reason-summary">
+          <div class="report-modal__reason-summary-group">
+            <span class="report-modal__reason-summary-label">{{ t('reports.modal.step2.reason_label') }}</span>
+            <span class="report-modal__reason-summary-value">{{ t(selectedReasonLabelKey()) }}</span>
+          </div>
+          <button
+            class="report-modal__btn-change"
+            type="button"
+            [disabled]="isSubmitting()"
+            (click)="onBack()"
+          >
+            {{ t('reports.modal.step2.reason_change') }}
+          </button>
+        </div>
+
+        <!-- Textarea -->
+        <div class="report-modal__field">
+          <label class="report-modal__field-label" for="report-description">
+            {{ t('reports.modal.step2.textarea_label') }}
+            <span class="report-modal__field-optional">{{ t('reports.modal.step2.textarea_optional') }}</span>
+          </label>
+          <div class="report-modal__textarea-wrap">
+            <textarea
+              id="report-description"
+              class="report-modal__textarea"
+              [attr.placeholder]="t('reports.modal.step2.textarea_placeholder')"
+              [value]="description()"
+              [readonly]="isSubmitting()"
+              rows="4"
+              maxlength="500"
+              (input)="onDescriptionInput($event)"
+            ></textarea>
+            <span
+              class="report-modal__char-count"
+              [class.report-modal__char-count--warning]="charCount() >= 450"
+            >
+              {{ charCount() }} / 500
+            </span>
+          </div>
+        </div>
+
+        <p class="report-modal__privacy-note">{{ t('reports.modal.step2.privacy_note') }}</p>
+
+        <!-- Zona de error -->
+        @if (errorKey(); as key) {
+          <div class="report-modal__error-zone" role="alert">
+            <span class="report-modal__error-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </span>
+            <span>{{ t(key) }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="report-modal__footer">
+        <button
+          class="report-modal__btn report-modal__btn--text"
+          type="button"
+          [disabled]="isSubmitting()"
+          (click)="onBack()"
+        >
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          {{ t('reports.modal.btn.back') }}
+        </button>
+        <button
+          class="report-modal__btn report-modal__btn--primary"
+          type="button"
+          [disabled]="isSubmitting()"
+          (click)="onSubmit()"
+        >
+          @if (isSubmitting()) {
+            <span class="report-modal__spinner" aria-hidden="true"></span>
+            {{ t('reports.modal.btn.submitting') }}
+          } @else {
+            {{ t('reports.modal.btn.submit') }}
+          }
+        </button>
+      </div>
+    }
+
+    <!-- Paso 3: Confirmación -->
+    @if (step() === 'STEP_3_CONFIRMATION') {
+      <div class="report-modal__body report-modal__body--centered rlg-step-fwd">
+        <div class="report-modal__confirm-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h2 id="report-modal-title-step3" class="report-modal__confirm-title">{{ t('reports.modal.step3.title') }}</h2>
+        <p class="report-modal__confirm-body">{{ t('reports.modal.step3.body') }}</p>
+      </div>
+
+      <div class="report-modal__footer report-modal__footer--centered">
+        <button
+          class="report-modal__btn report-modal__btn--ghost"
+          type="button"
+          (click)="onCloseFinal()"
+        >
+          {{ t('reports.modal.btn.close') }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

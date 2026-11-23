@@ -1,0 +1,551 @@
+<section class="mis-objetos" *transloco="let t">
+  @if (showCancelledSuccess()) {
+    <p class="mis-objetos__success" role="status">
+      {{ t('items.cancel.success') }}
+    </p>
+  }
+
+  @if (selectSuccess(); as success) {
+    <p class="mis-objetos__success mis-objetos__select-success" role="status">
+      {{
+        t('items.my_objects.select_success', {
+          sessionId: success.sessionId,
+          date: selectSuccessDeadlineLabel(success.deadlineAt),
+        })
+      }}
+      <a
+        class="mis-objetos__select-success-link"
+        [routerLink]="['/entregas', success.sessionId]"
+      >
+        {{ t('items.my_objects.select_success_link') }}
+      </a>
+    </p>
+  }
+
+  <header class="mis-objetos__header">
+    <div class="mis-objetos__header-text">
+      <h1 class="mis-objetos__title">{{ t('nav.my_items') }}</h1>
+      <p class="mis-objetos__subtitle">{{ t('items.my_objects.subtitle') }}</p>
+    </div>
+    <a routerLink="/mis-objetos/publicar" class="mis-objetos__publish">
+      <app-btn variant="primary">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          aria-hidden="true"
+        >
+          <path d="M20 12v10H4V12" />
+          <rect x="2" y="7" width="20" height="5" />
+          <path d="M12 22V7" />
+        </svg>
+        {{ t('items.my_objects.publish_cta') }}
+      </app-btn>
+    </a>
+  </header>
+
+  @if (loading()) {
+    <p class="mis-objetos__loading" role="status">{{ t('items.my_objects.loading') }}</p>
+  } @else if (errorKey()) {
+    <app-alert-box variant="error">
+      <p>{{ t(errorKey()!) }}</p>
+    </app-alert-box>
+  } @else {
+    <nav class="mis-objetos__tabs" [attr.aria-label]="t('items.my_objects.tabs_label')">
+      @for (tab of tabIds; track tab) {
+        <button
+          type="button"
+          class="mis-objetos__tab"
+          [class.mis-objetos__tab--active]="activeTab() === tab"
+          [attr.aria-pressed]="activeTab() === tab"
+          (click)="changeTab(tab)"
+        >
+          {{ t(tabLabelKey(tab)) }}
+          @if (tabCounts()[tab] > 0) {
+            <span class="mis-objetos__tab-count">{{ tabCounts()[tab] }}</span>
+          }
+        </button>
+      }
+    </nav>
+
+    <div
+      class="mis-objetos__split"
+      [class.mis-objetos__split--with-detail]="hasDetail()"
+    >
+      <div class="mis-objetos__list-col">
+        @if (filteredItems().length === 0) {
+          <div class="mis-objetos__empty-card">
+            <svg
+              class="mis-objetos__empty-icon"
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              aria-hidden="true"
+            >
+              <path
+                d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+              />
+              <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+            </svg>
+            <h2 class="mis-objetos__empty-title">{{ t('items.my_objects.empty_title') }}</h2>
+            <p class="mis-objetos__empty-body">{{ t('items.my_objects.empty_body') }}</p>
+            <a routerLink="/mis-objetos/publicar">
+              <app-btn variant="primary">{{ t('items.my_objects.empty_cta') }}</app-btn>
+            </a>
+          </div>
+        } @else {
+          <div class="mis-objetos__list-card" role="list">
+            @for (item of filteredItems(); track item.id; let first = $first; let last = $last) {
+              @let pausedDescId = showPausedSuffix(item) ? 'item-paused-' + item.id : null;
+              <button
+                type="button"
+                role="listitem"
+                class="mis-objetos__row"
+                [class.mis-objetos__row--selected]="selectedId() === item.id"
+                [class.mis-objetos__row--first]="first"
+                [class.mis-objetos__row--last]="last"
+                [attr.aria-current]="selectedId() === item.id ? 'true' : null"
+                [attr.aria-describedby]="pausedDescId"
+                (click)="selectItem(item)"
+              >
+                <div
+                  class="mis-objetos__row-thumb"
+                  [class.mis-objetos__row-thumb--placeholder]="item.images.length === 0"
+                >
+                  @if (item.images.length > 0) {
+                    <img
+                      [ngSrc]="item.images[0]"
+                      width="56"
+                      height="56"
+                      [alt]="item.title"
+                    />
+                  } @else {
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  }
+                </div>
+
+                <div class="mis-objetos__row-body">
+                  <div class="mis-objetos__row-header">
+                    <span class="mis-objetos__row-title">{{ item.title }}</span>
+                    <app-item-status-badge [status]="item.status" />
+                  </div>
+                  <div class="mis-objetos__row-meta">
+                    @if (item.status === 'active') {
+                      <span class="mis-objetos__row-meta-primary">
+                        @if (item.requestCount > 0) {
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                          </svg>
+                          {{ item.requestCount === 1 ? t('items.my_objects.requests_count_one') : t('items.my_objects.requests_count', { count: item.requestCount }) }}
+                          @if (showPausedSuffix(item)) {
+                            <span [id]="pausedDescId" class="mis-objetos__paused-suffix">{{
+                              t('items.pause.list_suffix')
+                            }}</span>
+                          }
+                        } @else {
+                          {{ t('items.my_objects.no_requests_yet') }}
+                        }
+                      </span>
+                    }
+                    @if (item.status === 'reserved') {
+                      @if (sessionExpiresLabel(item.id); as expires) {
+                        <span class="mis-objetos__row-meta-warn">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                          </svg>
+                          {{ t('items.my_objects.session_expires', { date: expires }) }}
+                        </span>
+                      }
+                    }
+                    <span class="mis-objetos__row-days">{{ daysAgoLabel(item.createdAt) }}</span>
+                  </div>
+                </div>
+
+                <svg
+                  class="mis-objetos__row-chevron"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            }
+          </div>
+          <p class="mis-objetos__list-footer">
+            @if (filteredItems().length === 1) {
+              {{ t('items.my_objects.list_count_one') }}
+            } @else {
+              {{ t('items.my_objects.list_count', { count: filteredItems().length }) }}
+            }
+          </p>
+        }
+      </div>
+
+      @if (hasDetail()) {
+        <div class="mis-objetos__detail-wrap">
+          <article
+            class="mis-objetos__detail rlg-slide-in"
+            aria-labelledby="mis-objetos-detail-title"
+          >
+            @if (detailLoading()) {
+              <p class="mis-objetos__detail-loading" role="status">
+                {{ t('items.detail.loading') }}
+              </p>
+            } @else if (detailErrorKey()) {
+              <div class="mis-objetos__detail-error">
+                <app-alert-box variant="error">
+                  <p>{{ t(detailErrorKey()!) }}</p>
+                </app-alert-box>
+                <app-btn variant="primary" (click)="retryDetail()">
+                  {{ t('items.detail.errors.retry') }}
+                </app-btn>
+              </div>
+            } @else if (detail(); as d) {
+              <header class="mis-objetos__detail-header">
+                <div class="mis-objetos__detail-heading">
+                  <h2 id="mis-objetos-detail-title" class="mis-objetos__detail-title">
+                    {{ d.title }}
+                  </h2>
+                  <div class="mis-objetos__detail-chips">
+                    <app-item-category-chip [category]="d.category" size="large" />
+                    <app-item-status-badge [status]="d.status" />
+                    <app-item-condition-chip [condition]="d.condition" />
+                  </div>
+                </div>
+                <div class="mis-objetos__detail-actions">
+                  <button
+                    data-ga-id="my_items_detail_share_open"
+                    data-ga-context="mis_objetos_detail"
+                    type="button"
+                    class="mis-objetos__detail-share"
+                    [attr.aria-label]="t('items.share.open')"
+                    (click)="openShareDialog()"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg>
+                    {{ t('items.share.open') }}
+                  </button>
+                  <button
+                    type="button"
+                    class="mis-objetos__detail-close"
+                    [attr.aria-label]="t('items.my_objects.close_detail')"
+                    (click)="closeDetail()"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </header>
+
+              <div class="mis-objetos__detail-body">
+                @if (d.images.length > 0) {
+                  <div class="mis-objetos__detail-gallery">
+                    <app-item-image-gallery
+                      [images]="d.images"
+                      [title]="d.title"
+                      [(selectedIndex)]="selectedImageIndex"
+                    />
+                    @if (d.images.length > 1) {
+                      <span class="mis-objetos__photo-count">
+                        {{ t('items.my_objects.photo_count', { count: d.images.length }) }}
+                      </span>
+                    }
+                  </div>
+                } @else {
+                  <div class="mis-objetos__detail-gallery-placeholder" aria-hidden="true">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  </div>
+                }
+
+                <p class="mis-objetos__detail-desc">{{ d.description }}</p>
+
+                <hr class="mis-objetos__detail-divider" />
+
+                @if (d.status === 'active') {
+                  <div class="mis-objetos__detail-section">
+                    <app-item-pause-control
+                      [itemId]="d.id"
+                      [requestsPaused]="d.requestsPaused"
+                      (pausedChange)="onPausedChange(d.id, $event)"
+                    />
+
+                    <div class="mis-objetos__candidates">
+                      <h3 class="mis-objetos__candidates-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                          <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        {{ t('items.my_objects.candidates_title') }}
+                        @if (!candidatesLoading()) {
+                          <span class="mis-objetos__candidates-count">({{ candidates().length }})</span>
+                        }
+                      </h3>
+                      @if (candidatesLoading()) {
+                        <p class="mis-objetos__candidates-loading" role="status">
+                          {{ t('items.my_objects.candidates_loading') }}
+                        </p>
+                      } @else if (candidatesErrorKey()) {
+                        <div class="mis-objetos__candidates-error" role="alert">
+                          <p>{{ t(candidatesErrorKey()!) }}</p>
+                          <app-btn variant="primary" (click)="retryCandidates()">
+                            {{ t('items.detail.errors.retry') }}
+                          </app-btn>
+                        </div>
+                      } @else if (candidates().length === 0) {
+                        <div class="mis-objetos__candidates-empty">
+                          {{ t('items.my_objects.candidates_empty') }}
+                        </div>
+                      } @else {
+                        <div class="mis-objetos__candidates-list" role="list">
+                          @for (c of candidates(); track c.requestId; let idx = $index; let last = $last) {
+                            <app-candidate-row
+                              [candidate]="c"
+                              [rank]="idx + 1"
+                              [last]="last"
+                              [selectDisabled]="d.requestsPaused"
+                              (select)="onCandidateSelect($event)"
+                            />
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <app-btn variant="dangerGhost" [fullWidth]="true" (click)="openCancelDialog()">
+                      {{ t('items.cancel.trigger') }}
+                    </app-btn>
+                  </div>
+                }
+
+                @if (d.status === 'reserved') {
+                  <div class="mis-objetos__detail-section">
+                    @if (deliverySession(); as session) {
+                      <div class="mis-objetos__reserved-content">
+                        <div class="mis-objetos__warn-box">
+                          <p class="mis-objetos__warn-box-title">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                              <circle cx="12" cy="12" r="10" />
+                              <path d="M12 6v6l4 2" />
+                            </svg>
+                            {{ t('items.my_objects.reserved_session_title') }}
+                          </p>
+                          <p class="mis-objetos__warn-box-body">
+                            {{ t('items.my_objects.reserved_session_body_lead') }}
+                            <strong>{{ session.deadlineAt | date: 'd MMM y' }}</strong>
+                          </p>
+                        </div>
+
+                        <div class="mis-objetos__reserved-party">
+                          <p class="mis-objetos__reserved-party-label">
+                            {{ t('items.my_objects.reserved_receiver_label') }}
+                          </p>
+                          <div class="mis-objetos__reserved-party-row">
+                            <app-user-avatar
+                              [userId]="session.otherParty.userId"
+                              [firstName]="session.otherParty.firstName"
+                              [lastName]="session.otherParty.lastName"
+                              [avatarUrl]="session.otherParty.avatarUrl"
+                              size="md"
+                              [decorative]="true"
+                            />
+                            <div class="mis-objetos__reserved-party-meta">
+                              <span
+                                class="mis-objetos__reserved-score"
+                                [class]="'mis-objetos__reserved-score--' + reservedOtherScoreTone()"
+                              >
+                                {{ reservedOtherScoreDisplay() }}
+                              </span>
+                              <span class="mis-objetos__reserved-distance">
+                                {{ t('items.explore.distance_km', { km: reservedOtherDistanceKm() }) }}@if (reservedOtherLocationName(); as name) { · {{ name }}}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="mis-objetos__success-box">
+                          <p class="mis-objetos__success-box-label">
+                            {{ t('delivery.detail.receiver_contact_channel_label') }}
+                          </p>
+                          @if (session.receiverContactChannel; as channel) {
+                            <p class="mis-objetos__success-box-value">{{ channel }}</p>
+                          } @else {
+                            <p class="mis-objetos__success-box-value mis-objetos__success-box-value--muted">
+                              {{ t('delivery.detail.channel_unavailable') }}
+                            </p>
+                          }
+                        </div>
+
+                        @if (canManageDeliverySession()) {
+                          <div class="mis-objetos__reserved-actions">
+                            <app-btn
+                              variant="primary"
+                              [fullWidth]="true"
+                              (click)="openConfirmDeliveryDialog()"
+                            >
+                              <svg
+                                width="15"
+                                height="15"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                              >
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                              </svg>
+                              {{ t('items.my_objects.confirm_delivery.action') }}
+                            </app-btn>
+                            <app-btn
+                              variant="dangerGhost"
+                              [fullWidth]="true"
+                              (click)="openCancelSessionDialog()"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                              >
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                              </svg>
+                              {{ t('items.my_objects.cancel_session.action') }}
+                            </app-btn>
+                          </div>
+                        }
+
+                        @if (canCancelItemWithSession()) {
+                          <app-btn
+                            variant="dangerGhost"
+                            [fullWidth]="true"
+                            data-testid="item-cancel-active-session-btn"
+                            (click)="openCancelDialog()"
+                          >
+                            {{ t('items.cancel.trigger') }}
+                          </app-btn>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+
+                @if (d.status === 'completed' || d.status === 'cancelled') {
+                  <div class="mis-objetos__closed">
+                    @if (d.status === 'completed') {
+                      <svg class="mis-objetos__closed-icon mis-objetos__closed-icon--ok" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      <h3 class="mis-objetos__closed-title">{{ t('items.my_objects.closed_completed_title') }}</h3>
+                      <p class="mis-objetos__closed-body">{{ t('items.my_objects.closed_completed_body') }}</p>
+                    } @else {
+                      <svg class="mis-objetos__closed-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M15 9l-6 6M9 9l6 6" />
+                      </svg>
+                      <h3 class="mis-objetos__closed-title">{{ t('items.my_objects.closed_cancelled_title') }}</h3>
+                      <p class="mis-objetos__closed-body">{{ t('items.my_objects.closed_cancelled_body') }}</p>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </article>
+        </div>
+      }
+    </div>
+
+    @if (!hasDetail() && filteredItems().length > 0) {
+      <p class="mis-objetos__select-hint">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+        {{ t('items.my_objects.select_hint') }}
+      </p>
+    }
+  }
+
+  @if (selectModalCandidate(); as selectCandidate) {
+    <app-item-select-receiver-dialog
+      [candidate]="selectCandidate"
+      [submitting]="selectSubmitting()"
+      [errorKey]="selectErrorKey()"
+      (confirmed)="onSelectConfirm($event)"
+      (dismissed)="closeSelectModal()"
+    />
+  }
+
+  @if (confirmDeliveryOpen()) {
+    <app-delivery-session-confirm-dialog
+      [submitting]="confirmDeliverySubmitting()"
+      [errorKey]="confirmDeliveryErrorKey()"
+      [isFirstDelivery]="false"
+      (confirmed)="onConfirmDelivery()"
+      (dismissed)="closeConfirmDeliveryDialog()"
+    />
+  }
+
+  @if (cancelSessionOpen()) {
+    <app-delivery-session-cancel-dialog
+      [submitting]="cancelSessionSubmitting()"
+      [errorKey]="cancelSessionErrorKey()"
+      (confirmed)="onCancelSessionConfirm($event)"
+      (dismissed)="closeCancelSessionDialog()"
+    />
+  }
+
+  @if (cancelDialogOpen()) {
+    <app-item-cancel-dialog
+      [itemTitle]="detail()?.title ?? selectedListItem()?.title"
+      [hasActiveDeliverySession]="cancelDialogHasActiveSession()"
+      [cancelling]="cancelling()"
+      [errorKey]="cancelErrorKey()"
+      (confirmed)="onCancelConfirm()"
+      (dismissed)="closeCancelDialog()"
+    />
+  }
+
+  @if (shareDialogOpen()) {
+    <app-share-dialog
+      [open]="true"
+      [title]="shareDialogTitle()"
+      [url]="shareDialogUrl()"
+      gaContext="mis_objetos_detail"
+      (dismissed)="closeShareDialog()"
+    />
+  }
+</section>

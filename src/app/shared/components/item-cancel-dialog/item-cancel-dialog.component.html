@@ -1,0 +1,61 @@
+@if (open()) {
+  <div
+    class="cancel-dialog__backdrop"
+    role="presentation"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="cancel-dialog__panel"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'cancel-dialog-title'"
+      [attr.aria-describedby]="'cancel-dialog-desc'"
+      tabindex="-1"
+      (click)="onPanelClick($event)"
+      (keydown)="onPanelKeydown($event)"
+      *transloco="let t"
+    >
+      <h2 id="cancel-dialog-title" class="cancel-dialog__title">
+        {{
+          hasActiveDeliverySession()
+            ? t('items.cancel.dialog_title_with_session')
+            : t('items.cancel.dialog_title')
+        }}
+      </h2>
+      <p id="cancel-dialog-desc" class="cancel-dialog__body">
+        {{
+          hasActiveDeliverySession()
+            ? t('items.cancel.dialog_body_with_session')
+            : t('items.cancel.dialog_body')
+        }}
+      </p>
+      @if (itemTitle(); as title) {
+        <p class="cancel-dialog__item-name">{{ title }}</p>
+      }
+
+      @if (errorKey(); as errKey) {
+        <app-alert-box variant="error">
+          <p class="cancel-dialog__error">{{ t(errKey) }}</p>
+        </app-alert-box>
+      }
+
+      <div class="cancel-dialog__footer">
+        <app-btn variant="ghost" [disabled]="cancelling()" (click)="onDismiss()">
+          {{ t('items.cancel.dismiss') }}
+        </app-btn>
+        <app-btn
+          variant="danger"
+          [disabled]="cancelling()"
+          data-testid="item-cancel-confirm-btn"
+          (click)="onConfirm()"
+        >
+          {{
+            cancelling()
+              ? t('items.cancel.confirming')
+              : t('items.cancel.confirm')
+          }}
+        </app-btn>
+      </div>
+    </div>
+  </div>
+}

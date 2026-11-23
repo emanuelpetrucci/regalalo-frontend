@@ -1,0 +1,159 @@
+<ng-container *transloco="let t">
+
+  @if (openInModal()) {
+    <button
+      type="button"
+      class="feed-card"
+      [class.feed-card--degraded]="isDegraded()"
+      (click)="onCardClick()"
+    >
+      <ng-container *ngTemplateOutlet="cardBody; context: { t }" />
+    </button>
+  } @else {
+    <a
+      class="feed-card"
+      [class.feed-card--degraded]="isDegraded()"
+      [routerLink]="detailLink()"
+    >
+      <ng-container *ngTemplateOutlet="cardBody; context: { t }" />
+    </a>
+  }
+
+  @if (canReport()) {
+    @if (menuOpen()) {
+      <div class="feed-card__menu-backdrop" (click)="closeMenu()"></div>
+    }
+    <div class="feed-card__ctx-overlay">
+      <div class="feed-card__ctx-container" (focusout)="onCtxFocusOut($event)">
+        <button
+          class="feed-card__ctx-btn"
+          type="button"
+          [attr.aria-label]="t('reports.trigger.menu_aria')"
+          [attr.aria-expanded]="menuOpen()"
+          [attr.aria-haspopup]="'menu'"
+          (click)="toggleMenu($event)"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="12" cy="5" r="1.5"/>
+            <circle cx="12" cy="12" r="1.5"/>
+            <circle cx="12" cy="19" r="1.5"/>
+          </svg>
+        </button>
+        @if (menuOpen()) {
+          <div
+            class="feed-card__ctx-dropdown"
+            role="menu"
+            [attr.aria-label]="t('reports.trigger.menu_aria')"
+          >
+            <button
+              class="feed-card__ctx-item"
+              type="button"
+              role="menuitem"
+              (click)="openReportModal($event)"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                <line x1="4" y1="22" x2="4" y2="15"/>
+              </svg>
+              {{ t('reports.trigger.report_item') }}
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (reportModalOpen()) {
+    <app-report-modal
+      [context]="{ entityType: 'item', entityId: item().id, entityDisplayName: item().title }"
+      (closed)="onReportClosed()"
+      (submitted)="onReportSubmitted()"
+    />
+  }
+
+</ng-container>
+
+<ng-template #cardBody let-t="t">
+  <div class="feed-card__media">
+    @if (imageUrl(); as url) {
+      <img
+        class="feed-card__img"
+        [src]="url"
+        [alt]="t('items.explore.image_alt', { title: item().title })"
+        loading="lazy"
+      />
+    } @else {
+      <div class="feed-card__placeholder" aria-hidden="true">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <path d="M21 15l-5-5L5 21" />
+        </svg>
+      </div>
+    }
+    @if (isDegraded()) {
+      <span class="feed-card__degraded-badge">
+        <svg
+          width="9"
+          height="9"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 6v6l4 2" />
+        </svg>
+        {{ t('items.explore.degraded_badge') }}
+      </span>
+    }
+  </div>
+  <div class="feed-card__body">
+    <h3 class="feed-card__title">{{ item().title }}</h3>
+    <div class="feed-card__chips">
+      <app-item-category-chip [category]="itemCategory()" />
+      <app-item-condition-chip [condition]="item().condition" />
+      @if (distanceKm() !== null) {
+        <app-item-distance-chip [km]="distanceKm()!" [locationName]="locationName()" />
+      } @else {
+        <span class="feed-card__available-in-spain">
+          <svg
+            width="11"
+            height="11"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          {{ t('guest.item_card.available_in_spain') }}
+        </span>
+      }
+    </div>
+  </div>
+</ng-template>

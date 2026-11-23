@@ -1,0 +1,486 @@
+<div class="item-detail-panel" *transloco="let t">
+  @if (loading()) {
+    <p class="item-detail-panel__loading" role="status">{{ t('items.detail.loading') }}</p>
+  } @else if (notFound()) {
+    <div class="item-detail-panel__state">
+      <h2 class="item-detail-panel__state-title">{{ t('items.detail.not_found_title') }}</h2>
+      <p class="item-detail-panel__state-body">{{ t('items.detail.not_found_body') }}</p>
+      @if (presentation() === 'page') {
+        <a routerLink="/explorar">
+          <app-btn variant="primary">{{ t('items.detail.back') }}</app-btn>
+        </a>
+      } @else {
+        <app-btn variant="primary" (click)="closed.emit()">{{ t('items.detail.back') }}</app-btn>
+      }
+    </div>
+  } @else if (gone()) {
+    <div class="item-detail-panel__gone">
+      <h2 class="item-detail-panel__gone-title">{{ t('items.detail.gone.title') }}</h2>
+      <p class="item-detail-panel__gone-body">{{ t('items.detail.gone.body') }}</p>
+      @if (presentation() === 'page') {
+        <a routerLink="/explorar">
+          <app-btn variant="primary">{{ t('items.detail.gone.back_link') }}</app-btn>
+        </a>
+      } @else {
+        <app-btn variant="primary" (click)="closed.emit()">{{ t('items.detail.gone.back_link') }}</app-btn>
+      }
+    </div>
+  } @else if (errorKey()) {
+    <div class="item-detail-panel__state">
+      <app-alert-box variant="error">
+        <p class="item-detail-panel__error-text">{{ errorMessage() }}</p>
+        <app-btn variant="primary" (click)="retry()">
+          {{ t('items.detail.errors.retry') }}
+        </app-btn>
+      </app-alert-box>
+    </div>
+  } @else if (item(); as detail) {
+    @if (presentation() === 'page') {
+      <div class="item-detail-panel__page-grid">
+        <div class="item-detail-panel__gallery-col">
+          <app-item-image-gallery
+            [images]="detail.images"
+            [title]="detail.title"
+            layout="detail"
+            [(selectedIndex)]="selectedImageIndex"
+          />
+        </div>
+
+        <div class="item-detail-panel__page-info rlg-card-in">
+          <div class="item-detail-panel__title-row">
+            <h1 class="item-detail-panel__page-heading">{{ detail.title }}</h1>
+            <app-item-status-badge [status]="displayStatus()" labelScope="detail" />
+          </div>
+
+          <div class="item-detail-panel__meta">
+            @if (itemCategory(); as category) {
+              <app-item-category-chip [category]="category" size="large" variant="info" />
+            }
+            <app-item-condition-chip [condition]="detail.condition" size="large" variant="muted" />
+            <span class="item-detail-panel__meta-text">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {{ t('items.explore.distance_km', { km: distanceKm() }) }}@if (locationName(); as name) { · {{ name }}}
+            </span>
+            <span class="item-detail-panel__meta-text">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+              </svg>
+              {{ publishedDateLabel() }}
+            </span>
+          </div>
+
+          <div class="item-detail-panel__section">
+            <div class="item-detail-panel__section-label">
+              {{ t('items.detail.section_description') }}
+            </div>
+            <p class="item-detail-panel__description">{{ detail.description }}</p>
+          </div>
+
+          <div class="item-detail-panel__share-wrap">
+            <button
+              type="button"
+              class="item-detail-panel__share-page"
+              [attr.aria-label]="t('items.detail.share_object')"
+              data-ga-id="item_detail_share_open"
+              data-ga-context="item_detail_page"
+              (click)="openShareDialog()"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                aria-hidden="true"
+              >
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              {{ t('items.detail.share_object') }}
+            </button>
+          </div>
+
+          <div class="item-detail-panel__divider" role="separator"></div>
+
+          <div class="item-detail-panel__section">
+            <div class="item-detail-panel__section-label">
+              @if (isDonor()) {
+                {{ t('items.detail.section_donor_manage') }}
+              } @else {
+                {{ t('items.detail.section_request') }}
+              }
+            </div>
+
+            <div class="item-detail-panel__cta">
+              @if (isDonor()) {
+                <app-item-detail-donor-controls
+                  [itemId]="detail.id"
+                  [status]="detail.status"
+                  [requestsPaused]="detail.requestsPaused"
+                  [createdAt]="detail.createdAt"
+                  [requestCount]="candidateCount()"
+                  [canManagePause]="canManagePause()"
+                  [canCancel]="canCancelItem() || canCancelItemWithSession()"
+                  [showCandidates]="showCandidatesPanel()"
+                  (pausedChange)="onPausedChange($event)"
+                  (toggleCandidates)="toggleCandidatesPanel()"
+                  (cancel)="openCancelDialog($event)"
+                />
+                @if (showPauseNotAvailable()) {
+                  <p class="item-detail-panel__donor-hint">{{ t('items.pause.not_available') }}</p>
+                }
+              } @else {
+                <app-item-detail-receiver-controls
+                  [donor]="detail.donor"
+                  [itemPaused]="showPausedCta()"
+                  [requestDone]="showRequestPendingState()"
+                  [limitReached]="showRequestLimitState()"
+                  [canRequest]="canShowRequestCta()"
+                  [unavailable]="showUnavailableCta()"
+                  [remainingSlots]="remainingSlots()"
+                  [requestErrorKey]="requestErrorKey()"
+                  [requestErrorMessage]="requestErrorMessage()"
+                  (request)="onInterestedClick()"
+                />
+              }
+            </div>
+
+            @if (canReport()) {
+              <div class="item-detail-panel__report-trigger">
+                <button
+                  type="button"
+                  class="item-detail-panel__report-link"
+                  (click)="openReportModal($event)"
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                    <line x1="4" y1="22" x2="4" y2="15"/>
+                  </svg>
+                  {{ t('reports.trigger.report_item_full') }}
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      @if (isDonor() && showCandidatesPanel()) {
+        <app-item-detail-candidates-panel
+          [candidates]="candidates()"
+          [loading]="candidatesLoading()"
+          [errorKey]="candidatesErrorKey()"
+          [requestsPaused]="detail.requestsPaused"
+          (retry)="retryCandidates()"
+          (select)="onCandidateSelect($event)"
+        />
+      }
+      @if (deliveryCreated()) {
+        <div class="item-detail-panel__delivery-created" role="status" data-testid="delivery-created-msg">
+          {{ t('items.my_objects.select_success') }}
+        </div>
+      }
+    } @else {
+      <header class="item-detail-panel__modal-header">
+        @if (showContactStep()) {
+          <button
+            type="button"
+            class="item-detail-panel__back"
+            (click)="closeContactStep()"
+            [attr.aria-label]="t('items.request.contact_step.back')"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        }
+        <h2 class="item-detail-panel__modal-title">
+          @if (showContactStep()) {
+            {{ t('items.request.dialog_title') }}
+          } @else {
+            {{ detail.title }}
+          }
+        </h2>
+        <div class="item-detail-panel__modal-actions">
+          @if (!showContactStep()) {
+            <button
+              type="button"
+              class="item-detail-panel__share"
+              [attr.aria-label]="t('items.share.open')"
+              data-ga-id="item_detail_share_open"
+              data-ga-context="explorar_detail_modal"
+              (click)="openShareDialog()"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              {{ t('items.share.open') }}
+            </button>
+          }
+          <button
+            type="button"
+            class="item-detail-panel__close"
+            (click)="closed.emit()"
+            [attr.aria-label]="t('items.detail.close')"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="item-detail-panel__body">
+        @if (showContactStep()) {
+          <app-request-contact-step
+            [submitting]="requesting()"
+            [remainingSlots]="remainingSlots()"
+            [initialChannel]="pendingContactChannel()"
+            (confirmed)="onContactStepSubmit($event)"
+            (back)="closeContactStep()"
+          />
+        } @else {
+          <div class="item-detail-panel__drawer-content rlg-step-back">
+            <app-item-image-gallery
+              [images]="detail.images"
+              [title]="detail.title"
+              layout="panel"
+              [(selectedIndex)]="selectedImageIndex"
+            />
+
+            <div class="item-detail-panel__drawer-info">
+              <div class="item-detail-panel__chips">
+                @if (itemCategory(); as category) {
+                  <app-item-category-chip [category]="category" size="large" />
+                }
+                <app-item-condition-chip [condition]="detail.condition" size="large" />
+                <app-item-distance-chip [km]="distanceKm()" size="large" [locationName]="locationName()" />
+              </div>
+
+              <p class="item-detail-panel__description">{{ detail.description }}</p>
+
+              <app-item-donor-row
+                [donor]="detail.donor"
+                [variant]="isGuest() ? 'anonymous' : 'default'"
+              />
+
+              @if (isDegraded()) {
+                <div class="item-detail-panel__degraded" role="note">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
+                  <span>{{ t('items.detail.degraded_notice') }}</span>
+                </div>
+              }
+
+              <div class="item-detail-panel__cta">
+                @if (isDonor()) {
+                  @if (canManagePause()) {
+                    <app-item-pause-control
+                      [itemId]="detail.id"
+                      [requestsPaused]="detail.requestsPaused"
+                      (pausedChange)="onPausedChange($event)"
+                    />
+                    @if (canCancelItem()) {
+                      <app-btn
+                        variant="dangerGhost"
+                        [fullWidth]="true"
+                        (click)="openCancelDialog($event)"
+                      >
+                        {{ t('items.cancel.trigger') }}
+                      </app-btn>
+                    }
+                  } @else if (canCancelItemWithSession()) {
+                    <app-btn
+                      variant="dangerGhost"
+                      [fullWidth]="true"
+                      data-testid="item-cancel-active-session-btn"
+                      (click)="openCancelDialog($event)"
+                    >
+                      {{ t('items.cancel.trigger') }}
+                    </app-btn>
+                  } @else if (showPauseNotAvailable()) {
+                    <p class="item-detail-panel__donor-hint">{{ t('items.pause.not_available') }}</p>
+                  }
+                  <a
+                    routerLink="/mis-objetos"
+                    [queryParams]="detail.status === 'active' ? { itemId: detail.id } : null"
+                    class="item-detail-panel__mis-objetos-link"
+                  >
+                    <app-btn variant="secondary" [fullWidth]="true">
+                      @if (detail.status === 'active') {
+                        {{ t('items.detail.manage_in_my_items') }}
+                      } @else {
+                        {{ t('nav.my_items') }}
+                      }
+                    </app-btn>
+                  </a>
+                } @else {
+                  <app-item-cta-block
+                    [requestDone]="showRequestPendingState()"
+                    [itemPaused]="showPausedCta()"
+                    [limitReached]="showRequestLimitState()"
+                    [canRequest]="canShowRequestCta()"
+                    [unavailable]="showUnavailableCta()"
+                    [remainingSlots]="remainingSlots()"
+                    [pendingContactChannel]="pendingContactChannel()"
+                    [requestErrorKey]="requestErrorKey()"
+                    [requestErrorMessage]="requestErrorMessage()"
+                    (request)="onInterestedClick()"
+                    (editContact)="onEditContactChannel()"
+                  />
+                }
+              </div>
+
+              @if (canReport()) {
+                <div class="item-detail-panel__report-trigger">
+                  <button
+                    type="button"
+                    class="item-detail-panel__report-link"
+                    (click)="openReportModal($event)"
+                  >
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                      <line x1="4" y1="22" x2="4" y2="15"/>
+                    </svg>
+                    {{ t('reports.trigger.report_item_full') }}
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (reportModalOpen()) {
+      <app-report-modal
+        [context]="{ entityType: 'item', entityId: item()!.id, entityDisplayName: item()!.title }"
+        (closed)="onReportClosed()"
+        (submitted)="onReportSubmitted()"
+      />
+    }
+
+    @if (cancelDialogOpen()) {
+      <app-item-cancel-dialog
+        [open]="true"
+        [itemTitle]="detail.title"
+        [hasActiveDeliverySession]="item()?.status === 'reserved'"
+        [cancelling]="cancelling()"
+        [errorKey]="cancelErrorKey()"
+        (confirmed)="onCancelConfirm()"
+        (dismissed)="closeCancelDialog()"
+      />
+    }
+
+    @if (contactSheetOpen()) {
+      <app-request-contact-bottom-sheet
+        [open]="true"
+        [submitting]="requesting()"
+        [fieldErrorKey]="contactSheetFieldErrorKey()"
+        (confirmed)="onContactSheetSubmit($event)"
+        (dismissed)="closeContactSheet()"
+      />
+    }
+
+    @if (shareDialogOpen()) {
+      <app-share-dialog
+        [open]="true"
+        [title]="detail.title"
+        [url]="shareUrl()"
+        [gaContext]="presentation() === 'page' ? 'item_detail_page' : 'explorar_detail_modal'"
+        (dismissed)="closeShareDialog()"
+      />
+    }
+
+    @if (selectModalCandidate(); as candidate) {
+      <app-item-select-receiver-dialog
+        [candidate]="candidate"
+        [submitting]="selectSubmitting()"
+        [errorKey]="selectErrorKey()"
+        (confirmed)="onSelectConfirm($event)"
+        (dismissed)="closeSelectModal()"
+      />
+    }
+
+    @if (conversionModalOpen()) {
+      <app-conversion-gate-modal
+        trigger="request_item"
+        [returnUrl]="conversionReturnUrl()"
+        (closed)="conversionModalOpen.set(false)"
+      />
+    }
+  }
+</div>

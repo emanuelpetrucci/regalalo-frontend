@@ -1,0 +1,134 @@
+.share-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  background: rgb(20 23 26 / 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.share-dialog__panel {
+  width: min(100%, 400px);
+  background: var(--bg-surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow-3);
+  padding: 28px 26px;
+}
+
+.share-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.share-dialog__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+}
+
+.share-dialog__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-subtle);
+  color: var(--fg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.share-dialog__item-title {
+  margin: 0 0 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--fg-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.share-dialog__networks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.share-dialog__network {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  padding: 12px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  background: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+}
+
+.share-dialog__network-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.share-dialog__network-icon--whatsapp {
+  color: #25d366;
+}
+
+.share-dialog__network-icon--facebook {
+  color: #1877f2;
+}
+
+.share-dialog__network-icon--twitter {
+  color: #0f1419;
+}
+
+.share-dialog__copy-row {
+  display: flex;
+  gap: 8px;
+}
+
+.share-dialog__url {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  background: var(--bg-page);
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 10px 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.share-dialog__copy {
+  border: none;
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  color: var(--fg-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-semibold);
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.share-dialog__copy--done {
+  background: var(--brand-primary);
+  color: #fff;
+}

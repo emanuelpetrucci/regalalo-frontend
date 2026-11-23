@@ -1,0 +1,40 @@
+.ve__title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+}
+
+.ve__subtitle {
+  margin: 0 0 24px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--fg-secondary);
+}
+
+.ve__centered {
+  padding: 12px 0;
+  text-align: center;
+}
+
+.ve__icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+}
+
+.ve__icon-circle--info {
+  background: var(--color-primary-50);
+  color: var(--color-primary-500);
+}
+
+.ve__icon-circle--error {
+  background: var(--status-cancelled-bg);
+  color: var(--status-cancelled-fg);
+}

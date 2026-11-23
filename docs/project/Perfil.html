@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Mi perfil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { min-height: 100%; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F5F6; -webkit-font-smoothing: antialiased; }
+  input, button, select, textarea { font-family: inherit; }
+  ::placeholder { color: #9AA2AD; }
+
+  @keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .tab-in { animation: tabIn 220ms cubic-bezier(0.22, 0.68, 0, 1.1) both; }
+
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+  .modal-in { animation: modalIn 200ms cubic-bezier(0.22, 0.68, 0, 1.1) both; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .fade-up { animation: fadeUp 320ms cubic-bezier(0.22, 0.68, 0, 1.1) both; }
+  @keyframes rptSpin    { to { transform:rotate(360deg); } }
+  @keyframes rptFadeIn  { from { opacity:0; } to { opacity:1; } }
+  @keyframes rptModalIn { from { opacity:0; transform:scale(0.97) translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes rptStepFwd { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }
+  @keyframes rptStepBack{ from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:none; } }
+  .rpt-fade-in  { animation:rptFadeIn  180ms ease both; }
+  .rpt-modal-in { animation:rptModalIn 260ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-step-fwd  { animation:rptStepFwd  220ms cubic-bezier(0.16,1,0.3,1) both; }
+  .rpt-step-back { animation:rptStepBack 220ms cubic-bezier(0.16,1,0.3,1) both; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D5D9DE; border-radius: 3px; }
+
+  /* Settings form focus ring */
+  .settings-input:focus {
+    border-color: #3A7358 !important;
+    box-shadow: 0 0 0 3px rgba(58,115,88,0.14) !important;
+    outline: none !important;
+  }
+  .settings-input.has-error:focus {
+    border-color: #B33A2A !important;
+    box-shadow: 0 0 0 3px rgba(179,58,42,0.12) !important;
+  }
+  .settings-input { transition: border-color 150ms, box-shadow 150ms; }
+  @media (max-width: 480px) {
+    .settings-name-grid { grid-template-columns: 1fr !important; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links  { display: none !important; }
+    .pub-label  { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="report-modal.jsx"></script>
+<script type="text/babel">
+
+/* ── TOKENS ──────────────────────────────────────────────────── */
+const C = {
+  primary:      '#3A7358',
+  primaryHov:   '#2D5C45',
+  primaryLight: '#F0F5F2',
+  accent:       '#253F72',
+  bgPage:       '#F4F5F6',
+  bgSurface:    '#FFFFFF',
+  bgSubtle:     '#E8EAEC',
+  fg:           '#14171A',
+  fgMid:        '#606A76',
+  fgMuted:      '#7C8692',
+  fgDisabled:   '#9AA2AD',
+  border:       '#D5D9DE',
+  borderStr:    '#B8BFC7',
+  error:        '#B33A2A',
+  errorBg:      '#FDECEA',
+  errorBorder:  '#E8A89E',
+  warnBg:       '#FEF6E7',
+  warnBorder:   '#EDD090',
+  warnFg:       '#8F5907',
+  sh1: '0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)',
+  sh2: '0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+  sh3: '0 8px 32px rgba(0,0,0,0.14)',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'DM Sans', system-ui, sans-serif";
+const FM = "'JetBrains Mono', monospace";
+
+/* ── MOCK DATA ───────────────────────────────────────────────── */
+const USERS = {
+  activo: {
+    name: 'María García', initials: 'MG', since: 'enero 2026',
+    location: 'Barcelona', score: 10, donated: 3, received: 2,
+    noShows: 1, consecNoShows: 0, cyclesAtLimit: 0,
+    email: 'm.garcia@gmail.com', postal: '08001',
+    firstName: 'María', lastName: 'García',
+    avatarUrl: '', phone: '+34 612 345 678',
+    preferredLanguage: 'es', emailVerified: true,
+  },
+  degradado: {
+    name: 'Carlos Ruiz', initials: 'CR', since: 'octubre 2025',
+    location: 'Madrid', score: -30, donated: 1, received: 9,
+    noShows: 5, consecNoShows: 2, cyclesAtLimit: 3,
+    email: 'c.ruiz@gmail.com', postal: '28001',
+    firstName: 'Carlos', lastName: 'Ruiz',
+    avatarUrl: '', phone: '',
+    preferredLanguage: 'es', emailVerified: true,
+  },
+  nuevo: {
+    name: 'Laura Sánchez', initials: 'LS', since: 'mayo 2026',
+    location: 'Valencia', score: 0, donated: 0, received: 0,
+    noShows: 0, consecNoShows: 0, cyclesAtLimit: 0,
+    email: 'laura.s@gmail.com', postal: '46001',
+    firstName: 'Laura', lastName: 'Sánchez',
+    avatarUrl: '', phone: '',
+    preferredLanguage: 'es', emailVerified: false,
+  },
+};
+
+const ITEMS = {
+  activo: [
+    { id: 1, title: 'Bicicleta de montaña Scott', condition: 'buen estado', category: 'sports', status: 'completed', date: '15 feb 2026', requestCount: 7 },
+    { id: 2, title: 'Mesa de escritorio IKEA', condition: 'aceptable', category: 'furniture', status: 'active', date: '18 abr 2026', requestCount: 3, degraded: true },
+    { id: 3, title: 'Lámpara de pie Zara Home', condition: 'como nuevo', category: 'furniture', status: 'cancelled', date: '10 mar 2026', requestCount: 2 },
+  ],
+  degradado: [
+    { id: 4, title: 'Silla de oficina giratoria', condition: 'aceptable', category: 'furniture', status: 'cancelled', date: '15 ene 2026', requestCount: 0 },
+  ],
+  nuevo: [],
+};
+
+const REQUESTS = {
+  activo: [
+    { id: 1, title: 'Estantería Billy IKEA', status: 'completed', date: '15 mar 2026', remaining: null },
+    { id: 2, title: 'Sofá de dos plazas gris', status: 'rejected', date: '2 abr 2026', remaining: null },
+  ],
+  degradado: [
+    { id: 3, title: 'Televisor Samsung 42"', status: 'rejected', date: '1 feb 2026', remaining: null },
+    { id: 4, title: 'Nevera Balay 180 cm', status: 'noshow', date: '20 feb 2026', remaining: null },
+    { id: 5, title: 'Bicicleta plegable Decathlon', status: 'rejected', date: '10 mar 2026', remaining: null },
+  ],
+  nuevo: [],
+};
+
+const HISTORY = {
+  activo: [
+    { id: 1, type: 'delivery_completed', delta: 10, date: '28 abr 2026', note: null },
+    { id: 2, type: 'delivery_completed', delta: 10, date: '15 mar 2026', note: null },
+    { id: 3, type: 'no_show', delta: -20, date: '10 feb 2026', note: null },
+    { id: 4, type: 'delivery_completed', delta: 10, date: '5 ene 2026', note: null },
+  ],
+  degradado: [
+    { id: 5, type: 'no_show', delta: -40, date: '20 feb 2026', note: '×2' },
+    { id: 6, type: 'no_show', delta: -20, date: '5 ene 2026', note: null },
+    { id: 7, type: 'delivery_completed', delta: 10, date: '1 nov 2025', note: null },
+    { id: 8, type: 'no_show', delta: -20, date: '10 oct 2025', note: null },
+    { id: 9, type: 'no_show', delta: -20, date: '1 oct 2025', note: null },
+    { id: 10, type: 'no_show', delta: -20, date: '28 sep 2025', note: null },
+  ],
+  nuevo: [],
+};
+
+/* ── ICONS ───────────────────────────────────────────────────── */
+const Ico = ({ sz=16, sw=1.75, children }) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+);
+const IBox      = ({sz=16}) => <Ico sz={sz}><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></Ico>;
+const ISend     = ({sz=16}) => <Ico sz={sz}><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></Ico>;
+const IStar     = ({sz=16}) => <Ico sz={sz}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></Ico>;
+const IGear     = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></Ico>;
+const ICheck    = ({sz=16}) => <Ico sz={sz}><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></Ico>;
+const IXCircle  = ({sz=16}) => <Ico sz={sz}><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></Ico>;
+const IWarn     = ({sz=16}) => <Ico sz={sz}><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></Ico>;
+const IPin      = ({sz=16}) => <Ico sz={sz}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></Ico>;
+const ILogout   = ({sz=16}) => <Ico sz={sz}><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></Ico>;
+const IChevronR = ({sz=16}) => <Ico sz={sz}><path d="M9 18l6-6-6-6"/></Ico>;
+const IEdit     = ({sz=16}) => <Ico sz={sz}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></Ico>;
+const IPlus     = ({sz=16}) => <Ico sz={sz} sw={2.5}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Ico>;
+const ITrendUp  = ({sz=16}) => <Ico sz={sz}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></Ico>;
+
+/* ── LANGUAGE SELECTOR ───────────────────────────────────────── */
+const LANGS = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català'  },
+];
+function LanguageSelector({ dark }) {
+  const [lang, setLang] = React.useState(() => localStorage.getItem('nlv_lang') || 'es');
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+  const select = code => { setLang(code); localStorage.setItem('nlv_lang', code); setOpen(false); };
+  return (
+    <div ref={ref} style={{ position:'relative', flexShrink:0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        display:'flex', alignItems:'center', gap:4,
+        background: dark ? 'rgba(255,255,255,0.12)' : '#FFFFFF',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.22)' : '#D5D9DE'}`,
+        borderRadius:8, padding:'5px 10px',
+        fontFamily:FB, fontSize:13, fontWeight:600,
+        color: dark ? 'rgba(255,255,255,0.85)' : '#606A76',
+        cursor:'pointer', transition:'all 150ms', userSelect:'none' }}>
+        {lang.toUpperCase()}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', transition:'transform 150ms' }}>
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{ position:'absolute', top:'calc(100% + 6px)', right:0,
+          background:'#FFFFFF', border:'1px solid #D5D9DE',
+          borderRadius:10, boxShadow:'0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06)',
+          overflow:'hidden', zIndex:1000, minWidth:130 }}>
+          {LANGS.map(({ code, label }) => (
+            <button key={code} onClick={() => select(code)}
+              style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
+                width:'100%', padding:'9px 14px', border:'none',
+                background: lang===code ? '#F0F5F2' : 'transparent',
+                color: lang===code ? '#3A7358' : '#14171A',
+                fontFamily:FB, fontSize:13, fontWeight: lang===code ? 600 : 400,
+                cursor:'pointer', textAlign:'left', gap:10, transition:'background 100ms' }}
+              onMouseEnter={e => { if (lang!==code) e.currentTarget.style.background='#E8EAEC'; }}
+              onMouseLeave={e => { if (lang!==code) e.currentTarget.style.background='transparent'; }}>
+              <span>{label}</span>
+              <span style={{ fontFamily:FB, fontSize:11, fontWeight:600,
+                color: lang===code ? '#3A7358' : '#9AA2AD',
+                letterSpacing:'0.05em' }}>{code.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── NAVBAR ──────────────────────────────────────────────────── */
+const NAV_HREFS = {
+  'explorar':    'Explorar v3.html',
+  'mis-objetos': 'Mis objetos.html',
+  'entregas':    'Entregas.html',
+  'perfil':      'Perfil.html',
+};
+function Navbar({ initials }) {
+  const links = [['explorar','Explorar'],['mis-objetos','Mis objetos'],['entregas','Entregas'],['perfil','Perfil']];
+  const [hov, setHov] = React.useState(null);
+  return (
+    <nav style={{ background: C.bgSurface, borderBottom: `1px solid ${C.border}`, height: 64,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '0 clamp(16px,4vw,40px)', position: 'sticky', top: 0, zIndex: 100, boxShadow: C.sh1 }}>
+      <a href="Explorar v3.html" style={{ textDecoration: 'none' }}>
+        <div style={{ fontFamily: FD, fontSize: 20, fontWeight: 700, color: C.primary, letterSpacing: '-0.01em' }}>
+          no lo vendo
+        </div>
+      </a>
+      <div className="nav-links" style={{ display: 'flex', gap: 2 }}>
+        {links.map(([id, label]) => {
+          const active = id === 'perfil';
+          return (
+            <a key={id} href={NAV_HREFS[id]} style={{ textDecoration: 'none' }}>
+              <button onMouseEnter={() => setHov(id)} onMouseLeave={() => setHov(null)}
+                style={{ background: active ? C.primaryLight : hov === id ? C.bgSubtle : 'none',
+                  border: 'none', cursor: 'pointer', padding: '8px 14px', borderRadius: 8,
+                  fontFamily: FB, fontSize: 14, fontWeight: active ? 600 : 400,
+                  color: active ? C.primary : C.fgMid, transition: 'all 150ms' }}>
+                {label}
+              </button>
+            </a>
+          );
+        })}
+      </div>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <LanguageSelector />
+        <a href="Mis objetos.html" style={{ textDecoration: 'none' }}>
+          <button className="pub-label" style={{ background: C.primary, color: '#fff', border: 'none', borderRadius: 8,
+            padding: '8px 14px', fontFamily: FB, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 5 }}>
+            <IPlus sz={13}/> Publicar
+          </button>
+        </a>
+        <div style={{ width: 34, height: 34, borderRadius: '50%', background: C.primaryLight,
+          border: `1.5px solid ${C.border}`, display: 'flex', alignItems: 'center',
+          justifyContent: 'center', fontFamily: FB, fontSize: 12, fontWeight: 700,
+          color: C.primary, cursor: 'pointer', letterSpacing: '0.02em' }}>
+          {initials}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ── CATEGORIES ──────────────────────────────────────────────── */
+const CATEGORY_LABELS = {
+  furniture:'Muebles', electronics:'Electrónica', clothing:'Ropa',
+  books:'Libros', toys:'Juguetes', kitchen:'Cocina',
+  sports:'Deporte', tools:'Herramientas', other:'Otros',
+};
+function CategoryChip({ category }) {
+  return (
+    <span style={{ fontFamily: FB, fontSize: 11, fontWeight: 500,
+      display: 'inline-flex', padding: '2px 8px', borderRadius: 999,
+      background: '#EDF0F5', color: '#142244', border: '1px solid #A5B5D4' }}>
+      {CATEGORY_LABELS[category] || category || '—'}
+    </span>
+  );
+}
+
+/* ── STATUS BADGE ────────────────────────────────────────────── */
+const STATUS_CFG = {
+  active:    { bg: '#F0F5F2', fg: '#224633', bd: '#B5D0C2', dot: '#3A7358', label: 'activo' },
+  completed: { bg: '#EBF5EE', fg: '#265533', bd: '#9DCCA8', dot: '#3A7B4A', label: 'completado' },
+  cancelled: { bg: '#FDECEA', fg: '#7D2419', bd: '#E8A89E', dot: '#B33A2A', label: 'cancelado' },
+  reserved:  { bg: '#FEF6E7', fg: '#8F5907', bd: '#EDD090', dot: '#D4870A', label: 'reservado' },
+  degraded:  { bg: '#E8EAEC', fg: '#606A76', bd: '#D5D9DE', dot: '#9AA2AD', label: 'degradado' },
+  rejected:  { bg: '#E8EAEC', fg: '#606A76', bd: '#D5D9DE', dot: '#9AA2AD', label: 'no seleccionado' },
+  noshow:    { bg: '#FDECEA', fg: '#7D2419', bd: '#E8A89E', dot: '#B33A2A', label: 'no-show' },
+};
+function Badge({ status }) {
+  const s = STATUS_CFG[status] || STATUS_CFG.active;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5,
+      fontFamily: FB, fontSize: 11, fontWeight: 500, lineHeight: 1,
+      padding: '3px 9px', borderRadius: 999,
+      background: s.bg, color: s.fg, border: `1px solid ${s.bd}` }}>
+      <span style={{ width: 5, height: 5, borderRadius: '50%', background: s.dot, flexShrink: 0 }}></span>
+      {s.label}
+    </span>
+  );
+}
+
+/* ── STAT CARD ───────────────────────────────────────────────── */
+function StatCard({ label, value, sub, color }) {
+  return (
+    <div style={{ flex: '1 1 0', minWidth: 72, background: C.bgPage,
+      border: `1px solid ${C.border}`, borderRadius: 10, padding: '11px 13px' }}>
+      <div style={{ fontFamily: FM, fontSize: 22, fontWeight: 600,
+        color: color || C.fg, lineHeight: 1, marginBottom: 4 }}>{value}</div>
+      <div style={{ fontFamily: FB, fontSize: 11, fontWeight: 500,
+        color: C.fgMuted, textTransform: 'uppercase', letterSpacing: '0.06em', lineHeight: 1 }}>
+        {label}
+      </div>
+      {sub && (
+        <div style={{ fontFamily: FB, fontSize: 10, color: C.fgDisabled, marginTop: 3 }}>{sub}</div>
+      )}
+    </div>
+  );
+}
+
+/* ── BANNERS ─────────────────────────────────────────────────── */
+function DegradedBanner() {
+  return (
+    <div style={{ background: C.warnBg, border: `1px solid ${C.warnBorder}`, borderRadius: 10,
+      padding: '12px 16px', display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 16 }}>
+      <span style={{ color: C.warnFg, flexShrink: 0, marginTop: 1 }}><IWarn sz={15}/></span>
+      <div>
+        <div style={{ fontFamily: FB, fontSize: 13, fontWeight: 600, color: C.warnFg, marginBottom: 2 }}>
+          Tu reputación está afectando tu posición en los rankings
+        </div>
+        <div style={{ fontFamily: FB, fontSize: 12, color: C.warnFg, lineHeight: 1.55 }}>
+          Apareces al final de los resultados para donantes. Completar una entrega como donante ayuda a mejorar tu situación.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NewUserBanner() {
+  return (
+    <div style={{ background: C.primaryLight, border: `1px solid #B5D0C2`, borderRadius: 10,
+      padding: '12px 16px', display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 16 }}>
+      <span style={{ color: C.primary, flexShrink: 0, marginTop: 1 }}><IStar sz={15}/></span>
+      <div>
+        <div style={{ fontFamily: FB, fontSize: 13, fontWeight: 600, color: C.primary, marginBottom: 2 }}>
+          Bienvenida a la comunidad
+        </div>
+        <div style={{ fontFamily: FB, fontSize: 12, color: '#2D5C45', lineHeight: 1.55 }}>
+          Tu reputación empieza en 0. Completa entregas para mejorar tu posición.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── PROFILE HEADER ──────────────────────────────────────────── */
+function ProfileHeader({ user, tab, onTabChange }) {
+  const scoreVal = user.score > 0 ? `+${user.score}` : `${user.score}`;
+  const scoreColor = user.score > 0 ? C.primary : user.score < 0 ? C.error : C.fgMuted;
+
+  const tabs = [
+    { id: 'donaciones',    label: 'Donaciones',    Icon: IBox },
+    { id: 'solicitudes',   label: 'Solicitudes',   Icon: ISend },
+    { id: 'reputacion',    label: 'Reputación',    Icon: IStar },
+    { id: 'configuracion', label: 'Configuración', Icon: IGear },
+  ];
+
+  return (
+    <div style={{ background: C.bgSurface, border: `1px solid ${C.border}`,
+      borderRadius: 12, boxShadow: C.sh1, overflow: 'hidden' }}>
+
+      {/* User row */}
+      <div style={{ padding: '24px 24px 20px' }}>
+        <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: 18 }}>
+          {/* Avatar */}
+          <div style={{ width: 68, height: 68, borderRadius: '50%', flexShrink: 0,
+            background: C.primaryLight, border: `2px solid ${C.border}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: FD, fontSize: 22, fontWeight: 700, color: C.primary, letterSpacing: '0.02em' }}>
+            {user.initials}
+          </div>
+          <div style={{ flex: 1, minWidth: 180 }}>
+            <div style={{ fontFamily: FD, fontSize: 22, fontWeight: 600, color: C.fg,
+              marginBottom: 5, lineHeight: 1.2 }}>{user.name}</div>
+            <div style={{ fontFamily: FB, fontSize: 13, color: C.fgMuted,
+              display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <span>Miembro desde {user.since}</span>
+              <span style={{ width: 3, height: 3, borderRadius: '50%', background: C.border, flexShrink: 0 }}></span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <IPin sz={12}/> {user.location}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <StatCard label="Reputación" value={scoreVal} color={scoreColor} />
+          <StatCard label="Donados" value={user.donated} />
+          <StatCard label="Recibidos" value={user.received} />
+          <StatCard label="No-shows" value={user.noShows}
+            sub={user.consecNoShows > 0 ? `${user.consecNoShows} consecutivos` : undefined} />
+        </div>
+
+      </div>
+
+      {/* Tab bar */}
+      <div style={{ borderTop: `1px solid ${C.border}`,
+        display: 'flex', paddingLeft: 8, paddingRight: 8, overflowX: 'auto' }}>
+        {tabs.map(({ id, label, Icon }) => {
+          const active = tab === id;
+          return (
+            <button key={id} onClick={() => onTabChange(id)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6,
+                background: 'none', border: 'none', cursor: 'pointer',
+                padding: '11px 12px',
+                fontFamily: FB, fontSize: 13, fontWeight: active ? 600 : 400,
+                color: active ? C.primary : C.fgMid, whiteSpace: 'nowrap',
+                borderBottom: `2px solid ${active ? C.primary : 'transparent'}`,
+                marginBottom: -1, transition: 'all 150ms', flexShrink: 0 }}>
+              <Icon sz={13}/>
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ── EMPTY STATE ─────────────────────────────────────────────── */
+function Empty({ Icon, title, sub, cta, onCta }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',
+      padding: '52px 24px', gap: 10, textAlign: 'center' }}>
+      <div style={{ width: 52, height: 52, borderRadius: '50%', background: C.primaryLight,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: C.primary, marginBottom: 4 }}>
+        <Icon sz={22}/>
+      </div>
+      <div style={{ fontFamily: FB, fontSize: 15, fontWeight: 600, color: C.fg }}>{title}</div>
+      {sub && <div style={{ fontFamily: FB, fontSize: 13, color: C.fgMuted, maxWidth: 280, lineHeight: 1.65 }}>{sub}</div>}
+      {cta && (
+        <button onClick={onCta}
+          style={{ marginTop: 8, background: C.primary, color: '#fff', border: 'none',
+            borderRadius: 8, padding: '10px 20px', fontFamily: FB, fontSize: 13,
+            fontWeight: 500, cursor: 'pointer' }}>{cta}</button>
+      )}
+    </div>
+  );
+}
+
+/* ── DONATION CARD ───────────────────────────────────────────── */
+function DonationCard({ item }) {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ display: 'flex', alignItems: 'center', gap: 14,
+        background: C.bgSurface,
+        border: `1px solid ${hov ? C.borderStr : C.border}`,
+        borderRadius: 12, padding: '14px 16px',
+        boxShadow: hov ? C.sh2 : C.sh1, transition: 'all 180ms',
+        cursor: 'pointer' }}>
+      {/* Image placeholder */}
+      <div style={{ width: 56, height: 56, borderRadius: 8, background: C.bgSubtle,
+        flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: C.fgDisabled }}>
+        <IBox sz={22}/>
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontFamily: FB, fontSize: 14, fontWeight: 500, color: C.fg, marginBottom: 6,
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {item.title}
+        </div>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          <Badge status={item.degraded ? 'degraded' : item.status} />
+          <CategoryChip category={item.category} />
+          <span style={{ fontFamily: FB, fontSize: 12, color: C.fgMuted }}>{item.condition}</span>
+          {item.requestCount > 0 && (
+            <span style={{ fontFamily: FB, fontSize: 12, color: C.fgMuted }}>
+              · {item.requestCount} {item.requestCount === 1 ? 'solicitud' : 'solicitudes'}
+            </span>
+          )}
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
+        gap: 6, flexShrink: 0 }}>
+        <span style={{ fontFamily: FB, fontSize: 12, color: C.fgMuted }}>{item.date}</span>
+        <span style={{ color: hov ? C.primary : C.fgDisabled, transition: 'color 150ms' }}>
+          <IChevronR sz={14}/>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ── REQUEST CARD ────────────────────────────────────────────── */
+function RequestCard({ req }) {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ display: 'flex', alignItems: 'center', gap: 14,
+        background: C.bgSurface,
+        border: `1px solid ${hov ? C.borderStr : C.border}`,
+        borderRadius: 12, padding: '14px 16px',
+        boxShadow: hov ? C.sh2 : C.sh1, transition: 'all 180ms',
+        cursor: 'pointer' }}>
+      <div style={{ width: 56, height: 56, borderRadius: 8, background: C.bgSubtle,
+        flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: C.fgDisabled }}>
+        <IBox sz={22}/>
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontFamily: FB, fontSize: 14, fontWeight: 500, color: C.fg, marginBottom: 6,
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {req.title}
+        </div>
+        <Badge status={req.status} />
+      </div>
+      <span style={{ fontFamily: FB, fontSize: 12, color: C.fgMuted, flexShrink: 0 }}>{req.date}</span>
+    </div>
+  );
+}
+
+/* ── REP EVENT ROW ───────────────────────────────────────────── */
+function RepRow({ event }) {
+  const pos = event.delta > 0;
+  const label = event.type === 'delivery_completed' ? 'Entrega completada' : 'No-show declarado';
+  const chipBg = pos ? '#EBF5EE' : '#FDECEA';
+  const chipFg = pos ? '#265533' : '#7D2419';
+  const chipBd = pos ? '#9DCCA8' : '#E8A89E';
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '12px 0', borderBottom: `1px solid ${C.border}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
+          background: pos ? '#EBF5EE' : '#FDECEA',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: pos ? '#3A7B4A' : '#B33A2A' }}>
+          {pos ? <ICheck sz={15}/> : <IXCircle sz={15}/>}
+        </div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7,
+            fontFamily: FB, fontSize: 13, fontWeight: 500, color: C.fg }}>
+            {label}
+            {event.note && (
+              <span style={{ fontFamily: FM, fontSize: 10, background: C.warnBg,
+                color: C.warnFg, border: `1px solid ${C.warnBorder}`,
+                borderRadius: 4, padding: '2px 6px' }}>{event.note}</span>
+            )}
+          </div>
+          <div style={{ fontFamily: FB, fontSize: 11, color: C.fgMuted, marginTop: 2 }}>{event.date}</div>
+        </div>
+      </div>
+      <span style={{ fontFamily: FM, fontSize: 13, fontWeight: 600,
+        padding: '3px 10px', borderRadius: 999,
+        background: chipBg, color: chipFg, border: `1px solid ${chipBd}`,
+        flexShrink: 0 }}>
+        {pos ? '+' : ''}{event.delta}
+      </span>
+    </div>
+  );
+}
+
+/* ── REPUTATION TAB ──────────────────────────────────────────── */
+function ReputationTab({ history, score }) {
+  if (!history.length) {
+    return <Empty Icon={IStar} title="Sin historial de reputación"
+      sub="Completa tu primera entrega para empezar a acumular puntuación." />;
+  }
+  const scoreColor = score > 0 ? C.primary : score < 0 ? C.error : C.fgMuted;
+  const scoreVal = score > 0 ? `+${score}` : `${score}`;
+  const totPos = history.filter(e => e.delta > 0).reduce((a, e) => a + e.delta, 0);
+  const totNeg = history.filter(e => e.delta < 0).reduce((a, e) => a + e.delta, 0);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* Score summary */}
+      <div style={{ background: C.bgSurface, border: `1px solid ${C.border}`,
+        borderRadius: 12, boxShadow: C.sh1, padding: '20px 24px',
+        display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ flex: 1, minWidth: 120 }}>
+          <div style={{ fontFamily: FB, fontSize: 11, fontWeight: 500, color: C.fgMuted,
+            textTransform: 'uppercase', letterSpacing: '0.09em', marginBottom: 8 }}>
+            Puntuación total
+          </div>
+          <div style={{ fontFamily: FM, fontSize: 44, fontWeight: 700, color: scoreColor, lineHeight: 1 }}>
+            {scoreVal}
+          </div>
+          <div style={{ fontFamily: FB, fontSize: 12, color: C.fgMuted, marginTop: 8,
+            display: 'flex', gap: 14 }}>
+            <span style={{ color: '#3A7B4A' }}>+{totPos} ganados</span>
+            <span style={{ color: '#B33A2A' }}>{totNeg} perdidos</span>
+          </div>
+        </div>
+        {/* Sparkline */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 52 }}>
+          {history.slice(0, 10).reverse().map((e, i) => (
+            <div key={i} style={{ width: 9, borderRadius: 3, flexShrink: 0,
+              height: `${Math.min(100, Math.abs(e.delta) / 40 * 100 + 15)}%`,
+              background: e.delta > 0
+                ? `rgba(58,115,88,${0.4 + (i / history.length) * 0.6})`
+                : `rgba(179,58,42,${0.4 + (i / history.length) * 0.6})`,
+            }} />
+          ))}
+        </div>
+      </div>
+
+      {/* History list */}
+      <div style={{ background: C.bgSurface, border: `1px solid ${C.border}`,
+        borderRadius: 12, boxShadow: C.sh1, padding: '0 20px' }}>
+        {history.map(e => <RepRow key={e.id} event={e} />)}
+        <div style={{ padding: '10px 0 12px', fontFamily: FB, fontSize: 11,
+          color: C.fgDisabled, textAlign: 'center' }}>
+          Inicio del historial
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── SETTINGS TAB ────────────────────────────────────────────── */
+function SettingsTab({ user }) {
+  const orig = {
+    firstName:         user.firstName,
+    lastName:          user.lastName,
+    avatarUrl:         user.avatarUrl  || '',
+    phone:             user.phone      || '',
+    postalCode:        user.postal,
+    preferredLanguage: user.preferredLanguage,
+  };
+
+  const [form,      setFormState] = React.useState(orig);
+  const [touched,   setTouched]   = React.useState({});
+  const [saving,    setSaving]    = React.useState(false);
+  const [success,   setSuccess]   = React.useState(false);
+  const [errBanner, setErrBanner] = React.useState(null);
+
+  /* ── validación ── */
+  const errs = {};
+  if (!form.firstName.trim() || form.firstName.trim().length < 2)
+    errs.firstName = 'Mínimo 2 caracteres';
+  if (!form.lastName.trim() || form.lastName.trim().length < 2)
+    errs.lastName = 'Mínimo 2 caracteres';
+  if (form.avatarUrl.trim()) {
+    try {
+      const u = new URL(form.avatarUrl.trim());
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') errs.avatarUrl = 'URL no válida';
+    } catch { errs.avatarUrl = 'URL no válida'; }
+  }
+  if (!/^\d{5}$/.test(form.postalCode)) errs.postalCode = 'Formato incorrecto (5 dígitos)';
+
+  const hasDiff = Object.keys(orig).some(k => form[k] !== orig[k]);
+  const isValid = Object.keys(errs).length === 0;
+  const canSave = hasDiff && isValid && !saving;
+  const showPostalWarn = /^\d{5}$/.test(form.postalCode) && form.postalCode !== orig.postalCode;
+
+  const touch    = k => setTouched(t => ({ ...t, [k]: true }));
+  const setField = (k, v) => { setFormState(f => ({ ...f, [k]: v })); setSuccess(false); };
+  const ferr     = k => (touched[k] ? errs[k] : undefined);
+
+  const handleSave = async () => {
+    if (!canSave) return;
+    setSaving(true); setErrBanner(null);
+    await new Promise(r => setTimeout(r, 650));
+    setSaving(false); setSuccess(true);
+  };
+
+  const LANGS_OPTIONS = [
+    { code: 'es', label: 'Español' },
+    { code: 'ca', label: 'Català'  },
+    { code: 'en', label: 'English' },
+  ];
+
+  const inputCls = k => `settings-input${errs[k] && touched[k] ? ' has-error' : ''}`;
+
+  const baseInput = (k, mono = false) => ({
+    fontFamily:   mono ? FM : FB,
+    fontSize:     14,
+    color:        C.fg,
+    background:   C.bgSurface,
+    border:       `1.5px solid ${ferr(k) ? C.error : C.border}`,
+    borderRadius: 8,
+    padding:      '8px 12px',
+    outline:      'none',
+    width:        '100%',
+    boxSizing:    'border-box',
+  });
+
+  return (
+    <div>
+      {/* ── Banner éxito ── */}
+      {success && (
+        <div style={{ background: '#EBF5EE', border: '1px solid #9DCCA8', borderRadius: 10,
+          padding: '10px 16px', marginBottom: 12, fontFamily: FB, fontSize: 13,
+          color: '#265533', fontWeight: 500 }} role="status">
+          Cambios guardados correctamente.
+        </div>
+      )}
+
+      {/* ── Banner error ── */}
+      {errBanner && (
+        <div style={{ background: C.errorBg, border: `1px solid ${C.errorBorder}`, borderRadius: 10,
+          padding: '10px 16px', marginBottom: 12, fontFamily: FB, fontSize: 13,
+          color: C.error, fontWeight: 500 }} role="alert">
+          {errBanner}
+        </div>
+      )}
+
+      {/* ── Sección cuenta ── */}
+      <div style={{ background: C.bgSurface, border: `1px solid ${C.border}`,
+        borderRadius: 12, boxShadow: C.sh1, overflow: 'hidden', marginBottom: 12 }}>
+
+        {/* Cabecera sección */}
+        <div style={{ padding: '13px 20px', borderBottom: `1px solid ${C.border}` }}>
+          <div style={{ fontFamily: FB, fontSize: 11, fontWeight: 600, color: C.fgMuted,
+            textTransform: 'uppercase', letterSpacing: '0.09em' }}>Cuenta</div>
+        </div>
+
+        {/* Email + verificación (solo lectura) */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '13px 20px', borderBottom: `1px solid ${C.border}`, gap: 12, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontFamily: FB, fontSize: 13, fontWeight: 500, color: C.fg }}>
+              Correo electrónico
+            </div>
+            <div style={{ fontFamily: FM, fontSize: 12, color: C.fgMuted, marginTop: 2 }}>
+              {user.email}
+            </div>
+          </div>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            fontFamily: FB, fontSize: 11, fontWeight: 500,
+            padding: '3px 9px', borderRadius: 999, flexShrink: 0,
+            ...(user.emailVerified
+              ? { background: '#EBF5EE', color: '#265533', border: '1px solid #9DCCA8' }
+              : { background: C.warnBg,  color: C.warnFg,  border: `1px solid ${C.warnBorder}` })
+          }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
+              background: user.emailVerified ? '#3A7B4A' : C.warnFg }}></span>
+            {user.emailVerified ? 'Verificado' : 'Sin verificar'}
+          </span>
+        </div>
+
+        {/* Campos del formulario */}
+        <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+          {/* Nombre + Apellidos */}
+          <div className="settings-name-grid"
+            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <label htmlFor="sf-firstName"
+                style={{ display: 'block', fontFamily: FB, fontSize: 13, fontWeight: 500,
+                  color: C.fg, marginBottom: 5 }}>
+                Nombre
+              </label>
+              <input id="sf-firstName" type="text" value={form.firstName}
+                className={inputCls('firstName')}
+                onChange={e => setField('firstName', e.target.value)}
+                onBlur={() => touch('firstName')}
+                style={baseInput('firstName')} />
+              {ferr('firstName') && (
+                <div style={{ fontFamily: FB, fontSize: 11, color: C.error, marginTop: 4 }}>
+                  {ferr('firstName')}
+                </div>
+              )}
+            </div>
+            <div>
+              <label htmlFor="sf-lastName"
+                style={{ display: 'block', fontFamily: FB, fontSize: 13, fontWeight: 500,
+                  color: C.fg, marginBottom: 5 }}>
+                Apellidos
+              </label>
+              <input id="sf-lastName" type="text" value={form.lastName}
+                className={inputCls('lastName')}
+                onChange={e => setField('lastName', e.target.value)}
+                onBlur={() => touch('lastName')}
+                style={baseInput('lastName')} />
+              {ferr('lastName') && (
+                <div style={{ fontFamily: FB, fontSize: 11, color: C.error, marginTop: 4 }}>
+                  {ferr('lastName')}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* URL de avatar */}
+          <div>
+            <label htmlFor="sf-avatarUrl"
+              style={{ display: 'block', fontFamily: FB, fontSize: 13, fontWeight: 500,
+                color: C.fg, marginBottom: 5 }}>
+              URL de avatar
+            </label>
+            <input id="sf-avatarUrl" type="url" value={form.avatarUrl}
+              className={inputCls('avatarUrl')}
+              placeholder="https://ejemplo.com/mi-foto.jpg"
+              onChange={e => setField('avatarUrl', e.target.value)}
+              onBlur={() => touch('avatarUrl')}
+              style={baseInput('avatarUrl', true)} />
+            {ferr('avatarUrl')
+              ? <div style={{ fontFamily: FB, fontSize: 11, color: C.error, marginTop: 4 }}>{ferr('avatarUrl')}</div>
+              : <div style={{ fontFamily: FB, fontSize: 11, color: C.fgMuted, marginTop: 4, lineHeight: 1.5 }}>
+                  Pega el enlace de una imagen pública.
+                </div>
+            }
+          </div>
+
+          {/* Teléfono */}
+          <div>
+            <label htmlFor="sf-phone"
+              style={{ display: 'block', fontFamily: FB, fontSize: 13, fontWeight: 500,
+                color: C.fg, marginBottom: 5 }}>
+              Teléfono
+            </label>
+            <input id="sf-phone" type="tel" value={form.phone}
+              className={inputCls('phone')}
+              placeholder="+34 600 000 000"
+              onChange={e => setField('phone', e.target.value)}
+              onBlur={() => touch('phone')}
+              style={baseInput('phone')} />
+          </div>
+
+          {/* Código postal */}
+          <div>
+            <label htmlFor="sf-postalCode"
+              style={{ display: 'block', fontFamily: FB, fontSize: 13, fontWeight: 500,
+                color: C.fg, marginBottom: 5 }}>
+              Código postal
+            </label>
+            <input id="sf-postalCode" type="text" value={form.postalCode}
+              className={inputCls('postalCode')}
+              maxLength={5} autoComplete="postal-code"
+              onChange={e => setField('postalCode', e.target.value)}
+              onBlur={() => touch('postalCode')}
+              style={{ ...baseInput('postalCode', true), maxWidth: 110 }} />
+            {showPostalWarn && (
+              <div style={{ marginTop: 6, fontFamily: FB, fontSize: 11, color: C.warnFg,
+                background: C.warnBg, border: `1px solid ${C.warnBorder}`,
+                borderRadius: 6, padding: '7px 11px', lineHeight: 1.55, maxWidth: 420 }}>
+                Cambiar el código postal actualiza tu radio de búsqueda. Es posible que tengas que volver a iniciar sesión.
+              </div>
+            )}
+            {ferr('postalCode') && (
+              <div style={{ fontFamily: FB, fontSize: 11, color: C.error, marginTop: 4 }}>
+                {ferr('postalCode')}
+              </div>
+            )}
+          </div>
+
+          {/* Idioma preferido */}
+          <div>
+            <label htmlFor="sf-lang"
+              style={{ display: 'block', fontFamily: FB, fontSize: 13, fontWeight: 500,
+                color: C.fg, marginBottom: 5 }}>
+              Idioma preferido
+            </label>
+            <div style={{ position: 'relative', display: 'inline-block', width: '100%', maxWidth: 260 }}>
+              <select id="sf-lang" value={form.preferredLanguage}
+                className="settings-input"
+                onChange={e => setField('preferredLanguage', e.target.value)}
+                style={{ fontFamily: FB, fontSize: 14, color: C.fg,
+                  background: C.bgSurface, border: `1.5px solid ${C.border}`,
+                  borderRadius: 8, padding: '8px 36px 8px 12px', outline: 'none',
+                  cursor: 'pointer', width: '100%', appearance: 'none',
+                  WebkitAppearance: 'none', boxSizing: 'border-box' }}>
+                {LANGS_OPTIONS.map(l => (
+                  <option key={l.code} value={l.code}>{l.label}</option>
+                ))}
+              </select>
+              {/* chevron decorativo */}
+              <span style={{ position: 'absolute', right: 11, top: '50%',
+                transform: 'translateY(-50%)', pointerEvents: 'none', color: C.fgMuted }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          {/* Botón guardar */}
+          <div style={{ paddingTop: 4 }}>
+            <button onClick={handleSave} disabled={!canSave}
+              style={{
+                background:   canSave ? C.primary : C.bgSubtle,
+                color:        canSave ? '#fff'    : C.fgDisabled,
+                border:       'none',
+                borderRadius: 8,
+                padding:      '10px 22px',
+                fontFamily:   FB, fontSize: 13, fontWeight: 500,
+                cursor:       canSave ? 'pointer' : 'not-allowed',
+                transition:   'background 180ms',
+              }}
+              onMouseEnter={e => { if (canSave) e.currentTarget.style.background = C.primaryHov; }}
+              onMouseLeave={e => { if (canSave) e.currentTarget.style.background = C.primary; }}>
+              {saving ? 'Guardando…' : 'Guardar cambios'}
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ── Cerrar sesión ── */}
+      <button style={{ display: 'flex', alignItems: 'center', gap: 7,
+        background: 'none', border: 'none', cursor: 'pointer',
+        fontFamily: FB, fontSize: 13, color: C.fgMuted, padding: '4px 0' }}>
+        <ILogout sz={14}/> Cerrar sesión
+      </button>
+    </div>
+  );
+}
+
+/* ── PROFILE SCREEN ──────────────────────────────────────────── */
+function ProfileScreen({ userState, tab, onTabChange }) {
+  const user    = USERS[userState];
+  const items   = ITEMS[userState];
+  const reqs    = REQUESTS[userState];
+  const history = HISTORY[userState];
+  const [tabKey, setTabKey] = React.useState(0);
+
+  React.useEffect(() => { setTabKey(k => k + 1); }, [tab]);
+
+  return (
+    <div style={{ background: C.bgPage, minHeight: '100vh' }}>
+      <Navbar initials={user.initials} />
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px clamp(16px,4vw,24px) 60px' }}>
+
+        {userState === 'degradado' && <DegradedBanner />}
+        {userState === 'nuevo' && <NewUserBanner />}
+
+        <div className="fade-up">
+          <ProfileHeader user={user} tab={tab} onTabChange={onTabChange} />
+        </div>
+
+        <div style={{ height: 16 }} />
+
+        <div key={tabKey} className="tab-in">
+          {tab === 'donaciones' && (
+            items.length === 0
+              ? <Empty Icon={IBox} title="Todavía no has donado ningún objeto"
+                  sub="Cuando publiques algo, aparecerá aquí con su estado e historial de solicitudes."
+                  cta="Publicar objeto" />
+              : <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {items.map(item => <DonationCard key={item.id} item={item} />)}
+                </div>
+          )}
+
+          {tab === 'solicitudes' && (
+            reqs.length === 0
+              ? <Empty Icon={ISend} title="Sin solicitudes recientes"
+                  sub="Tus solicitudes de objetos aparecerán aquí. Tienes hasta 3 por cada período de 30 días."
+                  cta="Explorar objetos" />
+              : <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {/* Cuota indicator */}
+                  <div style={{ background: C.bgSurface, border: `1px solid ${C.border}`,
+                    borderRadius: 12, boxShadow: C.sh1, padding: '14px 18px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+                    <div>
+                      <div style={{ fontFamily: FB, fontSize: 12, fontWeight: 500, color: C.fgMuted,
+                        textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 4 }}>
+                        Solicitudes este período
+                      </div>
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                        {[0,1,2].map(i => (
+                          <div key={i} style={{ width: 22, height: 22, borderRadius: 6,
+                            background: i < reqs.length ? C.primary : C.bgSubtle,
+                            border: `1px solid ${i < reqs.length ? C.primaryLight : C.border}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {i < reqs.length && (
+                              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                <polyline points="2,5 4.2,7.2 8,3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            )}
+                          </div>
+                        ))}
+                        <span style={{ fontFamily: FB, fontSize: 12, color: C.fgMuted, marginLeft: 4 }}>
+                          {reqs.length} de 3 usadas
+                        </span>
+                      </div>
+                    </div>
+                    {reqs.length >= 3 && (
+                      <span style={{ fontFamily: FB, fontSize: 12, color: C.warnFg,
+                        background: C.warnBg, border: `1px solid ${C.warnBorder}`,
+                        borderRadius: 999, padding: '4px 10px' }}>
+                        Cuota agotada
+                      </span>
+                    )}
+                  </div>
+                  {reqs.map(r => <RequestCard key={r.id} req={r} />)}
+                </div>
+          )}
+
+          {tab === 'reputacion' && (
+            <ReputationTab history={history} score={user.score} />
+          )}
+
+          {tab === 'configuracion' && (
+            <SettingsTab user={user} />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── APP ─────────────────────────────────────────────────────── */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "tab": "configuracion",
+  "userState": "nuevo"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  return (
+    <div>
+      <ProfileScreen
+        userState={t.userState}
+        tab={t.tab}
+        onTabChange={v => setTweak('tab', v)}
+      />
+      <TweaksPanel>
+        <TweakSection label="Perfil de usuario" />
+        <TweakRadio label="Estado"
+          value={t.userState}
+          options={['activo','degradado','nuevo']}
+          onChange={v => setTweak('userState', v)} />
+        <TweakSection label="Pestaña activa" />
+        <TweakSelect label="Vista"
+          value={t.tab}
+          options={[
+            { label: 'Donaciones',     value: 'donaciones' },
+            { label: 'Solicitudes',    value: 'solicitudes' },
+            { label: 'Reputación',     value: 'reputacion' },
+            { label: 'Configuración',  value: 'configuracion' },
+          ]}
+          onChange={v => setTweak('tab', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<style>
+  .site-footer { background:#fff; border-top:1px solid #D5D9DE; font-family:'DM Sans',system-ui,sans-serif; }
+  .site-footer-inner { max-width:1140px; margin:0 auto; padding:0 clamp(16px,4vw,40px); }
+  .footer-main-grid { display:flex; justify-content:space-between; align-items:flex-start; gap:64px; padding:52px 0 44px; }
+  .footer-brand-col { flex:0 0 auto; max-width:220px; }
+  .footer-logo { font-family:'Playfair Display',Georgia,serif; font-size:20px; font-weight:700; color:#3A7358; text-decoration:none; display:block; margin-bottom:14px; letter-spacing:-0.01em; }
+  .footer-desc { font-size:13px; color:#7C8692; line-height:1.75; margin:0; }
+  .footer-nav-cols { display:flex; gap:52px; flex-shrink:0; align-items:flex-start; }
+  .footer-col-label { font-size:10px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#7C8692; margin-bottom:14px; }
+  .footer-col-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .footer-col-links a { font-size:13px; color:#606A76; text-decoration:none; transition:color 150ms; line-height:1.4; }
+  .footer-col-links a:hover { color:#3A7358; }
+  .footer-col-links a.current { color:#3A7358; font-weight:500; }
+  .footer-bottom { border-top:1px solid #D5D9DE; }
+  .footer-bottom-inner { display:flex; justify-content:space-between; align-items:center; padding:16px 0; gap:16px; flex-wrap:wrap; }
+  .footer-copy { font-size:12px; color:#7C8692; }
+  .footer-motto { font-family:'Playfair Display',Georgia,serif; font-size:13px; font-style:italic; color:#7C8692; opacity:0.8; }
+  @media(max-width:720px){.footer-main-grid{flex-direction:column;gap:36px;padding:40px 0 32px}.footer-brand-col{max-width:100%}.footer-nav-cols{flex-wrap:wrap;gap:28px 40px}.footer-bottom-inner{flex-direction:column;align-items:flex-start;gap:6px}}
+</style>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html" class="current">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

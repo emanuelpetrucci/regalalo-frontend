@@ -1,0 +1,177 @@
+<div class="item-cta-block" *transloco="let t">
+  @if (requestDone()) {
+    <div class="item-cta-block__pending" data-testid="request-success">
+      <div class="item-cta-block__pending-banner">
+        <div class="item-cta-block__pending-head">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M22 2L11 13" />
+            <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+          <span>{{ t('items.request.pending_title') }}</span>
+        </div>
+        <p>{{ t('items.request.pending_body') }}</p>
+      </div>
+      @if (pendingContactChannel(); as channel) {
+        <div class="item-cta-block__contact-card">
+          @if (channel.toLowerCase().startsWith('email:')) {
+            <span class="item-cta-block__contact-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-10 5L2 7" />
+              </svg>
+            </span>
+          } @else {
+            <span class="item-cta-block__contact-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path
+                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"
+                />
+              </svg>
+            </span>
+          }
+          <div class="item-cta-block__contact-text">
+            <div class="item-cta-block__contact-label">
+              {{ t('items.request.pending_contact_label') }}
+            </div>
+            <div class="item-cta-block__contact-value">{{ channel }}</div>
+          </div>
+          <!-- TODO: habilitar edición de canal cuando esté disponible
+          <button
+            type="button"
+            class="item-cta-block__contact-edit"
+            (click)="editContact.emit()"
+          >
+            {{ t('items.request.pending_contact_edit') }}
+          </button>
+          -->
+        </div>
+      }
+      <ul
+        class="item-cta-block__steps"
+        [attr.aria-label]="t('items.request.pending_title')"
+      >
+        <li class="item-cta-block__step item-cta-block__step--done">
+          <span class="item-cta-block__step-dot" aria-hidden="true"></span>
+          {{ t('items.request.pending_step_sent') }}
+        </li>
+        <li class="item-cta-block__step item-cta-block__step--wait">
+          <span class="item-cta-block__step-dot" aria-hidden="true"></span>
+          {{ t('items.request.pending_step_waiting') }}
+        </li>
+        <li class="item-cta-block__step item-cta-block__step--empty">
+          <span class="item-cta-block__step-dot" aria-hidden="true"></span>
+          {{ t('items.request.pending_step_contact') }}
+        </li>
+      </ul>
+    </div>
+    @if (requestErrorKey()) {
+      <app-alert-box variant="error">
+        <p class="item-cta-block__inline-error">{{ requestErrorMessage() }}</p>
+      </app-alert-box>
+    }
+  } @else if (itemPaused()) {
+    <div class="item-cta-block__paused" data-testid="request-paused-error">
+      <div class="item-cta-block__paused-banner">
+        <div class="item-cta-block__paused-head">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="10" y1="15" x2="10" y2="9" />
+            <line x1="14" y1="15" x2="14" y2="9" />
+          </svg>
+          <span>{{ t('items.detail.cta_paused_title') }}</span>
+        </div>
+        <p>{{ t('items.detail.cta_paused_body') }}</p>
+      </div>
+      <button type="button" class="item-cta-block__btn item-cta-block__btn--disabled" disabled>
+        {{ t(ctaLabelKey()) }}
+      </button>
+    </div>
+  } @else if (limitReached()) {
+    <div class="item-cta-block__limit" data-testid="request-duplicate-error">
+      <div class="item-cta-block__limit-banner">
+        <div class="item-cta-block__limit-head">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+            />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <span>{{ t('items.request.limit_title') }}</span>
+        </div>
+        <p>{{ requestErrorMessage() }}</p>
+      </div>
+      <button type="button" class="item-cta-block__btn item-cta-block__btn--disabled" disabled>
+        {{ t(ctaLabelKey()) }}
+      </button>
+    </div>
+  } @else if (unavailable()) {
+    <p class="item-cta-block__unavailable">{{ t('items.detail.cta_unavailable') }}</p>
+    <button type="button" class="item-cta-block__btn item-cta-block__btn--disabled" disabled>
+      {{ t(ctaLabelKey()) }}
+    </button>
+  } @else if (canRequest()) {
+    @if (requestErrorKey(); as errKey) {
+      <app-alert-box [variant]="errKey === 'items.request.errors.paused' ? 'warning' : 'error'">
+        <p class="item-cta-block__inline-error">{{ requestErrorMessage() }}</p>
+      </app-alert-box>
+    }
+    @if (remainingSlots() !== null && remainingSlots()! > 0) {
+      <p class="item-cta-block__slots-hint">
+        {{ t('items.request.slots_remaining_lead') }}
+        <strong>{{ remainingSlots() }}</strong>
+        {{
+          remainingSlots() === 1
+            ? t('items.request.slot_label_one')
+            : t('items.request.slot_label_other')
+        }}
+        {{ t('items.request.slots_remaining_tail') }}
+      </p>
+    }
+    <button
+      type="button"
+      class="item-cta-block__btn item-cta-block__btn--primary"
+      data-testid="item-request-btn"
+      [class.item-cta-block__btn--large]="ctaSize() === 'large'"
+      (click)="onRequest()"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path d="M22 2L11 13" />
+        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+      </svg>
+      {{ t(ctaLabelKey()) }}
+    </button>
+  }
+</div>

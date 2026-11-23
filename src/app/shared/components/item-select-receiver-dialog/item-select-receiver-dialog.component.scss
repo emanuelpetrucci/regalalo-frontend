@@ -1,0 +1,211 @@
+/* Portado de SelectModal en docs/project/Mis objetos.html L841–928 */
+.item-select-receiver-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(20, 23, 26, 0.55);
+}
+
+.item-select-receiver-dialog__panel {
+  width: 100%;
+  max-width: 440px;
+  padding: 28px 26px;
+  border-radius: 16px;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-3);
+  outline: none;
+}
+
+.item-select-receiver-dialog__title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+  line-height: 1.2;
+}
+
+.item-select-receiver-dialog__lead {
+  margin: 0 0 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--fg-mid);
+  line-height: 1.65;
+}
+
+.item-select-receiver-dialog__summary {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background: var(--bg-primary-light);
+  border: 1px solid var(--color-primary-200);
+  border-radius: 10px;
+
+  app-user-avatar {
+    --user-avatar-size: 38px;
+  }
+}
+
+.item-select-receiver-dialog__score {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: var(--weight-semibold);
+
+  &--good {
+    color: var(--color-primary-500);
+  }
+
+  &--fair {
+    color: var(--color-warning-700);
+  }
+
+  &--low {
+    color: var(--color-error-500);
+  }
+}
+
+.item-select-receiver-dialog__meta {
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+
+.item-select-receiver-dialog__field {
+  margin-bottom: 16px;
+}
+
+.item-select-receiver-dialog__label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  color: var(--fg-primary);
+}
+
+.item-select-receiver-dialog__required {
+  color: var(--color-error-500);
+}
+
+.item-select-receiver-dialog__type-pills {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.item-select-receiver-dialog__type-pill {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-default);
+  background: var(--bg-page);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--weight-regular);
+  color: var(--fg-mid);
+  cursor: pointer;
+  transition:
+    background 150ms,
+    border-color 150ms,
+    color 150ms;
+
+  &--active {
+    background: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+    color: #fff;
+    font-weight: var(--weight-semibold);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.item-select-receiver-dialog__input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-default);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--fg-primary);
+  background: var(--bg-page);
+  outline: none;
+
+  &--error {
+    border-color: var(--color-error-500);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.item-select-receiver-dialog__field-error {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-error-500);
+}
+
+.item-select-receiver-dialog__legal {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  background: var(--color-warning-50);
+  border: 1px solid var(--status-reserved-border);
+  border-radius: 8px;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--color-warning-700);
+  }
+
+  p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--color-warning-700);
+    line-height: 1.6;
+  }
+}
+
+.item-select-receiver-dialog__api-error-box {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.item-select-receiver-dialog__api-error {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+.item-select-receiver-dialog__footer {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.item-select-receiver-dialog__confirm {
+  flex: 1;
+}
+
+.item-select-receiver-dialog__confirm-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}

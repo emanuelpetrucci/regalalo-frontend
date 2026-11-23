@@ -1,0 +1,61 @@
+next_id = 1
+
+[[entry]]
+id = "f3"
+type = "story"
+title = "Frontend — Correcciones de calidad en meta tags y structured data"
+description = "Mejorar ItemSeoService: og:image:*, Product @id, offers.seller, og:type, robots. Sin dependencia de backend."
+verify = "Lighthouse / validadores OG y JSON-LD en detalle de item"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "14-f3"
+
+[[entry]]
+id = "f0"
+type = "spike"
+title = "Backend — Campo slug y endpoint de resolución por slug"
+description = "Coordinación con backend: slug en Item, GET /items/:slug, backfill. Repositorio ../backend — no implementar en este frontend."
+verify = "OpenAPI actualizado y 14-f0 desbloqueado para el equipo backend"
+covers = []
+after = []
+hitl = true
+risk = "high"
+v6_key = "14-f0"
+
+[[entry]]
+id = "f1"
+type = "story"
+title = "Frontend — Routing por slug y retrocompatibilidad UUID"
+description = "Ruta /items/:slug, redirect UUID→slug, links con item.slug, canonical en ItemSeoService."
+verify = "Navegación slug + redirect UUID; npm run api:generate tras OpenAPI"
+covers = []
+after = ["f0"]
+hitl = false
+risk = "medium"
+v6_key = "14-f1"
+
+[[entry]]
+id = "f2"
+type = "story"
+title = "Frontend — Sitemap dinámico con items activos"
+description = "GET /sitemap.xml en SSR con items activos del feed global, cache 1h, degradación sin backend."
+verify = "sitemap.xml incluye slugs activos y URLs estáticas"
+covers = []
+after = ["f0"]
+hitl = false
+risk = "medium"
+v6_key = "14-f2"
+
+[[entry]]
+id = "f4"
+type = "story"
+title = "Frontend — El modal de ficha no pisa el SEO de la página anfitriona"
+description = "En /explorar las tarjetas abren la ficha en modal y la URL no cambia, pero ItemSeoService.apply sustituye título, canonical y og:url por los del item. Al cerrar, esas etiquetas no vuelven a las del tablón. apply y clear solo en presentation page; al cerrar el modal, restaurar el SEO de la página anfitriona. El HTML inicial de /explorar, antes del clic, ya es correcto."
+verify = "Abrir y cerrar una tarjeta en /explorar deja título, canonical y og:url del tablón. La ficha /items/:slug conserva su canonical con slug."
+covers = []
+after = ["f1"]
+hitl = false
+risk = "medium"
+v6_key = "14-f4"

@@ -1,0 +1,61 @@
+next_id = 1
+[[entry]]
+id = "1"
+type = "story"
+title = "Ver Perfil Privado"
+description = "Migrado: 5-1-ver-perfil-privado"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "5-1-ver-perfil-privado"
+
+[[entry]]
+id = "2"
+type = "story"
+title = "Ver Historial De Reputacion"
+description = "Migrado: 5-2-ver-historial-de-reputacion"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "5-2-ver-historial-de-reputacion"
+
+[[entry]]
+id = "3"
+type = "story"
+title = "Ver Mis Objetos Publicados"
+description = "Migrado: 5-3-ver-mis-objetos-publicados"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "5-3-ver-mis-objetos-publicados"
+
+[[entry]]
+id = "4"
+type = "story"
+title = "Ver Mis Solicitudes Realizadas"
+description = "Migrado: 5-4-ver-mis-solicitudes-realizadas"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "5-4-ver-mis-solicitudes-realizadas"
+
+[[entry]]
+id = "5"
+type = "story"
+title = "Ver Perfil Publico De Otro Usuario"
+description = "Migrado: 5-5-ver-perfil-publico-de-otro-usuario"
+verify = "Criterios en plan de historia"
+covers = []
+after = []
+hitl = false
+risk = "low"
+v6_key = "5-5-ver-perfil-publico-de-otro-usuario"
+

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No lo vendo — Política de cookies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary:       #3A7358;
+    --primary-hov:   #2D5C45;
+    --primary-light: #F0F5F2;
+    --accent:        #253F72;
+    --accent-light:  #EDF0F5;
+    --bg-page:       #F4F5F6;
+    --bg-surface:    #FFFFFF;
+    --bg-subtle:     #E8EAEC;
+    --fg:            #14171A;
+    --fg-mid:        #606A76;
+    --fg-muted:      #7C8692;
+    --border:        #D5D9DE;
+    --shadow-1:      0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --font-display:  'Playfair Display', Georgia, serif;
+    --font-body:     'DM Sans', system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', monospace;
+  }
+
+  html, body { min-height: 100%; }
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fg);
+    background: var(--bg-page);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav.top-nav {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 40px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-1);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700;
+    color: var(--primary); letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2px; }
+  .nav-link {
+    background: none; border: none; cursor: pointer;
+    padding: 8px 14px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 400;
+    color: var(--fg-mid); text-decoration: none;
+    transition: background 150ms, color 150ms; display: block;
+  }
+  .nav-link:hover { background: var(--bg-subtle); color: var(--fg); }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary); color: #fff;
+    border: none; cursor: pointer;
+    padding: 8px 16px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    text-decoration: none; transition: background 150ms, transform 100ms;
+  }
+  .btn-sm:hover { background: var(--primary-hov); }
+  .btn-sm:active { transform: scale(0.97); }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--primary-light); color: var(--primary);
+    font-weight: 600; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--border);
+  }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  /* ── LAYOUT ── */
+  .page-wrap { max-width: 760px; margin: 0 auto; padding: 56px 24px 64px; }
+
+  /* ── HEADER ── */
+  .doc-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .doc-eyebrow {
+    font-family: var(--font-body); font-size: 12px; font-weight: 500;
+    color: var(--primary); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .doc-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 42px); font-weight: 700;
+    color: var(--fg); line-height: 1.15;
+    margin-bottom: 16px; letter-spacing: -0.02em;
+  }
+  .doc-meta { font-size: 13px; color: var(--fg-muted); display: flex; gap: 20px; flex-wrap: wrap; }
+  .doc-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: var(--accent-light); border: 1px solid #A5B5D4;
+    border-radius: 10px; padding: 16px 20px;
+    display: flex; gap: 12px; align-items: flex-start; margin: 0 0 40px;
+  }
+  .info-box-icon { color: var(--accent); flex-shrink: 0; padding-top: 1px; }
+  .info-box p { font-size: 14px; color: #1C305A; margin: 0; line-height: 1.6; }
+  .info-box p strong { color: #142244; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px;
+    margin-bottom: 48px; box-shadow: var(--shadow-1);
+  }
+  .toc-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--fg-muted); margin-bottom: 14px;
+  }
+  .toc ol { list-style: none; counter-reset: toc; display: flex; flex-direction: column; gap: 6px; }
+  .toc li { counter-increment: toc; display: flex; align-items: baseline; gap: 10px; }
+  .toc li::before {
+    content: counter(toc); font-family: var(--font-mono);
+    font-size: 11px; color: var(--fg-muted); min-width: 18px;
+  }
+  .toc a { font-size: 14px; color: var(--fg-mid); text-decoration: none; transition: color 150ms; }
+  .toc a:hover { color: var(--primary); }
+
+  /* ── SECTIONS ── */
+  .doc-section { margin-bottom: 48px; scroll-margin-top: 84px; }
+  .section-header {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  .section-num { font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted); flex-shrink: 0; padding-top: 3px; }
+  .section-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--fg); line-height: 1.25; }
+  .doc-section p { font-size: 15px; color: var(--fg-mid); line-height: 1.75; margin-bottom: 16px; }
+  .doc-section p:last-child { margin-bottom: 0; }
+  .doc-section p strong { color: var(--fg); font-weight: 500; }
+  .doc-section h3 {
+    font-family: var(--font-body); font-size: 14px; font-weight: 600;
+    color: var(--fg); letter-spacing: 0.01em; margin: 28px 0 10px;
+  }
+
+  /* ── COOKIE TYPE CARDS ── */
+  .cookie-types { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+  .cookie-card {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 22px; box-shadow: var(--shadow-1);
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 0 16px; align-items: start;
+  }
+  .cookie-card-badge {
+    grid-row: 1 / 3;
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  }
+  .cookie-card-badge.necessary  { background: var(--primary-light); color: var(--primary); }
+  .cookie-card-badge.analytics  { background: var(--accent-light); color: var(--accent); }
+  .cookie-card-badge.preference { background: #FEF6E7; color: #8F5907; }
+  .cookie-card-name { font-size: 15px; font-weight: 600; color: var(--fg); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .pill-necessary {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 999px;
+  }
+  .pill-optional {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    background: var(--bg-subtle); color: var(--fg-muted); padding: 2px 8px; border-radius: 999px;
+  }
+  .cookie-card-desc { font-size: 13px; color: var(--fg-mid); line-height: 1.6; margin-top: 4px; }
+
+  /* ── TABLES ── */
+  .data-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    margin: 20px 0; background: var(--bg-surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden; box-shadow: var(--shadow-1);
+  }
+  .data-table th {
+    background: var(--bg-subtle); color: var(--fg);
+    font-weight: 600; font-size: 11px; letter-spacing: 0.03em;
+    padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 11px 14px; color: var(--fg-mid);
+    border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td.mono { font-family: var(--font-mono); color: var(--fg); font-size: 12px; white-space: nowrap; }
+  .data-table td.duration { white-space: nowrap; color: var(--fg-muted); font-size: 12px; }
+
+  /* ── BANNER PREVIEW ── */
+  .banner-preview {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-1); margin: 24px 0;
+  }
+  .banner-label {
+    background: var(--bg-subtle); border-bottom: 1px solid var(--border);
+    padding: 8px 16px; font-size: 11px; font-weight: 600;
+    color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .banner-label span { color: var(--primary); }
+  .banner-inner { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .banner-text { font-size: 14px; color: var(--fg-mid); line-height: 1.6; }
+  .banner-text strong { color: var(--fg); }
+  .banner-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .banner-btn-accept {
+    background: var(--primary); color: #fff; border: none;
+    padding: 9px 20px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500; cursor: default;
+  }
+  .banner-btn-basic {
+    background: none; color: var(--fg-mid); border: 1px solid var(--border);
+    padding: 9px 20px; border-radius: 8px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 400; cursor: default;
+  }
+  .banner-btn-config {
+    background: none; color: var(--fg-muted); border: none;
+    padding: 9px 0; font-family: var(--font-body); font-size: 13px;
+    cursor: default; text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  /* ── TOGGLE TABLE ── */
+  .toggle-table {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-1); margin: 20px 0;
+  }
+  .toggle-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--border); gap: 16px;
+  }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-info { flex: 1; }
+  .toggle-name { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 2px; }
+  .toggle-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.5; }
+  .toggle-switch {
+    width: 42px; height: 24px; border-radius: 12px;
+    flex-shrink: 0; position: relative;
+  }
+  .toggle-switch.on  { background: var(--primary); }
+  .toggle-switch.off { background: var(--border); }
+  .toggle-switch::after {
+    content: ''; position: absolute;
+    width: 18px; height: 18px; background: #fff; border-radius: 50%;
+    top: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle-switch.on::after  { left: 21px; }
+  .toggle-switch.off::after { left: 3px; }
+
+  /* ── CONTACT ── */
+  .contact-box {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px; box-shadow: var(--shadow-1);
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .contact-row { display: flex; align-items: center; gap: 12px; }
+  .contact-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--primary-light); color: var(--primary);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .contact-label { font-size: 12px; color: var(--fg-muted); margin-bottom: 2px; }
+  .contact-value { font-size: 14px; font-weight: 500; color: var(--fg); }
+
+  .ico { display: inline-block; vertical-align: middle; }
+
+  /* ── SITE FOOTER ── */
+  .site-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    font-family: var(--font-body);
+    margin-top: 80px;
+  }
+  .site-footer-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 4vw, 40px);
+  }
+  .footer-main-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 64px;
+    padding: 52px 0 44px;
+  }
+  .footer-brand-col {
+    flex: 0 0 auto;
+    max-width: 220px;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .footer-desc {
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.75;
+    margin: 0;
+  }
+  .footer-nav-cols {
+    display: flex;
+    gap: 52px;
+    flex-shrink: 0;
+    align-items: flex-start;
+  }
+  .footer-col-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 14px;
+  }
+  .footer-col-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .footer-col-links a {
+    font-size: 13px;
+    color: var(--fg-mid);
+    text-decoration: none;
+    transition: color 150ms;
+    line-height: 1.4;
+  }
+  .footer-col-links a:hover { color: var(--primary); }
+  .footer-col-links a.current { color: var(--primary); font-weight: 500; }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+  }
+  .footer-bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+  .footer-motto {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--fg-muted);
+    opacity: 0.8;
+  }
+  @media (max-width: 720px) {
+    .footer-main-grid { flex-direction: column; gap: 36px; padding: 40px 0 32px; }
+    .footer-brand-col { max-width: 100%; }
+    .footer-nav-cols { flex-wrap: wrap; gap: 28px 40px; }
+    .footer-bottom-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="Explorar v3.html" class="nav-logo">no lo vendo</a>
+  <div class="nav-links">
+    <a href="Explorar v3.html" class="nav-link">Explorar</a>
+    <a href="Mis objetos.html" class="nav-link">Mis objetos</a>
+    <a href="Entregas.html" class="nav-link">Entregas</a>
+    <a href="Perfil.html" class="nav-link">Perfil</a>
+  </div>
+  <div class="nav-actions">
+    <div style="position:relative;flex-shrink:0;" id="nlv-lang-sel">
+      <button onclick="nlvLangToggle()" style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #D5D9DE;border-radius:8px;padding:5px 10px;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:#606A76;cursor:pointer;">
+        <span id="nlv-lang-code">ES</span>
+        <svg id="nlv-lang-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 150ms;"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="nlv-lang-dd" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid #D5D9DE;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06);overflow:hidden;z-index:1000;min-width:130px;">
+        <button data-code="es" onclick="nlvLangSelect('es')" onmouseover="if(nlvLang!=='es')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='es')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Español</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">ES</span></button>
+        <button data-code="en" onclick="nlvLangSelect('en')" onmouseover="if(nlvLang!=='en')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='en')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>English</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">EN</span></button>
+        <button data-code="ca" onclick="nlvLangSelect('ca')" onmouseover="if(nlvLang!=='ca')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='ca')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Català</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">CA</span></button>
+      </div>
+    </div>
+    <a href="Mis objetos.html" class="btn-sm">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Publicar
+    </a>
+    <div class="avatar">LS</div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="doc-header">
+    <div class="doc-eyebrow">Documentos legales</div>
+    <h1 class="doc-title">Política de cookies</h1>
+    <div class="doc-meta">
+      <span>
+        <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Última actualización: 18 de mayo de 2026
+      </span>
+      <span>
+        <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Vigente desde el 18 de mayo de 2026
+      </span>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-box-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <p>Esta política explica qué cookies y tecnologías similares usa <strong>no lo vendo</strong>, para qué sirven y cómo puedes gestionarlas. Cumplimos con la <strong>Ley 34/2002 de Servicios de la Sociedad de la Información (LSSI)</strong> y el RGPD.</p>
+  </div>
+
+  <nav class="toc" aria-label="Índice de contenidos">
+    <div class="toc-title">Contenidos</div>
+    <ol>
+      <li><a href="#que-son">Qué son las cookies</a></li>
+      <li><a href="#tipos">Tipos de cookies que usamos</a></li>
+      <li><a href="#tabla">Tabla de cookies</a></li>
+      <li><a href="#consentimiento">Consentimiento y banner</a></li>
+      <li><a href="#gestion">Gestionar tus preferencias</a></li>
+      <li><a href="#terceros">Cookies de terceros</a></li>
+      <li><a href="#cambios">Cambios en esta política</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="doc-section" id="que-son">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Qué son las cookies</h2>
+    </div>
+    <p>Las cookies son pequeños archivos de texto que un sitio web almacena en tu navegador cuando lo visitas. Sirven para que la aplicación recuerde información entre páginas y sesiones: que estás autenticado, tus preferencias de visualización o el radio de búsqueda que usaste la última vez.</p>
+    <p>Además de cookies, usamos <strong>almacenamiento local (localStorage)</strong> del navegador, que funciona de forma similar pero sin enviar datos al servidor en cada petición. En esta política, cuando decimos "cookies" nos referimos a ambas tecnologías salvo que se indique lo contrario.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="doc-section" id="tipos">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Tipos de cookies que usamos</h2>
+    </div>
+
+    <div class="cookie-types">
+      <div class="cookie-card">
+        <div class="cookie-card-badge necessary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="cookie-card-name">
+          Técnicas (estrictamente necesarias)
+          <span class="pill-necessary">Siempre activas</span>
+        </div>
+        <div class="cookie-card-desc">Imprescindibles para que la aplicación funcione. Incluyen la cookie de sesión autenticada, el token CSRF y las preferencias mínimas de interfaz. Sin ellas la plataforma no puede operar. No requieren tu consentimiento previo según la LSSI.</div>
+      </div>
+
+      <div class="cookie-card">
+        <div class="cookie-card-badge analytics">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="cookie-card-name">
+          Analíticas
+          <span class="pill-optional">Opcionales</span>
+        </div>
+        <div class="cookie-card-desc">Nos ayudan a entender cómo se usa la plataforma de forma agregada y anónima: páginas más visitadas, errores encontrados, tiempos de sesión. Nunca identifican a personas concretas. Solo se activan con tu consentimiento.</div>
+      </div>
+
+      <div class="cookie-card">
+        <div class="cookie-card-badge preference">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="cookie-card-name">
+          Preferencias
+          <span class="pill-optional">Opcionales</span>
+        </div>
+        <div class="cookie-card-desc">Recuerdan ajustes que tú has elegido explícitamente: radio de búsqueda, orden de visualización de objetos, estado de filtros. Mejoran la experiencia sin ser necesarias para el funcionamiento básico.</div>
+      </div>
+    </div>
+
+    <p>No usamos cookies de publicidad ni de rastreo entre sitios web. Nunca.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="doc-section" id="tabla">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Tabla de cookies</h2>
+    </div>
+    <p>Estas son las cookies concretas que puede instalar la plataforma en su versión actual.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Finalidad</th>
+          <th>Duración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">nlv_session</td>
+          <td>Técnica</td>
+          <td>Mantiene la sesión autenticada del usuario</td>
+          <td class="duration">Sesión</td>
+        </tr>
+        <tr>
+          <td class="mono">nlv_csrf</td>
+          <td>Técnica</td>
+          <td>Token de protección contra peticiones falsificadas (CSRF)</td>
+          <td class="duration">Sesión</td>
+        </tr>
+        <tr>
+          <td class="mono">nlv_cookie_consent</td>
+          <td>Técnica</td>
+          <td>Guarda tus preferencias de cookies para no mostrar el banner en cada visita</td>
+          <td class="duration">12 meses</td>
+        </tr>
+        <tr>
+          <td class="mono">nlv_prefs</td>
+          <td>Preferencias</td>
+          <td>Recuerda ajustes de interfaz (radio de búsqueda, orden de listado)</td>
+          <td class="duration">6 meses</td>
+        </tr>
+        <tr>
+          <td class="mono">_nlv_analytics</td>
+          <td>Analítica</td>
+          <td>Identificador anónimo para medir el uso agregado de la plataforma</td>
+          <td class="duration">12 meses</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Esta tabla se actualiza cada vez que modificamos las cookies utilizadas. La fecha en el encabezado de esta página refleja siempre la versión más reciente.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="doc-section" id="consentimiento">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Consentimiento y banner</h2>
+    </div>
+    <p>La primera vez que accedes a la plataforma verás un banner de cookies. Solo instalamos cookies opcionales si las aceptas expresamente. Las técnicas se instalan siempre porque son imprescindibles para que la sesión funcione.</p>
+
+    <div class="banner-preview">
+      <div class="banner-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Vista previa</span> — Así se ve el banner en la plataforma
+      </div>
+      <div class="banner-inner">
+        <div class="banner-text">
+          <strong>Usamos cookies.</strong> Solo las estrictamente necesarias para que la plataforma funcione, más algunas opcionales que mejoran tu experiencia. Puedes elegir qué aceptas.
+        </div>
+        <div class="banner-actions">
+          <button class="banner-btn-accept">Aceptar todas</button>
+          <button class="banner-btn-basic">Solo las necesarias</button>
+          <button class="banner-btn-config">Configurar</button>
+        </div>
+      </div>
+    </div>
+
+    <p>Si pulsas <strong>"Configurar"</strong>, puedes activar o desactivar cada categoría opcional de forma individual antes de confirmar. Tu elección se guarda durante 12 meses en la cookie <code style="font-family:var(--font-mono);font-size:13px;background:var(--bg-subtle);padding:1px 5px;border-radius:4px;">nlv_cookie_consent</code>.</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="doc-section" id="gestion">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Gestionar tus preferencias</h2>
+    </div>
+    <p>Puedes revisar y cambiar tus preferencias en cualquier momento desde la sección <strong>Privacidad</strong> de tu perfil. Las categorías opcionales están desactivadas por defecto.</p>
+
+    <div class="toggle-table">
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-name">Cookies técnicas</div>
+          <div class="toggle-desc">Necesarias para el funcionamiento de la plataforma. No se pueden desactivar.</div>
+        </div>
+        <div class="toggle-switch on" aria-label="Siempre activas"></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-name">Cookies analíticas</div>
+          <div class="toggle-desc">Medición anónima y agregada del uso de la plataforma.</div>
+        </div>
+        <div class="toggle-switch off" aria-label="Desactivadas por defecto"></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-name">Cookies de preferencias</div>
+          <div class="toggle-desc">Recuerdan tus ajustes de búsqueda y visualización entre sesiones.</div>
+        </div>
+        <div class="toggle-switch off" aria-label="Desactivadas por defecto"></div>
+      </div>
+    </div>
+
+    <h3>Desde el navegador</h3>
+    <p>También puedes eliminar o bloquear cookies directamente desde la configuración de tu navegador. Ten en cuenta que bloquear todas las cookies puede impedir que la sesión funcione correctamente.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Navegador</th>
+          <th>Dónde encontrar la configuración de cookies</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Chrome</td>
+          <td>Configuración → Privacidad y seguridad → Cookies y otros datos de sitios</td>
+        </tr>
+        <tr>
+          <td>Firefox</td>
+          <td>Preferencias → Privacidad y seguridad → Cookies y datos del sitio</td>
+        </tr>
+        <tr>
+          <td>Safari</td>
+          <td>Preferencias → Privacidad → Gestionar datos del sitio web</td>
+        </tr>
+        <tr>
+          <td>Edge</td>
+          <td>Configuración → Privacidad, búsqueda y servicios → Cookies y permisos del sitio</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6 -->
+  <section class="doc-section" id="terceros">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Cookies de terceros</h2>
+    </div>
+    <p>En la versión actual de la plataforma <strong>no integramos servicios de terceros que instalen sus propias cookies</strong>. No hay Google Analytics, Meta Pixel ni herramientas de publicidad.</p>
+    <p>Las fuentes tipográficas se cargan desde Google Fonts en modo de privacidad mejorada y no instalan cookies rastreables en tu navegador. Si en el futuro añadimos integraciones de terceros con cookies propias, actualizaremos esta política y solicitaremos de nuevo tu consentimiento si fuera necesario.</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="doc-section" id="cambios">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Cambios en esta política</h2>
+    </div>
+    <p>Si modificamos las cookies que usamos o la forma en que gestionamos el consentimiento, actualizaremos esta página y la fecha de "última actualización" del encabezado. Si los cambios son relevantes para cookies opcionales que ya habías aceptado, te lo notificaremos por email con al menos 15 días de antelación y mostraremos de nuevo el banner de consentimiento.</p>
+  </section>
+
+  <!-- 8 -->
+  <section class="doc-section" id="contacto">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Contacto</h2>
+    </div>
+    <p>Si tienes dudas sobre el uso de cookies en esta plataforma, escríbenos:</p>
+    <div class="contact-box">
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Email de privacidad</div>
+          <div class="contact-value">privacidad@nolovendo.es</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Política relacionada</div>
+          <div class="contact-value"><a href="Política de privacidad.html" style="color:var(--primary);text-decoration:none;">Ver política de privacidad →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-main-grid">
+      <div class="footer-brand-col">
+        <a href="Explorar v3.html" class="footer-logo">no lo vendo</a>
+        <p class="footer-desc">Redistribuye lo que no necesitas. Donación de objetos entre personas, sin dinero ni trueque. España.</p>
+      </div>
+      <nav class="footer-nav-cols" aria-label="Pie de página">
+        <div class="footer-col">
+          <div class="footer-col-label">Plataforma</div>
+          <ul class="footer-col-links">
+            <li><a href="Explorar v3.html">Explorar objetos</a></li>
+            <li><a href="Mis objetos.html">Mis objetos</a></li>
+            <li><a href="Entregas.html">Entregas</a></li>
+            <li><a href="Reputación.html">Cómo funciona tu reputación</a></li>
+            <li><a href="Perfil.html">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="Política de privacidad.html">Política de privacidad</a></li>
+            <li><a href="Política de cookies.html" class="current">Política de cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-label">Contacto</div>
+          <ul class="footer-col-links">
+            <li><a href="mailto:hola@nolovendo.es">hola@nolovendo.es</a></li>
+            <li><a href="mailto:privacidad@nolovendo.es">privacidad@nolovendo.es</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="site-footer-inner footer-bottom-inner">
+      <span class="footer-copy">© 2026 No lo vendo · Todos los derechos reservados</span>
+      <span class="footer-motto">Todo lo que se da, vuelve.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+var nlvLang = localStorage.getItem('nlv_lang') || 'es';
+function nlvLangUpdate() {
+  var c = document.getElementById('nlv-lang-code');
+  if (c) c.textContent = nlvLang.toUpperCase();
+  document.querySelectorAll('#nlv-lang-dd button').forEach(function(btn) {
+    var a = btn.dataset.code === nlvLang;
+    btn.style.background = a ? '#F0F5F2' : 'transparent';
+    btn.style.color = a ? '#3A7358' : '#14171A';
+    btn.style.fontWeight = a ? '600' : '400';
+    var s = btn.querySelector('span:last-child');
+    if (s) s.style.color = a ? '#3A7358' : '#9AA2AD';
+  });
+}
+function nlvLangToggle() {
+  var dd = document.getElementById('nlv-lang-dd');
+  var ch = document.getElementById('nlv-lang-chev');
+  var isOpen = dd.style.display !== 'none';
+  dd.style.display = isOpen ? 'none' : 'block';
+  ch.style.transform = isOpen ? 'none' : 'rotate(180deg)';
+}
+function nlvLangSelect(code) {
+  nlvLang = code;
+  localStorage.setItem('nlv_lang', code);
+  document.getElementById('nlv-lang-dd').style.display = 'none';
+  document.getElementById('nlv-lang-chev').style.transform = 'none';
+  nlvLangUpdate();
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#nlv-lang-sel')) {
+    var dd = document.getElementById('nlv-lang-dd');
+    if (dd) dd.style.display = 'none';
+    var ch = document.getElementById('nlv-lang-chev');
+    if (ch) ch.style.transform = 'none';
+  }
+});
+nlvLangUpdate();
+</script>
+</body>
+</html>

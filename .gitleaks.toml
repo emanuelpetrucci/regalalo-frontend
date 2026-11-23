@@ -1,0 +1,37 @@
+# Borrador de configuración de gitleaks (v8) para regalalo-frontend.
+# Pensado para «gitleaks protect --staged» y «gitleaks dir».
+# No incluye valores de secretos.
+#
+# Las carpetas .agents/, .claude/skills, .cursor/ y _bmad/ se publican
+# y NO se excluyen enteras: un secreto real en ellas debe seguir
+# detectándose. Solo se permiten falsos positivos ya identificados
+# (IDs de tickets BMAD, manifests, tokens de ejemplo en documentación
+# de pruebas y site keys públicas de reCAPTCHA).
+
+title = "regalalo-frontend"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ejemplos, documentación, site keys públicas de reCAPTCHA y falsos positivos conocidos de BMAD"
+paths = [
+  '''(^|/)LICENSE$''',
+  '''(^|/)NOTICE$''',
+  '''(^|/)THIRD-PARTY-NOTICES\.md$''',
+  '''(^|/)CABECERA-COPYRIGHT\.txt$''',
+  '''(^|/)CONTRIBUTING\.md$''',
+  '''\.env\.example$''',
+  '''\.env\.[A-Za-z0-9._-]+\.example$''',
+  '''src/environments/environment(\.[A-Za-z0-9_]+)?\.ts$''',
+  '''scripts/generate-vercel-environment\.mjs$''',
+  '''(^|/)(\.agents|\.claude/skills)/.+/api-testing-patterns\.md$''',
+  '''(^|/)(_bmad|_bmad-output)/.*/files-manifest\.csv$''',
+]
+# El objetivo es la línea completa (no solo el secreto), para que funcione con --redact.
+regexTarget = "line"
+regexes = [
+  '''v6_key\s*=\s*"[0-9A-Za-z._-]+"''',
+  # Valores de prueba con prefijo test- (JWT/CRON/E2E) en tests, configuración y documentación.
+  '''(JWT|CRON|E2E)_SECRET['"]?\s*[:=]\s*['"]test-[A-Za-z0-9._-]+['"]''',
+]

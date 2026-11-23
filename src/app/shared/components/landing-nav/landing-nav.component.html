@@ -1,0 +1,99 @@
+<ng-container *transloco="let t">
+  <nav #navHost class="nav" [class.nav--scrolled]="scrolled()" [attr.aria-label]="t('landing.nav.aria_label')">
+    <div class="container">
+      <div class="nav-inner">
+        <a routerLink="/" class="brand" aria-label="Regálalo – inicio">Regálalo</a>
+        <div class="nav-actions">
+          <app-language-selector (selected)="onLocaleSelected($event)" />
+          <a routerLink="/login" class="btn btn-secondary btn-sm nav-link-desktop" data-testid="nav-login-btn">{{ t('landing.nav.login') }}</a>
+          <a routerLink="/register" class="btn btn-primary btn-sm nav-link-desktop">
+            <svg
+              aria-hidden="true"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            {{ t('landing.nav.register') }}
+          </a>
+          <button
+            type="button"
+            class="nav-hamburger"
+            [attr.aria-expanded]="mobileMenuOpen()"
+            [attr.aria-label]="mobileMenuOpen() ? t('landing.nav.menu_close') : t('landing.nav.menu_open')"
+            (click)="toggleMobileMenu()"
+          >
+            @if (mobileMenuOpen()) {
+              <svg
+                aria-hidden="true"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            } @else {
+              <svg
+                aria-hidden="true"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu" [class.mobile-menu--open]="mobileMenuOpen()" [attr.aria-hidden]="!mobileMenuOpen()">
+      <a
+        routerLink="/explorar"
+        class="mobile-menu-link"
+        (click)="closeMobileMenu()"
+      >
+        {{ t('landing.hero.cta_secondary') }}
+      </a>
+      <a routerLink="/login" class="btn btn-secondary btn-md mobile-menu-btn" (click)="closeMobileMenu()">
+        {{ t('landing.nav.login') }}
+      </a>
+      <a routerLink="/register" class="btn btn-primary btn-md mobile-menu-btn" (click)="closeMobileMenu()">
+        <svg
+          aria-hidden="true"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        {{ t('landing.nav.register') }}
+      </a>
+    </div>
+  </nav>
+</ng-container>

@@ -1,0 +1,35 @@
+<div class="item-detail-receiver-controls" *transloco="let t">
+  @if (itemPaused()) {
+    <div class="item-detail-receiver-controls__paused" role="note">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M10 9v6M14 9v6" />
+      </svg>
+      <span>{{ t('items.detail.receiver_paused_notice') }}</span>
+    </div>
+  }
+
+  <app-item-cta-block
+    [requestDone]="requestDone()"
+    [itemPaused]="itemPaused()"
+    [limitReached]="limitReached()"
+    [canRequest]="canRequest()"
+    [unavailable]="unavailable()"
+    [remainingSlots]="remainingSlots()"
+    [requestErrorKey]="requestErrorKey()"
+    [requestErrorMessage]="requestErrorMessage()"
+    [ctaLabelKey]="'items.detail.request_item'"
+    [ctaSize]="'large'"
+    (request)="request.emit()"
+  />
+
+  <app-item-donor-row [donor]="donor()" variant="anonymous" />
+</div>

@@ -1,0 +1,280 @@
+<section class="entregas" *transloco="let t">
+  <header class="entregas__header">
+    <h1 class="entregas__title">{{ t('delivery.list.title') }}</h1>
+    <p class="entregas__subtitle">{{ t('delivery.list.subtitle') }}</p>
+  </header>
+
+  <div
+    class="entregas__role-tabs"
+    role="tablist"
+    data-testid="delivery-filter-role"
+    [attr.aria-label]="t('delivery.list.tabs_label')"
+  >
+    <button
+      type="button"
+      role="tab"
+      id="entregas-tab-donor"
+      class="entregas__role-tab"
+      [class.entregas__role-tab--active]="activeRole() === 'donor'"
+      [attr.aria-selected]="activeRole() === 'donor'"
+      aria-controls="entregas-main-panel"
+      (click)="setRole('donor')"
+    >
+      {{ t('delivery.list.tab_donor') }}
+      @if (roleActiveCounts().donor > 0) {
+        <span class="entregas__role-count">{{ roleActiveCounts().donor }}</span>
+      }
+    </button>
+    <button
+      type="button"
+      role="tab"
+      id="entregas-tab-receiver"
+      class="entregas__role-tab"
+      [class.entregas__role-tab--active]="activeRole() === 'receiver'"
+      [attr.aria-selected]="activeRole() === 'receiver'"
+      aria-controls="entregas-main-panel"
+      (click)="setRole('receiver')"
+    >
+      {{ t('delivery.list.tab_receiver') }}
+      @if (roleActiveCounts().receiver > 0) {
+        <span class="entregas__role-count">{{ roleActiveCounts().receiver }}</span>
+      }
+    </button>
+  </div>
+
+  <div
+    id="entregas-main-panel"
+    class="entregas__split"
+    role="tabpanel"
+    [attr.aria-labelledby]="activeTabId()"
+    [class.entregas__split--with-detail]="hasSelection()"
+  >
+    <div class="entregas__list-col" data-testid="deliveries-list">
+      @if (loading()) {
+        <p class="entregas__loading" role="status">{{ t('delivery.list.loading') }}</p>
+      } @else if (listErrorKey(); as errKey) {
+        <p class="entregas__error" role="alert">{{ t(errKey) }}</p>
+      } @else if (totalSessionCount() === 0) {
+        <div class="entregas__empty-card">
+          <svg
+            class="entregas__empty-icon"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            aria-hidden="true"
+          >
+            <rect x="1" y="3" width="15" height="13" rx="1" />
+            <path d="M16 8h4l3 3v5h-7V8z" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="18.5" cy="18.5" r="2.5" />
+          </svg>
+          <p class="entregas__empty-title">{{ t('delivery.list.empty_title') }}</p>
+          <p class="entregas__empty-body">{{ t('delivery.list.empty_body') }}</p>
+        </div>
+      } @else {
+        @if (activeSessions().length > 0) {
+          <p class="entregas__section-label">{{ t('delivery.list.section_active') }}</p>
+          <div class="entregas__session-list-shell">
+            <div class="entregas__session-list">
+            @for (session of activeSessions(); track session.id; let first = $first; let last = $last) {
+              <button
+                type="button"
+                class="entregas__session-row"
+                data-testid="delivery-item"
+                [class.entregas__session-row--selected]="selectedSessionId() === session.id"
+                [class.entregas__session-row--first]="first"
+                [class.entregas__session-row--last]="last && historySessions().length === 0"
+                [attr.aria-label]="t(sessionRowLabelKey(session), { title: session.itemTitle })"
+                (click)="selectSession(session)"
+              >
+                <div
+                  class="entregas__session-thumb"
+                  [class.entregas__session-thumb--placeholder]="!session.itemImageUrl"
+                  aria-hidden="true"
+                >
+                  @if (session.itemImageUrl) {
+                    <img
+                      [ngSrc]="session.itemImageUrl"
+                      width="52"
+                      height="52"
+                      alt=""
+                    />
+                  } @else {
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  }
+                </div>
+                <div class="entregas__session-main">
+                  <span class="entregas__session-title">{{ session.itemTitle }}</span>
+                  <div class="entregas__session-meta">
+                    <app-delivery-session-status-badge [status]="session.status" />
+                    @if (session.status === 'active') {
+                      <span
+                        class="entregas__session-deadline"
+                        [class.entregas__session-deadline--warn]="deadlineTone(session) === 'warn'"
+                        [class.entregas__session-deadline--urgent]="deadlineTone(session) === 'urgent'"
+                      >
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          aria-hidden="true"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M12 6v6l4 2" />
+                        </svg>
+                        {{ t(deadlineShortLabel(session), deadlineShortParams(session)) }}
+                      </span>
+                    }
+                    <span class="entregas__session-party-avatar" aria-hidden="true">
+                      <app-user-avatar
+                        [userId]="session.otherPartyUserId"
+                        [firstName]="session.otherPartyFirstName"
+                        [lastName]="session.otherPartyLastName"
+                        [avatarUrl]="session.otherPartyAvatarUrl"
+                        size="sm"
+                        [decorative]="true"
+                      />
+                    </span>
+                  </div>
+                </div>
+                <span class="entregas__session-chevron" aria-hidden="true">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </span>
+              </button>
+            }
+            </div>
+          </div>
+        }
+
+        @if (historySessions().length > 0) {
+          <p class="entregas__section-label entregas__section-label--history">
+            {{ t('delivery.list.section_history') }}
+          </p>
+          <div class="entregas__session-list-shell">
+            <div class="entregas__session-list">
+            @for (session of historySessions(); track session.id; let first = $first; let last = $last) {
+              <button
+                type="button"
+                class="entregas__session-row"
+                data-testid="delivery-item"
+                [class.entregas__session-row--selected]="selectedSessionId() === session.id"
+                [class.entregas__session-row--first]="first"
+                [class.entregas__session-row--last]="last"
+                [attr.aria-label]="t(sessionRowLabelKey(session), { title: session.itemTitle })"
+                (click)="selectSession(session)"
+              >
+                <div
+                  class="entregas__session-thumb"
+                  [class.entregas__session-thumb--placeholder]="!session.itemImageUrl"
+                  aria-hidden="true"
+                >
+                  @if (session.itemImageUrl) {
+                    <img
+                      [ngSrc]="session.itemImageUrl"
+                      width="52"
+                      height="52"
+                      alt=""
+                    />
+                  } @else {
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  }
+                </div>
+                <div class="entregas__session-main">
+                  <span class="entregas__session-title">{{ session.itemTitle }}</span>
+                  <div class="entregas__session-meta">
+                    <app-delivery-session-status-badge [status]="session.status" />
+                    <span class="entregas__session-party-avatar" aria-hidden="true">
+                      <app-user-avatar
+                        [userId]="session.otherPartyUserId"
+                        [firstName]="session.otherPartyFirstName"
+                        [lastName]="session.otherPartyLastName"
+                        [avatarUrl]="session.otherPartyAvatarUrl"
+                        size="sm"
+                        [decorative]="true"
+                      />
+                    </span>
+                  </div>
+                </div>
+                <span class="entregas__session-chevron" aria-hidden="true">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </span>
+              </button>
+            }
+            </div>
+          </div>
+        }
+
+        <p class="entregas__list-footer">
+          {{
+            totalSessionCount() === 1
+              ? t('delivery.list.count_one')
+              : t('delivery.list.count', { count: totalSessionCount() })
+          }}
+        </p>
+      }
+
+      @if (!hasSelection() && totalSessionCount() > 0 && !loading()) {
+        <p class="entregas__select-hint">{{ t('delivery.list.select_hint') }}</p>
+      }
+    </div>
+
+    @if (selectedSessionId(); as sessionId) {
+      <div class="entregas__detail-wrap">
+        <div class="entregas__detail-shell">
+        <app-entrega-detalle
+          [panelMode]="true"
+          [sessionId]="sessionId"
+          (closed)="closeDetail()"
+          (sessionUpdated)="onSessionUpdated()"
+        />
+        </div>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,71 @@
+next_id = 1
+[[epic]]
+id = "1"
+slug = "epic-fundacion-angular-y-autenticacion"
+title = "Fundación Angular y Autenticación"
+
+[[epic]]
+id = "2"
+slug = "epic-publicacion-y-exploracion-de-objetos"
+title = "Publicación y Exploración de Objetos"
+
+[[epic]]
+id = "3"
+slug = "epic-solicitudes-y-seleccion-de-candidatos"
+title = "Solicitudes y Selección de Candidatos"
+
+[[epic]]
+id = "4"
+slug = "epic-sesiones-de-entrega"
+title = "Sesiones de Entrega"
+
+[[epic]]
+id = "5"
+slug = "epic-perfil-y-actividad-del-usuario"
+title = "Perfil y Actividad del Usuario"
+
+[[epic]]
+id = "6"
+slug = "epic-alineacion-modelo-de-usuario-dlt-003-frontend"
+title = "Alineación modelo de usuario (DLT-003 — frontend)"
+
+[[epic]]
+id = "7f"
+slug = "epic-alineacion-analitica-en-items-dlt-004-frontend"
+title = "Alineación analítica en ítems (DLT-004 — frontend)"
+
+[[epic]]
+id = "8f"
+slug = "epic-verificacion-de-email-dlt-email-verification"
+title = "Verificación de email (DLT-email-verification)"
+
+[[epic]]
+id = "9"
+slug = "epic-gestion-de-consentimiento-de-cookies-oss"
+title = "Gestión de consentimiento de cookies (OSS)"
+
+[[epic]]
+id = "10f"
+slug = "epic-canal-de-contacto-receptor-en-solicitud-dlt-candidato-contacto-frontend"
+title = "Canal de contacto receptor en solicitud (DLT-candidato-contacto — frontend)"
+
+[[epic]]
+id = "11f"
+slug = "epic-seo-geo-optimization"
+title = "SEO/GEO Optimization"
+
+[[epic]]
+id = "12f"
+slug = "epic-sistema-de-reportes-prd-rep-fe-01"
+title = "Sistema de Reportes (PRD-REP-FE-01)"
+
+[[epic]]
+id = "13f"
+slug = "epic-descubrimiento-publico-y-conversion-seo"
+title = "Descubrimiento Público y Conversión SEO"
+
+[[epic]]
+id = "14"
+slug = "epic-url-canonicalizacion-indexacion-completa-y-calidad-seo"
+title = "URL Canonicalización, Indexación Completa y Calidad SEO"
+

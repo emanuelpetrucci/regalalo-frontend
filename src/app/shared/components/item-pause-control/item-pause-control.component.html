@@ -1,0 +1,46 @@
+<div class="item-pause-control" *transloco="let t">
+  <div class="item-pause-control__row">
+    <div class="item-pause-control__labels">
+      <div class="item-pause-control__title" [id]="titleId()">
+        {{ t('items.pause.title') }}
+      </div>
+      <div class="item-pause-control__subtitle">
+        @if (requestsPaused()) {
+          {{ t('items.pause.subtitle_paused') }}
+        } @else {
+          {{ t('items.pause.subtitle_active') }}
+        }
+      </div>
+    </div>
+    <app-toggle-switch
+      [checked]="requestsPaused()"
+      [disabled]="pausing() || disabled()"
+      [labelId]="titleId()"
+      (checkedChange)="onToggle($event)"
+    />
+  </div>
+
+  @if (requestsPaused()) {
+    <div class="item-pause-control__banner">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <rect x="6" y="4" width="4" height="16" />
+        <rect x="14" y="4" width="4" height="16" />
+      </svg>
+      <span>{{ t('items.pause.banner_paused') }}</span>
+    </div>
+  }
+
+  @if (errorKey()) {
+    <app-alert-box variant="error">
+      <p class="item-pause-control__error">{{ errorMessage() }}</p>
+    </app-alert-box>
+  }
+</div>

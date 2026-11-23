@@ -1,0 +1,306 @@
+<div class="publicar" *transloco="let t">
+  <header class="publicar__header">
+    <h1 class="publicar__title">{{ t(stepTitleKey()) }}</h1>
+    <p class="publicar__step-label">
+      {{ t('items.publish.step_indicator', { current: step(), total: 3 }) }}
+    </p>
+  </header>
+
+  <div class="publicar__progress" role="progressbar" aria-valuemin="1" aria-valuemax="3" [attr.aria-valuenow]="step()">
+    <div class="publicar__progress-bar" [style.width.%]="progressPercent()"></div>
+  </div>
+
+  <div class="publicar__body">
+    <div class="publicar__alerts" aria-live="assertive" aria-atomic="true">
+      @if (bannerError()) {
+        <app-alert-box variant="error">{{ bannerError() }}</app-alert-box>
+      }
+      @if (successMessage()) {
+        <div class="publicar__success-banner" role="status" data-testid="publish-success">{{ successMessage() }}</div>
+      }
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="publish()"
+      (keydown.enter)="onFormEnter($event)"
+      novalidate
+      data-testid="publish-form"
+    >
+      @switch (step()) {
+        @case (1) {
+          <div class="publicar__step">
+            <app-field-input
+              [label]="t('items.publish.field_title')"
+              [placeholder]="t('items.publish.placeholder_title')"
+              formControlName="title"
+              [error]="fieldError('title')"
+              testId="publish-title"
+            />
+            <p class="publicar__counter" aria-hidden="true">{{ titleLength() }}/100</p>
+
+            <div class="publicar__field">
+              <label class="publicar__label" for="publish-description">
+                {{ t('items.publish.field_description') }}
+                <span class="publicar__required" aria-hidden="true">*</span>
+              </label>
+              <textarea
+                id="publish-description" data-testid="publish-description"
+                class="publicar__textarea"
+                [class.publicar__textarea--error]="!!fieldError('description')"
+                formControlName="description"
+                rows="4"
+                [placeholder]="t('items.publish.placeholder_description')"
+                [attr.aria-invalid]="fieldError('description') ? 'true' : null"
+                [attr.aria-describedby]="fieldError('description') ? 'publish-description-error' : null"
+              ></textarea>
+              @if (fieldError('description')) {
+                <span id="publish-description-error" class="publicar__field-error">{{
+                  fieldError('description')
+                }}</span>
+              }
+              <p class="publicar__counter" aria-hidden="true">{{ descriptionLength() }}/1000</p>
+            </div>
+
+            <div class="publicar__field">
+              <span class="publicar__label">{{ t('items.publish.field_condition') }}</span>
+              <div class="publicar__condition-grid" role="group" data-testid="publish-condition" [attr.aria-label]="t('items.publish.field_condition')">
+                @for (c of conditions; track c) {
+                  <button
+                    type="button"
+                    class="publicar__condition-btn"
+                    [class.publicar__condition-btn--selected]="isConditionSelected(c)"
+                    [attr.aria-pressed]="isConditionSelected(c)"
+                    (click)="setCondition(c)"
+                  >
+                    {{ t('items.publish.condition_' + c) }}
+                  </button>
+                }
+              </div>
+              @if (fieldError('condition')) {
+                <p id="publish-condition-error" class="publicar__field-error" role="alert">
+                  {{ fieldError('condition') }}
+                </p>
+              }
+            </div>
+
+            <div class="publicar__field">
+              <label class="publicar__label" for="publish-category">
+                {{ t('items.publish.field_category') }}
+                <span class="publicar__required" aria-hidden="true">*</span>
+              </label>
+              <select
+                id="publish-category" data-testid="publish-category"
+                class="publicar__select"
+                [class.publicar__select--error]="!!fieldError('category')"
+                formControlName="category"
+                [attr.aria-invalid]="fieldError('category') ? 'true' : null"
+                [attr.aria-describedby]="fieldError('category') ? 'publish-category-error' : null"
+              >
+                <option value="" disabled hidden>
+                  {{ t('items.publish.placeholder_category') }}
+                </option>
+                @for (c of categories; track c) {
+                  <option [value]="c">{{ t(itemCategoryLabelKey(c)) }}</option>
+                }
+              </select>
+              @if (fieldError('category')) {
+                <span id="publish-category-error" class="publicar__field-error">{{
+                  fieldError('category')
+                }}</span>
+              }
+            </div>
+
+            <div class="publicar__field">
+              <label class="publicar__label" for="publish-weight-range">
+                {{ t('items.publish.field_weight_range') }}
+                <span class="publicar__required" aria-hidden="true">*</span>
+              </label>
+              <select
+                id="publish-weight-range" data-testid="publish-weight-range"
+                class="publicar__select"
+                [class.publicar__select--error]="!!fieldError('weightRange')"
+                formControlName="weightRange"
+                [attr.aria-invalid]="fieldError('weightRange') ? 'true' : null"
+                [attr.aria-describedby]="
+                  fieldError('weightRange') ? 'publish-weight-range-error' : null
+                "
+              >
+                <option value="" disabled hidden>
+                  {{ t('items.publish.placeholder_weight_range') }}
+                </option>
+                @for (w of weightRanges; track w) {
+                  <option [value]="w">{{ t(itemWeightRangeLabelKey(w)) }}</option>
+                }
+              </select>
+              @if (fieldError('weightRange')) {
+                <span id="publish-weight-range-error" class="publicar__field-error">{{
+                  fieldError('weightRange')
+                }}</span>
+              }
+            </div>
+
+            <app-field-input
+              [label]="t('items.publish.field_postal_code')"
+              [placeholder]="t('items.publish.placeholder_postal')"
+              autocomplete="postal-code"
+              formControlName="postalCode"
+              [error]="fieldError('postalCode')"
+            />
+          </div>
+        }
+        @case (2) {
+          <div class="publicar__step">
+            <p class="publicar__intro">{{ t('items.publish.photos_intro') }}</p>
+            <app-image-picker (imagesChange)="onImages($event)" />
+            @if (photosErrorMessage(); as photoErr) {
+              <p class="publicar__field-error" role="alert">{{ photoErr }}</p>
+            }
+          </div>
+        }
+        @case (3) {
+          <div class="publicar__step">
+            <p class="publicar__intro">{{ t('items.publish.review_notice') }}</p>
+
+            <div class="publicar__review-card">
+              <div class="publicar__review-media">
+                @if (previewUrl(); as url) {
+                  <img [src]="url" alt="" class="publicar__review-img" />
+                } @else {
+                  <span class="publicar__review-placeholder" aria-hidden="true">📷</span>
+                }
+                @if (photoCount() > 0) {
+                  <span class="publicar__review-photo-count">
+                    {{ photoCount() }}
+                    {{ photoCount() === 1 ? t('items.publish.photo_one') : t('items.publish.photo_many') }}
+                  </span>
+                }
+              </div>
+              <h2 class="publicar__review-title">{{ form.controls.title.value || '—' }}</h2>
+              <div class="publicar__review-chips">
+                <span class="publicar__review-chip">{{ t(conditionLabelKey()) }}</span>
+                @if (categoryLabelKey()) {
+                  <span class="publicar__review-chip">{{ t(categoryLabelKey()) }}</span>
+                }
+              </div>
+              <p class="publicar__review-desc">{{ form.controls.description.value || '—' }}</p>
+            </div>
+
+            <dl class="publicar__review-table">
+              <div class="publicar__review-row">
+                <dt>{{ t('items.publish.field_condition') }}</dt>
+                <dd>{{ t(conditionLabelKey()) }}</dd>
+              </div>
+              @if (categoryLabelKey()) {
+                <div class="publicar__review-row">
+                  <dt>{{ t('items.publish.field_category') }}</dt>
+                  <dd>{{ t(categoryLabelKey()) }}</dd>
+                </div>
+              }
+              @if (weightRangeLabelKey()) {
+                <div class="publicar__review-row">
+                  <dt>{{ t('items.publish.field_weight_range') }}</dt>
+                  <dd>{{ t(weightRangeLabelKey()) }}</dd>
+                </div>
+              }
+              <div class="publicar__review-row">
+                <dt>{{ t('items.publish.field_postal_code') }}</dt>
+                <dd>{{ form.controls.postalCode.value }}</dd>
+              </div>
+              <div class="publicar__review-row">
+                <dt>{{ t('items.publish.review_photos_label') }}</dt>
+                <dd>
+                  {{ photoCount() }}
+                  {{ photoCount() === 1 ? t('items.publish.photo_one') : t('items.publish.photo_many') }}
+                </dd>
+              </div>
+            </dl>
+
+            <div class="publicar__success-hint">
+              <span class="publicar__success-hint-icon" aria-hidden="true">✓</span>
+              <p>{{ t('items.publish.success_hint') }}</p>
+            </div>
+          </div>
+        }
+      }
+
+      <footer class="publicar__footer">
+        @if (step() > 1) {
+          <app-btn type="button" variant="secondary" [disabled]="submitting()" (click)="goBack()">
+            {{ t('items.publish.btn_back') }}
+          </app-btn>
+        }
+        @if (step() < 3) {
+          <app-btn
+            type="button"
+            [fullWidth]="step() === 1"
+            [disabled]="submitting()"
+            (click)="continue()"
+          >
+            {{ t('items.publish.btn_continue') }}
+          </app-btn>
+        } @else {
+          <app-btn type="submit" [fullWidth]="true" [disabled]="submitting()" data-testid="publish-submit">
+            {{
+              submitting()
+                ? t('items.publish.btn_publishing')
+                : t('items.publish.btn_publish')
+            }}
+          </app-btn>
+        }
+      </footer>
+    </form>
+  </div>
+</div>
+
+@if (shareModalOpen()) {
+  <div class="publicar__share-modal-backdrop">
+    <div class="publicar__share-modal" role="dialog" [attr.aria-label]="'items.publish.share.title' | transloco">
+      <div class="publicar__share-head">
+        <div class="publicar__share-head-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <h2 class="publicar__share-title">{{ 'items.publish.share.title' | transloco }}</h2>
+        <p class="publicar__share-subtitle">{{ 'items.publish.share.subtitle' | transloco }}</p>
+      </div>
+
+      <div class="publicar__share-list">
+        @for (network of publishShareNetworks(); track network.id) {
+          <a
+            class="publicar__share-link"
+            [class]="'publicar__share-link publicar__share-link--' + network.id"
+            [href]="network.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.data-ga-id]="'publish_share_network_' + network.id"
+            data-ga-context="publicar_success_modal"
+          >
+            <span class="publicar__share-link-icon" aria-hidden="true">
+              @if (network.id === 'whatsapp') {
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.116.553 4.103 1.52 5.83L0 24l6.336-1.51A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.66-.5-5.19-1.38l-.37-.22-3.76.9.94-3.67-.24-.38A9.934 9.934 0 012 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/></svg>
+              } @else if (network.id === 'facebook') {
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              } @else {
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.728-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              }
+            </span>
+            <span class="publicar__share-link-label">{{ network.labelKey | transloco }}</span>
+          </a>
+        }
+      </div>
+
+      <app-btn
+        variant="primary"
+        [fullWidth]="true"
+        data-ga-id="publish_share_go_my_items"
+        data-ga-context="publicar_success_modal"
+        (click)="goToMyItemsFromShareModal()"
+      >
+        {{ 'items.publish.share.go_my_items' | transloco }}
+      </app-btn>
+    </div>
+  </div>
+}

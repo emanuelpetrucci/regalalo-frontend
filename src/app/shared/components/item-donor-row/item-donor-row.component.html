@@ -1,0 +1,49 @@
+@if (isAnonymous()) {
+  <div class="donor-row donor-row--anonymous" *transloco="let t">
+    <div class="donor-row__anon-avatar" aria-hidden="true">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+    </div>
+    <div class="donor-row__info">
+      <div class="donor-row__anon-name">{{ t('guest.donor_row.anonymous_name') }}</div>
+    </div>
+    <div class="donor-row__score" [class]="'donor-row__score--' + scoreTone()">
+      <div class="donor-row__score-value">{{ scoreDisplay() }}</div>
+      <div class="donor-row__score-label">{{ t(reputationLabelKey()) }}</div>
+    </div>
+  </div>
+} @else {
+  <a
+    class="donor-row"
+    [routerLink]="donor().id ? ['/users', donor().id] : null"
+    *transloco="let t"
+  >
+    <app-user-avatar
+      [userId]="donor().id ?? undefined"
+      [firstName]="donor().firstName"
+      [lastName]="donor().lastName"
+      [avatarUrl]="donor().avatarUrl"
+      size="lg"
+      [decorative]="true"
+    />
+    <div class="donor-row__info">
+      <div class="donor-row__label">{{ t('items.detail.donor_label') }}</div>
+    </div>
+    <div class="donor-row__score" [class]="'donor-row__score--' + scoreTone()">
+      <div class="donor-row__score-value">{{ scoreDisplay() }}</div>
+      <div class="donor-row__score-label">{{ t(reputationLabelKey()) }}</div>
+    </div>
+  </a>
+}

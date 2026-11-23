@@ -1,0 +1,45 @@
+<div class="candidate-row__inner" *transloco="let t" data-testid="candidate-card">
+  <span class="candidate-row__rank" aria-hidden="true">{{ rank() }}</span>
+
+  <a
+    class="candidate-row__profile-link"
+    [routerLink]="['/users', candidate().userId]"
+    [attr.aria-label]="t('profile.public.title')"
+  >
+    <app-user-avatar
+      [userId]="candidate().userId"
+      [firstName]="candidate().firstName"
+      [lastName]="candidate().lastName"
+      size="sm"
+      [decorative]="true"
+    />
+
+    <div class="candidate-row__info">
+      <div class="candidate-row__score-row">
+        <span
+          class="candidate-row__score"
+          [class]="'candidate-row__score--' + scoreTone()"
+        >
+          {{ scoreDisplay() }}
+        </span>
+        @if (rank() === 1) {
+          <span class="candidate-row__best">{{ t('items.my_objects.best_candidate') }}</span>
+        }
+      </div>
+      <div class="candidate-row__meta">
+        <span>{{ t('items.explore.distance_km', { km: distanceKm() }) }}@if (locationName(); as name) { · {{ name }}}</span>
+        <span>{{ t(requestAgoKey(), requestAgoParams()) }}</span>
+      </div>
+    </div>
+  </a>
+
+  <app-btn
+    [variant]="rank() === 1 ? 'primary' : 'ghost'"
+    [disabled]="selectDisabled()"
+    [attr.aria-label]="t(selectAriaLabelKey(), selectAriaLabelParams())"
+    data-testid="select-candidate-btn"
+    (click)="onSelectClick()"
+  >
+    {{ t('items.my_objects.select') }}
+  </app-btn>
+</div>

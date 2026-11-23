@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>no lo vendo — Da una segunda vida a tus objetos</title>
+  <link rel="stylesheet" href="colors_and_type.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244, 245, 246, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid transparent;
+      height: var(--nav-height);
+      transition: border-color 220ms ease, background 220ms ease;
+    }
+    .nav .container {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .nav.scrolled {
+      border-bottom-color: var(--border-default);
+      background: rgba(244, 245, 246, 0.97);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .brand {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: var(--weight-bold);
+      color: var(--brand-primary);
+      letter-spacing: var(--tracking-tight);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-actions { display: flex; gap: var(--space-3); align-items: center; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-weight: var(--weight-semibold);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--duration-base) var(--ease-spring);
+      white-space: nowrap;
+      border: 1.5px solid transparent;
+    }
+    .btn-sm  { padding: 8px 16px;  font-size: var(--text-sm); }
+    .btn-md  { padding: 11px 22px; font-size: var(--text-sm); }
+    .btn-lg  { padding: 14px 28px; font-size: var(--text-base); }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: #fff;
+      border-color: var(--brand-primary);
+      box-shadow: 0 2px 14px rgba(58,115,88,0.22);
+    }
+    .btn-primary:hover {
+      background: var(--color-primary-600);
+      border-color: var(--color-primary-600);
+      box-shadow: 0 4px 24px rgba(58,115,88,0.34);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg-primary);
+      border-color: var(--border-strong);
+    }
+    .btn-secondary:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+      background: var(--color-primary-50);
+    }
+    .btn-ghost-white {
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      border-color: rgba(255,255,255,0.28);
+    }
+    .btn-ghost-white:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border-color: rgba(255,255,255,0.55);
+    }
+    .btn-white {
+      background: #fff;
+      color: var(--color-accent-700);
+      border-color: #fff;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.14);
+    }
+    .btn-white:hover {
+      background: #f6f8fb;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.20);
+      transform: translateY(-1px);
+    }
+
+    /* ── Hero ── */
+    .hero { padding: 88px 0 72px; }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 56px;
+      align-items: center;
+    }
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--color-primary-50);
+      color: var(--color-primary-700);
+      border: 1px solid var(--color-primary-200);
+      border-radius: var(--radius-full);
+      padding: 4px 14px 4px 10px;
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-6);
+      white-space: nowrap;
+    }
+    .pill-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+      flex-shrink: 0;
+    }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+      font-weight: var(--weight-bold);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--fg-primary);
+      margin-bottom: var(--space-5);
+      text-wrap: pretty;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--brand-primary);
+    }
+    .hero-p {
+      font-size: var(--text-md);
+      line-height: var(--leading-relaxed);
+      color: var(--fg-secondary);
+      margin-bottom: var(--space-10);
+      max-width: 490px;
+    }
+    .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; }
+    .hero-note {
+      font-size: var(--text-xs);
+      color: var(--fg-muted);
+      margin-top: var(--space-4);
+    }
+
+    /* ── Hero visual ── */
+    .hero-visual {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mock-card {
+      position: absolute;
+      background: var(--bg-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-default);
+      padding: 13px;
+      width: 214px;
+      font-family: var(--font-body);
+    }
+    .mock-card-img {
+      width: 100%;
+      height: 104px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mock-card-title {
+      font-size: 13px;
+      font-weight: var(--weight-semibold);
+      color: var(--fg-primary);
+      margin-bottom: 3px;
+    }
+    .mock-card-meta {
+      font-size: 11px;
+      color: var(--fg-muted);
+      margin-bottom: 9px;
+    }
+    .mock-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius-full);
+      padding: 2px 9px;
+      font-size: 10px;
+      font-weight: var(--weight-medium);
+      font-family: var(--font-body);
+    }
+    .float-chip {
+      position: absolute;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-2);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-body);
+      z-index: 10;
+    }
+    .rep-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--color-primary-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-10);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: var(--shadow-1);
+      margin-top: var(--space-10);
+      gap: var(--space-4);
+    }
+    .stat-item { text-align: center; flex: 1; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-tight);
+      color: var(--fg-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label { font-size: var(--text-sm); color: var(--fg-muted); }
+    .stat-div { width: 1px; height: 40px; background: var(--border-default); flex-shrink: 0; }
+
+    /* ── Sections ── */
+    .section { padding: 96px 0; }
+    .section-label {
+      display: block;
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--brand-primary);
+      margin-bottom: var(--space-3);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.6rem);
+      font-weight: var(--weight-bold);
+      line-height: 1.18;
+      letter-spacing: var(--tracking-tight);
+      color: var(--fg-primary);
+      margin-bottom: var(--space-4);
+      text-wrap: pretty;
+    }
+    .section-sub {
+      font-size: var(--text-md);
+      line-height: var(--leading-relaxed);
+      color: var(--fg-secondary);
+      max-width: 520px;
+    }
+    .section-header { margin-bottom: var(--space-12); }
+
+    /* ── Steps ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+    .step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-1);
+      position: relative;
+      overflow: hidden;
+    }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-primary-400), var(--color-primary-200));
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--fg-muted);
+      letter-spacing: 0.07em;
+      margin-bottom: var(--space-5);
+      display: block;
+    }
+    .step-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-lg);
+      background: var(--color-primary-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-5);
+    }
+    .step-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--fg-primary);
+      margin-bottom: var(--space-2);
+      line-height: var(--leading-snug);
+    }
+    .step-body {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--fg-secondary);
+    }
+
+    /* ── Values ── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+    .value-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6) var(--space-6) var(--space-6) var(--space-6);
+      box-shadow: var(--shadow-1);
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    .value-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .value-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      color: var(--fg-primary);
+      margin-bottom: var(--space-1);
+    }
+    .value-body {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--fg-secondary);
+    }
+
+    /* ── Rep section ── */
+    .rep-section {
+      background: var(--color-primary-900);
+      padding: 80px 0;
+    }
+    .rep-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .rep-example {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .rep-row {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-family: var(--font-body);
+    }
+    .rep-row-av {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: var(--weight-bold);
+    }
+    .rep-row-name { font-size: 14px; font-weight: var(--weight-semibold); color: #fff; flex: 1; }
+    .rep-row-score { font-family: var(--font-mono); font-size: 13px; font-weight: var(--weight-medium); }
+    .rep-row-badge {
+      font-size: 10px;
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--color-accent-500);
+      padding: 96px 0;
+    }
+    .cta-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-10); }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--fg-primary);
+      padding: var(--space-12) 0 var(--space-8);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-10);
+    }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: var(--weight-bold);
+      color: #fff;
+      letter-spacing: var(--tracking-tight);
+      text-decoration: none;
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .footer-tagline {
+      font-size: var(--text-sm);
+      color: var(--color-neutral-500);
+      line-height: var(--leading-relaxed);
+      max-width: 230px;
+    }
+    .footer-cols { display: flex; gap: 48px; flex-wrap: wrap; }
+    .footer-col-title {
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-neutral-500);
+      margin-bottom: var(--space-3);
+    }
+    .footer-links { display: flex; flex-direction: column; gap: var(--space-2); }
+    .footer-link {
+      font-size: var(--text-sm);
+      color: var(--color-neutral-400);
+      text-decoration: none;
+      transition: color var(--duration-fast);
+    }
+    .footer-link:hover { color: #fff; }
+    .footer-bottom {
+      border-top: 1px solid var(--color-neutral-800);
+      padding-top: var(--space-6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+    .footer-copy { font-size: var(--text-xs); color: var(--color-neutral-600); }
+
+    /* ── Tweaks panel ── */
+    #tweaks-panel {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-3);
+      padding: 20px;
+      width: 270px;
+      font-family: var(--font-body);
+      display: none;
+    }
+    .tp-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-5);
+    }
+    .tp-title { font-size: 13px; font-weight: var(--weight-bold); color: var(--fg-primary); }
+    .tp-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--fg-muted); padding: 0; display: flex;
+    }
+    .tp-section { margin-bottom: var(--space-4); }
+    .tp-label {
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .tp-opts { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tp-opt {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border-default);
+      background: transparent;
+      font-size: 12px;
+      font-weight: var(--weight-medium);
+      color: var(--fg-secondary);
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all var(--duration-fast);
+    }
+    .tp-opt.active {
+      border-color: var(--brand-primary);
+      background: var(--color-primary-50);
+      color: var(--brand-primary);
+    }
+    .tp-toggle-row { display: flex; align-items: center; justify-content: space-between; }
+    .tp-toggle-label { font-size: 13px; color: var(--fg-secondary); }
+    .tp-switch {
+      width: 36px; height: 20px;
+      border-radius: var(--radius-full);
+      background: var(--border-default);
+      position: relative;
+      cursor: pointer;
+      transition: background var(--duration-base);
+      border: none; flex-shrink: 0;
+    }
+    .tp-switch.on { background: var(--brand-primary); }
+    .tp-switch::after {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px; left: 3px;
+      transition: transform var(--duration-base) var(--ease-spring);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+    .tp-switch.on::after { transform: translateX(16px); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes floatCard1 {
+      0%, 100% { transform: rotate(-5deg) translate(-52px, -18px); }
+      50%       { transform: rotate(-5deg) translate(-52px, -30px); }
+    }
+    @keyframes floatCard2 {
+      0%, 100% { transform: rotate(2deg) translate(16px, 14px); }
+      50%       { transform: rotate(2deg) translate(16px, 0px); }
+    }
+    @keyframes floatCard3 {
+      0%, 100% { transform: rotate(7deg) translate(68px, -38px); }
+      50%       { transform: rotate(7deg) translate(68px, -50px); }
+    }
+    @keyframes floatChip {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-7px); }
+    }
+
+    /* Hero copy: staggered entrance */
+    .hero-copy .pill-label   { animation: fadeUp 0.65s 0.08s var(--ease-spring) both; }
+    .hero-copy .hero-h1      { animation: fadeUp 0.70s 0.20s var(--ease-spring) both; }
+    .hero-copy .hero-p       { animation: fadeUp 0.65s 0.35s var(--ease-spring) both; }
+    .hero-copy .hero-actions { animation: fadeUp 0.65s 0.48s var(--ease-spring) both; }
+    .hero-copy .hero-note    { animation: fadeIn 0.60s 0.68s ease both; }
+
+    /* Hero visual */
+    .hero-visual { animation: fadeIn 0.90s 0.45s ease both; }
+
+    /* Mock cards float */
+    .card-1 { animation: floatCard1 5.0s ease-in-out 0.0s infinite; }
+    .card-2 { animation: floatCard2 6.0s ease-in-out 0.9s infinite; }
+    .card-3 { animation: floatCard3 4.5s ease-in-out 0.4s infinite; }
+
+    /* Chips float (independent phase) */
+    .chip-rep  { animation: floatChip 3.8s ease-in-out 0.6s  infinite; }
+    .chip-dist { animation: floatChip 4.2s ease-in-out 1.6s  infinite; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.60s ease, transform 0.60s var(--ease-spring);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── Mobile nav ── */
+    .nav-hamburger {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 42px; height: 42px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+      background: #fff;
+      color: var(--fg-primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-hamburger:active { transform: scale(0.95); }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: var(--space-3);
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      padding: var(--space-5) var(--space-6) var(--space-6);
+      background: var(--bg-page);
+      border-bottom: 1px solid var(--border-default);
+      box-shadow: var(--shadow-2);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu-link {
+      font-family: var(--font-body);
+      font-size: var(--text-md);
+      font-weight: var(--weight-medium);
+      color: var(--fg-primary);
+      text-decoration: none;
+      padding: var(--space-2) 0;
+    }
+    .mobile-menu-btn { justify-content: center; width: 100%; }
+
+    /* ── Responsive ── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .values-grid { grid-template-columns: 1fr; }
+      .rep-inner { grid-template-columns: 1fr; gap: 44px; }
+    }
+    @media (max-width: 760px) {
+      /* Nav → hamburger */
+      .nav-link-desktop { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .steps-grid { grid-template-columns: 1fr; }
+
+      /* Stats → 2×2 grid */
+      .stats-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-6) var(--space-4);
+        padding: var(--space-6) var(--space-5);
+      }
+      .stat-div { display: none; }
+      .stat-num { font-size: 26px; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 var(--space-5); }
+      .hero { padding: 48px 0 36px; }
+      .section { padding: 60px 0; }
+      .cta-section { padding: 60px 0; }
+      .rep-section { padding: 56px 0; }
+      .section-header { margin-bottom: var(--space-8); }
+
+      /* Full-width tap targets */
+      .hero-actions,
+      .cta-actions { flex-direction: column; align-items: stretch; gap: var(--space-3); }
+      .hero-actions .btn,
+      .cta-actions .btn { width: 100%; justify-content: center; }
+      .hero-note { text-align: center; }
+
+      .footer-inner { flex-direction: column; gap: var(--space-8); }
+      .footer-cols { gap: 40px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+
+      /* Pill label wraps instead of forcing overflow */
+      .pill-label { white-space: normal; line-height: 1.4; }
+
+      /* Tweaks panel: contained on small screens */
+      #tweaks-panel {
+        left: 12px; right: 12px; bottom: 12px;
+        width: auto;
+      }
+    }
+    @media (max-width: 400px) {
+      .brand { font-size: 19px; }
+      .stat-num { font-size: 23px; }
+      .rep-row { padding: var(--space-3) var(--space-4); gap: var(--space-3); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav" id="main-nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="brand">no lo vendo</a>
+        <div class="nav-actions">
+          <div style="position:relative;flex-shrink:0;" id="nlv-lang-sel">
+            <button onclick="nlvLangToggle()" style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #D5D9DE;border-radius:8px;padding:5px 10px;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;font-weight:600;color:#606A76;cursor:pointer;">
+              <span id="nlv-lang-code">ES</span>
+              <svg id="nlv-lang-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 150ms;"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div id="nlv-lang-dd" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid #D5D9DE;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.10),0 2px 4px rgba(0,0,0,0.06);overflow:hidden;z-index:1000;min-width:130px;">
+              <button data-code="es" onclick="nlvLangSelect('es')" onmouseover="if(nlvLang!=='es')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='es')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Español</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">ES</span></button>
+              <button data-code="en" onclick="nlvLangSelect('en')" onmouseover="if(nlvLang!=='en')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='en')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>English</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">EN</span></button>
+              <button data-code="ca" onclick="nlvLangSelect('ca')" onmouseover="if(nlvLang!=='ca')this.style.background='#E8EAEC'" onmouseout="if(nlvLang!=='ca')this.style.background='transparent'" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 14px;border:none;background:transparent;color:#14171A;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;cursor:pointer;text-align:left;gap:10px;"><span>Català</span><span style="font-size:11px;font-weight:600;color:#9AA2AD;letter-spacing:0.05em;">CA</span></button>
+            </div>
+          </div>
+          <a href="Explorar Visitante.html" class="btn btn-secondary btn-sm nav-link-desktop">Explorar</a>
+          <a href="#" class="btn btn-secondary btn-sm nav-link-desktop">Iniciar sesión</a>
+          <a href="#" class="btn btn-primary btn-sm nav-link-desktop">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Crear cuenta
+          </a>
+          <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menú" aria-expanded="false">
+            <svg class="ico-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <svg class="ico-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#como-funciona" class="mobile-menu-link" data-mm-close>Cómo funciona</a>
+      <a href="Explorar Visitante.html" class="mobile-menu-link" data-mm-close>Explorar</a>
+      <a href="#" class="btn btn-secondary btn-md mobile-menu-btn">Iniciar sesión</a>
+      <a href="#" class="btn btn-primary btn-md mobile-menu-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Crear cuenta
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+
+        <!-- Left: copy -->
+        <div class="hero-copy">
+          <div class="pill-label">
+            <span class="pill-dot"></span>
+            Distribución comunitaria · Sin dinero de por medio
+          </div>
+          <h1 class="hero-h1" id="hero-headline">
+            Lo que ya no usas,<br>
+            <em>alguien lo necesita</em>
+          </h1>
+          <p class="hero-p" id="hero-sub">
+            Una plataforma donde los objetos encuentran nuevas manos. El acceso depende de tu comportamiento en la comunidad, no de tu cartera.
+          </p>
+          <div class="hero-actions">
+            <a href="Explorar Visitante.html" class="btn btn-secondary btn-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Explorar objetos
+            </a>
+            <a href="#" class="btn btn-primary btn-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+              Unirme a la comunidad
+            </a>
+            <a href="#como-funciona" class="btn btn-secondary btn-lg" id="scroll-link">
+              Cómo funciona
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+          <p class="hero-note">Gratis. Solo necesitas email y código postal.</p>
+        </div>
+
+        <!-- Right: hero visual -->
+        <div class="hero-visual">
+
+          <!-- Card back-left -->
+          <div class="mock-card card-1" style="z-index: 1; box-shadow: 0 4px 20px rgba(0,0,0,0.07); opacity: 0.72;">
+            <div class="mock-card-img" style="background: #E8F0EB;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#84B09A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </div>
+            <div class="mock-card-title">Chaqueta de lana gris</div>
+            <div class="mock-card-meta">Como nueva · Gràcia, BCN</div>
+            <span class="mock-badge" style="background:#F0F5F2; color:#224633; border:1px solid #B5D0C2;">activo</span>
+          </div>
+
+          <!-- Card main -->
+          <div class="mock-card card-2" style="z-index: 3; box-shadow: 0 14px 44px rgba(0,0,0,0.14); width: 226px;">
+            <div class="mock-card-img" style="background: #EEF2F8;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7089B6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="mock-card-title">Estantería IKEA Kallax</div>
+            <div class="mock-card-meta">Bueno · Eixample, BCN · 2.3 km</div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span class="mock-badge" style="background:#F0F5F2; color:#224633; border:1px solid #B5D0C2;">activo</span>
+              <span style="font-size:10px; color:#9AA2AD; font-family:'DM Sans',sans-serif;">7 solicitudes</span>
+            </div>
+          </div>
+
+          <!-- Card back-right -->
+          <div class="mock-card card-3" style="z-index: 2; box-shadow: 0 4px 20px rgba(0,0,0,0.07); opacity: 0.65;">
+            <div class="mock-card-img" style="background: #FEF6E7;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#D4870A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="mock-card-title">Bicicleta plegable</div>
+            <div class="mock-card-meta">Aceptable · Poblenou</div>
+            <span class="mock-badge" style="background:#FEF6E7; color:#8F5907; border:1px solid #EDD090;">reservado</span>
+          </div>
+
+          <!-- Floating rep chip -->
+          <div class="float-chip chip-rep" style="bottom: 18px; left: -4px; padding: 8px 12px;">
+            <div class="rep-avatar">C</div>
+            <div>
+              <div style="font-size:11px; font-weight:600; color:var(--fg-primary); line-height:1.3; font-family:'DM Sans',sans-serif;">Carlos R.</div>
+              <div style="font-size:12px; color:var(--brand-primary); font-weight:700; font-family:'DM Sans',sans-serif;">+92 reputación</div>
+            </div>
+          </div>
+
+          <!-- Floating distance chip -->
+          <div class="float-chip chip-dist" style="top: 12px; right: -8px; padding: 7px 11px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#253F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-size:12px; font-weight:600; color:var(--color-accent-600); font-family:'DM Sans',sans-serif;">a 3.8 km · Poblenou</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip" id="stats-strip">
+        <div class="stat-item">
+          <div class="stat-num" id="stat-objects">2.400+</div>
+          <div class="stat-label">objetos publicados</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat-item">
+          <div class="stat-num" id="stat-cities">18</div>
+          <div class="stat-label">ciudades activas</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat-item">
+          <div class="stat-num" id="stat-km">50 km</div>
+          <div class="stat-label">radio de distribución</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat-item">
+          <div class="stat-num">€0</div>
+          <div class="stat-label">coste siempre</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Cómo funciona ── -->
+  <section class="section" id="como-funciona" style="background: var(--bg-surface); border-top: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default);">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Cómo funciona</span>
+        <h2 class="section-title">Tres pasos. Sin complicaciones.</h2>
+        <p class="section-sub">Un ciclo sencillo que mantiene los objetos en movimiento y la comunidad en equilibrio.</p>
+      </div>
+      <div class="steps-grid">
+
+        <div class="step-card reveal" data-delay="0">
+          <span class="step-num">01</span>
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <div class="step-title">Publica lo que quieras regalar</div>
+          <p class="step-body">Fotografía y describe el objeto que ya no necesitas. Queda disponible para personas a menos de 50 km. Hasta 5 fotos por objeto.</p>
+        </div>
+
+        <div class="step-card reveal" data-delay="130">
+          <span class="step-num">02</span>
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="step-title">Solicita lo que necesites</div>
+          <p class="step-body">Explora objetos cerca de ti. Puedes solicitar hasta 3 al mes. El donante elige al mejor candidato según su reputación y distancia.</p>
+        </div>
+
+        <div class="step-card reveal" data-delay="260">
+          <span class="step-num">03</span>
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="step-title">Entrega y completa</div>
+          <p class="step-body">El donante comparte su canal de contacto. Quedáis en persona y se confirma la entrega. Cada entrega exitosa mejora tu reputación.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── El sistema ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">El sistema</span>
+        <h2 class="section-title">No es un marketplace.<br>Es un sistema de equilibrio.</h2>
+        <p class="section-sub">El comportamiento condiciona las oportunidades. Quien da, recibe más fácilmente. Quien no cumple, pierde posiciones.</p>
+      </div>
+      <div class="values-grid">
+
+        <div class="value-card reveal" data-delay="0">
+          <div class="value-icon" style="background: var(--color-primary-50);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div>
+            <div class="value-title">Gratis. Siempre.</div>
+            <p class="value-body">Ningún objeto tiene precio. El sistema no contempla transacciones económicas. Lo que donas, lo regalas sin excepción.</p>
+          </div>
+        </div>
+
+        <div class="value-card reveal" data-delay="120">
+          <div class="value-icon" style="background: var(--color-accent-50);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#253F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <div class="value-title">Reputación dinámica</div>
+            <p class="value-body">Tu historial de entregas determina tu posición en el ranking de candidatos. Quien actúa bien, sube. Quien no se presenta, baja.</p>
+          </div>
+        </div>
+
+        <div class="value-card reveal" data-delay="240">
+          <div class="value-icon" style="background: var(--color-primary-50);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A7358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="value-title">Radio de 50 km</div>
+            <p class="value-body">Los objetos circulan localmente. Menos huella, más comunidad real. Solo ves objetos que están cerca de ti.</p>
+          </div>
+        </div>
+
+        <div class="value-card reveal" data-delay="360">
+          <div class="value-icon" style="background: var(--color-neutral-100);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#606A76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div>
+            <div class="value-title">Privacidad por diseño</div>
+            <p class="value-body">Sin chat interno. El canal de contacto solo se revela cuando el donante confirma la entrega. Se purga automáticamente a los 7 días.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Reputación visual ── -->
+  <section class="rep-section">
+    <div class="container">
+      <div class="rep-inner">
+        <div>
+          <span class="section-label" style="color: var(--color-primary-300);">Reputación</span>
+          <h2 class="section-title" style="color: #fff;">Tu historial habla<br><em style="font-style:italic; color: var(--color-primary-300);">por ti</em></h2>
+          <p class="section-sub" style="color: rgba(255,255,255,0.60); margin-bottom: var(--space-8);">
+            El sistema ordena los candidatos en tiempo real. La cercanía, el historial de entregas y el tiempo de espera determinan quién llega primero.
+          </p>
+          <a href="#" class="btn btn-primary btn-md">Crear mi perfil</a>
+        </div>
+        <div class="rep-example">
+          <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:var(--space-2); font-family:'DM Sans',sans-serif;">Candidatos — Estantería Kallax</div>
+          <div class="rep-row reveal" data-delay="0">
+            <div class="rep-row-av" style="background: rgba(58,115,88,0.25); color: #84B09A;">C</div>
+            <div>
+              <div class="rep-row-name">Carlos R.</div>
+              <div style="font-size:11px; color:rgba(255,255,255,0.40); font-family:'DM Sans',sans-serif;">              2.3 km · Sants · 4 entregas</div>
+            </div>
+            <span class="rep-row-score" style="color: #84B09A;">+92</span>
+            <span class="rep-row-badge" style="background:rgba(58,115,88,0.20); color:#84B09A;">1.º</span>
+          </div>
+          <div class="rep-row reveal" data-delay="130">
+            <div class="rep-row-av" style="background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45);">M</div>
+            <div>
+              <div class="rep-row-name" style="opacity:0.65;">Marta L.</div>
+              <div style="font-size:11px; color:rgba(255,255,255,0.30); font-family:'DM Sans',sans-serif;">              5.1 km · Gràcia · 1 entrega</div>
+            </div>
+            <span class="rep-row-score" style="color: rgba(255,255,255,0.45);">+41</span>
+            <span class="rep-row-badge">2.º</span>
+          </div>
+          <div class="rep-row reveal" data-delay="260" style="opacity: 0.45;">
+            <div class="rep-row-av" style="background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.30);">J</div>
+            <div>
+              <div class="rep-row-name" style="opacity:0.5;">Jordi P.</div>
+              <div style="font-size:11px; color:rgba(255,255,255,0.20); font-family:'DM Sans',sans-serif;">              12.8 km · Nou Barris · 0 entregas</div>
+            </div>
+            <span class="rep-row-score" style="color: rgba(255,255,255,0.30);">+18</span>
+            <span class="rep-row-badge">3.º</span>
+          </div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.25); text-align:center; padding-top:var(--space-2); font-family:'DM Sans',sans-serif;">
+            El ranking se recalcula en tiempo real · ±2 pts de perturbación aleatoria
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA band ── -->
+  <section class="cta-section">
+    <div class="container">
+      <span class="section-label" style="color: rgba(255,255,255,0.55);">Empieza hoy</span>
+      <h2 class="section-title" style="color: #fff; max-width: 560px;">¿Tienes algo que ya no usas?</h2>
+      <p class="section-sub" style="color: rgba(255,255,255,0.70);">Publícalo y encuentra a quien lo necesita. O regístrate y explora objetos cerca de ti. Sin dinero. Sin intermediarios.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-white btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          Publicar un objeto
+        </a>
+        <a href="Explorar Visitante.html" class="btn btn-ghost-white btn-lg">
+          Explorar objetos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQs ── -->
+  <section class="section" id="faqs" style="background: var(--bg-surface); border-top: 1px solid var(--border-default);">
+    <div class="container">
+      <div class="section-header reveal" style="max-width: 780px;">
+        <span class="section-label">Preguntas frecuentes</span>
+        <h2 class="section-title">Todo lo que necesitas saber.</h2>
+        <p class="section-sub">Antes de empezar, aquí tienes las dudas más habituales.</p>
+      </div>
+      <div class="faq-list" id="faqList" style="max-width: 780px;">
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Cómo funciona no lo vendo?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>El donante publica un objeto que ya no necesita. Los receptores interesados envían su solicitud y el sistema los ordena por reputación, proximidad y tiempo de espera. El donante elige a una persona del ranking y se abre una sesión de entrega de 7 días. No hay dinero, no hay trueque: solo dar.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Tengo que pagar algo?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>No. No lo vendo es completamente gratuito para donantes y receptores. Ni comisiones, ni suscripción, ni freemium. El único "coste" es actuar de buena fe: donar cuando puedas y recoger cuando te elijan.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Cómo se decide quién recibe el objeto?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>El sistema ordena a los candidatos automáticamente combinando tres factores: reputación acumulada, distancia al donante y tiempo de espera. El donante ve el ranking y elige a quién dar el objeto, siempre con información objetiva. No se muestran nombres ni datos personales hasta que se produce la selección.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Cuántas solicitudes puedo hacer al mes?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>Cada usuario puede enviar hasta 3 solicitudes en un período de 30 días. Esto evita el acaparamiento pasivo y protege el ecosistema. El contador se renueva a los 30 días de cada uso, no al inicio del mes natural.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Qué pasa si el donante no entrega el objeto?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>Si la sesión de entrega expira sin confirmación, el objeto vuelve automáticamente al tablón. La reputación del donante se ve afectada de forma silenciosa: el algoritmo le da menos visibilidad en futuras entregas. No hay sanciones explícitas, pero el sistema recuerda.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Puedo publicar cualquier tipo de objeto?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>Puedes publicar cualquier objeto físico en buen estado que quieras regalar. No se admiten artículos ilegales, peligrosos, alimentos perecederos ni animales. Tampoco objetos con ánimo de lucro indirecto. Una buena prueba: ¿lo darías a un vecino sin ningún compromiso? Si la respuesta es sí, adelante.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿A qué distancia se muestran los objetos?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>El tablón muestra objetos en un radio de 50 km desde tu ubicación. La distancia también influye en el algoritmo: a igual reputación, un receptor más cercano tiene más probabilidades de ser elegido. La geolocalización es aproximada y nunca se comparte tu dirección exacta.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            <span>¿Cómo se calcula mi reputación?</span>
+            <span class="faq-chevron"></span>
+          </button>
+          <div class="faq-a"><p>La reputación sube cuando donas con éxito y cuando recoges lo que te asignan. Baja si abandonas entregas, no apareces o acumulas cancelaciones. El sistema nunca te bloquea, pero ajusta silenciosamente tu posición en los rankings. Cuantos más objetos des y recibas de forma fiable, mejor posición tendrás.</p></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--border-default); }
+    .faq-item:first-child { border-top: 1px solid var(--border-default); }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      padding: 22px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: var(--text-md);
+      font-weight: var(--weight-medium);
+      color: var(--fg-primary);
+      text-align: left;
+      line-height: var(--leading-snug);
+      transition: color var(--duration-base);
+    }
+    .faq-q:hover { color: var(--brand-primary); }
+    .faq-q:hover .faq-chevron { border-color: var(--brand-primary); }
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-strong);
+      position: relative;
+      transition: transform 260ms cubic-bezier(0.16,1,0.3,1), border-color var(--duration-base), background var(--duration-base);
+    }
+    .faq-chevron::before, .faq-chevron::after {
+      content: '';
+      position: absolute;
+      background: var(--fg-muted);
+      border-radius: 2px;
+      transition: background var(--duration-base);
+    }
+    .faq-chevron::before { width: 8px; height: 1.5px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .faq-chevron::after  { width: 1.5px; height: 8px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .faq-q:hover .faq-chevron::before,
+    .faq-q:hover .faq-chevron::after { background: var(--brand-primary); }
+    .faq-q[aria-expanded="true"] { color: var(--brand-primary); }
+    .faq-q[aria-expanded="true"] .faq-chevron {
+      background: var(--brand-primary);
+      border-color: var(--brand-primary);
+      transform: rotate(45deg);
+    }
+    .faq-q[aria-expanded="true"] .faq-chevron::before,
+    .faq-q[aria-expanded="true"] .faq-chevron::after { background: #fff; }
+    .faq-a {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 320ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .faq-a p {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--fg-secondary);
+      margin: 0;
+      padding-bottom: 22px;
+      max-width: 640px;
+    }
+    @media (max-width: 600px) {
+      .faq-q { font-size: var(--text-base); padding: 18px 0; }
+    }
+  </style>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <a href="#" class="footer-brand">no lo vendo</a>
+          <p class="footer-tagline">Sistema comunitario de redistribución de objetos. Sin dinero, sin intermediarios.</p>
+        </div>
+        <div class="footer-cols">
+          <div>
+            <div class="footer-col-title">Plataforma</div>
+            <div class="footer-links">
+              <a href="Explorar Visitante.html" class="footer-link">Explorar objetos</a>
+              <a href="#" class="footer-link">Iniciar sesión</a>
+              <a href="#" class="footer-link">Crear cuenta</a>
+              <a href="#como-funciona" class="footer-link">Cómo funciona</a>
+              <a href="Reputación.html" class="footer-link">Cómo funciona tu reputación</a>
+            </div>
+          </div>
+          <div>
+            <div class="footer-col-title">Legal</div>
+            <div class="footer-links">
+              <a href="#" class="footer-link">Aviso legal</a>
+              <a href="#" class="footer-link">Privacidad</a>
+              <a href="Política de cookies.html" class="footer-link">Política de cookies</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 no lo vendo. Todos los derechos reservados.</span>
+        <span class="footer-copy">Hecho en España</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Tweaks panel ── -->
+  <div id="tweaks-panel">
+    <div class="tp-head">
+      <span class="tp-title">Tweaks</span>
+      <button class="tp-close" id="tp-close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="tp-section">
+      <span class="tp-label">Titular del hero</span>
+      <div class="tp-opts">
+        <button class="tp-opt active" data-group="headline" data-val="a">Necesidad</button>
+        <button class="tp-opt" data-group="headline" data-val="b">Segunda vida</button>
+      </div>
+    </div>
+    <div class="tp-section">
+      <span class="tp-label">Subtítulo</span>
+      <div class="tp-opts">
+        <button class="tp-opt active" data-group="tone" data-val="community">Comunidad</button>
+        <button class="tp-opt" data-group="tone" data-val="ecology">Sostenibilidad</button>
+      </div>
+    </div>
+    <div class="tp-section">
+      <span class="tp-label">Estadísticas</span>
+      <div class="tp-toggle-row">
+        <span class="tp-toggle-label">Mostrar cifras</span>
+        <button class="tp-switch on" id="stats-toggle"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── FAQ accordion ──
+    (function() {
+      const list = document.getElementById('faqList');
+      if (!list) return;
+      list.querySelectorAll('.faq-item').forEach(item => {
+        const btn = item.querySelector('.faq-q');
+        const ans = item.querySelector('.faq-a');
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          list.querySelectorAll('.faq-q').forEach(b => {
+            b.setAttribute('aria-expanded', 'false');
+            b.closest('.faq-item').querySelector('.faq-a').style.maxHeight = '0';
+          });
+          if (!expanded) {
+            btn.setAttribute('aria-expanded', 'true');
+            ans.style.maxHeight = ans.scrollHeight + 'px';
+          }
+        });
+      });
+    })();
+
+    // ── Scroll reveal ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay || 0);
+          setTimeout(() => el.classList.add('visible'), delay);
+          revealObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // ── Stats counter ──
+    function animateCount(el, target, suffix, duration) {
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(ease * target);
+        el.textContent = val.toLocaleString('es') + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const statsStrip = document.getElementById('stats-strip');
+    let statsAnimated = false;
+    const statsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !statsAnimated) {
+        statsAnimated = true;
+        animateCount(document.getElementById('stat-objects'), 2400, '+', 1400);
+        animateCount(document.getElementById('stat-cities'),  18,   '', 900);
+        statsObserver.disconnect();
+      }
+    }, { threshold: 0.5 });
+    if (statsStrip) statsObserver.observe(statsStrip);
+
+    // ── Nav scroll ──
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 8);
+    }, { passive: true });
+
+    // ── Mobile menu ──
+    const hamburger = document.getElementById('nav-hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    function setMenu(open) {
+      mobileMenu.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      hamburger.querySelector('.ico-open').style.display = open ? 'none' : 'block';
+      hamburger.querySelector('.ico-close').style.display = open ? 'block' : 'none';
+    }
+    hamburger.addEventListener('click', () => {
+      setMenu(!mobileMenu.classList.contains('open'));
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => setMenu(false));
+    });
+
+    // ── Smooth scroll ──
+    document.getElementById('scroll-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById('como-funciona');
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - 72;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+
+    // ── Tweaks state ──
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "headline": "a",
+      "tone": "community",
+      "showStats": true
+    }/*EDITMODE-END*/;
+
+    const tweaks = { ...TWEAK_DEFAULTS };
+
+    const headlines = {
+      a: 'Lo que ya no usas,<br><em>alguien lo necesita</em>',
+      b: 'Dale una segunda vida<br><em>a lo que ya no usas</em>',
+    };
+    const tones = {
+      community: 'Una plataforma donde los objetos encuentran nuevas manos. El acceso depende de tu comportamiento en la comunidad, no de tu cartera.',
+      ecology:   'Reduce el desperdicio. Los objetos que ya no usas siguen teniendo vida útil. Encuéntrales un nuevo hogar cerca de ti.',
+    };
+
+    function applyTweaks() {
+      document.getElementById('hero-headline').innerHTML = headlines[tweaks.headline] || headlines.a;
+      document.getElementById('hero-sub').textContent = tones[tweaks.tone] || tones.community;
+      const strip = document.getElementById('stats-strip');
+      if (strip) strip.style.display = tweaks.showStats ? '' : 'none';
+      document.getElementById('stats-toggle').classList.toggle('on', tweaks.showStats);
+      document.querySelectorAll('.tp-opt').forEach(btn => {
+        btn.classList.toggle('active', tweaks[btn.dataset.group] === btn.dataset.val);
+      });
+    }
+
+    function setTweak(key, val) {
+      tweaks[key] = val;
+      applyTweaks();
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+    }
+
+    document.querySelectorAll('.tp-opt').forEach(btn => {
+      btn.addEventListener('click', () => setTweak(btn.dataset.group, btn.dataset.val));
+    });
+
+    document.getElementById('stats-toggle').addEventListener('click', () => {
+      setTweak('showStats', !tweaks.showStats);
+    });
+
+    document.getElementById('tp-close').addEventListener('click', () => {
+      document.getElementById('tweaks-panel').style.display = 'none';
+      window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+    });
+
+    // ── Edit mode protocol ──
+    window.addEventListener('message', (e) => {
+      if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').style.display = 'block';
+      if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+    applyTweaks();
+  </script>
+  <script>
+  var nlvLang = localStorage.getItem('nlv_lang') || 'es';
+  function nlvLangUpdate() {
+    var c = document.getElementById('nlv-lang-code');
+    if (c) c.textContent = nlvLang.toUpperCase();
+    document.querySelectorAll('#nlv-lang-dd button').forEach(function(btn) {
+      var a = btn.dataset.code === nlvLang;
+      btn.style.background = a ? '#F0F5F2' : 'transparent';
+      btn.style.color = a ? '#3A7358' : '#14171A';
+      btn.style.fontWeight = a ? '600' : '400';
+      var s = btn.querySelector('span:last-child');
+      if (s) s.style.color = a ? '#3A7358' : '#9AA2AD';
+    });
+  }
+  function nlvLangToggle() {
+    var dd = document.getElementById('nlv-lang-dd');
+    var ch = document.getElementById('nlv-lang-chev');
+    var isOpen = dd.style.display !== 'none';
+    dd.style.display = isOpen ? 'none' : 'block';
+    ch.style.transform = isOpen ? 'none' : 'rotate(180deg)';
+  }
+  function nlvLangSelect(code) {
+    nlvLang = code;
+    localStorage.setItem('nlv_lang', code);
+    document.getElementById('nlv-lang-dd').style.display = 'none';
+    document.getElementById('nlv-lang-chev').style.transform = 'none';
+    nlvLangUpdate();
+  }
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#nlv-lang-sel')) {
+      var dd = document.getElementById('nlv-lang-dd');
+      if (dd) dd.style.display = 'none';
+      var ch = document.getElementById('nlv-lang-chev');
+      if (ch) ch.style.transform = 'none';
+    }
+  });
+  nlvLangUpdate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<div
+  class="item-detail-drawer-backdrop rlg-fade-in"
+  [class.item-detail-drawer-backdrop--closing]="closing()"
+  role="presentation"
+  (click)="onBackdropClick($event)"
+>
+  <div
+    class="item-detail-drawer rlg-panel-slide"
+    [class.item-detail-drawer--closing]="closing()"
+    (click)="$event.stopPropagation()"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
+    <div class="item-detail-drawer__handle" aria-hidden="true"></div>
+    <app-item-detail-panel
+      [itemId]="itemId()"
+      presentation="modal"
+      (closed)="requestClose()"
+    />
+  </div>
+</div>

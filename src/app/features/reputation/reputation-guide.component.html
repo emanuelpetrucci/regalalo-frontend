@@ -1,0 +1,304 @@
+<ng-container *transloco="let t">
+  @if (publicMode()) {
+    <app-landing-nav />
+  } @else {
+  <nav class="top-nav" aria-label="Navegación principal">
+    <a routerLink="/explorar" class="nav-logo">Regálalo</a>
+
+    <div class="nav-links">
+      @for (link of navLinks; track link.id) {
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="nav-link--active"
+          [routerLinkActiveOptions]="
+            'childRoutes' in link && link.childRoutes ? { exact: false } : { exact: true }
+          "
+          class="nav-link"
+        >
+          {{ t(link.labelKey) }}
+        </a>
+      }
+    </div>
+
+    <div class="nav-actions">
+      <app-language-selector />
+      <a routerLink="/mis-objetos/publicar" class="btn-sm">
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        {{ t('nav.publish') }}
+      </a>
+      @if (sessionUser(); as user) {
+        <a routerLink="/perfil" class="nav-avatar-link" [attr.aria-label]="t('nav.profile')">
+          <app-user-avatar
+            size="sm"
+            [firstName]="user.firstName"
+            [lastName]="user.lastName"
+            [userId]="user.id"
+            [decorative]="true"
+          />
+        </a>
+      }
+      <div class="nav-hamburger-wrap" #menuHost>
+        <button
+          type="button"
+          class="nav-hamburger"
+          [class.nav-hamburger--open]="menuOpen()"
+          [attr.aria-expanded]="menuOpen()"
+          [attr.aria-label]="t('nav.menu')"
+          (click)="toggleMenu($event)"
+        >
+          @if (menuOpen()) {
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          } @else {
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          }
+        </button>
+        @if (menuOpen()) {
+          <div class="nav-mobile-menu" role="menu">
+            @for (link of navLinks; track link.id) {
+              <a
+                [routerLink]="link.path"
+                routerLinkActive="nav-mobile-link--active"
+                [routerLinkActiveOptions]="
+                  'childRoutes' in link && link.childRoutes ? { exact: false } : { exact: true }
+                "
+                class="nav-mobile-link"
+                role="menuitem"
+                (click)="closeMenu()"
+              >
+                {{ t(link.labelKey) }}
+              </a>
+            }
+            <div class="nav-mobile-divider" role="separator"></div>
+            <a
+              routerLink="/mis-objetos/publicar"
+              class="nav-mobile-publish"
+              role="menuitem"
+              (click)="closeMenu()"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              {{ t('nav.publish_object') }}
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </nav>
+  }
+
+  <main class="page-wrap">
+    <header class="doc-header">
+      <div class="doc-eyebrow">{{ t('reputation_guide.header.eyebrow') }}</div>
+      <h1 class="doc-title">{{ t('reputation_guide.header.title') }}</h1>
+      <p class="doc-lede">
+        {{ t('reputation_guide.header.lede_before') }}<strong>{{ t('reputation_guide.header.lede_strong') }}</strong>{{ t('reputation_guide.header.lede_after') }}
+      </p>
+    </header>
+
+    <div class="start-banner">
+      <div class="start-number" aria-hidden="true">0</div>
+      <div class="start-divider" aria-hidden="true"></div>
+      <p class="start-text">
+        <strong>{{ t('reputation_guide.start.strong') }}</strong>{{ t('reputation_guide.start.body') }}
+      </p>
+    </div>
+
+    <section class="block" id="ganar">
+      <div class="block-head">
+        <span class="block-kicker up">{{ t('reputation_guide.gain.kicker') }}</span>
+        <h2 class="block-title">{{ t('reputation_guide.gain.title') }}</h2>
+        <p class="block-sub">{{ t('reputation_guide.gain.sub') }}</p>
+      </div>
+
+      <div class="gain-grid">
+        @for (card of gainCards; track card.id) {
+          <article class="gain-card">
+            <div class="gain-icon" aria-hidden="true">
+              @switch (card.icon) {
+                @case ('gift') {
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 12 20 22 4 22 4 12" />
+                    <rect x="2" y="7" width="20" height="5" />
+                    <line x1="12" y1="22" x2="12" y2="7" />
+                    <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" />
+                    <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
+                  </svg>
+                }
+                @case ('refresh') {
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 11-3.5-7.1" />
+                    <polyline points="21 3 21 9 15 9" />
+                  </svg>
+                }
+                @case ('receive') {
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 8v13H3V8" />
+                    <rect x="1" y="3" width="22" height="5" />
+                    <line x1="10" y1="12" x2="14" y2="12" />
+                  </svg>
+                }
+              }
+            </div>
+            <div class="gain-value">{{ t(card.pointsKey) }}</div>
+            <div class="gain-name">{{ t(card.nameKey) }}</div>
+            <div class="gain-desc">{{ t(card.descKey) }}</div>
+            <span class="gain-tag">{{ t(card.tagKey) }}</span>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="block" id="perder">
+      <div class="block-head">
+        <span class="block-kicker down">{{ t('reputation_guide.lose.kicker') }}</span>
+        <h2 class="block-title">{{ t('reputation_guide.lose.title') }}</h2>
+        <p class="block-sub">
+          {{ t('reputation_guide.lose.sub_before') }}<strong>{{ t('reputation_guide.lose.sub_strong') }}</strong>{{ t('reputation_guide.lose.sub_after') }}
+        </p>
+      </div>
+
+      <div class="lose-card">
+        <div class="lose-first">
+          <span class="lose-first-pts">{{ t('reputation_guide.lose.first.points') }}</span>
+          <span class="lose-first-txt">
+            <strong>{{ t('reputation_guide.lose.first.strong') }}</strong>{{ t('reputation_guide.lose.first.body') }}
+          </span>
+        </div>
+
+        <div class="stair" role="list">
+          @for (step of stairSteps; track step.id) {
+            <div class="stair-step" [class]="step.stepClass" role="listitem">
+              <span class="stair-ord">{{ t(step.orderKey) }}</span>
+              <span class="stair-pts">{{ t(step.pointsKey) }}</span>
+              <span class="stair-note">{{ t(step.noteKey) }}</span>
+            </div>
+          }
+        </div>
+        <p class="stair-caption">{{ t('reputation_guide.lose.stairs.caption') }}</p>
+
+        <div class="reset-row">
+          <div class="reset-ico" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+              <path d="M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16" />
+              <path d="M3 21v-5h5" />
+            </svg>
+          </div>
+          <p class="reset-txt">
+            <strong>{{ t('reputation_guide.lose.reset.strong') }}</strong>{{ t('reputation_guide.lose.reset.body') }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="visibilidad">
+      <div class="block-head">
+        <span class="block-kicker see">{{ t('reputation_guide.visibility.kicker') }}</span>
+        <h2 class="block-title">{{ t('reputation_guide.visibility.title') }}</h2>
+        <p class="block-sub">
+          {{ t('reputation_guide.visibility.sub_before') }}<strong>{{ t('reputation_guide.visibility.sub_strong') }}</strong>{{ t('reputation_guide.visibility.sub_after') }}
+        </p>
+      </div>
+
+      <div class="vis-track">
+        @for (stage of visStages; track stage.id) {
+          <div class="vis-stage">
+            <div class="vis-when">
+              <span class="vis-when-num">{{ t(stage.monthsKey) }}</span>
+              <span class="vis-when-unit">{{ t(stage.unitKey) }}</span>
+            </div>
+            <div class="vis-body">
+              <div class="vis-headline">{{ t(stage.headlineKey) }}</div>
+              <p class="vis-desc">{{ t(stage.descKey) }}</p>
+              <div class="vis-list" aria-hidden="true">
+                @for (row of stage.rows; track $index) {
+                  <div
+                    class="vis-row"
+                    [class.you]="row.variant === 'you'"
+                    [class.dim]="row.variant === 'dim'"
+                    [class.invisible]="row.variant === 'invisible'"
+                  >
+                    <span class="vis-rank">{{ row.rank }}</span>
+                    <span class="dot"></span>
+                    {{ t(row.labelKey) }}
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="restore">
+        <div class="restore-ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        </div>
+        <p class="restore-txt">
+          <strong>{{ t('reputation_guide.visibility.restore.strong') }}</strong>{{ t('reputation_guide.visibility.restore.body') }}
+        </p>
+      </div>
+    </section>
+
+    <div class="closing">
+      <p class="closing-quote">{{ t('reputation_guide.closing.quote') }}</p>
+      <p class="closing-sub">{{ t('reputation_guide.closing.sub') }}</p>
+    </div>
+  </main>
+
+  @if (publicMode()) {
+    <app-landing-footer />
+  } @else {
+    <app-site-footer [currentPlatform]="'reputacion'" />
+  }
+</ng-container>

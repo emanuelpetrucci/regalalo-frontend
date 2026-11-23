@@ -1,0 +1,106 @@
+/* Portado de StepTrail — docs/project/Entregas.html */
+.delivery-session-step-trail__heading {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--weight-semibold);
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.delivery-session-step-trail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.delivery-session-step-trail__item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.delivery-session-step-trail__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.delivery-session-step-trail__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-subtle);
+  border: 2px solid var(--border-default);
+  color: #fff;
+}
+
+.delivery-session-step-trail__item--current .delivery-session-step-trail__dot {
+  background: var(--bg-surface);
+  border-color: var(--color-primary-500);
+}
+
+.delivery-session-step-trail__item--done .delivery-session-step-trail__dot {
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+}
+
+.delivery-session-step-trail__dot-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+}
+
+.delivery-session-step-trail__connector {
+  width: 2px;
+  height: 24px;
+  margin-top: 2px;
+  background: var(--border-default);
+}
+
+.delivery-session-step-trail__item--done .delivery-session-step-trail__connector {
+  background: var(--color-primary-500);
+}
+
+.delivery-session-step-trail__text {
+  padding-bottom: 20px;
+}
+
+.delivery-session-step-trail__item:last-child .delivery-session-step-trail__text {
+  padding-bottom: 0;
+}
+
+.delivery-session-step-trail__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+
+.delivery-session-step-trail__item--done .delivery-session-step-trail__label,
+.delivery-session-step-trail__item--current .delivery-session-step-trail__label {
+  color: var(--fg-default);
+}
+
+.delivery-session-step-trail__item--current .delivery-session-step-trail__label {
+  font-weight: var(--weight-semibold);
+}
+
+.delivery-session-step-trail__sub {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}

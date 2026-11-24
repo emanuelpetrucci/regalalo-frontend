@@ -2,6 +2,7 @@
 # Signed-off-by que coincide con el autor (Developer Certificate of Origin 1.1).
 # Complementa, no sustituye, la app oficial de DCO (https://github.com/apps/dco)
 # ni el ajuste del repositorio «Require contributors to sign off on web-based commits».
+# Las PR de Dependabot se excluyen: sus commits no llevan Signed-off-by.
 name: DCO
 
 on:
@@ -18,6 +19,7 @@ concurrency:
 jobs:
   dco:
     name: Signed-off-by
+    if: ${{ github.actor != 'dependabot[bot]' && github.event.pull_request.user.login != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
